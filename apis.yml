@@ -1,27 +1,38 @@
 aid: vonage
-name: Vonage
-description: "Welcome to Vonage API Developer Portal. Here you can find all the technical documentation for the APIs available as part of the Vonage Communication APIs Platform. Be sure to checkout our\_steps to get started with Vonage APIs section! "
-type: Index
-position: Consumer
-access: 3rd-Party
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-tags:
-  - API
-created: '2025-02-08'
-modified: '2025-02-08'
 url: >-
   https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/apis.yml
-specificationVersion: '0.19'
 apis:
   - aid: vonage:vonage
     name: Vonage
-    description: "Welcome to Vonage API Developer Portal. Here you can find all the technical documentation for the APIs available as part of the Vonage Communication APIs Platform. Be sure to checkout our\_steps to get started with Vonage APIs section! "
-    humanURL: ' https://developer.vonage.com/en/documentation'
     tags:
       - API
+    humanURL: ' https://developer.vonage.com/en/documentation'
     properties:
-      - type: Documentation
-        url: ' https://developer.vonage.com/en/documentation'
+      - url: ' https://developer.vonage.com/en/documentation'
+        type: Documentation
+    description: "Welcome to Vonage API Developer Portal. Here you can find all the technical documentation for the APIs available as part of the Vonage Communication APIs Platform. Be sure to checkout our\_steps to get started with Vonage APIs section! "
+name: Vonage
+tags:
+  - Telecommunications
+  - Communication
+  - Messaging
+  - Video Conferencing
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+created: '2025-02-08'
+modified: '2025-03-02'
+position: Consumer
+description: >-
+  Vonage is a telecommunications company that provides businesses and consumers
+  with cloud-based communication services. They offer a variety of products,
+  including VoIP phone systems, messaging services, video conferencing, and
+  virtual phone numbers. Vonage's technology allows users to make and receive
+  calls over the internet, enabling them to communicate more efficiently and
+  cost-effectively. With their innovative solutions, Vonage helps organizations
+  of all sizes streamline their communications, improve collaboration, and
+  enhance customer interactions.
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
+specificationVersion: '0.19'
