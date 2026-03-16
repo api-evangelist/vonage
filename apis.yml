@@ -9,9 +9,9 @@ apis:
       - Communication
       - Messaging
       - Video Conferencing
-    humanURL: ' https://developer.vonage.com/en/documentation'
+    humanURL: https://developer.vonage.com/en/documentation
     properties:
-      - url: ' https://developer.vonage.com/en/documentation'
+      - url: https://developer.vonage.com/en/documentation
         type: Documentation
     description: >-
       Vonage is a telecommunications company that provides a range of
@@ -34,18 +34,31 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2025-02-08'
-modified: '2025-03-02'
+modified: '2026-03-16'
 position: Consumer
 description: >-
-  Vonage is a telecommunications company that provides businesses and consumers
-  with cloud-based communication services. They offer a variety of products,
-  including VoIP phone systems, messaging services, video conferencing, and
-  virtual phone numbers. Vonage's technology allows users to make and receive
-  calls over the internet, enabling them to communicate more efficiently and
-  cost-effectively. With their innovative solutions, Vonage helps organizations
-  of all sizes streamline their communications, improve collaboration, and
-  enhance customer interactions.
+  Vonage provides cloud communications APIs for voice, SMS, messaging, video,
+  and verification. The Vonage API developer portal offers REST APIs and SDKs
+  for building communication features into applications including voice calls,
+  SMS, video conferencing, and two-factor authentication.
+common:
+  - url: https://developer.vonage.com/
+    name: Vonage API Developer Portal
+    type: Portal
+    description: 'null'
+  - url: https://developer.vonage.com/en/documentation
+    name: Vonage API Documentation
+    type: Documentation
+    description: 'null'
+  - url: https://api.support.vonage.com/hc/en-us
+    name: Vonage API Support
+    type: Support
+    description: 'null'
+  - url: https://github.com/Vonage
+    name: Vonage GitHub Organization
+    type: GitHubOrganization
+    description: 'null'
 maintainers:
   - FN: Kin Lane
-    email: info@apievangelist.com
+    email: kin@apievangelist.com
 specificationVersion: '0.19'
