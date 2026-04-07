@@ -5,9 +5,9 @@ apis:
   - aid: vonage:vonage
     name: Vonage
     tags:
-      - Telecommunications
       - Communication
       - Messaging
+      - Telecommunications
       - Video Conferencing
     humanURL: https://developer.vonage.com/en/documentation
     properties:
@@ -22,9 +22,9 @@ apis:
       and collaboration, improve customer service, and streamline business operations.
 name: Vonage
 tags:
-  - Telecommunications
   - Communication
   - Messaging
+  - Telecommunications
   - Video Conferencing
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
