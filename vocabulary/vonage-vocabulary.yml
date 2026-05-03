@@ -1,0 +1,123 @@
+vocabulary:
+  name: Vonage Communications API Vocabulary
+  description: >-
+    Key terms, concepts, and taxonomy for the Vonage cloud communications
+    platform covering messaging, voice, video, and verification APIs.
+  version: '1.0'
+  created: '2026-05-03'
+  modified: '2026-05-03'
+  tags:
+    - Communication
+    - Messaging
+    - Voice
+    - Verification
+
+  domains:
+    - name: Messaging
+      description: Outbound and inbound messaging concepts
+      terms:
+        - term: SMS
+          definition: Short Message Service. Text messages up to 160 characters sent over cellular networks.
+          related: [MMS, RCS, Messages API]
+        - term: MMS
+          definition: Multimedia Messaging Service. Supports images, audio, and video in messages.
+          related: [SMS, Messages API]
+        - term: RCS
+          definition: Rich Communication Services. Next-generation SMS with rich media, read receipts, and interactive features.
+          related: [SMS, Messages API]
+        - term: Messages API
+          definition: Vonage unified multi-channel messaging API supporting SMS, WhatsApp, Messenger, Viber, MMS, and RCS.
+          related: [SMS API, Channel]
+        - term: Channel
+          definition: The messaging medium used (sms, whatsapp, messenger, viber_service, mms, rcs).
+        - term: Message Type
+          definition: The content type of a message (text, image, audio, video, file, template, custom).
+        - term: Delivery Receipt
+          definition: Webhook notification indicating whether a message was delivered successfully.
+        - term: Inbound Message
+          definition: A message received on a Vonage virtual number, delivered via webhook.
+        - term: Client Reference
+          definition: Optional identifier (max 100 chars) for tracking messages in your system.
+        - term: MSISDN
+          definition: Mobile Station International Subscriber Directory Number. E.164 format phone number.
+
+    - name: Voice
+      description: Voice call and telephony concepts
+      terms:
+        - term: NCCO
+          definition: Vonage Call Control Object. JSON instruction set controlling call behavior (talk, record, connect, stream, etc.).
+          related: [Voice API, Call]
+        - term: Call UUID
+          definition: Unique identifier for a Vonage call leg.
+          related: [Conversation UUID]
+        - term: Conversation UUID
+          definition: Unique identifier for a Vonage conversation grouping multiple call legs.
+          related: [Call UUID]
+        - term: Call Status
+          definition: Current state of a call (started, ringing, answered, completed, failed, etc.).
+        - term: TTS
+          definition: Text-to-Speech. Converting written text to synthesized voice audio in calls.
+        - term: DTMF
+          definition: Dual-Tone Multi-Frequency. Touch-tone signals used for interactive voice response (IVR).
+        - term: SIP
+          definition: Session Initiation Protocol. Standard protocol for VoIP calls.
+        - term: WebSocket
+          definition: Bidirectional connection enabling real-time audio streaming in voice calls.
+        - term: Leg
+          definition: One segment of a call from a single endpoint perspective.
+        - term: Webhook
+          definition: HTTP callback URL receiving real-time call events and recordings.
+
+    - name: Verification
+      description: Phone verification and 2FA concepts
+      terms:
+        - term: Verify Request
+          definition: A Vonage Verify API request to confirm ownership of a phone number.
+          related: [Verify Code, Request ID]
+        - term: Request ID
+          definition: Unique identifier for a Verify request, used to check and control it.
+        - term: Verify Code
+          definition: The PIN sent to a user for verification (4 or 6 digits).
+        - term: Workflow
+          definition: The sequence of channels (SMS, TTS, WhatsApp) used to deliver a verification code.
+        - term: PSD2
+          definition: Payment Services Directive 2. EU regulation requiring strong customer authentication for payments.
+        - term: Two-Factor Authentication
+          definition: Security process requiring a second verification factor (e.g., SMS PIN) in addition to a password.
+
+    - name: Number Management
+      description: Virtual phone number concepts
+      terms:
+        - term: Virtual Number
+          definition: A cloud-based phone number that can receive calls and SMS without physical hardware.
+          related: [LVN, DID]
+        - term: LVN
+          definition: Long Virtual Number. A full-length phone number provisioned for SMS or voice.
+        - term: DID
+          definition: Direct Inward Dialing. A telephone number routing calls directly to a specific endpoint.
+        - term: Toll-Free Number
+          definition: A phone number where the recipient pays call charges, not the caller.
+        - term: Capabilities
+          definition: Features enabled on a number (SMS, VOICE, MMS).
+        - term: Country Code
+          definition: Two-character ISO 3166-1 alpha-2 country identifier.
+
+    - name: Platform
+      description: Vonage platform and account concepts
+      terms:
+        - term: Application
+          definition: A Vonage configuration grouping API credentials, webhooks, and capabilities.
+        - term: API Key
+          definition: Public identifier for a Vonage account, used with API secret for authentication.
+        - term: API Secret
+          definition: Private credential paired with API key for Basic authentication.
+        - term: JWT
+          definition: JSON Web Token. Signed token used for application-level Bearer authentication on Voice and Messages APIs.
+        - term: Private Key
+          definition: RSA private key used to sign JWTs for Vonage application authentication.
+        - term: Subaccount
+          definition: A child account under a primary Vonage account for segregating usage and billing.
+        - term: Conversation
+          definition: A multi-channel communication thread grouping messages and calls.
+        - term: Nexmo
+          definition: Former name of Vonage's API platform; API hostnames still use nexmo.com domains.

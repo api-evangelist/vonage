@@ -1,0 +1,113 @@
+extends: spectral:oas
+rules:
+  vonage-operation-ids-camel-case:
+    description: Operation IDs must use camelCase.
+    message: "Operation ID '{{value}}' must be camelCase."
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  vonage-tags-title-case:
+    description: Tags must use Title Case.
+    message: "Tag '{{value}}' must use Title Case."
+    severity: warn
+    given: "$.paths[*][*].tags[*]"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9 \\-]*$"
+
+  vonage-operation-summary-required:
+    description: All operations must have a summary.
+    message: "Operation must have a summary."
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: summary
+      function: defined
+
+  vonage-operation-tags-required:
+    description: All operations must have at least one tag.
+    message: "Operation must have at least one tag."
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: tags
+      function: defined
+
+  vonage-response-200-defined:
+    description: GET operations must define a 200 response.
+    message: "GET operation must define a 200 response."
+    severity: warn
+    given: "$.paths[*].get"
+    then:
+      field: responses.200
+      function: defined
+
+  vonage-response-201-post:
+    description: POST create operations should return 201.
+    message: "POST create operations should return 201."
+    severity: info
+    given: "$.paths[*].post"
+    then:
+      field: responses.201
+      function: defined
+
+  vonage-api-key-secret-in-body:
+    description: >-
+      Vonage REST API (rest.nexmo.com) uses api_key and api_secret in request body.
+      Ensure these are documented as required fields.
+    message: "api_key and api_secret should be documented as required for legacy REST endpoints."
+    severity: info
+    given: "$.paths[/sms/json,/account/numbers,/number/search,/number/buy,/number/cancel,/number/update][post,get].requestBody.content[*].schema.required"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          contains:
+            type: string
+            enum: [api_key]
+
+  vonage-bearer-auth-voice:
+    description: Voice API operations must use Bearer JWT authentication.
+    message: "Voice API operations should use Bearer JWT auth."
+    severity: info
+    given: "$.paths[/v1/calls,/v1/calls/*][*].security[*]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: [bearerAuth]
+
+  vonage-description-required:
+    description: All operations should have a description.
+    message: "Operation should have a description."
+    severity: info
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: description
+      function: defined
+
+  vonage-path-kebab-case:
+    description: API paths should use kebab-case segments.
+    message: "Path '{{path}}' should use kebab-case."
+    severity: info
+    given: "$.paths"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(\\/[a-z0-9{}\\-._~]*)*$"
+
+  vonage-parameters-described:
+    description: All parameters should have descriptions.
+    message: "Parameter '{{value}}' should have a description."
+    severity: info
+    given: "$.paths[*][*].parameters[*]"
+    then:
+      field: description
+      function: defined

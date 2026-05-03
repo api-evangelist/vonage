@@ -1,0 +1,191 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Vonage Voice Communications"
+  description: >-
+    Voice call workflow for Vonage Voice API. Enables programmatic creation,
+    monitoring, and control of outbound and inbound voice calls. Used by
+    developers building IVR systems, call center solutions, voice notifications,
+    and automated telephony applications.
+  tags:
+    - Communication
+    - Telecommunications
+    - Voice
+    - VoIP
+    - IVR
+    - Vonage
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VONAGE_JWT_TOKEN: VONAGE_JWT_TOKEN
+
+capability:
+  consumes:
+    - import: vonage-voice
+      location: ./shared/voice-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8081
+      namespace: vonage-voice-api
+      description: "Unified REST API for Vonage voice call management."
+      resources:
+        - path: /v1/calls
+          name: calls
+          description: "List and create voice calls."
+          operations:
+            - method: GET
+              name: list-calls
+              description: "List voice calls with optional status filter."
+              call: "vonage-voice.list-calls"
+              with:
+                status: "rest.status"
+                page_size: "rest.page_size"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-call
+              description: "Create an outbound voice call."
+              call: "vonage-voice.create-call"
+              with:
+                to: "rest.to"
+                from: "rest.from"
+                ncco: "rest.ncco"
+                answer_url: "rest.answer_url"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/calls/{uuid}
+          name: call
+          description: "Manage a specific call."
+          operations:
+            - method: GET
+              name: get-call
+              description: "Get details of a specific call."
+              call: "vonage-voice.get-call"
+              with:
+                uuid: "rest.uuid"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: PUT
+              name: update-call
+              description: "Modify an in-progress call."
+              call: "vonage-voice.update-call"
+              with:
+                uuid: "rest.uuid"
+                action: "rest.action"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/calls/{uuid}/talk
+          name: call-tts
+          description: "Text-to-speech in active calls."
+          operations:
+            - method: PUT
+              name: play-tts
+              description: "Play text-to-speech audio in a call."
+              call: "vonage-voice.play-tts"
+              with:
+                uuid: "rest.uuid"
+                text: "rest.text"
+                voice_name: "rest.voice_name"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: stop-tts
+              description: "Stop text-to-speech in a call."
+              call: "vonage-voice.stop-tts"
+              with:
+                uuid: "rest.uuid"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9091
+      namespace: vonage-voice-mcp
+      transport: http
+      description: "MCP server for AI-assisted voice call management with Vonage."
+      tools:
+        - name: list-calls
+          description: "List voice calls, optionally filtered by status."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "vonage-voice.list-calls"
+          with:
+            status: "tools.status"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-call
+          description: "Create an outbound voice call to a phone number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-voice.create-call"
+          with:
+            to: "tools.to"
+            from: "tools.from"
+            ncco: "tools.ncco"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-call
+          description: "Get status and details of a specific call by UUID."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "vonage-voice.get-call"
+          with:
+            uuid: "tools.uuid"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: hangup-call
+          description: "Hang up an active voice call."
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "vonage-voice.update-call"
+          with:
+            uuid: "tools.uuid"
+            action: "hangup"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: play-tts
+          description: "Play a text-to-speech message into an active call."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-voice.play-tts"
+          with:
+            uuid: "tools.uuid"
+            text: "tools.text"
+            voice_name: "tools.voice_name"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: mute-call
+          description: "Mute an active call."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: true
+          call: "vonage-voice.update-call"
+          with:
+            uuid: "tools.uuid"
+            action: "mute"
+          outputParameters:
+            - type: object
+              mapping: "$."

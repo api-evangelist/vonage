@@ -1,0 +1,190 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Vonage Verify API"
+  description: "Two-factor authentication and phone verification API."
+  tags:
+    - Authentication
+    - Security
+    - Two-Factor Authentication
+    - Verification
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VONAGE_API_KEY: VONAGE_API_KEY
+      VONAGE_API_SECRET: VONAGE_API_SECRET
+
+capability:
+  consumes:
+    - type: http
+      namespace: vonage-verify
+      baseUri: https://api.nexmo.com
+      description: "Vonage Verify API for phone verification and 2FA."
+      authentication:
+        type: apikey
+        key: api_key
+        value: "{{VONAGE_API_KEY}}"
+        placement: body
+      resources:
+        - name: verify
+          path: /verify/json
+          description: "Request phone number verification."
+          operations:
+            - name: request-verification
+              method: POST
+              description: "Start a phone verification workflow."
+              inputParameters:
+                - name: number
+                  in: body
+                  type: string
+                  required: true
+                  description: "Phone number to verify (E.164 format)."
+                - name: brand
+                  in: body
+                  type: string
+                  required: true
+                  description: "Brand name shown in the verification message."
+                - name: code_length
+                  in: body
+                  type: integer
+                  required: false
+                  description: "Length of verification code (4 or 6)."
+                - name: workflow_id
+                  in: body
+                  type: integer
+                  required: false
+                  description: "Workflow ID selecting SMS/TTS sequence."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: verify-check
+          path: /verify/check/json
+          description: "Check a verification code."
+          operations:
+            - name: check-verification
+              method: POST
+              description: "Confirm whether the user's PIN matches the sent code."
+              inputParameters:
+                - name: request_id
+                  in: body
+                  type: string
+                  required: true
+                  description: "Verification request ID."
+                - name: code
+                  in: body
+                  type: string
+                  required: true
+                  description: "PIN entered by the user."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: verify-control
+          path: /verify/control/json
+          description: "Cancel or trigger next verification event."
+          operations:
+            - name: control-verification
+              method: POST
+              description: "Cancel a verification request or trigger next workflow."
+              inputParameters:
+                - name: request_id
+                  in: body
+                  type: string
+                  required: true
+                  description: "Verification request ID."
+                - name: cmd
+                  in: body
+                  type: string
+                  required: true
+                  description: "Command: cancel or trigger_next_event."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8103
+      namespace: vonage-verify-rest
+      resources:
+        - path: /v1/verifications
+          name: verifications
+          description: "Request phone verifications."
+          operations:
+            - method: POST
+              name: request-verification
+              description: "Start a phone verification."
+              call: "vonage-verify.request-verification"
+              with:
+                number: "rest.number"
+                brand: "rest.brand"
+                code_length: "rest.code_length"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/verifications/check
+          name: verification-check
+          description: "Check a verification code."
+          operations:
+            - method: POST
+              name: check-verification
+              description: "Verify the PIN code entered by the user."
+              call: "vonage-verify.check-verification"
+              with:
+                request_id: "rest.request_id"
+                code: "rest.code"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9103
+      namespace: vonage-verify-mcp
+      transport: http
+      tools:
+        - name: request-verification
+          description: "Send a phone verification code to a user's number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-verify.request-verification"
+          with:
+            number: "tools.number"
+            brand: "tools.brand"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: check-verification
+          description: "Verify the PIN code submitted by the user."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-verify.check-verification"
+          with:
+            request_id: "tools.request_id"
+            code: "tools.code"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: cancel-verification
+          description: "Cancel a pending verification request."
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "vonage-verify.control-verification"
+          with:
+            request_id: "tools.request_id"
+            cmd: "cancel"
+          outputParameters:
+            - type: object
+              mapping: "$."

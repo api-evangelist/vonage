@@ -1,0 +1,25 @@
+{
+  "summary": "Send a WhatsApp message",
+  "description": "Example request and response for sending a WhatsApp message via the Vonage Messages API.",
+  "request": {
+    "method": "POST",
+    "url": "https://api.nexmo.com/v1/messages",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer {{JWT_TOKEN}}"
+    },
+    "body": {
+      "message_type": "text",
+      "to": "14155550100",
+      "from": "14155550101",
+      "channel": "whatsapp",
+      "text": "Hello from Vonage Messages API via WhatsApp!"
+    }
+  },
+  "response": {
+    "status": 202,
+    "body": {
+      "message_uuid": "aaaaaaaa-bbbb-cccc-dddd-0123456789ab"
+    }
+  }
+}

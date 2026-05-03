@@ -1,0 +1,39 @@
+{
+  "summary": "Create an outbound voice call",
+  "description": "Example request and response for creating an outbound call via the Vonage Voice API.",
+  "request": {
+    "method": "POST",
+    "url": "https://api.nexmo.com/v1/calls",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer {{JWT_TOKEN}}"
+    },
+    "body": {
+      "to": [
+        {
+          "type": "phone",
+          "number": "14155550100"
+        }
+      ],
+      "from": {
+        "type": "phone",
+        "number": "14155550101"
+      },
+      "ncco": [
+        {
+          "action": "talk",
+          "text": "This is a text to speech call from Vonage"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "uuid": "63f61863-4a51-4f6b-86e1-46edebcf9356",
+      "status": "started",
+      "direction": "outbound",
+      "conversation_uuid": "CON-f972836a-550f-45fa-956c-12a2ab5b7d22"
+    }
+  }
+}

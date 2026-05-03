@@ -1,0 +1,141 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Vonage Messaging and Notifications"
+  description: >-
+    Unified messaging workflow combining Vonage SMS API and Messages API for
+    sending notifications, alerts, and multi-channel communications to customers.
+    Used by developers building notification systems, customer engagement platforms,
+    and omnichannel messaging applications.
+  tags:
+    - Communication
+    - Messaging
+    - Notifications
+    - Omnichannel
+    - SMS
+    - WhatsApp
+    - Vonage
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VONAGE_API_KEY: VONAGE_API_KEY
+      VONAGE_API_SECRET: VONAGE_API_SECRET
+      VONAGE_JWT_TOKEN: VONAGE_JWT_TOKEN
+
+capability:
+  consumes:
+    - import: vonage-sms
+      location: ./shared/sms-api.yaml
+    - import: vonage-messages
+      location: ./shared/messages-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: vonage-messaging-api
+      description: "Unified REST API for Vonage messaging and notifications."
+      resources:
+        - path: /v1/sms
+          name: sms-messages
+          description: "Send SMS messages via legacy SMS API."
+          operations:
+            - method: POST
+              name: send-sms
+              description: "Send an SMS message to a recipient."
+              call: "vonage-sms.send-sms"
+              with:
+                to: "rest.to"
+                from: "rest.from"
+                text: "rest.text"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/messages
+          name: channel-messages
+          description: "Send messages via any supported channel (WhatsApp, Messenger, Viber, RCS, MMS, SMS)."
+          operations:
+            - method: POST
+              name: send-message
+              description: "Send a message via the unified Messages API."
+              call: "vonage-messages.send-message"
+              with:
+                message_type: "rest.message_type"
+                to: "rest.to"
+                from: "rest.from"
+                channel: "rest.channel"
+                text: "rest.text"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: vonage-messaging-mcp
+      transport: http
+      description: "MCP server for AI-assisted multi-channel messaging with Vonage."
+      tools:
+        - name: send-sms
+          description: "Send an SMS text message to a phone number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-sms.send-sms"
+          with:
+            to: "tools.to"
+            from: "tools.from"
+            text: "tools.text"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: send-whatsapp-message
+          description: "Send a WhatsApp message to a phone number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-messages.send-message"
+          with:
+            message_type: "text"
+            channel: "whatsapp"
+            to: "tools.to"
+            from: "tools.from"
+            text: "tools.text"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: send-rcs-message
+          description: "Send an RCS rich message to a phone number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-messages.send-message"
+          with:
+            message_type: "text"
+            channel: "rcs"
+            to: "tools.to"
+            from: "tools.from"
+            text: "tools.text"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: send-viber-message
+          description: "Send a Viber service message to a phone number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-messages.send-message"
+          with:
+            message_type: "text"
+            channel: "viber_service"
+            to: "tools.to"
+            from: "tools.from"
+            text: "tools.text"
+          outputParameters:
+            - type: object
+              mapping: "$."

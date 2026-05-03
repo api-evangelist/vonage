@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/vonage/json-schema/vonage-message-schema.json",
+  "title": "Vonage Message",
+  "description": "Schema for a Vonage Messages API message payload.",
+  "type": "object",
+  "required": ["message_type", "to", "from", "channel"],
+  "properties": {
+    "message_uuid": {
+      "type": "string",
+      "description": "Unique identifier for the message.",
+      "format": "uuid"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": ["text", "image", "audio", "video", "file", "template", "custom"],
+      "description": "The type of message content."
+    },
+    "to": {
+      "type": "string",
+      "description": "Recipient phone number or identifier (E.164 format for phone numbers)."
+    },
+    "from": {
+      "type": "string",
+      "description": "Sender phone number or identifier."
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["sms", "whatsapp", "messenger", "viber_service", "mms", "rcs"],
+      "description": "The messaging channel to use."
+    },
+    "text": {
+      "type": "string",
+      "description": "The text content of the message.",
+      "maxLength": 1600
+    },
+    "image": {
+      "type": "object",
+      "description": "Image content for image message type.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the image."
+        },
+        "caption": {
+          "type": "string",
+          "description": "Caption for the image."
+        }
+      },
+      "required": ["url"]
+    },
+    "audio": {
+      "type": "object",
+      "description": "Audio content for audio message type.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": ["url"]
+    },
+    "video": {
+      "type": "object",
+      "description": "Video content for video message type.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "caption": {
+          "type": "string"
+        }
+      },
+      "required": ["url"]
+    },
+    "file": {
+      "type": "object",
+      "description": "File content for file message type.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["url"]
+    },
+    "context": {
+      "type": "object",
+      "description": "Message context for replies.",
+      "properties": {
+        "message_uuid": {
+          "type": "string"
+        }
+      }
+    },
+    "client_ref": {
+      "type": "string",
+      "description": "Client reference for tracking.",
+      "maxLength": 100
+    },
+    "webhook_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Override webhook URL for this message."
+    }
+  },
+  "additionalProperties": false
+}

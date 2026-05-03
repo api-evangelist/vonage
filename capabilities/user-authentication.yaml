@@ -1,0 +1,172 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Vonage User Authentication"
+  description: >-
+    Phone-based authentication workflow combining Vonage Verify API and Numbers API.
+    Enables two-factor authentication, user onboarding verification, and phone number
+    provisioning. Used by identity teams, onboarding flows, and fraud prevention systems.
+  tags:
+    - Authentication
+    - Communication
+    - Identity
+    - Number Management
+    - Security
+    - Two-Factor Authentication
+    - Vonage
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VONAGE_API_KEY: VONAGE_API_KEY
+      VONAGE_API_SECRET: VONAGE_API_SECRET
+
+capability:
+  consumes:
+    - import: vonage-verify
+      location: ./shared/verify-api.yaml
+    - import: vonage-numbers
+      location: ./shared/numbers-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8082
+      namespace: vonage-auth-api
+      description: "Unified REST API for Vonage phone authentication and number management."
+      resources:
+        - path: /v1/verifications
+          name: verifications
+          description: "Manage phone verifications for 2FA."
+          operations:
+            - method: POST
+              name: request-verification
+              description: "Send a verification code to a phone number."
+              call: "vonage-verify.request-verification"
+              with:
+                number: "rest.number"
+                brand: "rest.brand"
+                code_length: "rest.code_length"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/verifications/check
+          name: verification-check
+          description: "Check a verification code."
+          operations:
+            - method: POST
+              name: check-verification
+              description: "Verify a PIN submitted by the user."
+              call: "vonage-verify.check-verification"
+              with:
+                request_id: "rest.request_id"
+                code: "rest.code"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/numbers
+          name: numbers
+          description: "Manage virtual phone numbers."
+          operations:
+            - method: GET
+              name: list-owned-numbers
+              description: "List owned virtual numbers."
+              call: "vonage-numbers.list-owned-numbers"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/numbers/available
+          name: available-numbers
+          description: "Search available numbers."
+          operations:
+            - method: GET
+              name: search-available-numbers
+              description: "Search for phone numbers available to purchase."
+              call: "vonage-numbers.search-available-numbers"
+              with:
+                country: "rest.country"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9092
+      namespace: vonage-auth-mcp
+      transport: http
+      description: "MCP server for AI-assisted phone verification and number management."
+      tools:
+        - name: request-verification
+          description: "Send a verification code to a phone number for 2FA."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-verify.request-verification"
+          with:
+            number: "tools.number"
+            brand: "tools.brand"
+            code_length: "tools.code_length"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: check-verification
+          description: "Verify a PIN code entered by the user to complete 2FA."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-verify.check-verification"
+          with:
+            request_id: "tools.request_id"
+            code: "tools.code"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: cancel-verification
+          description: "Cancel a pending verification request."
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "vonage-verify.control-verification"
+          with:
+            request_id: "tools.request_id"
+            cmd: "cancel"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-owned-numbers
+          description: "List all virtual phone numbers owned by the account."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "vonage-numbers.list-owned-numbers"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: search-available-numbers
+          description: "Search for available phone numbers to purchase in a country."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "vonage-numbers.search-available-numbers"
+          with:
+            country: "tools.country"
+            type: "tools.type"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: buy-number
+          description: "Purchase a virtual phone number for the account."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-numbers.buy-number"
+          with:
+            country: "tools.country"
+            msisdn: "tools.msisdn"
+          outputParameters:
+            - type: object
+              mapping: "$."

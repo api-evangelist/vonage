@@ -1,0 +1,25 @@
+{
+  "summary": "Request a phone number verification",
+  "description": "Example request and response for initiating a verification via the Vonage Verify API.",
+  "request": {
+    "method": "POST",
+    "url": "https://api.nexmo.com/verify/json",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": {
+      "api_key": "{{VONAGE_API_KEY}}",
+      "api_secret": "{{VONAGE_API_SECRET}}",
+      "number": "14155550100",
+      "brand": "MyApp",
+      "code_length": 6
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "request_id": "abcdef0123456789abcdef0123456789",
+      "status": "0"
+    }
+  }
+}

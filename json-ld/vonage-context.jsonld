@@ -1,0 +1,54 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vonage": "https://developer.vonage.com/api/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Message": "https://schema.org/Message",
+    "text": "https://schema.org/text",
+    "recipient": "https://schema.org/recipient",
+    "sender": "https://schema.org/sender",
+    "dateSent": "https://schema.org/dateSent",
+    "messageAttachmentObject": "https://schema.org/messageAttachmentObject",
+
+    "vonage:message_uuid": {"@type": "xsd:string"},
+    "vonage:message_type": {"@type": "xsd:string"},
+    "vonage:channel": {"@type": "xsd:string"},
+    "vonage:client_ref": {"@type": "xsd:string"},
+    "vonage:status": {"@type": "xsd:string"},
+
+    "Call": "https://schema.org/Thing",
+    "vonage:call_uuid": {"@type": "xsd:string"},
+    "vonage:call_status": {"@type": "xsd:string"},
+    "vonage:call_direction": {"@type": "xsd:string"},
+    "vonage:call_duration": {"@type": "xsd:decimal"},
+    "vonage:conversation_uuid": {"@type": "xsd:string"},
+
+    "Verification": "https://schema.org/Thing",
+    "vonage:request_id": {"@type": "xsd:string"},
+    "vonage:verify_status": {"@type": "xsd:string"},
+
+    "PhoneNumber": "https://schema.org/ContactPoint",
+    "telephone": "https://schema.org/telephone",
+    "vonage:msisdn": {"@type": "xsd:string"},
+    "vonage:country": {"@type": "xsd:string"},
+    "vonage:number_type": {"@type": "xsd:string"},
+    "vonage:features": {"@type": "@vocab"},
+
+    "Application": "https://schema.org/SoftwareApplication",
+    "vonage:app_id": {"@type": "xsd:string"},
+    "vonage:capabilities": {"@type": "@vocab"},
+
+    "Organization": "https://schema.org/Organization",
+    "vonage:api_key": {"@type": "xsd:string"}
+  },
+  "@graph": [
+    {
+      "@id": "https://developer.vonage.com/",
+      "@type": "Organization",
+      "name": "Vonage",
+      "description": "Cloud communications APIs provider (part of Ericsson)",
+      "url": "https://developer.vonage.com/"
+    }
+  ]
+}

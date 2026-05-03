@@ -1,0 +1,36 @@
+{
+  "title": "Vonage Message Structure",
+  "description": "JSON structure documentation for Vonage Messages API.",
+  "version": "1.0",
+  "structure": {
+    "message": {
+      "description": "A message sent through the Vonage Messages API.",
+      "fields": {
+        "message_uuid": {"type": "string", "format": "uuid", "description": "Unique message identifier returned after send."},
+        "message_type": {"type": "string", "enum": ["text", "image", "audio", "video", "file", "template", "custom"], "required": true},
+        "to": {"type": "string", "description": "Recipient number or ID.", "required": true},
+        "from": {"type": "string", "description": "Sender number or ID.", "required": true},
+        "channel": {"type": "string", "enum": ["sms", "whatsapp", "messenger", "viber_service", "mms", "rcs"], "required": true},
+        "text": {"type": "string", "description": "Message text. Required for text messages."},
+        "image": {"type": "object", "description": "Image payload with url and optional caption."},
+        "audio": {"type": "object", "description": "Audio payload with url."},
+        "video": {"type": "object", "description": "Video payload with url and optional caption."},
+        "file": {"type": "object", "description": "File payload with url, name, and optional caption."},
+        "client_ref": {"type": "string", "description": "Optional client reference for tracking (max 100 chars)."},
+        "webhook_url": {"type": "string", "format": "uri", "description": "Optional webhook override URL."}
+      }
+    },
+    "message_status": {
+      "description": "Webhook payload for message status updates.",
+      "fields": {
+        "message_uuid": {"type": "string"},
+        "to": {"type": "string"},
+        "from": {"type": "string"},
+        "channel": {"type": "string"},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "status": {"type": "string", "enum": ["submitted", "delivered", "read", "rejected", "undeliverable"]},
+        "error": {"type": "object", "description": "Error details if delivery failed."}
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Vonage Messages API"
+  description: "Multi-channel messaging API supporting SMS, WhatsApp, Messenger, Viber, MMS, and RCS."
+  tags:
+    - Communication
+    - Messaging
+    - Omnichannel
+    - WhatsApp
+    - RCS
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VONAGE_JWT_TOKEN: VONAGE_JWT_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: vonage-messages
+      baseUri: https://api.nexmo.com
+      description: "Vonage Messages API for multi-channel messaging."
+      authentication:
+        type: bearer
+        token: "{{VONAGE_JWT_TOKEN}}"
+      resources:
+        - name: messages
+          path: /v1/messages
+          description: "Send messages across channels."
+          operations:
+            - name: send-message
+              method: POST
+              description: "Send a message to a given channel."
+              inputParameters:
+                - name: message_type
+                  in: body
+                  type: string
+                  required: true
+                  description: "Message type (text, image, audio, video, file, template)."
+                - name: to
+                  in: body
+                  type: string
+                  required: true
+                  description: "Recipient phone number or ID."
+                - name: from
+                  in: body
+                  type: string
+                  required: true
+                  description: "Sender number or ID."
+                - name: channel
+                  in: body
+                  type: string
+                  required: true
+                  description: "Channel (sms, whatsapp, messenger, viber_service, mms, rcs)."
+                - name: text
+                  in: body
+                  type: string
+                  required: false
+                  description: "Message text for text messages."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: message
+          path: /v1/messages/{message_uuid}
+          description: "Update message status."
+          operations:
+            - name: update-message
+              method: PATCH
+              description: "Update the status of a message (e.g., mark as read)."
+              inputParameters:
+                - name: message_uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The message UUID."
+                - name: status
+                  in: body
+                  type: string
+                  required: true
+                  description: "New status (read)."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8102
+      namespace: vonage-messages-rest
+      resources:
+        - path: /v1/messages
+          name: messages
+          description: "Send multi-channel messages."
+          operations:
+            - method: POST
+              name: send-message
+              description: "Send a message via any supported channel."
+              call: "vonage-messages.send-message"
+              with:
+                message_type: "rest.message_type"
+                to: "rest.to"
+                from: "rest.from"
+                channel: "rest.channel"
+                text: "rest.text"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9102
+      namespace: vonage-messages-mcp
+      transport: http
+      tools:
+        - name: send-message
+          description: "Send a message via SMS, WhatsApp, Messenger, Viber, MMS, or RCS."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-messages.send-message"
+          with:
+            message_type: "tools.message_type"
+            to: "tools.to"
+            from: "tools.from"
+            channel: "tools.channel"
+            text: "tools.text"
+          outputParameters:
+            - type: object
+              mapping: "$."

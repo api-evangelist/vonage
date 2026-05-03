@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/vonage/json-schema/vonage-call-schema.json",
+  "title": "Vonage Call",
+  "description": "Schema for a Vonage Voice API call object.",
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "description": "Unique identifier for the call.",
+      "format": "uuid"
+    },
+    "conversation_uuid": {
+      "type": "string",
+      "description": "Unique identifier for the conversation."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["started", "ringing", "answered", "machine", "completed", "busy", "cancelled", "failed", "rejected", "timeout", "unanswered"],
+      "description": "Current status of the call."
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["outbound", "inbound"],
+      "description": "Direction of the call."
+    },
+    "rate": {
+      "type": "string",
+      "description": "Price per minute for the call."
+    },
+    "price": {
+      "type": "string",
+      "description": "Total price of the call."
+    },
+    "duration": {
+      "type": "string",
+      "description": "Duration of the call in seconds."
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the call started."
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the call ended."
+    },
+    "network": {
+      "type": "string",
+      "description": "Mobile Country Code and Mobile Network Code of the carrier."
+    },
+    "from": {
+      "type": "object",
+      "description": "Caller endpoint details.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["phone", "sip", "websocket", "vbc"]
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "to": {
+      "type": "object",
+      "description": "Callee endpoint details.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["phone", "sip", "websocket", "vbc"]
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

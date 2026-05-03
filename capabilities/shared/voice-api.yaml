@@ -1,0 +1,313 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Vonage Voice API"
+  description: "Create and control voice calls programmatically using Vonage's Voice API."
+  tags:
+    - Communication
+    - Telecommunications
+    - Voice
+    - VoIP
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VONAGE_JWT_TOKEN: VONAGE_JWT_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: vonage-voice
+      baseUri: https://api.nexmo.com
+      description: "Vonage Voice API for creating and controlling calls."
+      authentication:
+        type: bearer
+        token: "{{VONAGE_JWT_TOKEN}}"
+      resources:
+        - name: calls
+          path: /v1/calls
+          description: "Manage voice calls."
+          operations:
+            - name: list-calls
+              method: GET
+              description: "List all calls for your Vonage account."
+              inputParameters:
+                - name: status
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by call status."
+                - name: page_size
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Number of results per page."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-call
+              method: POST
+              description: "Create an outbound voice call."
+              inputParameters:
+                - name: to
+                  in: body
+                  type: array
+                  required: true
+                  description: "Array of call endpoints to call."
+                - name: from
+                  in: body
+                  type: object
+                  required: true
+                  description: "Caller endpoint."
+                - name: ncco
+                  in: body
+                  type: array
+                  required: false
+                  description: "NCCO call control object."
+                - name: answer_url
+                  in: body
+                  type: array
+                  required: false
+                  description: "Answer webhook URL."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: call
+          path: /v1/calls/{uuid}
+          description: "Manage a specific call."
+          operations:
+            - name: get-call
+              method: GET
+              description: "Get details of a specific call."
+              inputParameters:
+                - name: uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The call UUID."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: update-call
+              method: PUT
+              description: "Modify an in-progress call (hangup, mute, transfer)."
+              inputParameters:
+                - name: uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The call UUID."
+                - name: action
+                  in: body
+                  type: string
+                  required: true
+                  description: "Action to take: hangup, mute, unmute, transfer."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: call-stream
+          path: /v1/calls/{uuid}/stream
+          description: "Stream audio into a call."
+          operations:
+            - name: play-audio
+              method: PUT
+              description: "Play an audio file into a call."
+              inputParameters:
+                - name: uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The call UUID."
+                - name: stream_url
+                  in: body
+                  type: array
+                  required: true
+                  description: "URLs to stream audio from."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: stop-audio
+              method: DELETE
+              description: "Stop playing audio in a call."
+              inputParameters:
+                - name: uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The call UUID."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: call-talk
+          path: /v1/calls/{uuid}/talk
+          description: "Text-to-speech in a call."
+          operations:
+            - name: play-tts
+              method: PUT
+              description: "Play text-to-speech in a call."
+              inputParameters:
+                - name: uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The call UUID."
+                - name: text
+                  in: body
+                  type: string
+                  required: true
+                  description: "Text to be read to the callee."
+                - name: voice_name
+                  in: body
+                  type: string
+                  required: false
+                  description: "The voice name for TTS."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: stop-tts
+              method: DELETE
+              description: "Stop text-to-speech in a call."
+              inputParameters:
+                - name: uuid
+                  in: path
+                  type: string
+                  required: true
+                  description: "The call UUID."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8101
+      namespace: vonage-voice-rest
+      resources:
+        - path: /v1/calls
+          name: calls
+          description: "List and create voice calls."
+          operations:
+            - method: GET
+              name: list-calls
+              description: "List voice calls."
+              call: "vonage-voice.list-calls"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-call
+              description: "Create an outbound call."
+              call: "vonage-voice.create-call"
+              with:
+                to: "rest.to"
+                from: "rest.from"
+                ncco: "rest.ncco"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/calls/{uuid}
+          name: call
+          description: "Get or modify a specific call."
+          operations:
+            - method: GET
+              name: get-call
+              description: "Get call details."
+              call: "vonage-voice.get-call"
+              with:
+                uuid: "rest.uuid"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: PUT
+              name: update-call
+              description: "Modify a call."
+              call: "vonage-voice.update-call"
+              with:
+                uuid: "rest.uuid"
+                action: "rest.action"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9101
+      namespace: vonage-voice-mcp
+      transport: http
+      tools:
+        - name: list-calls
+          description: "List voice calls with optional status filter."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "vonage-voice.list-calls"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-call
+          description: "Create an outbound voice call to a phone number."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-voice.create-call"
+          with:
+            to: "tools.to"
+            from: "tools.from"
+            ncco: "tools.ncco"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-call
+          description: "Get details of a specific call by UUID."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "vonage-voice.get-call"
+          with:
+            uuid: "tools.uuid"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: update-call
+          description: "Modify an in-progress call (hangup, mute, transfer)."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: true
+          call: "vonage-voice.update-call"
+          with:
+            uuid: "tools.uuid"
+            action: "tools.action"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: play-tts
+          description: "Play text-to-speech audio in an active call."
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "vonage-voice.play-tts"
+          with:
+            uuid: "tools.uuid"
+            text: "tools.text"
+          outputParameters:
+            - type: object
+              mapping: "$."

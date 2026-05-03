@@ -1,0 +1,34 @@
+{
+  "summary": "Send an SMS message",
+  "description": "Example request and response for sending an SMS via the Vonage SMS API.",
+  "request": {
+    "method": "POST",
+    "url": "https://rest.nexmo.com/sms/json",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": {
+      "api_key": "{{VONAGE_API_KEY}}",
+      "api_secret": "{{VONAGE_API_SECRET}}",
+      "to": "14155550100",
+      "from": "Vonage APIs",
+      "text": "Hello from Vonage SMS API!"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message-count": "1",
+      "messages": [
+        {
+          "to": "14155550100",
+          "message-id": "0C000000F00ABD35",
+          "status": "0",
+          "remaining-balance": "3.14159265",
+          "message-price": "0.03330000",
+          "network": "12345"
+        }
+      ]
+    }
+  }
+}
