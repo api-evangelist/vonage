@@ -1,0 +1,96 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Vonage
+providerId: vonage
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Communications
+  - SMS
+  - Voice
+  - Verify
+description: 'Vonage Communications API pay-as-you-go: per-message SMS, per-minute Voice. US rates.'
+sources:
+  - https://www.vonage.com/communications-apis/pricing/
+plans:
+  - id: vonage-payg
+    name: Pay As You Go
+    type: usage-based
+    description: No platform/monthly fee; per-message and per-minute rates.
+    entries:
+      - label: SMS outbound (US)
+        name: sms_out
+        type: metered
+        metric: message
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.00809'
+        userMultiplied: false
+      - label: SMS inbound (US)
+        name: sms_in
+        type: metered
+        metric: message
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.00649'
+        userMultiplied: false
+      - label: Voice outbound (US local)
+        name: voice_out
+        type: metered
+        metric: minute
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.00798'
+        userMultiplied: false
+      - label: Voice inbound (US)
+        name: voice_in
+        type: metered
+        metric: minute
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0085'
+        userMultiplied: false
+      - label: Verify (per check)
+        name: verify
+        type: metered
+        metric: check
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: varies by channel/country
+        userMultiplied: false
+    elements:
+      - name: No platform fee
+      - name: Per-message/minute pricing
+      - name: Carrier surcharges apply
+      - name: Add-ons may push real cost 50-100% above base
+  - id: vonage-committed
+    name: Committed Use
+    type: enterprise
+    description: Volume contracts with negotiated discounts.
+    entries:
+      - label: Annual (custom)
+        name: annual
+        type: subscription
+        metric: year
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: custom
+        userMultiplied: false
+    elements:
+      - name: Volume discounts
+      - name: Dedicated support
+      - name: SLA enhancements
