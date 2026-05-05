@@ -1,0 +1,13 @@
+{
+  "repo": "vonage",
+  "feeds": [
+    {
+      "source": "https://developer.vonage.com/en/blog",
+      "feed_url": "https://developer.vonage.com/rss.xml",
+      "saved": 10,
+      "title": "Vonage Developer Blog"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:38:33Z"
+}
