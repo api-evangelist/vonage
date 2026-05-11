@@ -279,6 +279,10 @@ common:
     sources:
       - https://www.vonage.com/communications-apis/pricing/
     updated: '2026-05-04'
+  - type: Integrations
+    url: https://developer.vonage.com/en/integrations
+integrations:
+  - name: Vonage
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
