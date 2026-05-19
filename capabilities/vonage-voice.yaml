@@ -1,0 +1,390 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Vonage Communications API — Voice
+  description: 'Vonage Communications API — Voice. 8 operations. Lead operation: List Calls. Self-contained Naftiko capability
+    covering one Vonage business surface.'
+  tags:
+  - Vonage
+  - Voice
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    VONAGE_API_KEY: VONAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: vonage-voice
+    baseUri: https://api.nexmo.com
+    description: Vonage Communications API — Voice business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-calls
+      path: /v1/calls
+      operations:
+      - name: listcalls
+        method: GET
+        description: List Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter by call status.
+        - name: date_start
+          in: query
+          type: string
+          description: Return calls created after this date.
+        - name: date_end
+          in: query
+          type: string
+          description: Return calls created before this date.
+        - name: page_size
+          in: query
+          type: integer
+          description: Number of results per page.
+        - name: record_index
+          in: query
+          type: integer
+          description: Start index for pagination.
+      - name: createcall
+        method: POST
+        description: Create an Outbound Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-calls-uuid
+      path: /v1/calls/{uuid}
+      operations:
+      - name: getcall
+        method: GET
+        description: Get Call Details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uuid
+          in: path
+          type: string
+          description: The unique identifier for the call.
+          required: true
+      - name: updatecall
+        method: PUT
+        description: Modify an In-Progress Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uuid
+          in: path
+          type: string
+          description: The unique identifier for the call.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-calls-uuid-stream
+      path: /v1/calls/{uuid}/stream
+      operations:
+      - name: playaudiostream
+        method: PUT
+        description: Play Audio Into a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uuid
+          in: path
+          type: string
+          description: The unique identifier for the call.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: stopaudiostream
+        method: DELETE
+        description: Stop Audio Stream in a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uuid
+          in: path
+          type: string
+          description: The unique identifier for the call.
+          required: true
+    - name: v1-calls-uuid-talk
+      path: /v1/calls/{uuid}/talk
+      operations:
+      - name: playtexttospeech
+        method: PUT
+        description: Play Text-to-Speech in a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uuid
+          in: path
+          type: string
+          description: The unique identifier for the call.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: stoptexttospeech
+        method: DELETE
+        description: Stop Text-to-Speech in a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uuid
+          in: path
+          type: string
+          description: The unique identifier for the call.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.VONAGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: vonage-voice-rest
+    port: 8080
+    description: REST adapter for Vonage Communications API — Voice. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/calls
+      name: v1-calls
+      description: REST surface for v1-calls.
+      operations:
+      - method: GET
+        name: listcalls
+        description: List Calls
+        call: vonage-voice.listcalls
+        with:
+          status: rest.status
+          date_start: rest.date_start
+          date_end: rest.date_end
+          page_size: rest.page_size
+          record_index: rest.record_index
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcall
+        description: Create an Outbound Call
+        call: vonage-voice.createcall
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/calls/{uuid}
+      name: v1-calls-uuid
+      description: REST surface for v1-calls-uuid.
+      operations:
+      - method: GET
+        name: getcall
+        description: Get Call Details
+        call: vonage-voice.getcall
+        with:
+          uuid: rest.uuid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatecall
+        description: Modify an In-Progress Call
+        call: vonage-voice.updatecall
+        with:
+          uuid: rest.uuid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/calls/{uuid}/stream
+      name: v1-calls-uuid-stream
+      description: REST surface for v1-calls-uuid-stream.
+      operations:
+      - method: PUT
+        name: playaudiostream
+        description: Play Audio Into a Call
+        call: vonage-voice.playaudiostream
+        with:
+          uuid: rest.uuid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: stopaudiostream
+        description: Stop Audio Stream in a Call
+        call: vonage-voice.stopaudiostream
+        with:
+          uuid: rest.uuid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/calls/{uuid}/talk
+      name: v1-calls-uuid-talk
+      description: REST surface for v1-calls-uuid-talk.
+      operations:
+      - method: PUT
+        name: playtexttospeech
+        description: Play Text-to-Speech in a Call
+        call: vonage-voice.playtexttospeech
+        with:
+          uuid: rest.uuid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: stoptexttospeech
+        description: Stop Text-to-Speech in a Call
+        call: vonage-voice.stoptexttospeech
+        with:
+          uuid: rest.uuid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: vonage-voice-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Vonage Communications API — Voice. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-calls
+      description: List Calls
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: vonage-voice.listcalls
+      with:
+        status: tools.status
+        date_start: tools.date_start
+        date_end: tools.date_end
+        page_size: tools.page_size
+        record_index: tools.record_index
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-outbound-call
+      description: Create an Outbound Call
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: vonage-voice.createcall
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-call-details
+      description: Get Call Details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: vonage-voice.getcall
+      with:
+        uuid: tools.uuid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: modify-progress-call
+      description: Modify an In-Progress Call
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: vonage-voice.updatecall
+      with:
+        uuid: tools.uuid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: play-audio-call
+      description: Play Audio Into a Call
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: vonage-voice.playaudiostream
+      with:
+        uuid: tools.uuid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: stop-audio-stream-call
+      description: Stop Audio Stream in a Call
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: vonage-voice.stopaudiostream
+      with:
+        uuid: tools.uuid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: play-text-speech-call
+      description: Play Text-to-Speech in a Call
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: vonage-voice.playtexttospeech
+      with:
+        uuid: tools.uuid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: stop-text-speech-call
+      description: Stop Text-to-Speech in a Call
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: vonage-voice.stoptexttospeech
+      with:
+        uuid: tools.uuid
+      outputParameters:
+      - type: object
+        mapping: $.

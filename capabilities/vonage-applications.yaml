@@ -1,0 +1,237 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Vonage Communications API — Applications
+  description: 'Vonage Communications API — Applications. 5 operations. Lead operation: List Applications. Self-contained
+    Naftiko capability covering one Vonage business surface.'
+  tags:
+  - Vonage
+  - Applications
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    VONAGE_API_KEY: VONAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: vonage-applications
+    baseUri: https://api.nexmo.com
+    description: Vonage Communications API — Applications business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-applications
+      path: /v2/applications
+      operations:
+      - name: listapplications
+        method: GET
+        description: List Applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page_size
+          in: query
+          type: integer
+          description: Number of applications per page.
+        - name: page
+          in: query
+          type: integer
+          description: Page number.
+      - name: createapplication
+        method: POST
+        description: Create an Application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-applications-id
+      path: /v2/applications/{id}
+      operations:
+      - name: getapplication
+        method: GET
+        description: Get an Application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The application ID.
+          required: true
+      - name: updateapplication
+        method: PUT
+        description: Update an Application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteapplication
+        method: DELETE
+        description: Delete an Application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.VONAGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: vonage-applications-rest
+    port: 8080
+    description: REST adapter for Vonage Communications API — Applications. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/applications
+      name: v2-applications
+      description: REST surface for v2-applications.
+      operations:
+      - method: GET
+        name: listapplications
+        description: List Applications
+        call: vonage-applications.listapplications
+        with:
+          page_size: rest.page_size
+          page: rest.page
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createapplication
+        description: Create an Application
+        call: vonage-applications.createapplication
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/applications/{id}
+      name: v2-applications-id
+      description: REST surface for v2-applications-id.
+      operations:
+      - method: GET
+        name: getapplication
+        description: Get an Application
+        call: vonage-applications.getapplication
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateapplication
+        description: Update an Application
+        call: vonage-applications.updateapplication
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapplication
+        description: Delete an Application
+        call: vonage-applications.deleteapplication
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: vonage-applications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Vonage Communications API — Applications. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: list-applications
+      description: List Applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: vonage-applications.listapplications
+      with:
+        page_size: tools.page_size
+        page: tools.page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-application
+      description: Create an Application
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: vonage-applications.createapplication
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-application
+      description: Get an Application
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: vonage-applications.getapplication
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-application
+      description: Update an Application
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: vonage-applications.updateapplication
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-application
+      description: Delete an Application
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: vonage-applications.deleteapplication
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

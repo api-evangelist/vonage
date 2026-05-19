@@ -1,0 +1,242 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Vonage Communications API — Verify
+  description: 'Vonage Communications API — Verify. 4 operations. Lead operation: Check a Verification Code. Self-contained
+    Naftiko capability covering one Vonage business surface.'
+  tags:
+  - Vonage
+  - Verify
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    VONAGE_API_KEY: VONAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: vonage-verify
+    baseUri: https://api.nexmo.com
+    description: Vonage Communications API — Verify business capability. Self-contained, no shared references.
+    resources:
+    - name: verify-check-format
+      path: /verify/check/{format}
+      operations:
+      - name: checkverification
+        method: POST
+        description: Check a Verification Code
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: format
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: verify-control-format
+      path: /verify/control/{format}
+      operations:
+      - name: controlverification
+        method: POST
+        description: Control a Verification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: format
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: verify-search-format
+      path: /verify/search/{format}
+      operations:
+      - name: searchverification
+        method: GET
+        description: Search Verifications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: format
+          in: path
+          type: string
+          required: true
+        - name: api_key
+          in: query
+          type: string
+          required: true
+        - name: api_secret
+          in: query
+          type: string
+          required: true
+        - name: request_id
+          in: query
+          type: string
+          description: The request ID to search for.
+    - name: verify-format
+      path: /verify/{format}
+      operations:
+      - name: requestverification
+        method: POST
+        description: Request a Verification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: format
+          in: path
+          type: string
+          description: Response format.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.VONAGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: vonage-verify-rest
+    port: 8080
+    description: REST adapter for Vonage Communications API — Verify. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/verify/check/{format}
+      name: verify-check-format
+      description: REST surface for verify-check-format.
+      operations:
+      - method: POST
+        name: checkverification
+        description: Check a Verification Code
+        call: vonage-verify.checkverification
+        with:
+          format: rest.format
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/verify/control/{format}
+      name: verify-control-format
+      description: REST surface for verify-control-format.
+      operations:
+      - method: POST
+        name: controlverification
+        description: Control a Verification
+        call: vonage-verify.controlverification
+        with:
+          format: rest.format
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/verify/search/{format}
+      name: verify-search-format
+      description: REST surface for verify-search-format.
+      operations:
+      - method: GET
+        name: searchverification
+        description: Search Verifications
+        call: vonage-verify.searchverification
+        with:
+          format: rest.format
+          api_key: rest.api_key
+          api_secret: rest.api_secret
+          request_id: rest.request_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/verify/{format}
+      name: verify-format
+      description: REST surface for verify-format.
+      operations:
+      - method: POST
+        name: requestverification
+        description: Request a Verification
+        call: vonage-verify.requestverification
+        with:
+          format: rest.format
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: vonage-verify-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Vonage Communications API — Verify. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: check-verification-code
+      description: Check a Verification Code
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: vonage-verify.checkverification
+      with:
+        format: tools.format
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: control-verification
+      description: Control a Verification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: vonage-verify.controlverification
+      with:
+        format: tools.format
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-verifications
+      description: Search Verifications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: vonage-verify.searchverification
+      with:
+        format: tools.format
+        api_key: tools.api_key
+        api_secret: tools.api_secret
+        request_id: tools.request_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: request-verification
+      description: Request a Verification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: vonage-verify.requestverification
+      with:
+        format: tools.format
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

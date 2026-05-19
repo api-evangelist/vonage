@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Vonage Communications API — SMS
+  description: 'Vonage Communications API — SMS. 1 operations. Lead operation: Send an SMS Message. Self-contained Naftiko
+    capability covering one Vonage business surface.'
+  tags:
+  - Vonage
+  - SMS
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    VONAGE_API_KEY: VONAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: vonage-sms
+    baseUri: https://api.nexmo.com
+    description: Vonage Communications API — SMS business capability. Self-contained, no shared references.
+    resources:
+    - name: sms-json
+      path: /sms/json
+      operations:
+      - name: sendsms
+        method: POST
+        description: Send an SMS Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.VONAGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: vonage-sms-rest
+    port: 8080
+    description: REST adapter for Vonage Communications API — SMS. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/sms/json
+      name: sms-json
+      description: REST surface for sms-json.
+      operations:
+      - method: POST
+        name: sendsms
+        description: Send an SMS Message
+        call: vonage-sms.sendsms
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: vonage-sms-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Vonage Communications API — SMS. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: send-sms-message
+      description: Send an SMS Message
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: vonage-sms.sendsms
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
