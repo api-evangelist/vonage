@@ -10,8 +10,7 @@ apis:
       - Telecommunications
     humanURL: https://developer.vonage.com/en/api/sms
     baseURL: https://rest.nexmo.com
-    description: Send and receive SMS messages globally using Vonage's SMS API. Supports text, binary,
-      and unicode message types with delivery receipts and inbound message webhooks.
+    description: Send and receive SMS messages globally using Vonage's SMS API. Supports text, binary, and unicode message types with delivery receipts and inbound message webhooks.
     properties:
       - url: https://developer.vonage.com/en/api/sms
         type: Documentation
@@ -28,8 +27,7 @@ apis:
       - VoIP
     humanURL: https://developer.vonage.com/en/api/voice
     baseURL: https://api.nexmo.com/v1
-    description: Create and control outbound and inbound voice calls using Vonage's Voice API. Supports
-      PSTN, SIP, WebSocket, and VBC endpoints with NCCO (Vonage Call Control Object) for call flow management.
+    description: Create and control outbound and inbound voice calls using Vonage's Voice API. Supports PSTN, SIP, WebSocket, and VBC endpoints with NCCO (Vonage Call Control Object) for call flow management.
     properties:
       - url: https://developer.vonage.com/en/api/voice
         type: Documentation
@@ -47,8 +45,7 @@ apis:
       - RCS
     humanURL: https://developer.vonage.com/en/api/messages-olympus
     baseURL: https://api.nexmo.com/v1/messages
-    description: Multi-channel messaging API supporting SMS, WhatsApp, Facebook Messenger, Viber, MMS,
-      and RCS. Send and receive messages across multiple channels with a unified API interface.
+    description: Multi-channel messaging API supporting SMS, WhatsApp, Facebook Messenger, Viber, MMS, and RCS. Send and receive messages across multiple channels with a unified API interface.
     properties:
       - url: https://developer.vonage.com/en/api/messages-olympus
         type: Documentation
@@ -66,8 +63,7 @@ apis:
       - Verification
     humanURL: https://developer.vonage.com/en/api/verify
     baseURL: https://api.nexmo.com
-    description: Two-factor authentication and phone verification API. Confirm user phone numbers via
-      SMS, TTS, or WhatsApp verification codes to prevent fraud and authenticate users.
+    description: Two-factor authentication and phone verification API. Confirm user phone numbers via SMS, TTS, or WhatsApp verification codes to prevent fraud and authenticate users.
     properties:
       - url: https://developer.vonage.com/en/api/verify
         type: Documentation
@@ -84,8 +80,7 @@ apis:
       - Virtual Numbers
     humanURL: https://developer.vonage.com/en/api/numbers
     baseURL: https://rest.nexmo.com
-    description: Provision and manage virtual phone numbers globally. Search available numbers, purchase
-      numbers for your account, and configure number behavior including inbound SMS and voice call routing.
+    description: Provision and manage virtual phone numbers globally. Search available numbers, purchase numbers for your account, and configure number behavior including inbound SMS and voice call routing.
     properties:
       - url: https://developer.vonage.com/en/api/numbers
         type: Documentation
@@ -102,9 +97,7 @@ apis:
       - Developer Tools
     humanURL: https://developer.vonage.com/en/api/application.v2
     baseURL: https://api.nexmo.com/v2/applications
-    description: Configure Vonage application settings, webhook URLs, and authentication keys. Create
-      and manage applications that group Vonage API capabilities including voice, messages, RTC, meetings,
-      and video features.
+    description: Configure Vonage application settings, webhook URLs, and authentication keys. Create and manage applications that group Vonage API capabilities including voice, messages, RTC, meetings, and video features.
     properties:
       - url: https://developer.vonage.com/en/api/application.v2
         type: Documentation
@@ -121,8 +114,7 @@ apis:
       - Real-Time
     humanURL: https://developer.vonage.com/en/api/conversation
     baseURL: https://api.nexmo.com/v1
-    description: Build multi-channel conversation experiences with threading across SMS, voice, and messaging
-      channels. Manage members, events, and legs within conversation contexts.
+    description: Build multi-channel conversation experiences with threading across SMS, voice, and messaging channels. Manage members, events, and legs within conversation contexts.
     properties:
       - url: https://developer.vonage.com/en/api/conversation
         type: Documentation
@@ -136,8 +128,7 @@ apis:
       - Reporting
     humanURL: https://developer.vonage.com/en/reports/overview
     baseURL: https://api.nexmo.com/v2/reports
-    description: Generate historical reports and lookup messages sent through your Vonage account. Access
-      delivery receipts, call records, and usage data.
+    description: Generate historical reports and lookup messages sent through your Vonage account. Access delivery receipts, call records, and usage data.
     properties:
       - url: https://developer.vonage.com/en/reports/overview
         type: Documentation
@@ -152,8 +143,7 @@ apis:
       - WebRTC
     humanURL: https://developer.vonage.com/en/video/overview
     baseURL: https://api.opentok.com
-    description: Embed live, interactive video into web, mobile, and desktop applications using WebRTC.
-      Supports sessions, tokens, broadcasting, recording, and SIP interconnect.
+    description: Embed live, interactive video into web, mobile, and desktop applications using WebRTC. Supports sessions, tokens, broadcasting, recording, and SIP interconnect.
     properties:
       - url: https://developer.vonage.com/en/video/overview
         type: Documentation
@@ -174,13 +164,9 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2025-02-08'
-modified: '2026-05-04'
+modified: '2026-05-19'
 position: Consumer
-description: Vonage (part of Ericsson) provides cloud communications APIs for voice, SMS, messaging, video,
-  and verification. The Vonage API platform enables businesses to embed communication capabilities into
-  applications including voice calls, SMS, multi-channel messaging (WhatsApp, Messenger, Viber, RCS),
-  video conferencing, and two-factor authentication. SDKs are available for Node.js, Python, Java, PHP,
-  Ruby, .NET, Go, and Kotlin.
+description: Vonage (part of Ericsson) provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to embed communication capabilities into applications including voice calls, SMS, multi-channel messaging (WhatsApp, Messenger, Viber, RCS), video conferencing, and two-factor authentication. SDKs are available for Node.js, Python, Java, PHP, Ruby, .NET, Go, and Kotlin.
 common:
   - url: https://developer.vonage.com/
     name: Vonage API Developer Portal
@@ -281,6 +267,9 @@ common:
     updated: '2026-05-04'
   - type: Integrations
     url: https://developer.vonage.com/en/integrations
+  - name: MCP Server
+    url: https://github.com/Vonage/vonage-mcp-server-documentation
+    type: MCPServer
 integrations:
   - name: Vonage
 maintainers:
