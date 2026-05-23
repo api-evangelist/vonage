@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CallList",
+  "title": "CallList",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "page_size": {
+      "type": "integer"
+    },
+    "record_index": {
+      "type": "integer"
+    },
+    "_embedded": {
+      "type": "object",
+      "properties": {
+        "calls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Call"
+          }
+        }
+      }
+    }
+  }
+}

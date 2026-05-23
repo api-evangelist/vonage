@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MessageRequest",
+  "title": "MessageRequest",
+  "type": "object",
+  "required": [
+    "message_type",
+    "to",
+    "from",
+    "channel"
+  ],
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "image",
+        "audio",
+        "video",
+        "file",
+        "template",
+        "custom"
+      ]
+    },
+    "to": {
+      "type": "string",
+      "description": "Recipient phone number or ID."
+    },
+    "from": {
+      "type": "string",
+      "description": "Sender number or ID."
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "sms",
+        "whatsapp",
+        "messenger",
+        "viber_service",
+        "mms",
+        "rcs"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "description": "Message text (for text messages)."
+    },
+    "image": {
+      "type": "object",
+      "description": "Image content (for image messages).",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

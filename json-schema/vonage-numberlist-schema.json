@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/NumberList",
+  "title": "NumberList",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "numbers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Number"
+      }
+    }
+  }
+}

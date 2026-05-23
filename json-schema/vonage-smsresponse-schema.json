@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SmsResponse",
+  "title": "SmsResponse",
+  "type": "object",
+  "properties": {
+    "message-count": {
+      "type": "string",
+      "description": "Number of message parts sent."
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string"
+          },
+          "message-id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "remaining-balance": {
+            "type": "string"
+          },
+          "message-price": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

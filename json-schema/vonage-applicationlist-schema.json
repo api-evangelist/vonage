@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ApplicationList",
+  "title": "ApplicationList",
+  "type": "object",
+  "properties": {
+    "page_size": {
+      "type": "integer"
+    },
+    "page": {
+      "type": "integer"
+    },
+    "total_items": {
+      "type": "integer"
+    },
+    "total_pages": {
+      "type": "integer"
+    },
+    "_embedded": {
+      "type": "object",
+      "properties": {
+        "applications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Application"
+          }
+        }
+      }
+    }
+  }
+}

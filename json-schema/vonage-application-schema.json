@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Application",
+  "title": "Application",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "voice": {
+          "type": "object"
+        },
+        "messages": {
+          "type": "object"
+        },
+        "rtc": {
+          "type": "object"
+        },
+        "vbc": {
+          "type": "object"
+        }
+      }
+    },
+    "keys": {
+      "type": "object",
+      "properties": {
+        "public_key": {
+          "type": "string"
+        },
+        "private_key": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

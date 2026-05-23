@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/VerifyResponse",
+  "title": "VerifyResponse",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "Unique identifier for the verification request."
+    },
+    "status": {
+      "type": "string",
+      "description": "Status code (0 = success)."
+    },
+    "error_text": {
+      "type": "string"
+    }
+  }
+}

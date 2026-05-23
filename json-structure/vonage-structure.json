@@ -1,0 +1,338 @@
+{
+  "provider": "Vonage",
+  "providerId": "vonage",
+  "kind": "json-structure",
+  "description": "Structural overview of the Vonage API surface; extracted from openapi/.",
+  "schemaCount": 15,
+  "operationCount": 25,
+  "schemas": [
+    {
+      "name": "SmsResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Call",
+      "type": "object",
+      "propertyCount": 12,
+      "required": []
+    },
+    {
+      "name": "CallList",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "CreateCallRequest",
+      "type": "object",
+      "propertyCount": 6,
+      "required": [
+        "to",
+        "from",
+        "ncco"
+      ]
+    },
+    {
+      "name": "MessageRequest",
+      "type": "object",
+      "propertyCount": 6,
+      "required": [
+        "message_type",
+        "to",
+        "from",
+        "channel"
+      ]
+    },
+    {
+      "name": "MessageResponse",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "VerifyResponse",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "VerifyCheckResponse",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "VerifySearchResponse",
+      "type": "object",
+      "propertyCount": 12,
+      "required": []
+    },
+    {
+      "name": "NumberList",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "AvailableNumberList",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Number",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Application",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "ApplicationList",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "ApplicationRequest",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "name"
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/sms/json",
+      "operationId": "sendSms",
+      "summary": "Send an SMS Message",
+      "tags": [
+        "SMS"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/calls",
+      "operationId": "listCalls",
+      "summary": "List Calls",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls",
+      "operationId": "createCall",
+      "summary": "Create an Outbound Call",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/calls/{uuid}",
+      "operationId": "getCall",
+      "summary": "Get Call Details",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/calls/{uuid}",
+      "operationId": "updateCall",
+      "summary": "Modify an In-Progress Call",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/calls/{uuid}/stream",
+      "operationId": "playAudioStream",
+      "summary": "Play Audio Into a Call",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/calls/{uuid}/stream",
+      "operationId": "stopAudioStream",
+      "summary": "Stop Audio Stream in a Call",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/calls/{uuid}/talk",
+      "operationId": "playTextToSpeech",
+      "summary": "Play Text-to-Speech in a Call",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/calls/{uuid}/talk",
+      "operationId": "stopTextToSpeech",
+      "summary": "Stop Text-to-Speech in a Call",
+      "tags": [
+        "Voice"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages",
+      "operationId": "sendMessage",
+      "summary": "Send a Message",
+      "tags": [
+        "Messages"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/messages/{message_uuid}",
+      "operationId": "updateMessage",
+      "summary": "Update a Message",
+      "tags": [
+        "Messages"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/verify/{format}",
+      "operationId": "requestVerification",
+      "summary": "Request a Verification",
+      "tags": [
+        "Verify"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/verify/check/{format}",
+      "operationId": "checkVerification",
+      "summary": "Check a Verification Code",
+      "tags": [
+        "Verify"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/verify/search/{format}",
+      "operationId": "searchVerification",
+      "summary": "Search Verifications",
+      "tags": [
+        "Verify"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/verify/control/{format}",
+      "operationId": "controlVerification",
+      "summary": "Control a Verification",
+      "tags": [
+        "Verify"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/account/numbers",
+      "operationId": "listOwnedNumbers",
+      "summary": "List Owned Numbers",
+      "tags": [
+        "Numbers"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/number/search",
+      "operationId": "searchAvailableNumbers",
+      "summary": "Search Available Numbers",
+      "tags": [
+        "Numbers"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/number/buy",
+      "operationId": "buyNumber",
+      "summary": "Buy a Number",
+      "tags": [
+        "Numbers"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/number/cancel",
+      "operationId": "cancelNumber",
+      "summary": "Cancel a Number",
+      "tags": [
+        "Numbers"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/number/update",
+      "operationId": "updateNumber",
+      "summary": "Update a Number",
+      "tags": [
+        "Numbers"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v2/applications",
+      "operationId": "listApplications",
+      "summary": "List Applications",
+      "tags": [
+        "Applications"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/applications",
+      "operationId": "createApplication",
+      "summary": "Create an Application",
+      "tags": [
+        "Applications"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v2/applications/{id}",
+      "operationId": "getApplication",
+      "summary": "Get an Application",
+      "tags": [
+        "Applications"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/applications/{id}",
+      "operationId": "updateApplication",
+      "summary": "Update an Application",
+      "tags": [
+        "Applications"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/applications/{id}",
+      "operationId": "deleteApplication",
+      "summary": "Delete an Application",
+      "tags": [
+        "Applications"
+      ]
+    }
+  ]
+}

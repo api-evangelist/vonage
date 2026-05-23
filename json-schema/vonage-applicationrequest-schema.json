@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ApplicationRequest",
+  "title": "ApplicationRequest",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Application name."
+    },
+    "capabilities": {
+      "type": "object",
+      "description": "Vonage capabilities for this application.",
+      "properties": {
+        "voice": {
+          "type": "object",
+          "properties": {
+            "webhooks": {
+              "type": "object",
+              "properties": {
+                "answer_url": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "http_method": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "event_url": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "http_method": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "messages": {
+          "type": "object",
+          "properties": {
+            "webhooks": {
+              "type": "object",
+              "properties": {
+                "inbound_url": {
+                  "type": "object"
+                },
+                "status_url": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
