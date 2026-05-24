@@ -296,6 +296,8 @@ common:
   - name: MCP Server
     url: https://github.com/Vonage/vonage-mcp-server-documentation
     type: MCPServer
+  - type: LLMsTxt
+    url: https://developer.vonage.com/llms.txt
 integrations:
   - name: Vonage
 maintainers:
