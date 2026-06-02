@@ -2,12 +2,20 @@
   "repo": "vonage",
   "feeds": [
     {
-      "source": "https://developer.vonage.com/en/blog",
+      "source": "https://developer.vonage.com/rss.xml",
       "feed_url": "https://developer.vonage.com/rss.xml",
-      "title": "Vonage Developer Blog",
-      "saved": 10
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://developer.vonage.com/en/blog",
+      "feed_url": "https://developer.vonage.com/en/blog",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "post_count": 22,
-  "fetched": "2026-05-17T20:20:35Z"
+  "post_count": 27,
+  "fetched": "2026-06-01T23:35:02Z"
 }

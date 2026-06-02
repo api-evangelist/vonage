@@ -1,0 +1,303 @@
+asyncapi: 2.6.0
+info:
+  title: Vonage Voice WebSocket API
+  version: '2026.05'
+  description: |-
+    AsyncAPI 2.6 description of Vonage's publicly-documented WebSocket
+    surface. The only Vonage product whose realtime protocol is publicly
+    specified frame-by-frame is the Voice API WebSocket endpoint: the NCCO
+    `connect` action with `endpoint.type = "websocket"` instructs the Vonage
+    Voice platform to open a bidirectional WebSocket from the call leg to a
+    customer-hosted WSS server. The customer's server then exchanges binary
+    audio frames (16-bit signed little-endian linear PCM at 8 kHz or 16 kHz,
+    mono) and JSON text control frames with the Vonage platform.
+
+    The Vonage Conversation API and Vonage Client SDK ride on a proprietary
+    realtime transport that is not publicly documented as a wire-level
+    WebSocket protocol; only their HTTP/webhook event payloads are public.
+    Those events are therefore not modeled here. The Vonage Video API
+    (formerly OpenTok) signaling is proprietary WebRTC signaling and is
+    likewise not modeled.
+
+    All frame definitions in this document come directly from the Vonage
+    Voice API WebSocket documentation at
+    https://developer.vonage.com/en/voice/voice-api/concepts/websockets and
+    the NCCO reference at
+    https://developer.vonage.com/en/voice/voice-api/ncco-reference.
+  contact:
+    name: Vonage Developer Relations
+    url: https://developer.vonage.com/
+    email: devrel@vonage.com
+  license:
+    name: Vonage Terms of Service
+    url: https://www.vonage.com/legal/
+  externalDocs:
+    description: Vonage Voice API WebSocket concept guide
+    url: https://developer.vonage.com/en/voice/voice-api/concepts/websockets
+  x-generated-from: documentation
+  x-last-validated: '2026-05-29'
+  x-source-urls:
+    - https://developer.vonage.com/en/voice/voice-api/concepts/websockets
+    - https://developer.vonage.com/en/voice/voice-api/ncco-reference
+
+defaultContentType: application/json
+
+tags:
+  - name: voice
+    description: Vonage Voice API call legs.
+  - name: websocket
+    description: Bidirectional WebSocket transport.
+  - name: audio
+    description: Linear PCM audio frames.
+
+servers:
+  customerWebsocket:
+    url: '{host}'
+    protocol: wss
+    description: |-
+      Customer-hosted secure WebSocket endpoint that the Vonage Voice
+      platform connects to in response to an NCCO `connect` action with
+      `endpoint.type = "websocket"`. The `uri` value supplied in the NCCO
+      must be reachable over `wss://`. Vonage establishes a single
+      bidirectional WebSocket per call leg.
+    variables:
+      host:
+        default: your-server.example.com
+        description: Customer-hosted host (and optional path) that terminates the WSS connection.
+    bindings:
+      ws:
+        bindingVersion: 0.1.0
+        headers:
+          type: object
+          description: |-
+            Any key/value pairs supplied in the NCCO `endpoint.headers`
+            object are forwarded to the customer WebSocket server during
+            the opening handshake, alongside the optional `Authorization`
+            header configured via `endpoint.authorization`.
+          additionalProperties: true
+
+channels:
+  /:
+    description: |-
+      The single bidirectional WebSocket channel established by Vonage to
+      the customer-hosted server for the duration of the call leg. Carries
+      both binary linear-PCM audio frames and JSON text control/event
+      frames in each direction.
+    bindings:
+      ws:
+        bindingVersion: 0.1.0
+        method: GET
+    subscribe:
+      operationId: receiveFromVonage
+      summary: Frames sent by Vonage to the customer WebSocket server.
+      description: |-
+        Vonage streams the caller's audio to the customer server as binary
+        frames and emits text frames for lifecycle events
+        (`websocket:connected`, `websocket:notify`, `websocket:cleared`).
+      message:
+        oneOf:
+          - $ref: '#/components/messages/InboundAudioFrame'
+          - $ref: '#/components/messages/WebsocketConnectedEvent'
+          - $ref: '#/components/messages/WebsocketClearedEvent'
+          - $ref: '#/components/messages/WebsocketNotifyEvent'
+    publish:
+      operationId: sendToVonage
+      summary: Frames sent by the customer WebSocket server to Vonage.
+      description: |-
+        The customer server streams audio to play back to the caller as
+        binary frames and may send text command frames to clear the
+        playback buffer (`clear`) or request a completion notification
+        (`notify`). Audio frames are buffered by Vonage (up to ~3072
+        packets, ~60 seconds) and played back in order.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/OutboundAudioFrame'
+          - $ref: '#/components/messages/ClearCommand'
+          - $ref: '#/components/messages/NotifyCommand'
+
+components:
+  messages:
+    InboundAudioFrame:
+      name: InboundAudioFrame
+      title: Caller audio (Vonage to customer)
+      summary: Binary WebSocket frame carrying linear-PCM audio from the caller.
+      description: |-
+        Raw 16-bit signed little-endian linear PCM audio captured from the
+        caller's leg. Sample rate is whatever was negotiated via the NCCO
+        `content-type` value (`audio/l16;rate=16000` or
+        `audio/l16;rate=8000`). Mono. Each frame represents roughly 20 ms
+        of audio.
+      contentType: audio/l16
+      payload:
+        type: string
+        format: binary
+        description: 16-bit signed little-endian linear PCM, mono, at the rate declared in `content-type`.
+    OutboundAudioFrame:
+      name: OutboundAudioFrame
+      title: Playback audio (customer to Vonage)
+      summary: Binary WebSocket frame carrying linear-PCM audio to play to the caller.
+      description: |-
+        Raw 16-bit signed little-endian linear PCM audio destined for the
+        caller. Sample rate and channel count must match the
+        `content-type` value declared in the NCCO. Vonage buffers and
+        plays frames in order, up to a documented limit of 3072 packets
+        (~60 seconds).
+      contentType: audio/l16
+      payload:
+        type: string
+        format: binary
+        description: 16-bit signed little-endian linear PCM, mono, at the rate declared in `content-type`.
+    WebsocketConnectedEvent:
+      name: WebsocketConnectedEvent
+      title: websocket:connected event
+      summary: Sent by Vonage immediately after the WebSocket handshake completes.
+      description: |-
+        First text frame sent by the Vonage Voice platform after the
+        WebSocket connection is established. Echoes the negotiated
+        `content-type` and any custom key/value pairs that were supplied
+        in the NCCO `endpoint.headers` object.
+      payload:
+        $ref: '#/components/schemas/WebsocketConnected'
+      examples:
+        - name: WebsocketConnectedExample
+          summary: Example websocket:connected frame.
+          payload:
+            event: 'websocket:connected'
+            content-type: audio/l16;rate=16000
+            prop1: value1
+            prop2: value2
+    WebsocketClearedEvent:
+      name: WebsocketClearedEvent
+      title: websocket:cleared event
+      summary: Acknowledgement that a `clear` command emptied the playback buffer.
+      description: |-
+        Sent by Vonage after it processes a `clear` action from the
+        customer server. Confirms that any queued outbound audio has been
+        discarded and playback has stopped.
+      payload:
+        $ref: '#/components/schemas/WebsocketCleared'
+      examples:
+        - name: WebsocketClearedExample
+          summary: Example websocket:cleared frame.
+          payload:
+            event: 'websocket:cleared'
+    WebsocketNotifyEvent:
+      name: WebsocketNotifyEvent
+      title: websocket:notify event
+      summary: Notification that a previously-queued audio buffer has finished playing.
+      description: |-
+        Sent by Vonage in response to a prior `notify` command from the
+        customer server, once all audio that was buffered ahead of the
+        `notify` has finished playing to the caller. The `payload` echoes
+        the developer-supplied payload from the original `notify`
+        command, enabling correlation.
+      payload:
+        $ref: '#/components/schemas/WebsocketNotify'
+      examples:
+        - name: WebsocketNotifyExample
+          summary: Example websocket:notify frame.
+          payload:
+            event: 'websocket:notify'
+            payload:
+              customKey: customValue
+    ClearCommand:
+      name: ClearCommand
+      title: clear command
+      summary: Instructs Vonage to immediately stop playback and discard queued audio.
+      description: |-
+        Text frame sent by the customer server to interrupt playback of
+        any audio that Vonage has buffered for the caller. Vonage
+        acknowledges with a `websocket:cleared` event.
+      payload:
+        $ref: '#/components/schemas/ClearAction'
+      examples:
+        - name: ClearCommandExample
+          summary: Example clear command.
+          payload:
+            action: clear
+    NotifyCommand:
+      name: NotifyCommand
+      title: notify command
+      summary: Requests a notification when previously-queued audio has finished playing.
+      description: |-
+        Text frame sent by the customer server. Vonage will respond with a
+        `websocket:notify` event after every audio frame that was buffered
+        before the `notify` command has been played to the caller. The
+        developer-supplied `payload` is echoed back in the notification.
+      payload:
+        $ref: '#/components/schemas/NotifyAction'
+      examples:
+        - name: NotifyCommandExample
+          summary: Example notify command.
+          payload:
+            action: notify
+            payload:
+              customKey: customValue
+
+  schemas:
+    WebsocketConnected:
+      type: object
+      required:
+        - event
+      properties:
+        event:
+          type: string
+          const: 'websocket:connected'
+          description: Constant event name.
+        content-type:
+          type: string
+          description: Audio content type negotiated for the connection.
+          enum:
+            - audio/l16;rate=16000
+            - audio/l16;rate=8000
+      additionalProperties:
+        description: |-
+          Any custom key/value pairs that were supplied in the NCCO
+          `endpoint.headers` object are echoed back at the top level of
+          the `websocket:connected` payload.
+    WebsocketCleared:
+      type: object
+      required:
+        - event
+      properties:
+        event:
+          type: string
+          const: 'websocket:cleared'
+          description: Constant event name acknowledging a `clear` action.
+    WebsocketNotify:
+      type: object
+      required:
+        - event
+        - payload
+      properties:
+        event:
+          type: string
+          const: 'websocket:notify'
+          description: Constant event name signaling buffered audio playback completion.
+        payload:
+          type: object
+          description: Echo of the developer-supplied `payload` from the originating `notify` command.
+          additionalProperties: true
+    ClearAction:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          const: clear
+          description: Action name. Discards Vonage's outbound audio buffer and stops playback immediately.
+    NotifyAction:
+      type: object
+      required:
+        - action
+        - payload
+      properties:
+        action:
+          type: string
+          const: notify
+          description: Action name. Requests a `websocket:notify` event when buffered audio has finished playing.
+        payload:
+          type: object
+          description: Arbitrary developer-supplied object that will be echoed back in the resulting `websocket:notify` event.
+          additionalProperties: true

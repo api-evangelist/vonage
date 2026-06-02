@@ -49,6 +49,8 @@ apis:
       type: BaseURL
     - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
       type: OpenAPI
+    - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+      type: AsyncAPI
   - aid: vonage:vonage-messages-api
     name: Vonage Messages API
     tags:
@@ -185,7 +187,7 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2025-02-08'
-modified: '2026-05-19'
+modified: '2026-05-29'
 position: Consumer
 description: Vonage (part of Ericsson) provides cloud communications APIs for voice, SMS, messaging, video, and verification.
   The Vonage API platform enables businesses to embed communication capabilities into applications including voice calls,
