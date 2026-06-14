@@ -1,0 +1,1189 @@
+# Vonage Communications APIs - Conceptual GraphQL Schema
+# Covers: Voice, SMS, Messages, Verify, Numbers, Applications, Video, Conversations, Account
+# Source: https://developer.vonage.com/
+
+# ─────────────────────────────────────────────
+# Scalars
+# ─────────────────────────────────────────────
+
+scalar DateTime
+scalar JSON
+scalar PhoneNumberScalar
+scalar URL
+scalar ISO8601Duration
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallStatus {
+  STARTED
+  RINGING
+  ANSWERED
+  MACHINE
+  COMPLETED
+  TIMEOUT
+  FAILED
+  REJECTED
+  CANCELLED
+  BUSY
+  UNANSWERED
+}
+
+enum LegStatus {
+  STARTED
+  RINGING
+  ANSWERED
+  COMPLETED
+  FAILED
+  TIMEOUT
+  REJECTED
+  CANCELLED
+  BUSY
+}
+
+enum RecordingFormat {
+  MP3
+  OGG
+}
+
+enum MessageStatus {
+  SUBMITTED
+  DELIVERED
+  READ
+  REJECTED
+  UNDELIVERABLE
+  PENDING
+  FAILED
+}
+
+enum MessageChannel {
+  SMS
+  MMS
+  WHATSAPP
+  MESSENGER
+  VIBER_SERVICE
+  RCS
+}
+
+enum NumberType {
+  LANDLINE
+  MOBILE_LVN
+  TOLL_FREE
+}
+
+enum NumberFeature {
+  SMS
+  VOICE
+  MMS
+}
+
+enum VerifyStatus {
+  IN_PROGRESS
+  SUCCESS
+  FAILED
+  EXPIRED
+  CANCELLED
+  INVALID_CODE
+  WRONG_CODE_THROTTLED
+  TOO_MANY_BIND_FAILURES
+  UNROUTABLE
+  ERROR
+}
+
+enum OTPChannel {
+  SMS
+  TTS
+  WHATSAPP
+  EMAIL
+}
+
+enum InsightLevel {
+  BASIC
+  STANDARD
+  ADVANCED
+}
+
+enum NumberPortingStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum RoamingStatus {
+  UNKNOWN
+  ROAMING
+  NOT_ROAMING
+}
+
+enum SessionArchiveMode {
+  ALWAYS
+  MANUAL
+}
+
+enum SessionMediaMode {
+  RELAYED
+  ROUTED
+}
+
+enum UserState {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum MemberState {
+  INVITED
+  JOINED
+  LEFT
+  UNKNOWN
+}
+
+enum CapabilityType {
+  VOICE
+  MESSAGES
+  RTC
+  VBC
+  VIDEO
+  VERIFY
+}
+
+enum WebhookHTTPMethod {
+  GET
+  POST
+}
+
+enum BroadcastStreamType {
+  HLS
+  RTMP
+}
+
+enum NCCOActionType {
+  TALK
+  STREAM
+  INPUT
+  RECORD
+  CONNECT
+  CONVERSATION
+  NOTIFY
+}
+
+# ─────────────────────────────────────────────
+# Voice / Call Types
+# ─────────────────────────────────────────────
+
+type Call {
+  uuid: ID!
+  conversationUuid: ID
+  direction: CallDirection!
+  status: CallStatus!
+  from: String!
+  to: String!
+  startTime: DateTime
+  endTime: DateTime
+  duration: Int
+  rate: String
+  price: String
+  network: String
+  legs: [Leg!]
+  recordings: [Recording!]
+  transcription: Transcription
+}
+
+type CallList {
+  count: Int!
+  pageSize: Int!
+  recordIndex: Int!
+  calls: [Call!]!
+}
+
+type CallRecord {
+  uuid: ID!
+  callUuid: ID!
+  startTime: DateTime!
+  endTime: DateTime
+  price: String
+  rate: String
+  duration: Int
+  network: String
+  from: String!
+  to: String!
+  status: CallStatus!
+}
+
+type Leg {
+  uuid: ID!
+  callUuid: ID!
+  type: String
+  status: LegStatus!
+  from: String
+  to: String
+  startTime: DateTime
+  endTime: DateTime
+  duration: Int
+  network: String
+  rate: String
+  price: String
+}
+
+type DTMF {
+  digits: String!
+  timed_out: Boolean!
+}
+
+type DTMFResult {
+  message: String!
+  uuid: ID!
+}
+
+type Recording {
+  uuid: ID!
+  callUuid: ID
+  legUuid: ID
+  startTime: DateTime
+  endTime: DateTime
+  url: URL
+  format: RecordingFormat
+  size: Int
+  status: String
+}
+
+type Transcription {
+  uuid: ID!
+  callUuid: ID!
+  text: String
+  language: String
+  confidence: Float
+  words: [TranscriptionWord!]
+}
+
+type TranscriptionWord {
+  word: String!
+  confidence: Float!
+  startTime: Float!
+  endTime: Float!
+}
+
+type SpeechRecognition {
+  uuid: ID!
+  type: String!
+  language: String!
+  results: [SpeechResult!]
+  timeoutReason: String
+}
+
+type SpeechResult {
+  transcript: String!
+  confidence: Float!
+}
+
+type NCCOAction {
+  action: NCCOActionType!
+  text: String
+  url: [URL!]
+  eventUrl: [URL!]
+  eventMethod: WebhookHTTPMethod
+  bargeIn: Boolean
+  digits: Int
+  timeOut: Int
+  loop: Int
+  record: Boolean
+  format: RecordingFormat
+  endOnSilence: Int
+  endOnKey: String
+  beepStart: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Messaging Types
+# ─────────────────────────────────────────────
+
+type Message {
+  messageUuid: ID!
+  channel: MessageChannel!
+  status: MessageStatus!
+  to: String!
+  from: String!
+  timestamp: DateTime!
+  clientRef: String
+  usage: MessageUsage
+}
+
+type MessageList {
+  messages: [Message!]!
+  pageSize: Int!
+  page: Int!
+  total: Int!
+}
+
+type MessageUsage {
+  price: String!
+  currency: String!
+}
+
+type SMSMessage {
+  messageId: ID!
+  to: String!
+  from: String!
+  status: MessageStatus!
+  remainingBalance: String
+  messagePrice: String
+  network: String
+  clientRef: String
+  messageCount: Int
+  messages: [SMSMessagePart!]
+}
+
+type SMSMessagePart {
+  to: String!
+  messageId: ID!
+  status: String!
+  remainingBalance: String!
+  messagePrice: String!
+  network: String!
+}
+
+type WhatsAppMessage {
+  messageUuid: ID!
+  to: String!
+  from: String!
+  status: MessageStatus!
+  timestamp: DateTime!
+  whatsapp: WhatsAppContent
+}
+
+type WhatsAppContent {
+  type: String!
+  text: String
+  template: WhatsAppTemplate
+  mediaUrl: URL
+  caption: String
+}
+
+type WhatsAppTemplate {
+  name: String!
+  language: WhatsAppTemplateLanguage!
+  parameters: [String!]
+}
+
+type WhatsAppTemplateLanguage {
+  policy: String!
+  code: String!
+}
+
+type MessengerMessage {
+  messageUuid: ID!
+  to: String!
+  from: String!
+  status: MessageStatus!
+  timestamp: DateTime!
+  messenger: MessengerContent
+}
+
+type MessengerContent {
+  type: String!
+  text: String
+  mediaUrl: URL
+  caption: String
+}
+
+type ViberMessage {
+  messageUuid: ID!
+  to: String!
+  from: String!
+  status: MessageStatus!
+  timestamp: DateTime!
+  viber: ViberContent
+}
+
+type ViberContent {
+  type: String!
+  text: String
+  mediaUrl: URL
+  caption: String
+  action: ViberAction
+}
+
+type ViberAction {
+  url: URL!
+  text: String!
+}
+
+type MMSMessage {
+  messageUuid: ID!
+  to: String!
+  from: String!
+  status: MessageStatus!
+  timestamp: DateTime!
+  mms: MMSContent
+}
+
+type MMSContent {
+  type: String!
+  url: URL
+  caption: String
+}
+
+type RCSMessage {
+  messageUuid: ID!
+  to: String!
+  from: String!
+  status: MessageStatus!
+  timestamp: DateTime!
+  rcs: RCSContent
+}
+
+type RCSContent {
+  type: String!
+  text: String
+  richCard: JSON
+  suggestions: [RCSSuggestion!]
+}
+
+type RCSSuggestion {
+  text: String!
+  type: String!
+  postbackData: String
+}
+
+type InboundMessage {
+  messageUuid: ID!
+  channel: MessageChannel!
+  to: String!
+  from: String!
+  timestamp: DateTime!
+  text: String
+  mediaUrl: URL
+  mediaType: String
+  profile: MessageProfile
+}
+
+type MessageProfile {
+  name: String
+}
+
+# ─────────────────────────────────────────────
+# Verify / 2FA / OTP Types
+# ─────────────────────────────────────────────
+
+type Verify {
+  requestId: ID!
+  status: VerifyStatus!
+  accountId: String
+  number: String
+  senderId: String
+  dateSubmitted: DateTime
+  dateFinalized: DateTime
+  firstEventDate: DateTime
+  lastEventDate: DateTime
+  checks: [VerifyCheck!]
+  events: [VerifyEvent!]
+}
+
+type VerifyRequest {
+  requestId: ID!
+  status: VerifyStatus!
+  number: String
+  checks: [VerifyCheck!]
+  estimatedPriceMessagesSent: String
+}
+
+type VerifyCheck {
+  dateReceived: DateTime
+  code: String
+  status: VerifyStatus!
+  ipAddress: String
+}
+
+type VerifyEvent {
+  id: ID!
+  type: String!
+  createdAt: DateTime!
+}
+
+type TFA {
+  requestId: ID!
+  status: VerifyStatus!
+  channel: OTPChannel!
+  number: String!
+  brand: String
+  codeLength: Int!
+  expiresAt: DateTime
+}
+
+type OTP {
+  code: String!
+  channel: OTPChannel!
+  expiresAt: DateTime!
+  requestId: ID!
+}
+
+# ─────────────────────────────────────────────
+# Application / Configuration Types
+# ─────────────────────────────────────────────
+
+type Application {
+  id: ID!
+  name: String!
+  capabilities: Capability!
+  keys: ApplicationKey
+  privacy: ApplicationPrivacy
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type ApplicationList {
+  totalItems: Int!
+  totalPages: Int!
+  page: Int!
+  pageSize: Int!
+  applications: [Application!]!
+}
+
+type Capability {
+  voice: VoiceCapability
+  messages: MessagesCapability
+  rtc: RTCCapability
+  vbc: VBCCapability
+  video: VideoCapability
+  verify: VerifyCapability
+}
+
+type VoiceCapability {
+  webhooks: VoiceWebhooks!
+  paymentEnabled: Boolean
+  signedCallbacks: Boolean
+  conversationsTtl: Int
+}
+
+type VoiceWebhooks {
+  answerUrl: WebhookEndpoint
+  fallbackAnswerUrl: WebhookEndpoint
+  eventUrl: WebhookEndpoint
+}
+
+type MessagesCapability {
+  webhooks: MessagesWebhooks!
+  version: String
+}
+
+type MessagesWebhooks {
+  inboundUrl: WebhookEndpoint
+  statusUrl: WebhookEndpoint
+}
+
+type RTCCapability {
+  webhooks: RTCWebhooks!
+  signedCallbacks: Boolean
+}
+
+type RTCWebhooks {
+  eventUrl: WebhookEndpoint
+}
+
+type VBCCapability {
+  enabled: Boolean!
+}
+
+type VideoCapability {
+  webhooks: VideoWebhooks
+}
+
+type VideoWebhooks {
+  eventUrl: WebhookEndpoint
+}
+
+type VerifyCapability {
+  version: String
+}
+
+type WebhookEndpoint {
+  url: URL!
+  httpMethod: WebhookHTTPMethod!
+  connectionTimeout: Int
+  socketTimeout: Int
+}
+
+type ApplicationKey {
+  publicKey: String
+  privateKey: String
+}
+
+type ApplicationPrivacy {
+  improveAi: Boolean!
+}
+
+type APISecret {
+  id: ID!
+  apiKey: String!
+  createdAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Number Types
+# ─────────────────────────────────────────────
+
+type Number {
+  msisdn: String!
+  country: String!
+  type: NumberType!
+  features: [NumberFeature!]!
+  cost: String
+  moHttpUrl: URL
+  voiceCallbackType: String
+  voiceCallbackValue: String
+  messagesCallbackType: String
+  messagesCallbackValue: String
+}
+
+type PhoneNumber {
+  msisdn: String!
+  country: String!
+  type: NumberType!
+  features: [NumberFeature!]!
+  cost: String
+  applicationId: ID
+  moHttpUrl: URL
+  voiceCallbackType: String
+  voiceCallbackValue: String
+}
+
+type InboundNumber {
+  msisdn: String!
+  country: String!
+  type: NumberType!
+  features: [NumberFeature!]!
+  applicationId: ID
+  moHttpUrl: URL
+  voiceCallbackValue: String
+}
+
+type OutboundNumber {
+  msisdn: String!
+  country: String!
+  type: NumberType!
+  features: [NumberFeature!]!
+}
+
+type NumberList {
+  count: Int!
+  size: Int!
+  numbers: [Number!]!
+}
+
+type OwnedNumberList {
+  count: Int!
+  numbers: [PhoneNumber!]!
+}
+
+type NumberPorting {
+  id: ID!
+  msisdn: String!
+  country: String!
+  status: NumberPortingStatus!
+  submittedAt: DateTime!
+  completedAt: DateTime
+  errorMessage: String
+}
+
+type Route {
+  type: String!
+  mobileCountryCode: String
+  mobileNetworkCode: String
+}
+
+# ─────────────────────────────────────────────
+# Number Insight / Carrier Types
+# ─────────────────────────────────────────────
+
+type Insight {
+  requestId: ID!
+  internationalFormatNumber: String!
+  nationalFormatNumber: String!
+  countryCode: String!
+  countryCodeIso3: String
+  countryName: String!
+  countryPrefix: String!
+  requestPrice: String
+  refundPrice: String
+  remainingBalance: String
+  summary: InsightSummary
+  advanced: InsightAdvanced
+}
+
+type InsightSummary {
+  requestId: ID!
+  internationalFormatNumber: String!
+  nationalFormatNumber: String!
+  countryCode: String!
+  countryName: String!
+  countryPrefix: String!
+  requestPrice: String
+  remainingBalance: String
+  blocked: Boolean
+  validNumber: String
+  reachable: String
+  ported: String
+  originalCarrier: CarrierInfo
+  currentCarrier: CarrierInfo
+  callerIdentity: CallerIdentity
+}
+
+type InsightAdvanced {
+  requestId: ID!
+  internationalFormatNumber: String!
+  nationalFormatNumber: String!
+  countryCode: String!
+  countryName: String!
+  countryPrefix: String!
+  requestPrice: String
+  remainingBalance: String
+  blocked: Boolean
+  validNumber: String
+  reachable: String
+  ported: String
+  roaming: InsightRoaming
+  originalCarrier: CarrierInfo
+  currentCarrier: CarrierInfo
+  callerIdentity: CallerIdentity
+  lookupOutcome: Int
+  lookupOutcomeMessage: String
+}
+
+type InsightRoaming {
+  status: RoamingStatus!
+  roamingCountryCode: String
+  roamingNetworkCode: String
+  roamingNetworkName: String
+}
+
+type CarrierInfo {
+  networkCode: String
+  name: String
+  country: String
+  networkType: String
+}
+
+type CallerIdentity {
+  type: String
+  firstName: String
+  lastName: String
+  callerName: String
+  callerType: String
+}
+
+# ─────────────────────────────────────────────
+# Video / Meeting Types
+# ─────────────────────────────────────────────
+
+type MeetingSession {
+  sessionId: ID!
+  projectId: String!
+  createDt: DateTime!
+  mediaMode: SessionMediaMode!
+  archiveMode: SessionArchiveMode!
+  e2ee: Boolean
+  token: String
+  participants: [SessionParticipant!]
+  archives: [ArchiveRecord!]
+  broadcasts: [BroadcastStream!]
+}
+
+type SessionParticipant {
+  id: ID!
+  sessionId: ID!
+  connectionId: ID!
+  name: String
+  data: String
+  connectedAt: DateTime
+  disconnectedAt: DateTime
+  publishedStreams: [StreamUrl!]
+  subscribedStreams: [StreamUrl!]
+}
+
+type StreamUrl {
+  id: ID!
+  name: String
+  videoType: String
+  hasAudio: Boolean!
+  hasVideo: Boolean!
+  layoutClassList: [String!]
+}
+
+type ConnectionConfig {
+  sessionId: ID!
+  token: String!
+  role: String!
+  expireTime: Int
+  data: String
+  initialLayoutClassList: [String!]
+}
+
+type ArchiveRecord {
+  id: ID!
+  sessionId: ID!
+  projectId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String
+  duration: Int
+  status: String!
+  hasAudio: Boolean!
+  hasVideo: Boolean!
+  outputMode: String!
+  url: URL
+  size: Int
+  streams: [StreamUrl!]
+}
+
+type BroadcastStream {
+  id: ID!
+  sessionId: ID!
+  projectId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: String!
+  type: BroadcastStreamType!
+  hlsUrl: URL
+  rtmpUrl: URL
+  rtmpStreamName: String
+  broadcastUrls: BroadcastUrls
+}
+
+type BroadcastUrls {
+  hls: URL
+  rtmp: [RTMPStream!]
+}
+
+type RTMPStream {
+  id: ID!
+  serverUrl: URL!
+  streamName: String!
+  status: String!
+}
+
+# ─────────────────────────────────────────────
+# Conversations / User Types
+# ─────────────────────────────────────────────
+
+type User {
+  id: ID!
+  name: String!
+  displayName: String
+  imageUrl: URL
+  state: UserState!
+  channels: JSON
+  createdAt: DateTime
+  updatedAt: DateTime
+  conversations: [ConversationMember!]
+}
+
+type UserState {
+  id: ID!
+  userId: ID!
+  channels: JSON
+}
+
+type ConversationMember {
+  id: ID!
+  userId: ID!
+  conversationId: ID!
+  state: MemberState!
+  from: String
+  channel: JSON
+  joinedAt: DateTime
+  leftAt: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Account Types
+# ─────────────────────────────────────────────
+
+type Account {
+  apiKey: String!
+  balance: Balance!
+  settings: AccountSettings
+  subAccounts: [SubAccount!]
+  secrets: [APISecret!]
+}
+
+type Balance {
+  value: Float!
+  autoReload: Boolean!
+  currency: String!
+}
+
+type TopUp {
+  transactionId: ID!
+  amount: Float!
+  currency: String!
+  tranche: String!
+  timestamp: DateTime!
+}
+
+type UsageSummary {
+  period: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  network: String
+  calls: Int
+  duration: Int
+  price: String
+  currency: String!
+}
+
+type SubAccount {
+  apiKey: String!
+  name: String!
+  primaryAccountApiKey: String!
+  usePrimaryAccountBalance: Boolean!
+  createdAt: DateTime!
+  suspended: Boolean!
+  balance: Balance
+  creditLimit: Float
+}
+
+type AccountSettings {
+  moCallBackUrl: URL
+  drCallBackUrl: URL
+  maxOutboundRequest: Int
+  maxInboundRequest: Int
+  maxCallsPerSecond: Int
+}
+
+type SubAccountList {
+  primaryAccount: SubAccount!
+  subAccounts: [SubAccount!]!
+}
+
+# ─────────────────────────────────────────────
+# Input Types
+# ─────────────────────────────────────────────
+
+input DestinationInput {
+  type: String!
+  number: String
+  uri: String
+  user: String
+}
+
+input CreateCallInput {
+  to: [DestinationInput!]!
+  from: DestinationInput!
+  ncco: [JSON!]
+  answerUrl: [URL!]
+  answerMethod: WebhookHTTPMethod
+  eventUrl: [URL!]
+  eventMethod: WebhookHTTPMethod
+  machineDetection: String
+  lengthTimer: Int
+  ringingTimer: Int
+}
+
+input RecordingInput {
+  format: RecordingFormat
+  endOnSilence: Int
+  endOnKey: String
+  timeOut: Int
+  beepStart: Boolean
+  splitRecording: String
+  channels: Int
+  transcription: TranscriptionInput
+}
+
+input TranscriptionInput {
+  language: String!
+  eventUrl: URL!
+  eventMethod: WebhookHTTPMethod
+  sentimentAnalysis: Boolean
+}
+
+input SendMessageInput {
+  channel: MessageChannel!
+  to: String!
+  from: String!
+  text: String
+  mediaUrl: URL
+  mediaCaption: String
+  clientRef: String
+  webhookVersion: String
+  whatsapp: WhatsAppContentInput
+}
+
+input WhatsAppContentInput {
+  type: String!
+  text: String
+  templateName: String
+  templateLanguageCode: String
+  templateParameters: [String!]
+}
+
+input SendSMSInput {
+  from: String!
+  to: String!
+  text: String!
+  unicode: Int
+  type: String
+  clientRef: String
+  callbackUrl: URL
+  ttl: Int
+  statusReportReq: Int
+}
+
+input VerifyInput {
+  number: String!
+  brand: String!
+  codeLength: Int
+  lg: String
+  pinExpiry: Int
+  nextEventWait: Int
+  workflowId: Int
+  senderId: String
+  pinCode: String
+}
+
+input CreateApplicationInput {
+  name: String!
+  capabilities: CapabilityInput
+  keys: KeysInput
+  privacy: PrivacyInput
+}
+
+input UpdateApplicationInput {
+  name: String
+  capabilities: CapabilityInput
+  keys: KeysInput
+  privacy: PrivacyInput
+}
+
+input CapabilityInput {
+  voice: VoiceCapabilityInput
+  messages: MessagesCapabilityInput
+  rtc: RTCCapabilityInput
+  video: VideoCapabilityInput
+  verify: VerifyCapabilityInput
+}
+
+input VoiceCapabilityInput {
+  answerUrl: String
+  answerMethod: WebhookHTTPMethod
+  fallbackAnswerUrl: String
+  eventUrl: String
+  eventMethod: WebhookHTTPMethod
+}
+
+input MessagesCapabilityInput {
+  inboundUrl: String
+  statusUrl: String
+}
+
+input RTCCapabilityInput {
+  eventUrl: String
+  eventMethod: WebhookHTTPMethod
+}
+
+input VideoCapabilityInput {
+  eventUrl: String
+}
+
+input VerifyCapabilityInput {
+  version: String
+}
+
+input KeysInput {
+  publicKey: String
+}
+
+input PrivacyInput {
+  improveAi: Boolean!
+}
+
+input UpdateNumberInput {
+  applicationId: ID
+  moHttpUrl: URL
+  voiceCallbackType: String
+  voiceCallbackValue: String
+  moSmppSysType: String
+}
+
+input CreateSessionInput {
+  mediaMode: SessionMediaMode
+  archiveMode: SessionArchiveMode
+  e2ee: Boolean
+  location: String
+}
+
+input CreateUserInput {
+  name: String!
+  displayName: String
+  imageUrl: URL
+  channels: JSON
+}
+
+input TopUpInput {
+  tranche: String!
+}
+
+# ─────────────────────────────────────────────
+# Root Types
+# ─────────────────────────────────────────────
+
+type Query {
+  call(id: ID!): Call
+  calls(status: CallStatus, pageSize: Int, recordIndex: Int): CallList
+  callRecord(id: ID!): CallRecord
+  message(id: ID!): Message
+  messages(channel: MessageChannel, status: MessageStatus, pageSize: Int): MessageList
+  verifyRequest(requestId: ID!): VerifyRequest
+  application(id: ID!): Application
+  applications(pageSize: Int, page: Int): ApplicationList
+  number(msisdn: String!): PhoneNumber
+  numbers(country: String, pattern: String, searchPattern: Int, type: NumberType, features: [NumberFeature!], size: Int, index: Int): NumberList
+  ownedNumbers(country: String, applicationId: ID, size: Int, index: Int): OwnedNumberList
+  insight(number: String!, level: InsightLevel!): Insight
+  meetingSession(sessionId: ID!): MeetingSession
+  user(id: ID!): User
+  account: Account
+  subAccounts: SubAccountList
+}
+
+type Mutation {
+  createCall(input: CreateCallInput!): Call
+  endCall(id: ID!): Call
+  transferCall(id: ID!, destination: DestinationInput!): Call
+  sendDTMF(id: ID!, digits: String!): DTMFResult
+  startRecording(callId: ID!, input: RecordingInput): Recording
+  stopRecording(recordingId: ID!): Recording
+  sendMessage(input: SendMessageInput!): Message
+  sendSMS(input: SendSMSInput!): SMSMessage
+  requestVerify(input: VerifyInput!): VerifyRequest
+  checkVerify(requestId: ID!, code: String!): VerifyCheck
+  cancelVerify(requestId: ID!): VerifyRequest
+  createApplication(input: CreateApplicationInput!): Application
+  updateApplication(id: ID!, input: UpdateApplicationInput!): Application
+  deleteApplication(id: ID!): Boolean
+  searchNumbers(country: String!, type: NumberType, pattern: String, features: [NumberFeature!]): NumberList
+  buyNumber(msisdn: String!, country: String!): PhoneNumber
+  cancelNumber(msisdn: String!, country: String!): Boolean
+  updateNumber(msisdn: String!, input: UpdateNumberInput!): PhoneNumber
+  createMeetingSession(input: CreateSessionInput!): MeetingSession
+  createUser(input: CreateUserInput!): User
+  topUpBalance(input: TopUpInput!): TopUp
+  createAPISecret(apiKey: String!): APISecret
+  deleteAPISecret(apiKey: String!, secretId: ID!): Boolean
+}
+
+type Subscription {
+  onCallEvent(callId: ID): Call
+  onMessageDelivery(messageId: ID): Message
+  onInboundMessage(number: String): InboundMessage
+  onVerifyUpdate(requestId: ID!): VerifyRequest
+  onSessionEvent(sessionId: ID!): MeetingSession
+}
