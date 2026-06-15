@@ -1,0 +1,3540 @@
+{
+  "item": [
+    {
+      "id": "32396dcd-ba8d-41ac-a4e4-026968effb23",
+      "name": "SMS",
+      "description": {
+        "content": "Send and receive SMS messages",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4a1df14e-16fc-4e5a-aaec-6eaeb7d57752",
+          "name": "Send an SMS Message",
+          "request": {
+            "name": "Send an SMS Message",
+            "description": {
+              "content": "Send an outbound SMS from your Vonage number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "sms",
+                "json"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) Your Vonage API key."
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) Your Vonage API secret."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "(Required) The phone number to send the message to (E.164 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "(Required) The sender phone number or name."
+                },
+                {
+                  "disabled": false,
+                  "key": "text",
+                  "value": "<string>",
+                  "description": "(Required) The body of the SMS message."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "text",
+                  "description": "The format of the message body."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2eeb92fe-e379-4523-b510-a0f781d0f1c5",
+              "name": "SMS sent successfully",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "sms",
+                    "json"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Your Vonage API key.",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Your Vonage API secret.",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The phone number to send the message to (E.164 format).",
+                        "type": "text/plain"
+                      },
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The sender phone number or name.",
+                        "type": "text/plain"
+                      },
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The body of the SMS message.",
+                        "type": "text/plain"
+                      },
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The format of the message body.",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message-count\": \"string\",\n  \"messages\": [\n    {\n      \"to\": \"string\",\n      \"message-id\": \"string\",\n      \"status\": \"string\",\n      \"remaining-balance\": \"string\",\n      \"message-price\": \"string\",\n      \"network\": \"string\"\n    },\n    {\n      \"to\": \"string\",\n      \"message-id\": \"string\",\n      \"status\": \"string\",\n      \"remaining-balance\": \"string\",\n      \"message-price\": \"string\",\n      \"network\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "c7d42b61-71ae-4644-9d26-83ee28d6a76f",
+      "name": "Voice",
+      "description": {
+        "content": "Create and control voice calls",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8e19d0a3-31b0-4616-a40e-33a95363a8ed",
+          "name": "List Calls",
+          "request": {
+            "name": "List Calls",
+            "description": {
+              "content": "Retrieve details of your calls.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by call status."
+                },
+                {
+                  "disabled": false,
+                  "key": "date_start",
+                  "value": "<dateTime>",
+                  "description": "Return calls created after this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "date_end",
+                  "value": "<dateTime>",
+                  "description": "Return calls created before this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10",
+                  "description": "Number of results per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "record_index",
+                  "value": "0",
+                  "description": "Start index for pagination."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f7608c96-ba23-486b-ac43-ba7d279d8f22",
+              "name": "Calls retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "date_start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date_end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "record_index",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2539,\n  \"page_size\": 4423,\n  \"record_index\": 2564,\n  \"_embedded\": {\n    \"calls\": [\n      {\n        \"uuid\": \"string\",\n        \"conversation_uuid\": \"string\",\n        \"status\": \"ringing\",\n        \"direction\": \"inbound\",\n        \"rate\": \"string\",\n        \"price\": \"string\",\n        \"duration\": \"string\",\n        \"start_time\": \"1990-02-23T18:03:21.708Z\",\n        \"end_time\": \"2000-02-26T19:30:38.976Z\",\n        \"network\": \"string\",\n        \"from\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        },\n        \"to\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        }\n      },\n      {\n        \"uuid\": \"string\",\n        \"conversation_uuid\": \"string\",\n        \"status\": \"timeout\",\n        \"direction\": \"inbound\",\n        \"rate\": \"string\",\n        \"price\": \"string\",\n        \"duration\": \"string\",\n        \"start_time\": \"1999-03-05T05:34:31.460Z\",\n        \"end_time\": \"1959-03-31T07:59:51.207Z\",\n        \"network\": \"string\",\n        \"from\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        },\n        \"to\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42fcecc0-ec9c-4a3a-9d45-bcfa8e8dd937",
+          "name": "Create an Outbound Call",
+          "request": {
+            "name": "Create an Outbound Call",
+            "description": {
+              "content": "Create an outbound Call to a Phone Number or SIP Endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": [\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"from\": {\n    \"type\": \"<string>\",\n    \"number\": \"<string>\"\n  },\n  \"ncco\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"record\": \"<boolean>\",\n  \"answer_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"event_url\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1b0db78f-ceb7-44d0-ba80-ac0b3d8319a5",
+              "name": "Call created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": [\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"from\": {\n    \"type\": \"<string>\",\n    \"number\": \"<string>\"\n  },\n  \"ncco\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"record\": \"<boolean>\",\n  \"answer_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"event_url\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"string\",\n  \"conversation_uuid\": \"string\",\n  \"status\": \"timeout\",\n  \"direction\": \"outbound\",\n  \"rate\": \"string\",\n  \"price\": \"string\",\n  \"duration\": \"string\",\n  \"start_time\": \"1993-12-05T04:15:11.316Z\",\n  \"end_time\": \"1971-09-19T10:09:46.192Z\",\n  \"network\": \"string\",\n  \"from\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  },\n  \"to\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7f5ada56-3d8b-4ec3-8ae2-67fb41a580a0",
+          "name": "Get Call Details",
+          "request": {
+            "name": "Get Call Details",
+            "description": {
+              "content": "Get details of a specific call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "676e06d8-cdc2-416f-b5d2-9d3dd4c1ea96",
+              "name": "Call details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"string\",\n  \"conversation_uuid\": \"string\",\n  \"status\": \"timeout\",\n  \"direction\": \"outbound\",\n  \"rate\": \"string\",\n  \"price\": \"string\",\n  \"duration\": \"string\",\n  \"start_time\": \"1993-12-05T04:15:11.316Z\",\n  \"end_time\": \"1971-09-19T10:09:46.192Z\",\n  \"network\": \"string\",\n  \"from\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  },\n  \"to\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "26d7dbc1-283f-44fa-86ad-1b9899b2fe80",
+          "name": "Modify an In-Progress Call",
+          "request": {
+            "name": "Modify an In-Progress Call",
+            "description": {
+              "content": "Modify an in-progress call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"destination\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "13cb8da3-81e6-4d8d-a65e-17dc8a0d93c2",
+              "name": "Call updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"destination\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f10d41c4-39eb-49dc-9df2-5cf931697c2e",
+          "name": "Play Audio Into a Call",
+          "request": {
+            "name": "Play Audio Into a Call",
+            "description": {
+              "content": "Play an audio file into a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stream_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"loop\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c0995e8d-fcab-4016-b143-85e07ea4a9d9",
+              "name": "Audio stream started",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"stream_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"loop\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f92af157-f75f-460a-9932-e48b7b68a8bc",
+          "name": "Stop Audio Stream in a Call",
+          "request": {
+            "name": "Stop Audio Stream in a Call",
+            "description": {
+              "content": "Stop playing an audio file into a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "da012712-7e51-4a21-95a9-153a2755580c",
+              "name": "Audio stream stopped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d78c1e2-bec4-4a6d-a8e0-052d7aae923b",
+          "name": "Play Text-to-Speech in a Call",
+          "request": {
+            "name": "Play Text-to-Speech in a Call",
+            "description": {
+              "content": "Play text to speech into a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "talk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"voice_name\": \"<string>\",\n  \"loop\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f605b2f8-f8df-4304-9b0b-e12cd49c8a8a",
+              "name": "Text-to-speech started",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "talk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\",\n  \"voice_name\": \"<string>\",\n  \"loop\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "855dd7ff-bb8e-497f-bf73-444ec6d44085",
+          "name": "Stop Text-to-Speech in a Call",
+          "request": {
+            "name": "Stop Text-to-Speech in a Call",
+            "description": {
+              "content": "Stop playing text to speech in a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "talk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d1c85f07-e653-459d-9c77-fbd1f6cdf491",
+              "name": "Text-to-speech stopped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "talk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0100be05-f697-447c-8078-7cfb376165eb",
+      "name": "Messages",
+      "description": {
+        "content": "Multi-channel messaging via SMS, WhatsApp, Messenger, Viber, MMS, RCS",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e876995d-5909-49f3-9226-6a5d8438b387",
+          "name": "Send a Message",
+          "request": {
+            "name": "Send a Message",
+            "description": {
+              "content": "Send a message to a given channel (SMS, WhatsApp, Messenger, Viber, MMS, RCS).",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "messages"
+              ],
+              "host": [
+                "api",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message_type\": \"<string>\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"channel\": \"<string>\",\n  \"text\": \"<string>\",\n  \"image\": {\n    \"url\": \"<string>\",\n    \"caption\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a8017803-12fb-43a8-b569-28528a5c6a7c",
+              "name": "Message accepted for delivery",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message_type\": \"<string>\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"channel\": \"<string>\",\n  \"text\": \"<string>\",\n  \"image\": {\n    \"url\": \"<string>\",\n    \"caption\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message_uuid\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eb8995cc-c5bf-44d7-b5d9-1d08f739d085",
+          "name": "Update a Message",
+          "request": {
+            "name": "Update a Message",
+            "description": {
+              "content": "Update the status of a message (e.g., mark as read).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages",
+                ":message_uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "message_uuid",
+                  "description": "(Required) The UUID of the message."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6077d026-d3f4-4765-babf-5be70185eefc",
+              "name": "Message updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":message_uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "message_uuid",
+                      "description": "(Required) The UUID of the message."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d415bf8f-63fd-4811-92f0-7dadab81d358",
+      "name": "Verify",
+      "description": {
+        "content": "Two-factor authentication and phone verification",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "07584be5-9fa3-4abc-b70c-14bfda42e604",
+          "name": "Request a Verification",
+          "request": {
+            "name": "Request a Verification",
+            "description": {
+              "content": "Use Verify to ensure that you can contact a user at a specific number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "verify",
+                ":format"
+              ],
+              "host": [
+                "api",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "format",
+                  "description": "(Required) Response format."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "number",
+                  "value": "<string>",
+                  "description": "(Required) The mobile or landline phone number to verify (E.164 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "brand",
+                  "value": "<string>",
+                  "description": "(Required) An 18-character alphanumeric string used as the brand name in the verification message."
+                },
+                {
+                  "disabled": false,
+                  "key": "code_length",
+                  "value": "4",
+                  "description": "The length of the verification code."
+                },
+                {
+                  "disabled": false,
+                  "key": "lg",
+                  "value": "<string>",
+                  "description": "By default, the SMS or TTS message is in the language that matches the number prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "workflow_id",
+                  "value": "<integer>",
+                  "description": "Selects the predefined sequence of SMS and TTS (text-to-speech) actions to use."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f3b2a5c9-7f10-4099-b87e-1470d28d8888",
+              "name": "Verification request created",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "verify",
+                    ":format"
+                  ],
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "format",
+                      "description": "(Required) Response format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The mobile or landline phone number to verify (E.164 format).",
+                        "type": "text/plain"
+                      },
+                      "key": "number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) An 18-character alphanumeric string used as the brand name in the verification message.",
+                        "type": "text/plain"
+                      },
+                      "key": "brand",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The length of the verification code.",
+                        "type": "text/plain"
+                      },
+                      "key": "code_length",
+                      "value": "4"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "By default, the SMS or TTS message is in the language that matches the number prefix.",
+                        "type": "text/plain"
+                      },
+                      "key": "lg",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Selects the predefined sequence of SMS and TTS (text-to-speech) actions to use.",
+                        "type": "text/plain"
+                      },
+                      "key": "workflow_id",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status\": \"string\",\n  \"error_text\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9429b179-0e3b-4c08-9e8c-0684a2797d06",
+          "name": "Check a Verification Code",
+          "request": {
+            "name": "Check a Verification Code",
+            "description": {
+              "content": "Confirm whether the PIN you received from your user matches the one sent by Vonage.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "verify",
+                "check",
+                ":format"
+              ],
+              "host": [
+                "api",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "format",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "request_id",
+                  "value": "<string>",
+                  "description": "(Required) The identifier of the Verify request to check."
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "(Required) The verification code entered by your user."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7820c974-938d-4956-8faa-abe53e9fc032",
+              "name": "Verification code checked",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "verify",
+                    "check",
+                    ":format"
+                  ],
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "format",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The identifier of the Verify request to check.",
+                        "type": "text/plain"
+                      },
+                      "key": "request_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The verification code entered by your user.",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"event_id\": \"string\",\n  \"status\": \"string\",\n  \"price\": \"string\",\n  \"currency\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b505feed-d4c8-4089-934e-043acc690756",
+          "name": "Search Verifications",
+          "request": {
+            "name": "Search Verifications",
+            "description": {
+              "content": "Lookup the status of one or more requests.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "verify",
+                "search",
+                ":format"
+              ],
+              "host": [
+                "api",
+                "nexmo",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "request_id",
+                  "value": "<string>",
+                  "description": "The request ID to search for."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "format",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0151878e-e280-4332-87e9-cb9bbaa3b5f9",
+              "name": "Verification status retrieved",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "verify",
+                    "search",
+                    ":format"
+                  ],
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "request_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "format",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"account_id\": \"string\",\n  \"status\": \"string\",\n  \"number\": \"string\",\n  \"price\": \"string\",\n  \"currency\": \"string\",\n  \"sender_id\": \"string\",\n  \"date_submitted\": \"string\",\n  \"date_finalized\": \"string\",\n  \"first_event_date\": \"string\",\n  \"last_event_date\": \"string\",\n  \"checks\": [\n    {\n      \"date_received\": \"string\",\n      \"code\": \"string\",\n      \"status\": \"string\",\n      \"ip_address\": \"string\"\n    },\n    {\n      \"date_received\": \"string\",\n      \"code\": \"string\",\n      \"status\": \"string\",\n      \"ip_address\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3faf3cf8-6602-41d3-a2b9-1e3c6bfb02f3",
+          "name": "Control a Verification",
+          "request": {
+            "name": "Control a Verification",
+            "description": {
+              "content": "Control the progress of your Verify requests, e.g., cancel or trigger next workflow.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "verify",
+                "control",
+                ":format"
+              ],
+              "host": [
+                "api",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "format",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "request_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "cmd",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ed269f0c-900c-4fe0-b346-925d53e82814",
+              "name": "Verification control command sent",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "verify",
+                    "control",
+                    ":format"
+                  ],
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "format",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "request_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "cmd",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "86173cac-79c8-48f3-8d5a-98792873f084",
+      "name": "Numbers",
+      "description": {
+        "content": "Provision and manage virtual phone numbers",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1e339393-039d-4bea-95b9-037d6f6d2bef",
+          "name": "List Owned Numbers",
+          "request": {
+            "name": "List Owned Numbers",
+            "description": {
+              "content": "Retrieve all the inbound numbers associated with your Vonage account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "account",
+                "numbers"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "The two-character country code in ISO 3166-1 alpha-2 format."
+                },
+                {
+                  "disabled": false,
+                  "key": "pattern",
+                  "value": "<string>",
+                  "description": "A pattern to filter the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "index",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "10"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "97656936-6a98-4aa5-a243-4fa1793d2b7f",
+              "name": "List of owned numbers",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "account",
+                    "numbers"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "index",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 4914,\n  \"numbers\": [\n    {\n      \"country\": \"string\",\n      \"msisdn\": \"string\",\n      \"type\": \"string\",\n      \"features\": [\n        \"SMS\",\n        \"MMS\"\n      ],\n      \"cost\": \"string\"\n    },\n    {\n      \"country\": \"string\",\n      \"msisdn\": \"string\",\n      \"type\": \"string\",\n      \"features\": [\n        \"SMS\",\n        \"MMS\"\n      ],\n      \"cost\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73ae0e5e-b880-4474-89d5-4a734ad5916e",
+          "name": "Search Available Numbers",
+          "request": {
+            "name": "Search Available Numbers",
+            "description": {
+              "content": "Retrieve inbound numbers that are available for purchase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "number",
+                "search"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) Two-character country code (ISO 3166-1 alpha-2)."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by number type."
+                },
+                {
+                  "disabled": false,
+                  "key": "pattern",
+                  "value": "<string>",
+                  "description": "A pattern to filter results."
+                },
+                {
+                  "disabled": false,
+                  "key": "features",
+                  "value": "<string>",
+                  "description": "Available features (SMS, VOICE, MMS)."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "index",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ba8b6ed1-5cfc-429d-b8c2-7a121c14c8e2",
+              "name": "Available numbers retrieved",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "number",
+                    "search"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "features",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "index",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2784,\n  \"numbers\": [\n    {\n      \"country\": \"string\",\n      \"msisdn\": \"string\",\n      \"type\": \"string\",\n      \"features\": [\n        \"SMS\",\n        \"SMS\"\n      ],\n      \"cost\": \"string\"\n    },\n    {\n      \"country\": \"string\",\n      \"msisdn\": \"string\",\n      \"type\": \"string\",\n      \"features\": [\n        \"VOICE\",\n        \"SMS\"\n      ],\n      \"cost\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae058fd3-7261-4645-bcfe-7871984c17a1",
+          "name": "Buy a Number",
+          "request": {
+            "name": "Buy a Number",
+            "description": {
+              "content": "Purchase a specific inbound number for use with your Vonage account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "number",
+                "buy"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) Two-character country code."
+                },
+                {
+                  "disabled": false,
+                  "key": "msisdn",
+                  "value": "<string>",
+                  "description": "(Required) The phone number to purchase."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "69bea74a-0252-4099-a657-e8951852b3dd",
+              "name": "Number purchased successfully",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "number",
+                    "buy"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Two-character country code.",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The phone number to purchase.",
+                        "type": "text/plain"
+                      },
+                      "key": "msisdn",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b40d431b-c026-4ce9-b5da-007582544db1",
+          "name": "Cancel a Number",
+          "request": {
+            "name": "Cancel a Number",
+            "description": {
+              "content": "Cancel your subscription for a specific inbound number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "number",
+                "cancel"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "msisdn",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "16cc6e59-61c1-458e-a61d-4bff24173e17",
+              "name": "Number cancelled successfully",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "number",
+                    "cancel"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "msisdn",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f9b82fcb-4abd-4088-a838-45ce8814cceb",
+          "name": "Update a Number",
+          "request": {
+            "name": "Update a Number",
+            "description": {
+              "content": "Change the behaviour of a number that you own.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "number",
+                "update"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "msisdn",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "mo_http_url",
+                  "value": "<string>",
+                  "description": "Inbound SMS webhook URL."
+                },
+                {
+                  "disabled": false,
+                  "key": "voice_callback_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "voice_callback_value",
+                  "value": "<string>",
+                  "description": "Destination for inbound calls."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d9b7e809-edbb-4757-8341-95fcf38fb92a",
+              "name": "Number updated successfully",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "number",
+                    "update"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "msisdn",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Inbound SMS webhook URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "mo_http_url",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "voice_callback_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Destination for inbound calls.",
+                        "type": "text/plain"
+                      },
+                      "key": "voice_callback_value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "334a7d0f-7d5b-46d7-9099-81d8f59179d1",
+      "name": "Applications",
+      "description": {
+        "content": "Configure Vonage application settings and webhooks",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aad67336-3e7e-40f1-9738-61ce91c59d60",
+          "name": "List Applications",
+          "request": {
+            "name": "List Applications",
+            "description": {
+              "content": "Retrieve all Vonage applications associated with your account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10",
+                  "description": "Number of applications per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f22a6f65-a8c2-492c-b1e4-a34636515502",
+              "name": "Applications retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page_size\": 2289,\n  \"page\": 2852,\n  \"total_items\": 314,\n  \"total_pages\": 9044,\n  \"_embedded\": {\n    \"applications\": [\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"capabilities\": {\n          \"voice\": {},\n          \"messages\": {},\n          \"rtc\": {},\n          \"vbc\": {}\n        },\n        \"keys\": {\n          \"public_key\": \"string\",\n          \"private_key\": \"string\"\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"capabilities\": {\n          \"voice\": {},\n          \"messages\": {},\n          \"rtc\": {},\n          \"vbc\": {}\n        },\n        \"keys\": {\n          \"public_key\": \"string\",\n          \"private_key\": \"string\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dee933aa-30e2-42c0-9115-9543aed87d47",
+          "name": "Create an Application",
+          "request": {
+            "name": "Create an Application",
+            "description": {
+              "content": "Create a new Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8f65a6c2-35e5-4842-aa2b-c8861e484a9e",
+              "name": "Application created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"capabilities\": {\n    \"voice\": {},\n    \"messages\": {},\n    \"rtc\": {},\n    \"vbc\": {}\n  },\n  \"keys\": {\n    \"public_key\": \"string\",\n    \"private_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c03c0294-0ace-485c-ba82-3f49251424b0",
+          "name": "Get an Application",
+          "request": {
+            "name": "Get an Application",
+            "description": {
+              "content": "Retrieve details of a specific Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The application ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a3a07a38-3f17-4f27-9ed1-9caaea0d5cf8",
+              "name": "Application details retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"capabilities\": {\n    \"voice\": {},\n    \"messages\": {},\n    \"rtc\": {},\n    \"vbc\": {}\n  },\n  \"keys\": {\n    \"public_key\": \"string\",\n    \"private_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0ab095e4-c69c-4a6c-93ff-45620ad7b177",
+          "name": "Update an Application",
+          "request": {
+            "name": "Update an Application",
+            "description": {
+              "content": "Update an existing Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5477ba65-6ad1-49cf-9242-7af9b39db4e2",
+              "name": "Application updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"capabilities\": {\n    \"voice\": {},\n    \"messages\": {},\n    \"rtc\": {},\n    \"vbc\": {}\n  },\n  \"keys\": {\n    \"public_key\": \"string\",\n    \"private_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a30db998-87e7-45c5-a258-d1a0d9f8c1af",
+          "name": "Delete an Application",
+          "request": {
+            "name": "Delete an Application",
+            "description": {
+              "content": "Delete a Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d946396e-71b5-4e48-9bf4-ec641cb1ec7b",
+              "name": "Application deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0bdcd792-718f-4085-9b13-6f8058212968",
+      "name": "Conversations",
+      "description": {
+        "content": "Multi-channel conversation threading",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "30840453-4054-451f-a50b-7bbfa1752a6a",
+      "name": "Reports",
+      "description": {
+        "content": "Historical records and message lookup",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "7b86c24a-4e4a-427f-a1e6-2723bec6fa4e",
+      "name": "Account",
+      "description": {
+        "content": "Account and subaccount management",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.nexmo.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8dad89d8-fc5f-4725-bbda-338c43a29a98",
+    "name": "Vonage Communications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

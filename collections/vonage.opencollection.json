@@ -1,0 +1,865 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vonage Communications API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send an SMS Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/sms/json",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "to",
+                  "value": ""
+                },
+                {
+                  "name": "from",
+                  "value": ""
+                },
+                {
+                  "name": "text",
+                  "value": ""
+                },
+                {
+                  "name": "type",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Send an outbound SMS from your Vonage number."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Voice",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/v1/calls",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by call status."
+              },
+              {
+                "name": "date_start",
+                "value": "",
+                "type": "query",
+                "description": "Return calls created after this date."
+              },
+              {
+                "name": "date_end",
+                "value": "",
+                "type": "query",
+                "description": "Return calls created before this date."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page."
+              },
+              {
+                "name": "record_index",
+                "value": "",
+                "type": "query",
+                "description": "Start index for pagination."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve details of your calls."
+        },
+        {
+          "info": {
+            "name": "Create an Outbound Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/v1/calls",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create an outbound Call to a Phone Number or SIP Endpoint."
+        },
+        {
+          "info": {
+            "name": "Get Call Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/v1/calls/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get details of a specific call."
+        },
+        {
+          "info": {
+            "name": "Modify an In-Progress Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v1/calls/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Modify an in-progress call."
+        },
+        {
+          "info": {
+            "name": "Play Audio Into a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/stream",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Play an audio file into a call."
+        },
+        {
+          "info": {
+            "name": "Stop Audio Stream in a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/stream",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Stop playing an audio file into a call."
+        },
+        {
+          "info": {
+            "name": "Play Text-to-Speech in a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/talk",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Play text to speech into a call."
+        },
+        {
+          "info": {
+            "name": "Stop Text-to-Speech in a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/talk",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Stop playing text to speech in a call."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/v1/messages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Send a message to a given channel (SMS, WhatsApp, Messenger, Viber, MMS, RCS)."
+        },
+        {
+          "info": {
+            "name": "Update a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.nexmo.com/v1/messages/:message_uuid",
+            "params": [
+              {
+                "name": "message_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the message."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update the status of a message (e.g., mark as read)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Verify",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/verify/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path",
+                "description": "Response format."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "number",
+                  "value": ""
+                },
+                {
+                  "name": "brand",
+                  "value": ""
+                },
+                {
+                  "name": "code_length",
+                  "value": ""
+                },
+                {
+                  "name": "lg",
+                  "value": ""
+                },
+                {
+                  "name": "workflow_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use Verify to ensure that you can contact a user at a specific number."
+        },
+        {
+          "info": {
+            "name": "Check a Verification Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/verify/check/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "request_id",
+                  "value": ""
+                },
+                {
+                  "name": "code",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Confirm whether the PIN you received from your user matches the one sent by Vonage."
+        },
+        {
+          "info": {
+            "name": "Search Verifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/verify/search/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "api_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "api_secret",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "query",
+                "description": "The request ID to search for."
+              }
+            ]
+          },
+          "docs": "Lookup the status of one or more requests."
+        },
+        {
+          "info": {
+            "name": "Control a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/verify/control/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "request_id",
+                  "value": ""
+                },
+                {
+                  "name": "cmd",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Control the progress of your Verify requests, e.g., cancel or trigger next workflow."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Numbers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Owned Numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/account/numbers",
+            "params": [
+              {
+                "name": "api_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "api_secret",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "The two-character country code in ISO 3166-1 alpha-2 format."
+              },
+              {
+                "name": "pattern",
+                "value": "",
+                "type": "query",
+                "description": "A pattern to filter the results."
+              },
+              {
+                "name": "index",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve all the inbound numbers associated with your Vonage account."
+        },
+        {
+          "info": {
+            "name": "Search Available Numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/number/search",
+            "params": [
+              {
+                "name": "api_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "api_secret",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "Two-character country code (ISO 3166-1 alpha-2)."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by number type."
+              },
+              {
+                "name": "pattern",
+                "value": "",
+                "type": "query",
+                "description": "A pattern to filter results."
+              },
+              {
+                "name": "features",
+                "value": "",
+                "type": "query",
+                "description": "Available features (SMS, VOICE, MMS)."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "index",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve inbound numbers that are available for purchase."
+        },
+        {
+          "info": {
+            "name": "Buy a Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/number/buy",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "country",
+                  "value": ""
+                },
+                {
+                  "name": "msisdn",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Purchase a specific inbound number for use with your Vonage account."
+        },
+        {
+          "info": {
+            "name": "Cancel a Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/number/cancel",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "country",
+                  "value": ""
+                },
+                {
+                  "name": "msisdn",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Cancel your subscription for a specific inbound number."
+        },
+        {
+          "info": {
+            "name": "Update a Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/number/update",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "country",
+                  "value": ""
+                },
+                {
+                  "name": "msisdn",
+                  "value": ""
+                },
+                {
+                  "name": "mo_http_url",
+                  "value": ""
+                },
+                {
+                  "name": "voice_callback_type",
+                  "value": ""
+                },
+                {
+                  "name": "voice_callback_value",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Change the behaviour of a number that you own."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/v2/applications",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of applications per page."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve all Vonage applications associated with your account."
+        },
+        {
+          "info": {
+            "name": "Create an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/v2/applications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new Vonage application."
+        },
+        {
+          "info": {
+            "name": "Get an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/v2/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The application ID."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve details of a specific Vonage application."
+        },
+        {
+          "info": {
+            "name": "Update an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v2/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update an existing Vonage application."
+        },
+        {
+          "info": {
+            "name": "Delete an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.nexmo.com/v2/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete a Vonage application."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
