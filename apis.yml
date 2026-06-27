@@ -225,35 +225,35 @@ common:
   description: Community Slack workspace for Vonage developers.
 - url: https://github.com/Vonage/vonage-node-sdk
   name: Vonage Node.js SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for Node.js.
 - url: https://github.com/Vonage/vonage-python-sdk
   name: Vonage Python SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for Python.
 - url: https://github.com/Vonage/vonage-java-sdk
   name: Vonage Java SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for Java.
 - url: https://github.com/Vonage/vonage-php-sdk-core
   name: Vonage PHP SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for PHP.
 - url: https://github.com/Vonage/vonage-ruby-sdk
   name: Vonage Ruby SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for Ruby.
 - url: https://github.com/Vonage/vonage-dotnet-sdk
   name: Vonage .NET SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for .NET/C#.
 - url: https://github.com/Vonage/vonage-go-sdk
   name: Vonage Go SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for Go.
 - url: https://github.com/Vonage/vonage-kotlin-sdk
   name: Vonage Kotlin SDK
-  type: SDK
+  type: SDKs
   description: Official Vonage SDK for Kotlin.
 - url: https://github.com/Vonage/vonage-cli
   name: Vonage CLI
@@ -297,7 +297,7 @@ common:
 - name: MCP Server
   url: https://github.com/Vonage/vonage-mcp-server-documentation
   type: MCPServer
-- type: LLMsTxt
+- type: LlmsText
   url: https://developer.vonage.com/llms.txt
 integrations:
 - name: Vonage
