@@ -1,0 +1,20 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/vonage-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: Base64-encoded API key and secret joined by a colon.
+  sources:
+  - openapi/vonage-openapi.yml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: JWT token for application-level authentication.
+  sources:
+  - openapi/vonage-openapi.yml

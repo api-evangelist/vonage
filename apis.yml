@@ -193,6 +193,12 @@ description: Vonage (part of Ericsson) provides cloud communications APIs for vo
   two-factor authentication. SDKs are available for Node.js, Python, Java, PHP, Ruby,
   .NET, Go, and Kotlin.
 common:
+- type: VulnerabilityDisclosure
+  url: security/vonage-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/vonage-domain-security.yml
+- type: Authentication
+  url: authentication/vonage-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/vonage
 - url: https://developer.vonage.com/
