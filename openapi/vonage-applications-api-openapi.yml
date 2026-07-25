@@ -1,0 +1,235 @@
+openapi: 3.0.3
+info:
+  title: Vonage Communications Applications API
+  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
+  version: 1.0.0
+  contact:
+    name: Vonage Developer Support
+    url: https://api.support.vonage.com/hc/en-us
+  termsOfService: https://www.vonage.com/legal/
+servers:
+- url: https://api.nexmo.com
+  description: Vonage API Main Server
+- url: https://rest.nexmo.com
+  description: Vonage REST API Server
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Applications
+  description: Configure Vonage application settings and webhooks
+paths:
+  /v2/applications:
+    get:
+      operationId: listApplications
+      summary: List Applications
+      description: Retrieve all Vonage applications associated with your account.
+      tags:
+      - Applications
+      security:
+      - basicAuth: []
+      parameters:
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          default: 10
+        description: Number of applications per page.
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+        description: Page number.
+      responses:
+        '200':
+          description: Applications retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationList'
+    post:
+      operationId: createApplication
+      summary: Create an Application
+      description: Create a new Vonage application.
+      tags:
+      - Applications
+      security:
+      - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+      responses:
+        '201':
+          description: Application created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /v2/applications/{id}:
+    get:
+      operationId: getApplication
+      summary: Get an Application
+      description: Retrieve details of a specific Vonage application.
+      tags:
+      - Applications
+      security:
+      - basicAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The application ID.
+      responses:
+        '200':
+          description: Application details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    put:
+      operationId: updateApplication
+      summary: Update an Application
+      description: Update an existing Vonage application.
+      tags:
+      - Applications
+      security:
+      - basicAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+      responses:
+        '200':
+          description: Application updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    delete:
+      operationId: deleteApplication
+      summary: Delete an Application
+      description: Delete a Vonage application.
+      tags:
+      - Applications
+      security:
+      - basicAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Application deleted
+components:
+  schemas:
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        capabilities:
+          type: object
+          properties:
+            voice:
+              type: object
+            messages:
+              type: object
+            rtc:
+              type: object
+            vbc:
+              type: object
+        keys:
+          type: object
+          properties:
+            public_key:
+              type: string
+            private_key:
+              type: string
+    ApplicationRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Application name.
+        capabilities:
+          type: object
+          description: Vonage capabilities for this application.
+          properties:
+            voice:
+              type: object
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    answer_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        http_method:
+                          type: string
+                    event_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        http_method:
+                          type: string
+            messages:
+              type: object
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    inbound_url:
+                      type: object
+                    status_url:
+                      type: object
+    ApplicationList:
+      type: object
+      properties:
+        page_size:
+          type: integer
+        page:
+          type: integer
+        total_items:
+          type: integer
+        total_pages:
+          type: integer
+        _embedded:
+          type: object
+          properties:
+            applications:
+              type: array
+              items:
+                $ref: '#/components/schemas/Application'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Base64-encoded API key and secret joined by a colon.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for application-level authentication.

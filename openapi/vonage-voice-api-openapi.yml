@@ -1,0 +1,402 @@
+openapi: 3.0.3
+info:
+  title: Vonage Communications Applications Voice API
+  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
+  version: 1.0.0
+  contact:
+    name: Vonage Developer Support
+    url: https://api.support.vonage.com/hc/en-us
+  termsOfService: https://www.vonage.com/legal/
+servers:
+- url: https://api.nexmo.com
+  description: Vonage API Main Server
+- url: https://rest.nexmo.com
+  description: Vonage REST API Server
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Voice
+  description: Create and control voice calls
+paths:
+  /v1/calls:
+    get:
+      operationId: listCalls
+      summary: List Calls
+      description: Retrieve details of your calls.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - started
+          - ringing
+          - answered
+          - machine
+          - completed
+          - busy
+          - cancelled
+          - failed
+          - rejected
+          - timeout
+          - unanswered
+        description: Filter by call status.
+      - name: date_start
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: Return calls created after this date.
+      - name: date_end
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: Return calls created before this date.
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        description: Number of results per page.
+      - name: record_index
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Start index for pagination.
+      responses:
+        '200':
+          description: Calls retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallList'
+    post:
+      operationId: createCall
+      summary: Create an Outbound Call
+      description: Create an outbound Call to a Phone Number or SIP Endpoint.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCallRequest'
+      responses:
+        '201':
+          description: Call created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+  /v1/calls/{uuid}:
+    get:
+      operationId: getCall
+      summary: Get Call Details
+      description: Get details of a specific call.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the call.
+      responses:
+        '200':
+          description: Call details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+    put:
+      operationId: updateCall
+      summary: Modify an In-Progress Call
+      description: Modify an in-progress call.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum:
+                  - hangup
+                  - mute
+                  - unmute
+                  - earmuff
+                  - unearmuff
+                  - transfer
+                  description: The action to take on the call.
+                destination:
+                  type: object
+                  description: Transfer destination (for transfer action).
+      responses:
+        '204':
+          description: Call updated successfully
+  /v1/calls/{uuid}/stream:
+    put:
+      operationId: playAudioStream
+      summary: Play Audio Into a Call
+      description: Play an audio file into a call.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - stream_url
+              properties:
+                stream_url:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of URLs to stream the audio from.
+                loop:
+                  type: integer
+                  default: 1
+                  description: Number of times to play the audio.
+      responses:
+        '200':
+          description: Audio stream started
+    delete:
+      operationId: stopAudioStream
+      summary: Stop Audio Stream in a Call
+      description: Stop playing an audio file into a call.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the call.
+      responses:
+        '200':
+          description: Audio stream stopped
+  /v1/calls/{uuid}/talk:
+    put:
+      operationId: playTextToSpeech
+      summary: Play Text-to-Speech in a Call
+      description: Play text to speech into a call.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - text
+              properties:
+                text:
+                  type: string
+                  description: Text to be read to the callee.
+                voice_name:
+                  type: string
+                  description: The voice to use for text-to-speech.
+                loop:
+                  type: integer
+                  default: 1
+                  description: Number of times to repeat the text.
+      responses:
+        '200':
+          description: Text-to-speech started
+    delete:
+      operationId: stopTextToSpeech
+      summary: Stop Text-to-Speech in a Call
+      description: Stop playing text to speech in a call.
+      tags:
+      - Voice
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the call.
+      responses:
+        '200':
+          description: Text-to-speech stopped
+components:
+  schemas:
+    Call:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Unique identifier for the call.
+        conversation_uuid:
+          type: string
+        status:
+          type: string
+          enum:
+          - started
+          - ringing
+          - answered
+          - machine
+          - completed
+          - busy
+          - cancelled
+          - failed
+          - rejected
+          - timeout
+          - unanswered
+        direction:
+          type: string
+          enum:
+          - outbound
+          - inbound
+        rate:
+          type: string
+        price:
+          type: string
+        duration:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        network:
+          type: string
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        to:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+    CreateCallRequest:
+      type: object
+      required:
+      - to
+      - from
+      - ncco
+      properties:
+        to:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - phone
+                - sip
+                - websocket
+                - vbc
+              number:
+                type: string
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        ncco:
+          type: array
+          description: Vonage Call Control Object instructions.
+          items:
+            type: object
+        record:
+          type: boolean
+          description: Record the call.
+        answer_url:
+          type: array
+          items:
+            type: string
+          description: Answer webhook URL.
+        event_url:
+          type: array
+          items:
+            type: string
+          description: Event webhook URL.
+    CallList:
+      type: object
+      properties:
+        count:
+          type: integer
+        page_size:
+          type: integer
+        record_index:
+          type: integer
+        _embedded:
+          type: object
+          properties:
+            calls:
+              type: array
+              items:
+                $ref: '#/components/schemas/Call'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Base64-encoded API key and secret joined by a colon.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for application-level authentication.

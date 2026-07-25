@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Vonage Communications Applications SMS API
+  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
+  version: 1.0.0
+  contact:
+    name: Vonage Developer Support
+    url: https://api.support.vonage.com/hc/en-us
+  termsOfService: https://www.vonage.com/legal/
+servers:
+- url: https://api.nexmo.com
+  description: Vonage API Main Server
+- url: https://rest.nexmo.com
+  description: Vonage REST API Server
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: SMS
+  description: Send and receive SMS messages
+paths:
+  /sms/json:
+    post:
+      operationId: sendSms
+      summary: Send an SMS Message
+      description: Send an outbound SMS from your Vonage number.
+      tags:
+      - SMS
+      servers:
+      - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - api_key
+              - api_secret
+              - to
+              - from
+              - text
+              properties:
+                api_key:
+                  type: string
+                  description: Your Vonage API key.
+                api_secret:
+                  type: string
+                  description: Your Vonage API secret.
+                to:
+                  type: string
+                  description: The phone number to send the message to (E.164 format).
+                from:
+                  type: string
+                  description: The sender phone number or name.
+                text:
+                  type: string
+                  description: The body of the SMS message.
+                type:
+                  type: string
+                  enum:
+                  - text
+                  - binary
+                  - unicode
+                  description: The format of the message body.
+                  default: text
+      responses:
+        '200':
+          description: SMS sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsResponse'
+components:
+  schemas:
+    SmsResponse:
+      type: object
+      properties:
+        message-count:
+          type: string
+          description: Number of message parts sent.
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              to:
+                type: string
+              message-id:
+                type: string
+              status:
+                type: string
+              remaining-balance:
+                type: string
+              message-price:
+                type: string
+              network:
+                type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Base64-encoded API key and secret joined by a colon.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for application-level authentication.

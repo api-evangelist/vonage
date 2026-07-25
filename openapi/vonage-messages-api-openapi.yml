@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Vonage Communications Applications Messages API
+  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
+  version: 1.0.0
+  contact:
+    name: Vonage Developer Support
+    url: https://api.support.vonage.com/hc/en-us
+  termsOfService: https://www.vonage.com/legal/
+servers:
+- url: https://api.nexmo.com
+  description: Vonage API Main Server
+- url: https://rest.nexmo.com
+  description: Vonage REST API Server
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Messages
+  description: Multi-channel messaging via SMS, WhatsApp, Messenger, Viber, MMS, RCS
+paths:
+  /v1/messages:
+    post:
+      operationId: sendMessage
+      summary: Send a Message
+      description: Send a message to a given channel (SMS, WhatsApp, Messenger, Viber, MMS, RCS).
+      tags:
+      - Messages
+      servers:
+      - url: https://api.nexmo.com
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+      responses:
+        '202':
+          description: Message accepted for delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /v1/messages/{message_uuid}:
+    patch:
+      operationId: updateMessage
+      summary: Update a Message
+      description: Update the status of a message (e.g., mark as read).
+      tags:
+      - Messages
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: message_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The UUID of the message.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - read
+      responses:
+        '200':
+          description: Message updated successfully
+components:
+  schemas:
+    MessageResponse:
+      type: object
+      properties:
+        message_uuid:
+          type: string
+          description: Unique identifier for the sent message.
+    MessageRequest:
+      type: object
+      required:
+      - message_type
+      - to
+      - from
+      - channel
+      properties:
+        message_type:
+          type: string
+          enum:
+          - text
+          - image
+          - audio
+          - video
+          - file
+          - template
+          - custom
+        to:
+          type: string
+          description: Recipient phone number or ID.
+        from:
+          type: string
+          description: Sender number or ID.
+        channel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - messenger
+          - viber_service
+          - mms
+          - rcs
+        text:
+          type: string
+          description: Message text (for text messages).
+        image:
+          type: object
+          description: Image content (for image messages).
+          properties:
+            url:
+              type: string
+            caption:
+              type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Base64-encoded API key and secret joined by a colon.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for application-level authentication.

@@ -1,0 +1,295 @@
+openapi: 3.0.3
+info:
+  title: Vonage Communications Applications Numbers API
+  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
+  version: 1.0.0
+  contact:
+    name: Vonage Developer Support
+    url: https://api.support.vonage.com/hc/en-us
+  termsOfService: https://www.vonage.com/legal/
+servers:
+- url: https://api.nexmo.com
+  description: Vonage API Main Server
+- url: https://rest.nexmo.com
+  description: Vonage REST API Server
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Numbers
+  description: Provision and manage virtual phone numbers
+paths:
+  /account/numbers:
+    get:
+      operationId: listOwnedNumbers
+      summary: List Owned Numbers
+      description: Retrieve all the inbound numbers associated with your Vonage account.
+      tags:
+      - Numbers
+      servers:
+      - url: https://rest.nexmo.com
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: api_secret
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: country
+        in: query
+        schema:
+          type: string
+        description: The two-character country code in ISO 3166-1 alpha-2 format.
+      - name: pattern
+        in: query
+        schema:
+          type: string
+        description: A pattern to filter the results.
+      - name: index
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+      responses:
+        '200':
+          description: List of owned numbers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberList'
+  /number/search:
+    get:
+      operationId: searchAvailableNumbers
+      summary: Search Available Numbers
+      description: Retrieve inbound numbers that are available for purchase.
+      tags:
+      - Numbers
+      servers:
+      - url: https://rest.nexmo.com
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: api_secret
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: country
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Two-character country code (ISO 3166-1 alpha-2).
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - landline
+          - mobile-lvn
+          - landline-toll-free
+        description: Filter by number type.
+      - name: pattern
+        in: query
+        schema:
+          type: string
+        description: A pattern to filter results.
+      - name: features
+        in: query
+        schema:
+          type: string
+        description: Available features (SMS, VOICE, MMS).
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+      - name: index
+        in: query
+        schema:
+          type: integer
+          default: 1
+      responses:
+        '200':
+          description: Available numbers retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableNumberList'
+  /number/buy:
+    post:
+      operationId: buyNumber
+      summary: Buy a Number
+      description: Purchase a specific inbound number for use with your Vonage account.
+      tags:
+      - Numbers
+      servers:
+      - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - api_key
+              - api_secret
+              - country
+              - msisdn
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                country:
+                  type: string
+                  description: Two-character country code.
+                msisdn:
+                  type: string
+                  description: The phone number to purchase.
+      responses:
+        '200':
+          description: Number purchased successfully
+  /number/cancel:
+    post:
+      operationId: cancelNumber
+      summary: Cancel a Number
+      description: Cancel your subscription for a specific inbound number.
+      tags:
+      - Numbers
+      servers:
+      - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - api_key
+              - api_secret
+              - country
+              - msisdn
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                country:
+                  type: string
+                msisdn:
+                  type: string
+      responses:
+        '200':
+          description: Number cancelled successfully
+  /number/update:
+    post:
+      operationId: updateNumber
+      summary: Update a Number
+      description: Change the behaviour of a number that you own.
+      tags:
+      - Numbers
+      servers:
+      - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - api_key
+              - api_secret
+              - country
+              - msisdn
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                country:
+                  type: string
+                msisdn:
+                  type: string
+                mo_http_url:
+                  type: string
+                  description: Inbound SMS webhook URL.
+                voice_callback_type:
+                  type: string
+                  enum:
+                  - sip
+                  - tel
+                  - app
+                voice_callback_value:
+                  type: string
+                  description: Destination for inbound calls.
+      responses:
+        '200':
+          description: Number updated successfully
+components:
+  schemas:
+    AvailableNumberList:
+      type: object
+      properties:
+        count:
+          type: integer
+        numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Number'
+    Number:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Two-character country code.
+        msisdn:
+          type: string
+          description: Phone number in E.164 format.
+        type:
+          type: string
+          description: Number type (mobile-lvn, landline, landline-toll-free).
+        features:
+          type: array
+          items:
+            type: string
+            enum:
+            - SMS
+            - VOICE
+            - MMS
+        cost:
+          type: string
+          description: Monthly cost of the number.
+    NumberList:
+      type: object
+      properties:
+        count:
+          type: integer
+        numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Number'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Base64-encoded API key and secret joined by a colon.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for application-level authentication.
