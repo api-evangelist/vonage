@@ -1,126 +1,6 @@
 aid: vonage
 url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/apis.yml
 apis:
-- aid: vonage:vonage-sms-api
-  name: Vonage SMS API
-  tags:
-  - Communication
-  - Messaging
-  - SMS
-  - Telecommunications
-  humanURL: https://developer.vonage.com/en/api/sms
-  baseURL: https://rest.nexmo.com
-  description: Send and receive SMS messages globally using Vonage's SMS API. Supports
-    text, binary, and unicode message types with delivery receipts and inbound message
-    webhooks.
-  properties:
-  - url: https://developer.vonage.com/en/api/sms
-    type: Documentation
-  - url: https://rest.nexmo.com
-    type: BaseURL
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
-    type: OpenAPI
-  - url: graphql/vonage-graphql.md
-    type: GraphQL
-- aid: vonage:vonage-voice-api
-  name: Vonage Voice API
-  tags:
-  - Communication
-  - Telecommunications
-  - Voice
-  - VoIP
-  humanURL: https://developer.vonage.com/en/api/voice
-  baseURL: https://api.nexmo.com/v1
-  description: Create and control outbound and inbound voice calls using Vonage's
-    Voice API. Supports PSTN, SIP, WebSocket, and VBC endpoints with NCCO (Vonage
-    Call Control Object) for call flow management.
-  properties:
-  - url: https://developer.vonage.com/en/api/voice
-    type: Documentation
-  - url: https://api.nexmo.com/v1
-    type: BaseURL
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
-    type: OpenAPI
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
-    type: AsyncAPI
-- aid: vonage:vonage-messages-api
-  name: Vonage Messages API
-  tags:
-  - Communication
-  - Messaging
-  - Omnichannel
-  - WhatsApp
-  - RCS
-  humanURL: https://developer.vonage.com/en/api/messages-olympus
-  baseURL: https://api.nexmo.com/v1/messages
-  description: Multi-channel messaging API supporting SMS, WhatsApp, Facebook Messenger,
-    Viber, MMS, and RCS. Send and receive messages across multiple channels with a
-    unified API interface.
-  properties:
-  - url: https://developer.vonage.com/en/api/messages-olympus
-    type: Documentation
-  - url: https://api.nexmo.com/v1/messages
-    type: BaseURL
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
-    type: OpenAPI
-- aid: vonage:vonage-verify-api
-  name: Vonage Verify API
-  tags:
-  - Authentication
-  - Communication
-  - Security
-  - Two-Factor Authentication
-  - Verification
-  humanURL: https://developer.vonage.com/en/api/verify
-  baseURL: https://api.nexmo.com
-  description: Two-factor authentication and phone verification API. Confirm user
-    phone numbers via SMS, TTS, or WhatsApp verification codes to prevent fraud and
-    authenticate users.
-  properties:
-  - url: https://developer.vonage.com/en/api/verify
-    type: Documentation
-  - url: https://api.nexmo.com
-    type: BaseURL
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
-    type: OpenAPI
-- aid: vonage:vonage-numbers-api
-  name: Vonage Numbers API
-  tags:
-  - Communication
-  - Number Management
-  - Telecommunications
-  - Virtual Numbers
-  humanURL: https://developer.vonage.com/en/api/numbers
-  baseURL: https://rest.nexmo.com
-  description: Provision and manage virtual phone numbers globally. Search available
-    numbers, purchase numbers for your account, and configure number behavior including
-    inbound SMS and voice call routing.
-  properties:
-  - url: https://developer.vonage.com/en/api/numbers
-    type: Documentation
-  - url: https://rest.nexmo.com
-    type: BaseURL
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
-    type: OpenAPI
-- aid: vonage:vonage-application-api
-  name: Vonage Application API
-  tags:
-  - API Management
-  - Communication
-  - Configuration
-  - Developer Tools
-  humanURL: https://developer.vonage.com/en/api/application.v2
-  baseURL: https://api.nexmo.com/v2/applications
-  description: Configure Vonage application settings, webhook URLs, and authentication
-    keys. Create and manage applications that group Vonage API capabilities including
-    voice, messages, RTC, meetings, and video features.
-  properties:
-  - url: https://developer.vonage.com/en/api/application.v2
-    type: Documentation
-  - url: https://api.nexmo.com/v2/applications
-    type: BaseURL
-  - url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml
-    type: OpenAPI
 - aid: vonage:vonage-conversations-api
   name: Vonage Conversations API
   tags:
@@ -130,9 +10,9 @@ apis:
   - Real-Time
   humanURL: https://developer.vonage.com/en/api/conversation
   baseURL: https://api.nexmo.com/v1
-  description: Build multi-channel conversation experiences with threading across
-    SMS, voice, and messaging channels. Manage members, events, and legs within conversation
-    contexts.
+  description: >-
+    Build multi-channel conversation experiences with threading across SMS, voice, and messaging channels.
+    Manage members, events, and legs within conversation contexts.
   properties:
   - url: https://developer.vonage.com/en/api/conversation
     type: Documentation
@@ -146,8 +26,9 @@ apis:
   - Reporting
   humanURL: https://developer.vonage.com/en/reports/overview
   baseURL: https://api.nexmo.com/v2/reports
-  description: Generate historical reports and lookup messages sent through your Vonage
-    account. Access delivery receipts, call records, and usage data.
+  description: >-
+    Generate historical reports and lookup messages sent through your Vonage account. Access delivery
+    receipts, call records, and usage data.
   properties:
   - url: https://developer.vonage.com/en/reports/overview
     type: Documentation
@@ -162,8 +43,9 @@ apis:
   - WebRTC
   humanURL: https://developer.vonage.com/en/video/overview
   baseURL: https://api.opentok.com
-  description: Embed live, interactive video into web, mobile, and desktop applications
-    using WebRTC. Supports sessions, tokens, broadcasting, recording, and SIP interconnect.
+  description: >-
+    Embed live, interactive video into web, mobile, and desktop applications using WebRTC. Supports sessions,
+    tokens, broadcasting, recording, and SIP interconnect.
   properties:
   - url: https://developer.vonage.com/en/video/overview
     type: Documentation
@@ -171,6 +53,228 @@ apis:
     type: Portal
   - url: https://api.opentok.com
     type: BaseURL
+- aid: vonage:vonage-applications-api
+  name: Vonage Applications API
+  description: Configure Vonage application settings and webhooks
+  humanURL: https://developer.vonage.com/en/api/sms
+  baseURL: https://rest.nexmo.com
+  tags:
+  - Applications
+  properties:
+  - type: OpenAPI
+    url: openapi/vonage-applications-api-openapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/sms
+  - type: BaseURL
+    url: https://rest.nexmo.com
+  - type: GraphQL
+    url: graphql/vonage-graphql.md
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/voice
+  - type: BaseURL
+    url: https://api.nexmo.com/v1
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/messages-olympus
+  - type: BaseURL
+    url: https://api.nexmo.com/v1/messages
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/verify
+  - type: BaseURL
+    url: https://api.nexmo.com
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/numbers
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/application.v2
+  - type: BaseURL
+    url: https://api.nexmo.com/v2/applications
+- aid: vonage:vonage-messages-api
+  name: Vonage Messages API
+  description: Multi-channel messaging via SMS, WhatsApp, Messenger, Viber, MMS, RCS
+  humanURL: https://developer.vonage.com/en/api/sms
+  baseURL: https://rest.nexmo.com
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/vonage-messages-api-openapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/sms
+  - type: BaseURL
+    url: https://rest.nexmo.com
+  - type: GraphQL
+    url: graphql/vonage-graphql.md
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/voice
+  - type: BaseURL
+    url: https://api.nexmo.com/v1
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/messages-olympus
+  - type: BaseURL
+    url: https://api.nexmo.com/v1/messages
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/verify
+  - type: BaseURL
+    url: https://api.nexmo.com
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/numbers
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/application.v2
+  - type: BaseURL
+    url: https://api.nexmo.com/v2/applications
+- aid: vonage:vonage-numbers-api
+  name: Vonage Numbers API
+  description: Provision and manage virtual phone numbers
+  humanURL: https://developer.vonage.com/en/api/sms
+  baseURL: https://rest.nexmo.com
+  tags:
+  - Numbers
+  properties:
+  - type: OpenAPI
+    url: openapi/vonage-numbers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/sms
+  - type: BaseURL
+    url: https://rest.nexmo.com
+  - type: GraphQL
+    url: graphql/vonage-graphql.md
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/voice
+  - type: BaseURL
+    url: https://api.nexmo.com/v1
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/messages-olympus
+  - type: BaseURL
+    url: https://api.nexmo.com/v1/messages
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/verify
+  - type: BaseURL
+    url: https://api.nexmo.com
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/numbers
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/application.v2
+  - type: BaseURL
+    url: https://api.nexmo.com/v2/applications
+- aid: vonage:vonage-sms-api
+  name: Vonage SMS API
+  description: Send and receive SMS messages
+  humanURL: https://developer.vonage.com/en/api/sms
+  baseURL: https://rest.nexmo.com
+  tags:
+  - SMS
+  properties:
+  - type: OpenAPI
+    url: openapi/vonage-sms-api-openapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/sms
+  - type: BaseURL
+    url: https://rest.nexmo.com
+  - type: GraphQL
+    url: graphql/vonage-graphql.md
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/voice
+  - type: BaseURL
+    url: https://api.nexmo.com/v1
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/messages-olympus
+  - type: BaseURL
+    url: https://api.nexmo.com/v1/messages
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/verify
+  - type: BaseURL
+    url: https://api.nexmo.com
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/numbers
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/application.v2
+  - type: BaseURL
+    url: https://api.nexmo.com/v2/applications
+- aid: vonage:vonage-verify-api
+  name: Vonage Verify API
+  description: Two-factor authentication and phone verification
+  humanURL: https://developer.vonage.com/en/api/sms
+  baseURL: https://rest.nexmo.com
+  tags:
+  - Verify
+  properties:
+  - type: OpenAPI
+    url: openapi/vonage-verify-api-openapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/sms
+  - type: BaseURL
+    url: https://rest.nexmo.com
+  - type: GraphQL
+    url: graphql/vonage-graphql.md
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/voice
+  - type: BaseURL
+    url: https://api.nexmo.com/v1
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/messages-olympus
+  - type: BaseURL
+    url: https://api.nexmo.com/v1/messages
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/verify
+  - type: BaseURL
+    url: https://api.nexmo.com
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/numbers
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/application.v2
+  - type: BaseURL
+    url: https://api.nexmo.com/v2/applications
+- aid: vonage:vonage-voice-api
+  name: Vonage Voice API
+  description: Create and control voice calls
+  humanURL: https://developer.vonage.com/en/api/sms
+  baseURL: https://rest.nexmo.com
+  tags:
+  - Voice
+  properties:
+  - type: OpenAPI
+    url: openapi/vonage-voice-api-openapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/sms
+  - type: BaseURL
+    url: https://rest.nexmo.com
+  - type: GraphQL
+    url: graphql/vonage-graphql.md
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/voice
+  - type: BaseURL
+    url: https://api.nexmo.com/v1
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/messages-olympus
+  - type: BaseURL
+    url: https://api.nexmo.com/v1/messages
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/verify
+  - type: BaseURL
+    url: https://api.nexmo.com
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/numbers
+  - type: Documentation
+    url: https://developer.vonage.com/en/api/application.v2
+  - type: BaseURL
+    url: https://api.nexmo.com/v2/applications
 name: Vonage
 tags:
 - Communication
@@ -181,7 +285,20 @@ tags:
 - SMS
 - Verification
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/vonage.png
 access: 3rd-Party
 created: '2025-02-08'
 modified: '2026-05-29'
@@ -193,6 +310,8 @@ description: Vonage (part of Ericsson) provides cloud communications APIs for vo
   two-factor authentication. SDKs are available for Node.js, Python, Java, PHP, Ruby,
   .NET, Go, and Kotlin.
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/vonage/overview
 - type: AgenticAccess
   url: agentic-access/vonage-agentic-access.yml
 - type: VulnerabilityDisclosure
