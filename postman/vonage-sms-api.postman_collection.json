@@ -1,0 +1,212 @@
+{
+  "info": {
+    "_postman_id": "0c76bbe6-74b3-4d50-8521-5ee11f352338",
+    "name": "Vonage Communications Applications SMS API",
+    "description": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:28:43.000Z",
+    "updatedAt": "2026-07-28T03:28:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0c76bbe6-74b3-4d50-8521-5ee11f352338"
+  },
+  "item": [
+    {
+      "name": "sms",
+      "item": [
+        {
+          "name": "json",
+          "item": [
+            {
+              "name": "Send an SMS Message",
+              "id": "9a2e8285-a1c7-47ed-9634-17ffc970f2d8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Your Vonage API key.",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Vonage API secret.",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) The phone number to send the message to (E.164 format).",
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) The sender phone number or name.",
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) The body of the SMS message.",
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The format of the message body.",
+                      "key": "type",
+                      "value": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "https://rest.nexmo.com/sms/json",
+                  "protocol": "https",
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "sms",
+                    "json"
+                  ]
+                },
+                "description": "Send an outbound SMS from your Vonage number."
+              },
+              "response": [
+                {
+                  "id": "43c2c9f2-43e8-47cb-8b79-6e70e9b674c3",
+                  "name": "SMS sent successfully",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Your Vonage API key.",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Your Vonage API secret.",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The phone number to send the message to (E.164 format).",
+                          "key": "to",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The sender phone number or name.",
+                          "key": "from",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The body of the SMS message.",
+                          "key": "text",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The format of the message body.",
+                          "key": "type",
+                          "value": "text"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://rest.nexmo.com/sms/json",
+                      "protocol": "https",
+                      "host": [
+                        "rest",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "sms",
+                        "json"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message-count\": \"<string>\",\n  \"messages\": [\n    {\n      \"to\": \"<string>\",\n      \"message-id\": \"<string>\",\n      \"status\": \"<string>\",\n      \"remaining-balance\": \"<string>\",\n      \"message-price\": \"<string>\",\n      \"network\": \"<string>\"\n    },\n    {\n      \"to\": \"<string>\",\n      \"message-id\": \"<string>\",\n      \"status\": \"<string>\",\n      \"remaining-balance\": \"<string>\",\n      \"message-price\": \"<string>\",\n      \"network\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T03:28:43.000Z",
+                  "updatedAt": "2026-07-28T03:28:43.000Z",
+                  "uid": "35240-43c2c9f2-43e8-47cb-8b79-6e70e9b674c3"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:43.000Z",
+              "updatedAt": "2026-07-28T03:28:43.000Z",
+              "uid": "35240-9a2e8285-a1c7-47ed-9634-17ffc970f2d8"
+            }
+          ],
+          "id": "1ae2d305-da91-4490-bd86-abee3e20ee57",
+          "createdAt": "2026-07-28T03:28:43.000Z",
+          "updatedAt": "2026-07-28T03:28:43.000Z",
+          "uid": "35240-1ae2d305-da91-4490-bd86-abee3e20ee57"
+        }
+      ],
+      "id": "cef5ca52-f0c6-475e-b4ea-2b33b3759ffe",
+      "createdAt": "2026-07-28T03:28:43.000Z",
+      "updatedAt": "2026-07-28T03:28:43.000Z",
+      "uid": "35240-cef5ca52-f0c6-475e-b4ea-2b33b3759ffe"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.nexmo.com"
+    }
+  ]
+}

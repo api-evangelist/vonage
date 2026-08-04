@@ -1,0 +1,24 @@
+{
+  "provider": "vonage",
+  "sources": [
+    "vonage-applications-api-openapi.yml",
+    "vonage-messages-api-openapi.yml",
+    "vonage-numbers-api-openapi.yml",
+    "vonage-sms-api-openapi.yml",
+    "vonage-verify-api-openapi.yml",
+    "vonage-voice-api-openapi.yml"
+  ],
+  "outputs": [
+    "vonage-applications-api-openapi.yml",
+    "vonage-messages-api-openapi.yml",
+    "vonage-numbers-api-openapi.yml",
+    "vonage-sms-api-openapi.yml",
+    "vonage-verify-api-openapi.yml",
+    "vonage-voice-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

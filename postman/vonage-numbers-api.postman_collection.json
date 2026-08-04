@@ -1,0 +1,806 @@
+{
+  "info": {
+    "_postman_id": "4700a219-1d56-4753-862c-bf9337219cda",
+    "name": "Vonage Communications Applications Numbers API",
+    "description": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:28:42.000Z",
+    "updatedAt": "2026-07-28T03:28:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4700a219-1d56-4753-862c-bf9337219cda"
+  },
+  "item": [
+    {
+      "name": "account",
+      "item": [
+        {
+          "name": "numbers",
+          "item": [
+            {
+              "name": "List Owned Numbers",
+              "id": "db4b9657-f334-4bfa-a12b-7600f04dd405",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "https://rest.nexmo.com/account/numbers?api_key=<string>&api_secret=<string>&country=<string>&pattern=<string>&index=1&size=10",
+                  "protocol": "https",
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "account",
+                    "numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The two-character country code in ISO 3166-1 alpha-2 format.",
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A pattern to filter the results.",
+                      "key": "pattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "index",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                },
+                "description": "Retrieve all the inbound numbers associated with your Vonage account."
+              },
+              "response": [
+                {
+                  "id": "17e7851f-b394-4872-beb1-5bd426d2ed12",
+                  "name": "List of owned numbers",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://rest.nexmo.com/account/numbers?api_key=<string>&api_secret=<string>&country=<string>&pattern=<string>&index=1&size=10",
+                      "protocol": "https",
+                      "host": [
+                        "rest",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "account",
+                        "numbers"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The two-character country code in ISO 3166-1 alpha-2 format.",
+                          "key": "country",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "A pattern to filter the results.",
+                          "key": "pattern",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "index",
+                          "value": "1"
+                        },
+                        {
+                          "key": "size",
+                          "value": "10"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"count\": \"<integer>\",\n  \"numbers\": [\n    {\n      \"country\": \"<string>\",\n      \"msisdn\": \"<string>\",\n      \"type\": \"<string>\",\n      \"features\": [\n        \"VOICE\",\n        \"VOICE\"\n      ],\n      \"cost\": \"<string>\"\n    },\n    {\n      \"country\": \"<string>\",\n      \"msisdn\": \"<string>\",\n      \"type\": \"<string>\",\n      \"features\": [\n        \"SMS\",\n        \"VOICE\"\n      ],\n      \"cost\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T03:28:42.000Z",
+                  "updatedAt": "2026-07-28T03:28:42.000Z",
+                  "uid": "35240-17e7851f-b394-4872-beb1-5bd426d2ed12"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:42.000Z",
+              "updatedAt": "2026-07-28T03:28:42.000Z",
+              "uid": "35240-db4b9657-f334-4bfa-a12b-7600f04dd405"
+            }
+          ],
+          "id": "a165bab5-2c20-43b8-bba0-3b4a23687576",
+          "createdAt": "2026-07-28T03:28:42.000Z",
+          "updatedAt": "2026-07-28T03:28:42.000Z",
+          "uid": "35240-a165bab5-2c20-43b8-bba0-3b4a23687576"
+        }
+      ],
+      "id": "d04b5672-9cb7-439b-b297-6fb0a3f8a1ec",
+      "createdAt": "2026-07-28T03:28:42.000Z",
+      "updatedAt": "2026-07-28T03:28:42.000Z",
+      "uid": "35240-d04b5672-9cb7-439b-b297-6fb0a3f8a1ec"
+    },
+    {
+      "name": "number",
+      "item": [
+        {
+          "name": "search",
+          "item": [
+            {
+              "name": "Search Available Numbers",
+              "id": "42ef2d22-1585-4f59-97c2-1ef4ce844625",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "https://rest.nexmo.com/number/search?api_key=<string>&api_secret=<string>&country=<string>&type=landline&pattern=<string>&features=<string>&size=10&index=1",
+                  "protocol": "https",
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "number",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Two-character country code (ISO 3166-1 alpha-2).",
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by number type.",
+                      "key": "type",
+                      "value": "landline"
+                    },
+                    {
+                      "description": "A pattern to filter results.",
+                      "key": "pattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Available features (SMS, VOICE, MMS).",
+                      "key": "features",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "index",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Retrieve inbound numbers that are available for purchase."
+              },
+              "response": [
+                {
+                  "id": "acda38b3-63ba-4fca-8ea6-d0e75187107c",
+                  "name": "Available numbers retrieved",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://rest.nexmo.com/number/search?api_key=<string>&api_secret=<string>&country=<string>&type=landline&pattern=<string>&features=<string>&size=10&index=1",
+                      "protocol": "https",
+                      "host": [
+                        "rest",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "number",
+                        "search"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Two-character country code (ISO 3166-1 alpha-2).",
+                          "key": "country",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by number type.",
+                          "key": "type",
+                          "value": "landline"
+                        },
+                        {
+                          "description": "A pattern to filter results.",
+                          "key": "pattern",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Available features (SMS, VOICE, MMS).",
+                          "key": "features",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "size",
+                          "value": "10"
+                        },
+                        {
+                          "key": "index",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"count\": \"<integer>\",\n  \"numbers\": [\n    {\n      \"country\": \"<string>\",\n      \"msisdn\": \"<string>\",\n      \"type\": \"<string>\",\n      \"features\": [\n        \"VOICE\",\n        \"VOICE\"\n      ],\n      \"cost\": \"<string>\"\n    },\n    {\n      \"country\": \"<string>\",\n      \"msisdn\": \"<string>\",\n      \"type\": \"<string>\",\n      \"features\": [\n        \"SMS\",\n        \"VOICE\"\n      ],\n      \"cost\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T03:28:42.000Z",
+                  "updatedAt": "2026-07-28T03:28:42.000Z",
+                  "uid": "35240-acda38b3-63ba-4fca-8ea6-d0e75187107c"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:42.000Z",
+              "updatedAt": "2026-07-28T03:28:42.000Z",
+              "uid": "35240-42ef2d22-1585-4f59-97c2-1ef4ce844625"
+            }
+          ],
+          "id": "905c2b4c-b1ae-431f-ad5e-43788fa44816",
+          "createdAt": "2026-07-28T03:28:42.000Z",
+          "updatedAt": "2026-07-28T03:28:42.000Z",
+          "uid": "35240-905c2b4c-b1ae-431f-ad5e-43788fa44816"
+        },
+        {
+          "name": "buy",
+          "item": [
+            {
+              "name": "Buy a Number",
+              "id": "d921f8ef-82da-4a7c-b83e-28cd0799cc35",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) ",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Two-character country code.",
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) The phone number to purchase.",
+                      "key": "msisdn",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "https://rest.nexmo.com/number/buy",
+                  "protocol": "https",
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "number",
+                    "buy"
+                  ]
+                },
+                "description": "Purchase a specific inbound number for use with your Vonage account."
+              },
+              "response": [
+                {
+                  "id": "7469f4fb-8d02-4434-87ce-d59ce21017cf",
+                  "name": "Number purchased successfully",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Two-character country code.",
+                          "key": "country",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The phone number to purchase.",
+                          "key": "msisdn",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://rest.nexmo.com/number/buy",
+                      "protocol": "https",
+                      "host": [
+                        "rest",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "number",
+                        "buy"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:28:42.000Z",
+                  "updatedAt": "2026-07-28T03:28:42.000Z",
+                  "uid": "35240-7469f4fb-8d02-4434-87ce-d59ce21017cf"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:42.000Z",
+              "updatedAt": "2026-07-28T03:28:42.000Z",
+              "uid": "35240-d921f8ef-82da-4a7c-b83e-28cd0799cc35"
+            }
+          ],
+          "id": "4c3094d3-76d7-401f-82ea-538d2526d5cb",
+          "createdAt": "2026-07-28T03:28:42.000Z",
+          "updatedAt": "2026-07-28T03:28:42.000Z",
+          "uid": "35240-4c3094d3-76d7-401f-82ea-538d2526d5cb"
+        },
+        {
+          "name": "cancel",
+          "item": [
+            {
+              "name": "Cancel a Number",
+              "id": "3b23326c-1981-4853-a880-71195f48ecd2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) ",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "msisdn",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "https://rest.nexmo.com/number/cancel",
+                  "protocol": "https",
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "number",
+                    "cancel"
+                  ]
+                },
+                "description": "Cancel your subscription for a specific inbound number."
+              },
+              "response": [
+                {
+                  "id": "aa571840-508b-438a-b078-c2844556643c",
+                  "name": "Number cancelled successfully",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "country",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "msisdn",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://rest.nexmo.com/number/cancel",
+                      "protocol": "https",
+                      "host": [
+                        "rest",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "number",
+                        "cancel"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:28:42.000Z",
+                  "updatedAt": "2026-07-28T03:28:42.000Z",
+                  "uid": "35240-aa571840-508b-438a-b078-c2844556643c"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:42.000Z",
+              "updatedAt": "2026-07-28T03:28:42.000Z",
+              "uid": "35240-3b23326c-1981-4853-a880-71195f48ecd2"
+            }
+          ],
+          "id": "a2aa4be8-52d5-4be8-9bd8-89084384ec94",
+          "createdAt": "2026-07-28T03:28:42.000Z",
+          "updatedAt": "2026-07-28T03:28:42.000Z",
+          "uid": "35240-a2aa4be8-52d5-4be8-9bd8-89084384ec94"
+        },
+        {
+          "name": "update",
+          "item": [
+            {
+              "name": "Update a Number",
+              "id": "f251dcbe-9d2b-4e15-83a3-e3f2d9022de9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) ",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "msisdn",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Inbound SMS webhook URL.",
+                      "key": "mo_http_url",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "voice_callback_type",
+                      "value": "tel"
+                    },
+                    {
+                      "description": "Destination for inbound calls.",
+                      "key": "voice_callback_value",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "https://rest.nexmo.com/number/update",
+                  "protocol": "https",
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "number",
+                    "update"
+                  ]
+                },
+                "description": "Change the behaviour of a number that you own."
+              },
+              "response": [
+                {
+                  "id": "08f58c4e-6f76-4c0f-80c1-0329eda227d7",
+                  "name": "Number updated successfully",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "country",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "msisdn",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Inbound SMS webhook URL.",
+                          "key": "mo_http_url",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "voice_callback_type",
+                          "value": "tel"
+                        },
+                        {
+                          "description": "Destination for inbound calls.",
+                          "key": "voice_callback_value",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://rest.nexmo.com/number/update",
+                      "protocol": "https",
+                      "host": [
+                        "rest",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "number",
+                        "update"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:28:42.000Z",
+                  "updatedAt": "2026-07-28T03:28:42.000Z",
+                  "uid": "35240-08f58c4e-6f76-4c0f-80c1-0329eda227d7"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:42.000Z",
+              "updatedAt": "2026-07-28T03:28:42.000Z",
+              "uid": "35240-f251dcbe-9d2b-4e15-83a3-e3f2d9022de9"
+            }
+          ],
+          "id": "b15ac0ac-a966-4c2f-8c4d-edd110b31956",
+          "createdAt": "2026-07-28T03:28:42.000Z",
+          "updatedAt": "2026-07-28T03:28:42.000Z",
+          "uid": "35240-b15ac0ac-a966-4c2f-8c4d-edd110b31956"
+        }
+      ],
+      "id": "fc9b2733-e362-45cf-a9db-764926379764",
+      "createdAt": "2026-07-28T03:28:42.000Z",
+      "updatedAt": "2026-07-28T03:28:42.000Z",
+      "uid": "35240-fc9b2733-e362-45cf-a9db-764926379764"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.nexmo.com"
+    }
+  ]
+}

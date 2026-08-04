@@ -1,0 +1,714 @@
+{
+  "info": {
+    "_postman_id": "980d996c-93ac-4b18-9893-f8a8745dd4da",
+    "name": "Vonage Communications Applications Verify API",
+    "description": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:28:45.000Z",
+    "updatedAt": "2026-07-28T03:28:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-980d996c-93ac-4b18-9893-f8a8745dd4da"
+  },
+  "item": [
+    {
+      "name": "verify",
+      "item": [
+        {
+          "name": "{format}",
+          "item": [
+            {
+              "name": "Request a Verification",
+              "id": "0e65f322-cb3a-411f-a040-e4addd6432dc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) ",
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) The mobile or landline phone number to verify (E.164 format).",
+                      "key": "number",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) An 18-character alphanumeric string used as the brand name in the verification message.",
+                      "key": "brand",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The length of the verification code.",
+                      "key": "code_length",
+                      "value": "4"
+                    },
+                    {
+                      "description": "By default, the SMS or TTS message is in the language that matches the number prefix.",
+                      "key": "lg",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Selects the predefined sequence of SMS and TTS (text-to-speech) actions to use.",
+                      "key": "workflow_id",
+                      "value": "<integer>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "https://api.nexmo.com/verify/:format",
+                  "protocol": "https",
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "verify",
+                    ":format"
+                  ],
+                  "variable": [
+                    {
+                      "id": "3f97813c-e965-4b0b-b8c5-88df2833712a",
+                      "key": "format",
+                      "value": "xml",
+                      "description": "(Required) Response format."
+                    }
+                  ]
+                },
+                "description": "Use Verify to ensure that you can contact a user at a specific number."
+              },
+              "response": [
+                {
+                  "id": "c852fdb3-cc4a-4d92-90b6-89103de212d6",
+                  "name": "Verification request created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The mobile or landline phone number to verify (E.164 format).",
+                          "key": "number",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) An 18-character alphanumeric string used as the brand name in the verification message.",
+                          "key": "brand",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The length of the verification code.",
+                          "key": "code_length",
+                          "value": "4"
+                        },
+                        {
+                          "description": "By default, the SMS or TTS message is in the language that matches the number prefix.",
+                          "key": "lg",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Selects the predefined sequence of SMS and TTS (text-to-speech) actions to use.",
+                          "key": "workflow_id",
+                          "value": "<integer>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://api.nexmo.com/verify/:format",
+                      "protocol": "https",
+                      "host": [
+                        "api",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "verify",
+                        ":format"
+                      ],
+                      "variable": [
+                        {
+                          "key": "format"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"request_id\": \"<string>\",\n  \"status\": \"<string>\",\n  \"error_text\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T03:28:46.000Z",
+                  "updatedAt": "2026-07-28T03:28:46.000Z",
+                  "uid": "35240-c852fdb3-cc4a-4d92-90b6-89103de212d6"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:46.000Z",
+              "updatedAt": "2026-07-28T03:28:46.000Z",
+              "uid": "35240-0e65f322-cb3a-411f-a040-e4addd6432dc"
+            }
+          ],
+          "id": "d58b6b84-54a9-4125-ab11-93d9485ed942",
+          "createdAt": "2026-07-28T03:28:45.000Z",
+          "updatedAt": "2026-07-28T03:28:45.000Z",
+          "uid": "35240-d58b6b84-54a9-4125-ab11-93d9485ed942"
+        },
+        {
+          "name": "check",
+          "item": [
+            {
+              "name": "{format}",
+              "item": [
+                {
+                  "name": "Check a Verification Code",
+                  "id": "db956c65-47fb-4da9-a5c5-53631e5d6654",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The identifier of the Verify request to check.",
+                          "key": "request_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The verification code entered by your user.",
+                          "key": "code",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://api.nexmo.com/verify/check/:format",
+                      "protocol": "https",
+                      "host": [
+                        "api",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "verify",
+                        "check",
+                        ":format"
+                      ],
+                      "variable": [
+                        {
+                          "id": "51a50481-5849-4701-aa0d-a21cbea21b70",
+                          "key": "format",
+                          "value": "xml",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Confirm whether the PIN you received from your user matches the one sent by Vonage."
+                  },
+                  "response": [
+                    {
+                      "id": "7a57ba7d-1c46-40e2-969a-4fc47f5f3c46",
+                      "name": "Verification code checked",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) ",
+                              "key": "api_key",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "api_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) The identifier of the Verify request to check.",
+                              "key": "request_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) The verification code entered by your user.",
+                              "key": "code",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "https://api.nexmo.com/verify/check/:format",
+                          "protocol": "https",
+                          "host": [
+                            "api",
+                            "nexmo",
+                            "com"
+                          ],
+                          "path": [
+                            "verify",
+                            "check",
+                            ":format"
+                          ],
+                          "variable": [
+                            {
+                              "key": "format"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"request_id\": \"<string>\",\n  \"event_id\": \"<string>\",\n  \"status\": \"<string>\",\n  \"price\": \"<string>\",\n  \"currency\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T03:28:46.000Z",
+                      "updatedAt": "2026-07-28T03:28:46.000Z",
+                      "uid": "35240-7a57ba7d-1c46-40e2-969a-4fc47f5f3c46"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:28:46.000Z",
+                  "updatedAt": "2026-07-28T03:28:46.000Z",
+                  "uid": "35240-db956c65-47fb-4da9-a5c5-53631e5d6654"
+                }
+              ],
+              "id": "1277ab31-0155-4942-9029-310e9b6ce250",
+              "createdAt": "2026-07-28T03:28:45.000Z",
+              "updatedAt": "2026-07-28T03:28:45.000Z",
+              "uid": "35240-1277ab31-0155-4942-9029-310e9b6ce250"
+            }
+          ],
+          "id": "7fc27c7c-54bc-4411-86b5-c1102229c9f5",
+          "createdAt": "2026-07-28T03:28:45.000Z",
+          "updatedAt": "2026-07-28T03:28:45.000Z",
+          "uid": "35240-7fc27c7c-54bc-4411-86b5-c1102229c9f5"
+        },
+        {
+          "name": "search",
+          "item": [
+            {
+              "name": "{format}",
+              "item": [
+                {
+                  "name": "Search Verifications",
+                  "id": "d0d637b8-d3c9-4eb8-b643-6ec4237dbf30",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://api.nexmo.com/verify/search/:format?api_key=<string>&api_secret=<string>&request_id=<string>",
+                      "protocol": "https",
+                      "host": [
+                        "api",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "verify",
+                        "search",
+                        ":format"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The request ID to search for.",
+                          "key": "request_id",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "e0d26586-1a1c-4da0-b8e8-254a5835dd25",
+                          "key": "format",
+                          "value": "xml",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Lookup the status of one or more requests."
+                  },
+                  "response": [
+                    {
+                      "id": "281b1cdf-2b5b-42cd-a68e-c3e9d2032174",
+                      "name": "Verification status retrieved",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://api.nexmo.com/verify/search/:format?api_key=<string>&api_secret=<string>&request_id=<string>",
+                          "protocol": "https",
+                          "host": [
+                            "api",
+                            "nexmo",
+                            "com"
+                          ],
+                          "path": [
+                            "verify",
+                            "search",
+                            ":format"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) ",
+                              "key": "api_key",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "api_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The request ID to search for.",
+                              "key": "request_id",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "format"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"request_id\": \"<string>\",\n  \"account_id\": \"<string>\",\n  \"status\": \"<string>\",\n  \"number\": \"<string>\",\n  \"price\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"sender_id\": \"<string>\",\n  \"date_submitted\": \"<string>\",\n  \"date_finalized\": \"<string>\",\n  \"first_event_date\": \"<string>\",\n  \"last_event_date\": \"<string>\",\n  \"checks\": [\n    {\n      \"date_received\": \"<string>\",\n      \"code\": \"<string>\",\n      \"status\": \"<string>\",\n      \"ip_address\": \"<string>\"\n    },\n    {\n      \"date_received\": \"<string>\",\n      \"code\": \"<string>\",\n      \"status\": \"<string>\",\n      \"ip_address\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T03:28:46.000Z",
+                      "updatedAt": "2026-07-28T03:28:46.000Z",
+                      "uid": "35240-281b1cdf-2b5b-42cd-a68e-c3e9d2032174"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:28:46.000Z",
+                  "updatedAt": "2026-07-28T03:28:46.000Z",
+                  "uid": "35240-d0d637b8-d3c9-4eb8-b643-6ec4237dbf30"
+                }
+              ],
+              "id": "dad00b85-eb32-4384-a973-1616cbe594ba",
+              "createdAt": "2026-07-28T03:28:45.000Z",
+              "updatedAt": "2026-07-28T03:28:45.000Z",
+              "uid": "35240-dad00b85-eb32-4384-a973-1616cbe594ba"
+            }
+          ],
+          "id": "52dc9553-eac7-4533-8136-727708b661a5",
+          "createdAt": "2026-07-28T03:28:45.000Z",
+          "updatedAt": "2026-07-28T03:28:45.000Z",
+          "uid": "35240-52dc9553-eac7-4533-8136-727708b661a5"
+        },
+        {
+          "name": "control",
+          "item": [
+            {
+              "name": "{format}",
+              "item": [
+                {
+                  "name": "Control a Verification",
+                  "id": "528e029f-6fae-4758-b5a3-03ef2c2af218",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) ",
+                          "key": "api_key",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "api_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "request_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "cmd",
+                          "value": "trigger_next_event"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://api.nexmo.com/verify/control/:format",
+                      "protocol": "https",
+                      "host": [
+                        "api",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "verify",
+                        "control",
+                        ":format"
+                      ],
+                      "variable": [
+                        {
+                          "id": "0ffcac08-532e-4053-b17a-8d3e38d6be5f",
+                          "key": "format",
+                          "value": "xml",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Control the progress of your Verify requests, e.g., cancel or trigger next workflow."
+                  },
+                  "response": [
+                    {
+                      "id": "da1026fa-5efe-4503-b2c7-5f8bd0571956",
+                      "name": "Verification control command sent",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) ",
+                              "key": "api_key",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "api_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "request_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "cmd",
+                              "value": "trigger_next_event"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "https://api.nexmo.com/verify/control/:format",
+                          "protocol": "https",
+                          "host": [
+                            "api",
+                            "nexmo",
+                            "com"
+                          ],
+                          "path": [
+                            "verify",
+                            "control",
+                            ":format"
+                          ],
+                          "variable": [
+                            {
+                              "key": "format"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:28:46.000Z",
+                      "updatedAt": "2026-07-28T03:28:46.000Z",
+                      "uid": "35240-da1026fa-5efe-4503-b2c7-5f8bd0571956"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:28:46.000Z",
+                  "updatedAt": "2026-07-28T03:28:46.000Z",
+                  "uid": "35240-528e029f-6fae-4758-b5a3-03ef2c2af218"
+                }
+              ],
+              "id": "af3560e0-e8dd-4c0c-8f4c-164f60577cee",
+              "createdAt": "2026-07-28T03:28:45.000Z",
+              "updatedAt": "2026-07-28T03:28:45.000Z",
+              "uid": "35240-af3560e0-e8dd-4c0c-8f4c-164f60577cee"
+            }
+          ],
+          "id": "5e7ff573-614f-46a2-8644-23d1ea011a22",
+          "createdAt": "2026-07-28T03:28:45.000Z",
+          "updatedAt": "2026-07-28T03:28:45.000Z",
+          "uid": "35240-5e7ff573-614f-46a2-8644-23d1ea011a22"
+        }
+      ],
+      "id": "8fc4057c-61bc-4c63-a7a4-49f5ea8c3f5d",
+      "createdAt": "2026-07-28T03:28:45.000Z",
+      "updatedAt": "2026-07-28T03:28:45.000Z",
+      "uid": "35240-8fc4057c-61bc-4c63-a7a4-49f5ea8c3f5d"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.nexmo.com"
+    }
+  ]
+}

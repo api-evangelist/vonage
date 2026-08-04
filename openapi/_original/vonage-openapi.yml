@@ -1,0 +1,1248 @@
+openapi: 3.0.3
+info:
+  title: Vonage Communications API
+  description: >-
+    Vonage provides cloud communications APIs for voice, SMS, messaging, video,
+    and verification. The Vonage API platform enables businesses to build
+    communication features into applications including voice calls, SMS, video
+    conferencing, two-factor authentication, and number management.
+  version: 1.0.0
+  contact:
+    name: Vonage Developer Support
+    url: https://api.support.vonage.com/hc/en-us
+  termsOfService: https://www.vonage.com/legal/
+servers:
+  - url: https://api.nexmo.com
+    description: Vonage API Main Server
+  - url: https://rest.nexmo.com
+    description: Vonage REST API Server
+security:
+  - basicAuth: []
+  - bearerAuth: []
+tags:
+  - name: SMS
+    description: Send and receive SMS messages
+  - name: Voice
+    description: Create and control voice calls
+  - name: Messages
+    description: Multi-channel messaging via SMS, WhatsApp, Messenger, Viber, MMS, RCS
+  - name: Verify
+    description: Two-factor authentication and phone verification
+  - name: Numbers
+    description: Provision and manage virtual phone numbers
+  - name: Applications
+    description: Configure Vonage application settings and webhooks
+  - name: Conversations
+    description: Multi-channel conversation threading
+  - name: Reports
+    description: Historical records and message lookup
+  - name: Account
+    description: Account and subaccount management
+paths:
+  /sms/json:
+    post:
+      operationId: sendSms
+      summary: Send an SMS Message
+      description: Send an outbound SMS from your Vonage number.
+      tags:
+        - SMS
+      servers:
+        - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - to
+                - from
+                - text
+              properties:
+                api_key:
+                  type: string
+                  description: Your Vonage API key.
+                api_secret:
+                  type: string
+                  description: Your Vonage API secret.
+                to:
+                  type: string
+                  description: The phone number to send the message to (E.164 format).
+                from:
+                  type: string
+                  description: The sender phone number or name.
+                text:
+                  type: string
+                  description: The body of the SMS message.
+                type:
+                  type: string
+                  enum: [text, binary, unicode]
+                  description: The format of the message body.
+                  default: text
+      responses:
+        '200':
+          description: SMS sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsResponse'
+  /v1/calls:
+    get:
+      operationId: listCalls
+      summary: List Calls
+      description: Retrieve details of your calls.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [started, ringing, answered, machine, completed, busy, cancelled, failed, rejected, timeout, unanswered]
+          description: Filter by call status.
+        - name: date_start
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Return calls created after this date.
+        - name: date_end
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Return calls created before this date.
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+          description: Number of results per page.
+        - name: record_index
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Start index for pagination.
+      responses:
+        '200':
+          description: Calls retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallList'
+    post:
+      operationId: createCall
+      summary: Create an Outbound Call
+      description: Create an outbound Call to a Phone Number or SIP Endpoint.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCallRequest'
+      responses:
+        '201':
+          description: Call created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+  /v1/calls/{uuid}:
+    get:
+      operationId: getCall
+      summary: Get Call Details
+      description: Get details of a specific call.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the call.
+      responses:
+        '200':
+          description: Call details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+    put:
+      operationId: updateCall
+      summary: Modify an In-Progress Call
+      description: Modify an in-progress call.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [hangup, mute, unmute, earmuff, unearmuff, transfer]
+                  description: The action to take on the call.
+                destination:
+                  type: object
+                  description: Transfer destination (for transfer action).
+      responses:
+        '204':
+          description: Call updated successfully
+  /v1/calls/{uuid}/stream:
+    put:
+      operationId: playAudioStream
+      summary: Play Audio Into a Call
+      description: Play an audio file into a call.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stream_url
+              properties:
+                stream_url:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of URLs to stream the audio from.
+                loop:
+                  type: integer
+                  default: 1
+                  description: Number of times to play the audio.
+      responses:
+        '200':
+          description: Audio stream started
+    delete:
+      operationId: stopAudioStream
+      summary: Stop Audio Stream in a Call
+      description: Stop playing an audio file into a call.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the call.
+      responses:
+        '200':
+          description: Audio stream stopped
+  /v1/calls/{uuid}/talk:
+    put:
+      operationId: playTextToSpeech
+      summary: Play Text-to-Speech in a Call
+      description: Play text to speech into a call.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: Text to be read to the callee.
+                voice_name:
+                  type: string
+                  description: The voice to use for text-to-speech.
+                loop:
+                  type: integer
+                  default: 1
+                  description: Number of times to repeat the text.
+      responses:
+        '200':
+          description: Text-to-speech started
+    delete:
+      operationId: stopTextToSpeech
+      summary: Stop Text-to-Speech in a Call
+      description: Stop playing text to speech in a call.
+      tags:
+        - Voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the call.
+      responses:
+        '200':
+          description: Text-to-speech stopped
+  /v1/messages:
+    post:
+      operationId: sendMessage
+      summary: Send a Message
+      description: Send a message to a given channel (SMS, WhatsApp, Messenger, Viber, MMS, RCS).
+      tags:
+        - Messages
+      servers:
+        - url: https://api.nexmo.com
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+      responses:
+        '202':
+          description: Message accepted for delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /v1/messages/{message_uuid}:
+    patch:
+      operationId: updateMessage
+      summary: Update a Message
+      description: Update the status of a message (e.g., mark as read).
+      tags:
+        - Messages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: message_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the message.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [read]
+      responses:
+        '200':
+          description: Message updated successfully
+  /verify/{format}:
+    post:
+      operationId: requestVerification
+      summary: Request a Verification
+      description: Use Verify to ensure that you can contact a user at a specific number.
+      tags:
+        - Verify
+      servers:
+        - url: https://api.nexmo.com
+      parameters:
+        - name: format
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [json, xml]
+          description: Response format.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - number
+                - brand
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                number:
+                  type: string
+                  description: The mobile or landline phone number to verify (E.164 format).
+                brand:
+                  type: string
+                  description: An 18-character alphanumeric string used as the brand name in the verification message.
+                code_length:
+                  type: integer
+                  enum: [4, 6]
+                  default: 4
+                  description: The length of the verification code.
+                lg:
+                  type: string
+                  description: By default, the SMS or TTS message is in the language that matches the number prefix.
+                workflow_id:
+                  type: integer
+                  description: Selects the predefined sequence of SMS and TTS (text-to-speech) actions to use.
+      responses:
+        '200':
+          description: Verification request created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+  /verify/check/{format}:
+    post:
+      operationId: checkVerification
+      summary: Check a Verification Code
+      description: Confirm whether the PIN you received from your user matches the one sent by Vonage.
+      tags:
+        - Verify
+      servers:
+        - url: https://api.nexmo.com
+      parameters:
+        - name: format
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [json, xml]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - request_id
+                - code
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                request_id:
+                  type: string
+                  description: The identifier of the Verify request to check.
+                code:
+                  type: string
+                  description: The verification code entered by your user.
+      responses:
+        '200':
+          description: Verification code checked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyCheckResponse'
+  /verify/search/{format}:
+    get:
+      operationId: searchVerification
+      summary: Search Verifications
+      description: Lookup the status of one or more requests.
+      tags:
+        - Verify
+      servers:
+        - url: https://api.nexmo.com
+      parameters:
+        - name: format
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [json, xml]
+        - name: api_key
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: api_secret
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: request_id
+          in: query
+          schema:
+            type: string
+          description: The request ID to search for.
+      responses:
+        '200':
+          description: Verification status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifySearchResponse'
+  /verify/control/{format}:
+    post:
+      operationId: controlVerification
+      summary: Control a Verification
+      description: Control the progress of your Verify requests, e.g., cancel or trigger next workflow.
+      tags:
+        - Verify
+      servers:
+        - url: https://api.nexmo.com
+      parameters:
+        - name: format
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [json, xml]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - request_id
+                - cmd
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                request_id:
+                  type: string
+                cmd:
+                  type: string
+                  enum: [cancel, trigger_next_event]
+      responses:
+        '200':
+          description: Verification control command sent
+  /account/numbers:
+    get:
+      operationId: listOwnedNumbers
+      summary: List Owned Numbers
+      description: Retrieve all the inbound numbers associated with your Vonage account.
+      tags:
+        - Numbers
+      servers:
+        - url: https://rest.nexmo.com
+      parameters:
+        - name: api_key
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: api_secret
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: country
+          in: query
+          schema:
+            type: string
+          description: The two-character country code in ISO 3166-1 alpha-2 format.
+        - name: pattern
+          in: query
+          schema:
+            type: string
+          description: A pattern to filter the results.
+        - name: index
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+      responses:
+        '200':
+          description: List of owned numbers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberList'
+  /number/search:
+    get:
+      operationId: searchAvailableNumbers
+      summary: Search Available Numbers
+      description: Retrieve inbound numbers that are available for purchase.
+      tags:
+        - Numbers
+      servers:
+        - url: https://rest.nexmo.com
+      parameters:
+        - name: api_key
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: api_secret
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Two-character country code (ISO 3166-1 alpha-2).
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [landline, mobile-lvn, landline-toll-free]
+          description: Filter by number type.
+        - name: pattern
+          in: query
+          schema:
+            type: string
+          description: A pattern to filter results.
+        - name: features
+          in: query
+          schema:
+            type: string
+          description: Available features (SMS, VOICE, MMS).
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: index
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Available numbers retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableNumberList'
+  /number/buy:
+    post:
+      operationId: buyNumber
+      summary: Buy a Number
+      description: Purchase a specific inbound number for use with your Vonage account.
+      tags:
+        - Numbers
+      servers:
+        - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - country
+                - msisdn
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                country:
+                  type: string
+                  description: Two-character country code.
+                msisdn:
+                  type: string
+                  description: The phone number to purchase.
+      responses:
+        '200':
+          description: Number purchased successfully
+  /number/cancel:
+    post:
+      operationId: cancelNumber
+      summary: Cancel a Number
+      description: Cancel your subscription for a specific inbound number.
+      tags:
+        - Numbers
+      servers:
+        - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - country
+                - msisdn
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                country:
+                  type: string
+                msisdn:
+                  type: string
+      responses:
+        '200':
+          description: Number cancelled successfully
+  /number/update:
+    post:
+      operationId: updateNumber
+      summary: Update a Number
+      description: Change the behaviour of a number that you own.
+      tags:
+        - Numbers
+      servers:
+        - url: https://rest.nexmo.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - api_key
+                - api_secret
+                - country
+                - msisdn
+              properties:
+                api_key:
+                  type: string
+                api_secret:
+                  type: string
+                country:
+                  type: string
+                msisdn:
+                  type: string
+                mo_http_url:
+                  type: string
+                  description: Inbound SMS webhook URL.
+                voice_callback_type:
+                  type: string
+                  enum: [sip, tel, app]
+                voice_callback_value:
+                  type: string
+                  description: Destination for inbound calls.
+      responses:
+        '200':
+          description: Number updated successfully
+  /v2/applications:
+    get:
+      operationId: listApplications
+      summary: List Applications
+      description: Retrieve all Vonage applications associated with your account.
+      tags:
+        - Applications
+      security:
+        - basicAuth: []
+      parameters:
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: Number of applications per page.
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number.
+      responses:
+        '200':
+          description: Applications retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationList'
+    post:
+      operationId: createApplication
+      summary: Create an Application
+      description: Create a new Vonage application.
+      tags:
+        - Applications
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+      responses:
+        '201':
+          description: Application created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /v2/applications/{id}:
+    get:
+      operationId: getApplication
+      summary: Get an Application
+      description: Retrieve details of a specific Vonage application.
+      tags:
+        - Applications
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The application ID.
+      responses:
+        '200':
+          description: Application details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    put:
+      operationId: updateApplication
+      summary: Update an Application
+      description: Update an existing Vonage application.
+      tags:
+        - Applications
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+      responses:
+        '200':
+          description: Application updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    delete:
+      operationId: deleteApplication
+      summary: Delete an Application
+      description: Delete a Vonage application.
+      tags:
+        - Applications
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Application deleted
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Base64-encoded API key and secret joined by a colon.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for application-level authentication.
+  schemas:
+    SmsResponse:
+      type: object
+      properties:
+        message-count:
+          type: string
+          description: Number of message parts sent.
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              to:
+                type: string
+              message-id:
+                type: string
+              status:
+                type: string
+              remaining-balance:
+                type: string
+              message-price:
+                type: string
+              network:
+                type: string
+    Call:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Unique identifier for the call.
+        conversation_uuid:
+          type: string
+        status:
+          type: string
+          enum: [started, ringing, answered, machine, completed, busy, cancelled, failed, rejected, timeout, unanswered]
+        direction:
+          type: string
+          enum: [outbound, inbound]
+        rate:
+          type: string
+        price:
+          type: string
+        duration:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        network:
+          type: string
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        to:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+    CallList:
+      type: object
+      properties:
+        count:
+          type: integer
+        page_size:
+          type: integer
+        record_index:
+          type: integer
+        _embedded:
+          type: object
+          properties:
+            calls:
+              type: array
+              items:
+                $ref: '#/components/schemas/Call'
+    CreateCallRequest:
+      type: object
+      required:
+        - to
+        - from
+        - ncco
+      properties:
+        to:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [phone, sip, websocket, vbc]
+              number:
+                type: string
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        ncco:
+          type: array
+          description: Vonage Call Control Object instructions.
+          items:
+            type: object
+        record:
+          type: boolean
+          description: Record the call.
+        answer_url:
+          type: array
+          items:
+            type: string
+          description: Answer webhook URL.
+        event_url:
+          type: array
+          items:
+            type: string
+          description: Event webhook URL.
+    MessageRequest:
+      type: object
+      required:
+        - message_type
+        - to
+        - from
+        - channel
+      properties:
+        message_type:
+          type: string
+          enum: [text, image, audio, video, file, template, custom]
+        to:
+          type: string
+          description: Recipient phone number or ID.
+        from:
+          type: string
+          description: Sender number or ID.
+        channel:
+          type: string
+          enum: [sms, whatsapp, messenger, viber_service, mms, rcs]
+        text:
+          type: string
+          description: Message text (for text messages).
+        image:
+          type: object
+          description: Image content (for image messages).
+          properties:
+            url:
+              type: string
+            caption:
+              type: string
+    MessageResponse:
+      type: object
+      properties:
+        message_uuid:
+          type: string
+          description: Unique identifier for the sent message.
+    VerifyResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Unique identifier for the verification request.
+        status:
+          type: string
+          description: Status code (0 = success).
+        error_text:
+          type: string
+    VerifyCheckResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        event_id:
+          type: string
+        status:
+          type: string
+          description: The status of the verification request (0 = success).
+        price:
+          type: string
+        currency:
+          type: string
+    VerifySearchResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        account_id:
+          type: string
+        status:
+          type: string
+        number:
+          type: string
+        price:
+          type: string
+        currency:
+          type: string
+        sender_id:
+          type: string
+        date_submitted:
+          type: string
+        date_finalized:
+          type: string
+        first_event_date:
+          type: string
+        last_event_date:
+          type: string
+        checks:
+          type: array
+          items:
+            type: object
+            properties:
+              date_received:
+                type: string
+              code:
+                type: string
+              status:
+                type: string
+              ip_address:
+                type: string
+    NumberList:
+      type: object
+      properties:
+        count:
+          type: integer
+        numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Number'
+    AvailableNumberList:
+      type: object
+      properties:
+        count:
+          type: integer
+        numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Number'
+    Number:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Two-character country code.
+        msisdn:
+          type: string
+          description: Phone number in E.164 format.
+        type:
+          type: string
+          description: Number type (mobile-lvn, landline, landline-toll-free).
+        features:
+          type: array
+          items:
+            type: string
+            enum: [SMS, VOICE, MMS]
+        cost:
+          type: string
+          description: Monthly cost of the number.
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        capabilities:
+          type: object
+          properties:
+            voice:
+              type: object
+            messages:
+              type: object
+            rtc:
+              type: object
+            vbc:
+              type: object
+        keys:
+          type: object
+          properties:
+            public_key:
+              type: string
+            private_key:
+              type: string
+    ApplicationList:
+      type: object
+      properties:
+        page_size:
+          type: integer
+        page:
+          type: integer
+        total_items:
+          type: integer
+        total_pages:
+          type: integer
+        _embedded:
+          type: object
+          properties:
+            applications:
+              type: array
+              items:
+                $ref: '#/components/schemas/Application'
+    ApplicationRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Application name.
+        capabilities:
+          type: object
+          description: Vonage capabilities for this application.
+          properties:
+            voice:
+              type: object
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    answer_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        http_method:
+                          type: string
+                    event_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        http_method:
+                          type: string
+            messages:
+              type: object
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    inbound_url:
+                      type: object
+                    status_url:
+                      type: object

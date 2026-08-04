@@ -1,0 +1,296 @@
+{
+  "info": {
+    "_postman_id": "4033fb51-fa4f-41d5-8ac8-544a56f9fb49",
+    "name": "Vonage Communications Applications Messages API",
+    "description": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:28:41.000Z",
+    "updatedAt": "2026-07-28T03:28:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4033fb51-fa4f-41d5-8ac8-544a56f9fb49"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "messages",
+          "item": [
+            {
+              "name": "{message_uuid}",
+              "item": [
+                {
+                  "name": "Update a Message",
+                  "id": "67bf4087-4a0e-45f6-ac9e-fdb4fc3be19e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"read\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages/:message_uuid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages",
+                        ":message_uuid"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9726e026-4fa9-4ba8-a621-870987c7ea46",
+                          "key": "message_uuid",
+                          "value": "<string>",
+                          "description": "(Required) The UUID of the message."
+                        }
+                      ]
+                    },
+                    "description": "Update the status of a message (e.g., mark as read)."
+                  },
+                  "response": [
+                    {
+                      "id": "a51c6f8c-a0c3-4931-a2f0-d25df1292c89",
+                      "name": "Message updated successfully",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"read\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/messages/:message_uuid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "messages",
+                            ":message_uuid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "message_uuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:28:41.000Z",
+                      "updatedAt": "2026-07-28T03:28:41.000Z",
+                      "uid": "35240-a51c6f8c-a0c3-4931-a2f0-d25df1292c89"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:28:41.000Z",
+                  "updatedAt": "2026-07-28T03:28:41.000Z",
+                  "uid": "35240-67bf4087-4a0e-45f6-ac9e-fdb4fc3be19e"
+                }
+              ],
+              "id": "084ec5ea-4d5f-46a2-88eb-a42c8225bb24",
+              "createdAt": "2026-07-28T03:28:41.000Z",
+              "updatedAt": "2026-07-28T03:28:41.000Z",
+              "uid": "35240-084ec5ea-4d5f-46a2-88eb-a42c8225bb24"
+            },
+            {
+              "name": "Send a Message",
+              "id": "68c2b2fd-a167-48cc-afb4-16d791bdf920",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message_type\": \"custom\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"channel\": \"messenger\",\n  \"text\": \"<string>\",\n  \"image\": {\n    \"url\": \"<string>\",\n    \"caption\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://api.nexmo.com/v1/messages",
+                  "protocol": "https",
+                  "host": [
+                    "api",
+                    "nexmo",
+                    "com"
+                  ],
+                  "path": [
+                    "v1",
+                    "messages"
+                  ]
+                },
+                "description": "Send a message to a given channel (SMS, WhatsApp, Messenger, Viber, MMS, RCS)."
+              },
+              "response": [
+                {
+                  "id": "34f9fc7a-17a0-4a82-b70e-6e84115a147b",
+                  "name": "Message accepted for delivery",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message_type\": \"custom\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"channel\": \"messenger\",\n  \"text\": \"<string>\",\n  \"image\": {\n    \"url\": \"<string>\",\n    \"caption\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://api.nexmo.com/v1/messages",
+                      "protocol": "https",
+                      "host": [
+                        "api",
+                        "nexmo",
+                        "com"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message_uuid\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T03:28:41.000Z",
+                  "updatedAt": "2026-07-28T03:28:41.000Z",
+                  "uid": "35240-34f9fc7a-17a0-4a82-b70e-6e84115a147b"
+                }
+              ],
+              "createdAt": "2026-07-28T03:28:41.000Z",
+              "updatedAt": "2026-07-28T03:28:41.000Z",
+              "uid": "35240-68c2b2fd-a167-48cc-afb4-16d791bdf920"
+            }
+          ],
+          "id": "f57273e9-2e4c-46b8-ae56-214fdb1187c1",
+          "createdAt": "2026-07-28T03:28:41.000Z",
+          "updatedAt": "2026-07-28T03:28:41.000Z",
+          "uid": "35240-f57273e9-2e4c-46b8-ae56-214fdb1187c1"
+        }
+      ],
+      "id": "d94237c0-910e-4cc7-a456-2469f06cfa48",
+      "createdAt": "2026-07-28T03:28:41.000Z",
+      "updatedAt": "2026-07-28T03:28:41.000Z",
+      "uid": "35240-d94237c0-910e-4cc7-a456-2469f06cfa48"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.nexmo.com"
+    }
+  ]
+}
