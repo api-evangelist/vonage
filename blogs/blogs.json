@@ -5,7 +5,7 @@
       "source": "https://developer.vonage.com/rss.xml",
       "feed_url": "https://developer.vonage.com/rss.xml",
       "title": "",
-      "saved": 0,
+      "saved": 2,
       "method": "feed"
     },
     {
@@ -13,9 +13,10 @@
       "feed_url": "https://developer.vonage.com/en/blog",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "none",
+      "error": "parse_failed"
     }
   ],
-  "post_count": 56,
-  "fetched": "2026-08-06T14:08:46Z"
+  "post_count": 58,
+  "fetched": "2026-08-15T12:11:08Z"
 }
