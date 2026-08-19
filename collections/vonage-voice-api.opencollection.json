@@ -1,0 +1,241 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vonage Communications Applications Voice API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Voice",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/v1/calls",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by call status."
+              },
+              {
+                "name": "date_start",
+                "value": "",
+                "type": "query",
+                "description": "Return calls created after this date."
+              },
+              {
+                "name": "date_end",
+                "value": "",
+                "type": "query",
+                "description": "Return calls created before this date."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page."
+              },
+              {
+                "name": "record_index",
+                "value": "",
+                "type": "query",
+                "description": "Start index for pagination."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve details of your calls."
+        },
+        {
+          "info": {
+            "name": "Create an Outbound Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/v1/calls",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create an outbound Call to a Phone Number or SIP Endpoint."
+        },
+        {
+          "info": {
+            "name": "Get Call Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/v1/calls/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get details of a specific call."
+        },
+        {
+          "info": {
+            "name": "Modify an In-Progress Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v1/calls/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Modify an in-progress call."
+        },
+        {
+          "info": {
+            "name": "Play Audio Into a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/stream",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Play an audio file into a call."
+        },
+        {
+          "info": {
+            "name": "Stop Audio Stream in a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/stream",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Stop playing an audio file into a call."
+        },
+        {
+          "info": {
+            "name": "Play Text-to-Speech in a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/talk",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Play text to speech into a call."
+        },
+        {
+          "info": {
+            "name": "Stop Text-to-Speech in a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.nexmo.com/v1/calls/:uuid/talk",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the call."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Stop playing text to speech in a call."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

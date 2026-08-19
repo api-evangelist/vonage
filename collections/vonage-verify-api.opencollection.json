@@ -1,0 +1,189 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vonage Communications Applications Verify API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Verify",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/verify/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path",
+                "description": "Response format."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "number",
+                  "value": ""
+                },
+                {
+                  "name": "brand",
+                  "value": ""
+                },
+                {
+                  "name": "code_length",
+                  "value": ""
+                },
+                {
+                  "name": "lg",
+                  "value": ""
+                },
+                {
+                  "name": "workflow_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use Verify to ensure that you can contact a user at a specific number."
+        },
+        {
+          "info": {
+            "name": "Check a Verification Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/verify/check/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "request_id",
+                  "value": ""
+                },
+                {
+                  "name": "code",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Confirm whether the PIN you received from your user matches the one sent by Vonage."
+        },
+        {
+          "info": {
+            "name": "Search Verifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nexmo.com/verify/search/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "api_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "api_secret",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "query",
+                "description": "The request ID to search for."
+              }
+            ]
+          },
+          "docs": "Lookup the status of one or more requests."
+        },
+        {
+          "info": {
+            "name": "Control a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nexmo.com/verify/control/:format",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "api_key",
+                  "value": ""
+                },
+                {
+                  "name": "api_secret",
+                  "value": ""
+                },
+                {
+                  "name": "request_id",
+                  "value": ""
+                },
+                {
+                  "name": "cmd",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Control the progress of your Verify requests, e.g., cancel or trigger next workflow."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

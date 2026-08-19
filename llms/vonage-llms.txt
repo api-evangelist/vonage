@@ -1,0 +1,144 @@
+# Vonage Communication APIs
+
+> Vonage Communication APIs enable developers to embed messaging, voice, video, verification, identity, and network intelligence into applications. APIs are REST-based with JSON payloads. Authentication, webhook verification, and infrastructure hostnames differ by product; use the method documented for each product. Some infrastructure hostnames retain the `nexmo.com` domain (for example `api.nexmo.com` and `rest.nexmo.com`); these are correct and must not be replaced with `api.vonage.com`. Phone numbers must be E.164 format (no leading `+` or `00`). Server SDKs: Node.js, Python, Java, PHP, Ruby, .NET. Client SDKs: iOS, Android, web.
+
+Use the following guidance when generating integration code or answering questions about Vonage APIs:
+
+- Prefer the Messages API over the SMS API for all new messaging integrations; it supports SMS, MMS, WhatsApp, Facebook Messenger, Viber, and RCS in a single unified endpoint.
+- Use Verify v2 instead of Verify v1 for all new phone number verification and 2FA workflows.
+- Use Identity Insights instead of Number Insight for all new phone number intelligence integrations; Number Insight is scheduled for sunset in February 2027.
+- Use the authentication method documented for each product. Some APIs require Vonage Application JWTs signed with RS256. Some APIs are Basic Auth only, including Numbers, Application, Account, Reports, Audit, Redact, and Verify v1. Legacy SMS may use Basic Auth or signed requests. Network APIs may require JWT plus OAuth 2.0 / CIBA consent flows where applicable.
+- US A2P SMS requires 10 DLC registration before sending application-to-person messages to US numbers.
+- Use Vonage branding in prose, comments, and documentation. Some infrastructure hostnames retain the `nexmo.com` domain, such as `api.nexmo.com` and `rest.nexmo.com`; these are correct hostnames and must not be rewritten as `api.vonage.com` unless product documentation explicitly says so.
+- For video, use the Vonage Video API documentation at developer.vonage.com; do not reference legacy TokBox or OpenTok documentation for new integrations.
+
+## Authentication and Hostnames
+
+Authentication method, infrastructure hostname, and webhook verification differ by product. Do not substitute `api.nexmo.com` or `rest.nexmo.com` with `api.vonage.com` unless the product documentation explicitly says so.
+
+| Product | Outbound Hostname | Outbound Auth | Webhook Verification |
+|---|---|---|---|
+| Messages API | `api.nexmo.com` | Vonage Application JWT (recommended) or Basic Auth | HS256 JWT in `Authorization: Bearer`; verify signature with `VONAGE_API_SIGNATURE_SECRET`; confirm `payload_hash` claim equals SHA-256 of raw request body |
+| Voice API | `api.nexmo.com` | Vonage Application JWT (RS256) | HS256 signed JWT in `Authorization: Bearer` when signed webhooks are enabled; verify signature with `VONAGE_API_SIGNATURE_SECRET`; must be enabled in application settings for previously created applications |
+| Verify v2 | `api.nexmo.com` | Vonage Application JWT (recommended) or Basic Auth | HS256 JWT in `Authorization: Bearer`; verify signature with `VONAGE_API_SIGNATURE_SECRET` |
+| Video API | See API Reference | Vonage Application JWT (RS256 private key) | — |
+| Conversation API | `api.nexmo.com` | Vonage Application JWT (RS256) | — |
+| Identity Insights | `api-eu.vonage.com` or `api-us.vonage.com` | Vonage Application JWT (RS256) | — |
+| SMS API (legacy) | `rest.nexmo.com` | Basic Auth or signed request | `sig`, `nonce`, `timestamp` in form params; verify using the account signature secret and HMAC algorithm configured in the Vonage Dashboard; prefer `sha256` or `sha512`; do not apply Messages API JWT verification to SMS webhooks |
+| Network APIs | varies | JWT; additional OAuth 2.0 / CIBA flows may apply — see product documentation | — |
+| Numbers API | `rest.nexmo.com` | Basic Auth only (`api_key` / `api_secret`) | — |
+| Application API | `api.nexmo.com` | Basic Auth only (`api_key` / `api_secret`) | — |
+| Account API | `api.nexmo.com` | Basic Auth only | — |
+| Reports API | `api.nexmo.com` | Basic Auth only | — |
+| Audit API | `api.nexmo.com` | See API Reference for documented authentication method | — |
+| Redact API | `api.nexmo.com` | See API Reference for documented authentication method | — |
+| Verify v1 (legacy) | `api.nexmo.com` | Basic Auth only | — |
+
+## Getting Started
+
+- [Getting Started Overview](https://developer.vonage.com/en/getting-started/overview): Sign up at dashboard.vonage.com, create a Vonage Application for JWT-auth APIs (Voice, Messages, Conversation, Verify), and generate JWTs via the CLI (`vonage jwt create --private-key=private.key --app-id=APP_ID`) or server SDKs. Use ngrok to expose webhooks during local development.
+- [API Dashboard](https://dashboard.vonage.com): Manage credentials, Applications, virtual numbers, account balance, and billing.
+- [API Reference Catalogue](https://developer.vonage.com/en/api): Index of all Vonage OpenAPI 3 specifications with try-it-out, schemas, and error code tables.
+- [SDK and Tools](https://developer.vonage.com/en/tools): Server SDKs (Node.js, Python, Java, PHP, Ruby, .NET), Client SDKs (iOS, Android, web), and the Vonage CLI.
+- [Code Snippets — Voice example](https://developer.vonage.com/en/voice/voice-api/code-snippets/make-an-outbound-call): Representative code snippets for Voice; each product section contains equivalent snippets in all supported languages.
+- [Changelogs](https://developer.vonage.com/en/changelogs): Per-product release notes and deprecation notices.
+
+## Messaging
+
+Messages API is preferred for all new messaging integrations. SMS API is legacy SMS-only. Outbound Messages API endpoint is `POST https://api.nexmo.com/v1/messages`; outbound SMS API endpoint is `POST https://rest.nexmo.com/sms/json`. Webhook verification differs between these two APIs; do not apply one API's webhook verification logic to the other.
+
+- [Messages API Overview](https://developer.vonage.com/en/messages/overview): Preferred for all new messaging integrations. Supports SMS, MMS, WhatsApp, Facebook Messenger, Viber, and RCS via a single endpoint (`POST https://api.nexmo.com/v1/messages`). Vonage Application JWT recommended; Basic Auth supported but does not enable webhook delivery to application-level webhook URLs.
+- [Messages API Reference](https://developer.vonage.com/en/api/messages): OpenAPI 3 spec. Key endpoint: `POST https://api.nexmo.com/v1/messages`. Returns `message_uuid`. Supports failover via the [Dispatch API](https://developer.vonage.com/en/api/dispatch).
+- [Messages API Webhook Verification](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks): Inbound webhooks include `Authorization: Bearer <JWT>`. The JWT is signed with HS256 using the account signature secret (`VONAGE_API_SIGNATURE_SECRET`). Verify the JWT signature and confirm the `payload_hash` claim equals the SHA-256 hash of the raw request body. SHA-256 is always used regardless of the signature method setting in the dashboard.
+- [RCS Messaging](https://developer.vonage.com/en/messages/concepts/rcs): Rich Communication Services via the Messages API. Supports rich cards, suggested replies/actions, and message revocation. Falls back to SMS on unsupported devices.
+- [SMS Overview](https://developer.vonage.com/en/messaging/sms/overview): Legacy SMS-only API (`POST https://rest.nexmo.com/sms/json`). Basic Auth only. Prefer the Messages API for all new messaging integrations.
+- [SMS API Reference](https://developer.vonage.com/en/api/sms): Legacy SMS endpoints. Basic Auth only.
+- [SMS Webhook Verification](https://developer.vonage.com/en/getting-started/concepts/signing-messages): SMS inbound webhook verification uses `sig`, `nonce`, and `timestamp` form params — not a JWT. Verify using the account signature secret and the HMAC algorithm configured in the Vonage Dashboard. Prefer `sha256` or `sha512`; `md5hash1`, `md5`, and `sha1` are legacy algorithms and should not be used for new integrations. Do not apply Messages API JWT webhook verification to SMS webhooks.
+- [External Accounts API](https://developer.vonage.com/en/api/external-accounts): Required before using WhatsApp, Facebook Messenger, or Viber via the Messages API. Links channel accounts to a Vonage Application.
+- [10 DLC Overview](https://developer.vonage.com/en/10-dlc/overview): US regulatory requirement for A2P SMS via 10-digit long codes. Brand and campaign registration with TCR required before messages are delivered.
+- [TFN Registration](https://developer.vonage.com/en/tfn-registration/overview): Toll-free number vetting for US SMS campaigns. Required for high-volume toll-free SMS.
+- [Opt-Out Assist](https://developer.vonage.com/en/opt-out-assist/overview): Automated STOP/UNSTOP opt-out handling for SMS compliance.
+
+## Voice
+
+- [Voice API Overview](https://developer.vonage.com/en/voice/voice-api/overview): Programmable voice API for outbound and inbound calls. Control call flow via NCCO (JSON array of actions fetched from `answer_url`). Vonage Application JWT (RS256) required. Supports TTS, ASR, DTMF, WebSocket streaming, and call recording.
+- [Voice API Reference](https://developer.vonage.com/en/api/voice): OpenAPI 3 spec. Manage calls at `https://api.nexmo.com/v1/calls` and `https://api.nexmo.com/v1/calls/:uuid`; sub-endpoints for stream, talk, and DTMF. JWT auth required.
+- [NCCO Reference](https://developer.vonage.com/en/voice/voice-api/ncco-reference): Full reference for NCCO call-control actions: `talk`, `stream`, `input`, `connect`, `record`, `conversation`, `notify`, `wait`, `transfer`.
+- [Voice Webhook Reference](https://developer.vonage.com/en/voice/voice-api/webhook-reference): Schemas for events sent to `answer_url` and `event_url`: call state changes, DTMF/ASR results, and recording completion. When signed webhooks are enabled, incoming requests include an HS256 JWT in the `Authorization` header verified with `VONAGE_API_SIGNATURE_SECRET`. Signed webhooks are on by default for new Voice applications; enable in application settings for previously created applications.
+- [In-App Voice](https://developer.vonage.com/en/vonage-client-sdk/in-app-voice/overview): In-app voice calls via the Vonage Client SDK for iOS, Android, and web, using the `app` endpoint type in NCCO `connect` actions.
+- [SIP Trunking](https://developer.vonage.com/en/sip/overview): Connect SIP PBX or contact centre infrastructure to Vonage. Supports TLS, SRTP, and custom `X-` headers.
+
+## Video
+
+New integrations should use the Vonage Video API documentation at developer.vonage.com. Do not reference legacy TokBox or OpenTok documentation for new integrations.
+
+- [Video API Overview](https://developer.vonage.com/en/video/overview): Video sessions, client tokens, archiving, broadcasting, screen sharing, live captions, and audio connector. Server-generated Vonage Application JWT tokens grant client SDK access. Migrate from TokBox/OpenTok using the transition guide below.
+- [Video API Reference](https://developer.vonage.com/en/api/video): REST endpoints for session, archive, and broadcast management. Vonage Application JWT (RS256 private key) required.
+- [OpenTok to Vonage Transition Guide](https://developer.vonage.com/en/video/how-tos/opentok-to-vonage-transition): Guide for migrating existing TokBox/OpenTok integrations to the Vonage Video API.
+
+## Verify
+
+Verify v2 is preferred for all new phone number verification and 2FA workflows. Verify v1 is legacy and should not be used for new integrations.
+
+- [Verify API Overview](https://developer.vonage.com/en/verify/overview): Phone verification and 2FA via configurable channel workflows (`silent_auth`, `sms`, `voice`, `whatsapp`, `email`). Start: `POST https://api.nexmo.com/v2/verify`. Check: `POST https://api.nexmo.com/v2/verify/:request_id`. Vonage Application JWT recommended; Basic Auth also supported. Use Verify v2 for all new integrations.
+- [Verify v2 API Reference](https://developer.vonage.com/en/api/verify.v2): OpenAPI 3 spec including template management for customising OTP message content per channel and locale.
+- [Verify Webhook Events](https://developer.vonage.com/en/api/verify.v2): Verify v2 sends verification status and workflow events to configured webhook URLs. When signed webhooks are enabled, verify inbound requests using the product-documented signed webhook method and account signature secret.
+- [Verify v1 API Reference](https://developer.vonage.com/en/api/verify): Legacy endpoints (`POST https://api.nexmo.com/verify/json`). Basic Auth only. Migrate to Verify v2.
+
+## Identity Insights
+
+Identity Insights is preferred for all new phone number intelligence integrations. Number Insight is legacy and scheduled for sunset in February 2027.
+
+- [Identity Insights Overview](https://developer.vonage.com/en/identity-insights/overview): Phone number intelligence via `POST https://api-{region}.vonage.com/identity-insights/v1/requests` (`region`: `eu` or `us`). Insights include SIM swap, carrier, roaming, reachability, location verification, and subscriber match. Vonage Application JWT (RS256) required. Replaces Number Insight.
+- [Identity Insights API Reference](https://developer.vonage.com/en/api/identity-insights): OpenAPI 3 spec for the Identity Insights API.
+- [Number Insight API Reference](https://developer.vonage.com/en/api/number-insight): Legacy Number Insight API (Basic Auth; sunset February 2027). Migrate to Identity Insights.
+- [Number Insight to Identity Insights Migration Guide](https://developer.vonage.com/en/identity-insights/guides/number-insights-transition): Detailed mapping from Number Insight Basic, Standard, and Advanced to Identity Insights equivalents. Auth must be updated from Basic Auth to JWT when migrating.
+
+## Network Features
+
+- [Device Location Retrieval Overview](https://developer.vonage.com/en/device-location-retrieval/overview): Network-based device location lookup using carrier data. JWT auth required. Part of the Vonage Network APIs suite.
+- [Location Retrieval API Reference](https://developer.vonage.com/en/api/location-retrieval): OpenAPI 3 spec for the Location Retrieval API.
+
+## Numbers and Account Management
+
+- [Numbers Overview](https://developer.vonage.com/en/numbers/overview): Buy, search, cancel, and transfer virtual numbers. Link numbers to Vonage Applications via dashboard, CLI, or the Numbers API.
+- [Numbers API Reference](https://developer.vonage.com/en/api/numbers): REST endpoints on `https://rest.nexmo.com/` for listing, searching, buying, cancelling, and updating numbers. Basic Auth only (`api_key`/`api_secret`).
+- [Applications Overview](https://developer.vonage.com/en/application/overview): Vonage Applications store webhook URLs and the public/private key material used for Vonage Application JWT generation. Vonage Application JWTs must use RS256; sign with the PKCS#8 private key downloaded from the Application dashboard; Vonage verifies using the uploaded public key. Required JWT claims: `application_id`, `iat`, `exp`, `jti`. Client SDK tokens additionally require `sub` and `acl`. Recommended `exp`: 15 minutes for server-to-server tokens; maximum 24 hours. HS256 tokens are rejected. Required for Voice, Messages, Conversation, and Verify. Create via dashboard, CLI (`vonage apps create <name>`), or the Application API.
+- [Application API Reference](https://developer.vonage.com/en/api/application.v2): CRUD endpoints under `https://api.nexmo.com/v2/applications`. Basic Auth only (`api_key`/`api_secret`).
+- [Account Overview](https://developer.vonage.com/en/account/overview): Manage account balance, top-up, sub-accounts, and API settings.
+- [Account API Reference](https://developer.vonage.com/en/api/account): Endpoints for balance, secrets management, and sub-account provisioning. Basic Auth only.
+- [Reports API Reference](https://developer.vonage.com/en/api/reports): Generate CDR and message usage reports as CSV or JSON, filtered by product, date range, and status. Basic Auth only.
+
+## Conversation
+
+- [Conversation API Overview](https://developer.vonage.com/en/conversation/overview): Omnichannel layer underlying Voice, Messages, and Client SDK. Manages Conversations, Members, Legs, and Events. Vonage Application JWT (RS256) required. Used for contact centres, in-app messaging, and WebSocket event subscriptions.
+- [Conversation API Reference](https://developer.vonage.com/en/api/conversation): OpenAPI 3 spec covering CRUD for Conversations, Members, Events, and Users.
+- [Vonage Client SDK Overview](https://developer.vonage.com/en/vonage-client-sdk/overview): Client SDK for building programmable conversation applications with in-app voice and messaging. JWT auth required; Client SDK JWTs must include `sub` and `acl` claims in addition to the standard server-to-server claims.
+- [Client SDK — Android](https://developer.vonage.com/en/vonage-client-sdk/add-sdk-to-your-app/android): Android Client SDK setup and integration guide.
+- [Client SDK — iOS](https://developer.vonage.com/en/vonage-client-sdk/add-sdk-to-your-app/ios): iOS Client SDK setup and integration guide.
+- [Client SDK — JavaScript](https://developer.vonage.com/en/vonage-client-sdk/add-sdk-to-your-app/javascript): Web/JavaScript Client SDK setup and integration guide.
+
+## AI and Automation
+
+- [MCP Server Overview](https://developer.vonage.com/en/mcp-server/overview): Model Context Protocol server exposing Vonage API documentation and capabilities as tools for AI agents (Claude, Cursor, VS Code, etc.).
+- [AI Studio Overview](https://developer.vonage.com/en/ai-studio/overview): No-code/low-code builder for conversational AI workflows and virtual agents. Connects to Voice and Messages channels.
+- [Vonage Cloud Runtime Overview](https://developer.vonage.com/en/vonage-cloud-runtime/overview): Serverless hosting for Vonage-integrated Node.js functions. Deploy via CLI (`vcr deploy`); includes built-in state, queues, storage, and pre-built templates.
+
+## Compliance and Fraud Prevention
+
+- [Fraud Defender Overview](https://developer.vonage.com/en/fraud-defender/overview): Real-time detection and blocking of fraudulent calls (IRSF, wangiri) and SMS pumping. Configure rules in dashboard.vonage.com.
+- [Audit API Reference](https://developer.vonage.com/en/api/audit): Audit trail of account events (number purchases, application changes, settings updates) for compliance and security monitoring. See API Reference for the documented authentication method.
+- [Redact API Reference](https://developer.vonage.com/en/api/redact): Remove PII from Vonage message and call records on demand. See API Reference for the documented authentication method.
+
+## Optional
+
+- [API Error Codes](https://developer.vonage.com/en/api-errors): Centralised error code reference across all APIs with resolution guidance.
+- [Learning Path Centre](https://developer.vonage.com/en/learning-paths): Step-by-step product learning paths with modules and code examples, grouped by product and skill level.
+- [User Learning Dashboard](https://developer.vonage.com/en/user-learning-paths): Personal progress tracker for enrolled learning paths.
+- [Blog](https://developer.vonage.com/en/blog): Developer tutorials, product announcements, and community stories.
+- [Tutorials](https://developer.vonage.com/en/tutorials): Standalone multi-step tutorials across Voice, Video, SMS, Verify, and more.
+- [Use Cases](https://developer.vonage.com/en/use-cases): End-to-end guides combining multiple Vonage APIs (e.g. IVR with fallback SMS, bridging calls into video).
+- [Integrations](https://developer.vonage.com/en/integration): Partner integration guides (Salesforce, IBM Watson, Google, Microsoft Flow, Amazon Lex, and more).
+- [Pricing](https://www.vonage.com/communications-apis/pricing): API pricing by product and country.
+- [Support](https://api.support.vonage.com/hc/en-us): Technical support portal and knowledge base.
+- [API Status](https://vonageapi.statuspage.io): Real-time API uptime and incident status page.

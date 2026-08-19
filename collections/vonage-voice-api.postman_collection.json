@@ -1,0 +1,957 @@
+{
+  "item": [
+    {
+      "id": "271cd9d5-d348-4ccc-b9c2-0c56ffe5af84",
+      "name": "Voice",
+      "description": {
+        "content": "Create and control voice calls",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8d10e45f-fe30-4b82-9941-843db3270063",
+          "name": "List Calls",
+          "request": {
+            "name": "List Calls",
+            "description": {
+              "content": "Retrieve details of your calls.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by call status."
+                },
+                {
+                  "disabled": false,
+                  "key": "date_start",
+                  "value": "<dateTime>",
+                  "description": "Return calls created after this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "date_end",
+                  "value": "<dateTime>",
+                  "description": "Return calls created before this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10",
+                  "description": "Number of results per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "record_index",
+                  "value": "0",
+                  "description": "Start index for pagination."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "75ef9b99-dd18-41b7-a2c9-65d4e3b738fe",
+              "name": "Calls retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "date_start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date_end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "record_index",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 5228,\n  \"page_size\": 172,\n  \"record_index\": 1441,\n  \"_embedded\": {\n    \"calls\": [\n      {\n        \"uuid\": \"string\",\n        \"conversation_uuid\": \"string\",\n        \"status\": \"busy\",\n        \"direction\": \"inbound\",\n        \"rate\": \"string\",\n        \"price\": \"string\",\n        \"duration\": \"string\",\n        \"start_time\": \"2004-09-08T12:04:48.547Z\",\n        \"end_time\": \"1994-10-09T18:46:25.681Z\",\n        \"network\": \"string\",\n        \"from\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        },\n        \"to\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        }\n      },\n      {\n        \"uuid\": \"string\",\n        \"conversation_uuid\": \"string\",\n        \"status\": \"cancelled\",\n        \"direction\": \"outbound\",\n        \"rate\": \"string\",\n        \"price\": \"string\",\n        \"duration\": \"string\",\n        \"start_time\": \"1996-06-03T17:09:35.781Z\",\n        \"end_time\": \"2004-01-31T06:47:29.097Z\",\n        \"network\": \"string\",\n        \"from\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        },\n        \"to\": {\n          \"type\": \"string\",\n          \"number\": \"string\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "649babd2-2998-4e3b-a548-40367df74e52",
+          "name": "Create an Outbound Call",
+          "request": {
+            "name": "Create an Outbound Call",
+            "description": {
+              "content": "Create an outbound Call to a Phone Number or SIP Endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": [\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"from\": {\n    \"type\": \"<string>\",\n    \"number\": \"<string>\"\n  },\n  \"ncco\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"record\": \"<boolean>\",\n  \"answer_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"event_url\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2a4a1149-7e3d-46f9-bf62-f995d72da7a9",
+              "name": "Call created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": [\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"from\": {\n    \"type\": \"<string>\",\n    \"number\": \"<string>\"\n  },\n  \"ncco\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"record\": \"<boolean>\",\n  \"answer_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"event_url\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"string\",\n  \"conversation_uuid\": \"string\",\n  \"status\": \"ringing\",\n  \"direction\": \"outbound\",\n  \"rate\": \"string\",\n  \"price\": \"string\",\n  \"duration\": \"string\",\n  \"start_time\": \"2026-04-04T21:09:07.801Z\",\n  \"end_time\": \"2024-12-27T15:37:37.084Z\",\n  \"network\": \"string\",\n  \"from\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  },\n  \"to\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2f03e8a-dc1e-4fec-88c1-26c16aeeb5c2",
+          "name": "Get Call Details",
+          "request": {
+            "name": "Get Call Details",
+            "description": {
+              "content": "Get details of a specific call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7f9e6b70-0977-4e4a-be9d-044a19685f18",
+              "name": "Call details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"string\",\n  \"conversation_uuid\": \"string\",\n  \"status\": \"ringing\",\n  \"direction\": \"outbound\",\n  \"rate\": \"string\",\n  \"price\": \"string\",\n  \"duration\": \"string\",\n  \"start_time\": \"2026-04-04T21:09:07.801Z\",\n  \"end_time\": \"2024-12-27T15:37:37.084Z\",\n  \"network\": \"string\",\n  \"from\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  },\n  \"to\": {\n    \"type\": \"string\",\n    \"number\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "305bc410-71ac-4943-aa95-20b524f0eead",
+          "name": "Modify an In-Progress Call",
+          "request": {
+            "name": "Modify an In-Progress Call",
+            "description": {
+              "content": "Modify an in-progress call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"destination\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fe79db20-f306-443f-9281-2b9e587c00bb",
+              "name": "Call updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"destination\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "497d709b-310a-4d54-b82e-d7adad5a4134",
+          "name": "Play Audio Into a Call",
+          "request": {
+            "name": "Play Audio Into a Call",
+            "description": {
+              "content": "Play an audio file into a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stream_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"loop\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5adfe40c-844b-47a6-91cb-67f9e36c7caa",
+              "name": "Audio stream started",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"stream_url\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"loop\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b82a2da7-57e0-407e-8290-c63755e70492",
+          "name": "Stop Audio Stream in a Call",
+          "request": {
+            "name": "Stop Audio Stream in a Call",
+            "description": {
+              "content": "Stop playing an audio file into a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0d601d7a-936b-4ed7-8fa9-4b71014687d9",
+              "name": "Audio stream stopped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6deb0c84-bb93-49e6-becb-ca35b985872d",
+          "name": "Play Text-to-Speech in a Call",
+          "request": {
+            "name": "Play Text-to-Speech in a Call",
+            "description": {
+              "content": "Play text to speech into a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "talk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"voice_name\": \"<string>\",\n  \"loop\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e9a1efaa-a2f6-45af-968a-6111ee54fb3f",
+              "name": "Text-to-speech started",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "talk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\",\n  \"voice_name\": \"<string>\",\n  \"loop\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "26d295d5-7b21-4ceb-bee6-63006412b720",
+          "name": "Stop Text-to-Speech in a Call",
+          "request": {
+            "name": "Stop Text-to-Speech in a Call",
+            "description": {
+              "content": "Stop playing text to speech in a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "calls",
+                ":uuid",
+                "talk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The unique identifier for the call."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "32ccfece-dfce-44c2-9562-b37a3015439b",
+              "name": "Text-to-speech stopped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "calls",
+                    ":uuid",
+                    "talk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The unique identifier for the call."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.nexmo.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "60933ecd-f4b2-4cba-9f09-ce2d48cac42b",
+    "name": "Vonage Communications Applications Voice API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

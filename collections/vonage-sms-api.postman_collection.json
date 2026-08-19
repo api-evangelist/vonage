@@ -1,0 +1,234 @@
+{
+  "item": [
+    {
+      "id": "cfec61dd-b84f-4092-a012-aaf41be356b4",
+      "name": "SMS",
+      "description": {
+        "content": "Send and receive SMS messages",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "749fad93-95d3-4fdd-b873-24feeaa99784",
+          "name": "Send an SMS Message",
+          "request": {
+            "name": "Send an SMS Message",
+            "description": {
+              "content": "Send an outbound SMS from your Vonage number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "sms",
+                "json"
+              ],
+              "host": [
+                "rest",
+                "nexmo",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "api_key",
+                  "value": "<string>",
+                  "description": "(Required) Your Vonage API key."
+                },
+                {
+                  "disabled": false,
+                  "key": "api_secret",
+                  "value": "<string>",
+                  "description": "(Required) Your Vonage API secret."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "(Required) The phone number to send the message to (E.164 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "(Required) The sender phone number or name."
+                },
+                {
+                  "disabled": false,
+                  "key": "text",
+                  "value": "<string>",
+                  "description": "(Required) The body of the SMS message."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "text",
+                  "description": "The format of the message body."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9a80a1af-2a74-442f-a358-519926ad74b6",
+              "name": "SMS sent successfully",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "sms",
+                    "json"
+                  ],
+                  "host": [
+                    "rest",
+                    "nexmo",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Your Vonage API key.",
+                        "type": "text/plain"
+                      },
+                      "key": "api_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Your Vonage API secret.",
+                        "type": "text/plain"
+                      },
+                      "key": "api_secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The phone number to send the message to (E.164 format).",
+                        "type": "text/plain"
+                      },
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The sender phone number or name.",
+                        "type": "text/plain"
+                      },
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The body of the SMS message.",
+                        "type": "text/plain"
+                      },
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The format of the message body.",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message-count\": \"string\",\n  \"messages\": [\n    {\n      \"to\": \"string\",\n      \"message-id\": \"string\",\n      \"status\": \"string\",\n      \"remaining-balance\": \"string\",\n      \"message-price\": \"string\",\n      \"network\": \"string\"\n    },\n    {\n      \"to\": \"string\",\n      \"message-id\": \"string\",\n      \"status\": \"string\",\n      \"remaining-balance\": \"string\",\n      \"message-price\": \"string\",\n      \"network\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.nexmo.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e37a5296-580e-4e47-a814-f5378d4cb8d0",
+    "name": "Vonage Communications Applications SMS API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,613 @@
+{
+  "item": [
+    {
+      "id": "1ab869fe-fab2-45dc-93c1-0234e3abe31f",
+      "name": "Applications",
+      "description": {
+        "content": "Configure Vonage application settings and webhooks",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "25fcd444-b237-4d30-bf62-da0ee2999ebf",
+          "name": "List Applications",
+          "request": {
+            "name": "List Applications",
+            "description": {
+              "content": "Retrieve all Vonage applications associated with your account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10",
+                  "description": "Number of applications per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "86499d80-b2cf-4e1d-854b-3fe74b84b6e3",
+              "name": "Applications retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page_size\": 2299,\n  \"page\": 9260,\n  \"total_items\": 2034,\n  \"total_pages\": 706,\n  \"_embedded\": {\n    \"applications\": [\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"capabilities\": {\n          \"voice\": {},\n          \"messages\": {},\n          \"rtc\": {},\n          \"vbc\": {}\n        },\n        \"keys\": {\n          \"public_key\": \"string\",\n          \"private_key\": \"string\"\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"capabilities\": {\n          \"voice\": {},\n          \"messages\": {},\n          \"rtc\": {},\n          \"vbc\": {}\n        },\n        \"keys\": {\n          \"public_key\": \"string\",\n          \"private_key\": \"string\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70594c25-624d-4fff-8a7a-9c2792b0fa57",
+          "name": "Create an Application",
+          "request": {
+            "name": "Create an Application",
+            "description": {
+              "content": "Create a new Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "51d65259-c93e-4a46-b270-8b9969f04b65",
+              "name": "Application created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"capabilities\": {\n    \"voice\": {},\n    \"messages\": {},\n    \"rtc\": {},\n    \"vbc\": {}\n  },\n  \"keys\": {\n    \"public_key\": \"string\",\n    \"private_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60d6ef08-8b91-4534-a899-85d7f9adb4de",
+          "name": "Get an Application",
+          "request": {
+            "name": "Get an Application",
+            "description": {
+              "content": "Retrieve details of a specific Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The application ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d44c7f1e-0ecc-4775-8c2c-8e7dbec0d66f",
+              "name": "Application details retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"capabilities\": {\n    \"voice\": {},\n    \"messages\": {},\n    \"rtc\": {},\n    \"vbc\": {}\n  },\n  \"keys\": {\n    \"public_key\": \"string\",\n    \"private_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e8ce440-7c50-444d-9d3a-826a05647105",
+          "name": "Update an Application",
+          "request": {
+            "name": "Update an Application",
+            "description": {
+              "content": "Update an existing Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "53c5f357-b4c3-40fd-8823-2fb2c116fd8a",
+              "name": "Application updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"capabilities\": {\n    \"voice\": {\n      \"webhooks\": {\n        \"answer_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        },\n        \"event_url\": {\n          \"address\": \"<string>\",\n          \"http_method\": \"<string>\"\n        }\n      }\n    },\n    \"messages\": {\n      \"webhooks\": {\n        \"inbound_url\": \"<object>\",\n        \"status_url\": \"<object>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"capabilities\": {\n    \"voice\": {},\n    \"messages\": {},\n    \"rtc\": {},\n    \"vbc\": {}\n  },\n  \"keys\": {\n    \"public_key\": \"string\",\n    \"private_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51165725-451e-4f77-af80-9b32dae144df",
+          "name": "Delete an Application",
+          "request": {
+            "name": "Delete an Application",
+            "description": {
+              "content": "Delete a Vonage application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fa926c95-a868-4ffe-8462-a37d9704c89c",
+              "name": "Application deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.nexmo.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "6c2b4757-e553-4bff-bb2d-3a511bdf02c7",
+    "name": "Vonage Communications Applications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.\n\nContact Support:\n Name: Vonage Developer Support",
+      "type": "text/plain"
+    }
+  }
+}
