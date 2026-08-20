@@ -4,6 +4,11 @@ apis:
 - aid: vonage:vonage-conversations-api
   name: Vonage Conversations API
   tags:
+  - Communications
+  - Conversations
+  - Messaging
+  - Real-Time
+  tags_raw:
   - Communication
   - Conversations
   - Messaging
@@ -22,6 +27,10 @@ apis:
   name: Vonage Reports API
   tags:
   - Analytics
+  - Communications
+  - Reporting
+  tags_raw:
+  - Analytics
   - Communication
   - Reporting
   humanURL: https://developer.vonage.com/en/reports/overview
@@ -37,6 +46,11 @@ apis:
 - aid: vonage:vonage-video-api
   name: Vonage Video API
   tags:
+  - Communications
+  - Telecommunications
+  - Video
+  - WebRTC
+  tags_raw:
   - Communication
   - Telecommunications
   - Video
@@ -59,6 +73,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -96,6 +112,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -277,6 +295,14 @@ apis:
     url: https://api.nexmo.com/v2/applications
 name: Vonage
 tags:
+- Communications
+- Messaging
+- Telecommunications
+- Video Conferencing
+- Voice
+- SMS
+- Verification
+tags_raw:
 - Communication
 - Messaging
 - Telecommunications
