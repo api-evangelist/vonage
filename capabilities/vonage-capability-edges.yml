@@ -1,0 +1,27 @@
+slug: vonage
+provider: Vonage
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Telecommunications
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Numbers
+  spec_file: vonage-numbers-api-openapi.yml
+  capability_id: BC-2640.30
+  capability_id_l1: BC-2640
+  capability_name: Numbering Resource Management
+  confidence: 0.72
+  evidence: GET /account/numbers listOwnedNumbers 'List Owned Numbers'; GET /number/search 'Search Available
+    Numbers'; POST /number/buy 'Buy a Number'; POST /number/cancel 'Cancel a Number'
+  reason: Operations search, acquire, release and reconfigure telephone numbers held by the account —
+    stewardship and assignment of telephone numbering resources to services, matching BC-2640.30 Numbering
+    Resource Management. Confidence held below 0.8 because this is a CPaaS reseller view of numbering
+    rather than regulator-granted range administration.
