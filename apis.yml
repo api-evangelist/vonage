@@ -325,22 +325,23 @@ deliveryModel:
   method: derived
 accessModel:
   pricing: paid
-  onboarding: self-serve
+  onboarding: unknown
   trial: false
   try_now: false
   public: false
-  label: Paid · Self-serve signup
-  confidence: high
+  label: Paid
+  confidence: medium
   source:
   - plans
   - authentication
-  generated: '2026-07-22'
+  - security
+  generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/vonage.png
 access: 3rd-Party
 created: '2025-02-08'
 modified: '2026-05-29'
-position: Consumer
+position: Consuming
 description: Vonage (part of Ericsson) provides cloud communications APIs for voice,
   SMS, messaging, video, and verification. The Vonage API platform enables businesses
   to embed communication capabilities into applications including voice calls, SMS,
