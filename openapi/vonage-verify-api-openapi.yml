@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Vonage Communications Applications Verify API
+  title: Vonage Communications Verify API
   description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
   version: 1.0.0
   contact:
@@ -213,17 +213,6 @@ paths:
           description: Verification control command sent
 components:
   schemas:
-    VerifyResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-          description: Unique identifier for the verification request.
-        status:
-          type: string
-          description: Status code (0 = success).
-        error_text:
-          type: string
     VerifySearchResponse:
       type: object
       properties:
@@ -275,6 +264,17 @@ components:
         price:
           type: string
         currency:
+          type: string
+    VerifyResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Unique identifier for the verification request.
+        status:
+          type: string
+          description: Status code (0 = success).
+        error_text:
           type: string
   securitySchemes:
     basicAuth:

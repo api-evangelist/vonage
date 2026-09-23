@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Vonage Communications Applications Numbers API
+  title: Vonage Communications Numbers API
   description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
   version: 1.0.0
   contact:
@@ -242,15 +242,6 @@ paths:
           description: Number updated successfully
 components:
   schemas:
-    AvailableNumberList:
-      type: object
-      properties:
-        count:
-          type: integer
-        numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Number'
     Number:
       type: object
       properties:
@@ -275,6 +266,15 @@ components:
           type: string
           description: Monthly cost of the number.
     NumberList:
+      type: object
+      properties:
+        count:
+          type: integer
+        numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Number'
+    AvailableNumberList:
       type: object
       properties:
         count:

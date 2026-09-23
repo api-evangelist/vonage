@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Vonage Communications Applications Voice API
+  title: Vonage Communications Voice API
   description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
   version: 1.0.0
   contact:
@@ -273,61 +273,6 @@ paths:
           description: Text-to-speech stopped
 components:
   schemas:
-    Call:
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Unique identifier for the call.
-        conversation_uuid:
-          type: string
-        status:
-          type: string
-          enum:
-          - started
-          - ringing
-          - answered
-          - machine
-          - completed
-          - busy
-          - cancelled
-          - failed
-          - rejected
-          - timeout
-          - unanswered
-        direction:
-          type: string
-          enum:
-          - outbound
-          - inbound
-        rate:
-          type: string
-        price:
-          type: string
-        duration:
-          type: string
-        start_time:
-          type: string
-          format: date-time
-        end_time:
-          type: string
-          format: date-time
-        network:
-          type: string
-        from:
-          type: object
-          properties:
-            type:
-              type: string
-            number:
-              type: string
-        to:
-          type: object
-          properties:
-            type:
-              type: string
-            number:
-              type: string
     CreateCallRequest:
       type: object
       required:
@@ -390,6 +335,61 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Call'
+    Call:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Unique identifier for the call.
+        conversation_uuid:
+          type: string
+        status:
+          type: string
+          enum:
+          - started
+          - ringing
+          - answered
+          - machine
+          - completed
+          - busy
+          - cancelled
+          - failed
+          - rejected
+          - timeout
+          - unanswered
+        direction:
+          type: string
+          enum:
+          - outbound
+          - inbound
+        rate:
+          type: string
+        price:
+          type: string
+        duration:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        network:
+          type: string
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        to:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
   securitySchemes:
     basicAuth:
       type: http
