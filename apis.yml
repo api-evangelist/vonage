@@ -83,8 +83,6 @@ apis:
     url: https://developer.vonage.com/en/api/sms
   - type: BaseURL
     url: https://rest.nexmo.com
-  - type: GraphQL
-    url: graphql/vonage-graphql.md
   - type: Documentation
     url: https://developer.vonage.com/en/api/voice
   - type: BaseURL
@@ -122,8 +120,6 @@ apis:
     url: https://developer.vonage.com/en/api/sms
   - type: BaseURL
     url: https://rest.nexmo.com
-  - type: GraphQL
-    url: graphql/vonage-graphql.md
   - type: Documentation
     url: https://developer.vonage.com/en/api/voice
   - type: BaseURL
@@ -159,8 +155,6 @@ apis:
     url: https://developer.vonage.com/en/api/sms
   - type: BaseURL
     url: https://rest.nexmo.com
-  - type: GraphQL
-    url: graphql/vonage-graphql.md
   - type: Documentation
     url: https://developer.vonage.com/en/api/voice
   - type: BaseURL
@@ -196,8 +190,6 @@ apis:
     url: https://developer.vonage.com/en/api/sms
   - type: BaseURL
     url: https://rest.nexmo.com
-  - type: GraphQL
-    url: graphql/vonage-graphql.md
   - type: Documentation
     url: https://developer.vonage.com/en/api/voice
   - type: BaseURL
@@ -233,8 +225,6 @@ apis:
     url: https://developer.vonage.com/en/api/sms
   - type: BaseURL
     url: https://rest.nexmo.com
-  - type: GraphQL
-    url: graphql/vonage-graphql.md
   - type: Documentation
     url: https://developer.vonage.com/en/api/voice
   - type: BaseURL
@@ -270,8 +260,6 @@ apis:
     url: https://developer.vonage.com/en/api/sms
   - type: BaseURL
     url: https://rest.nexmo.com
-  - type: GraphQL
-    url: graphql/vonage-graphql.md
   - type: Documentation
     url: https://developer.vonage.com/en/api/voice
   - type: BaseURL
@@ -302,6 +290,7 @@ tags:
 - Voice
 - SMS
 - Verification
+- Real-Time
 tags_raw:
 - Communication
 - Messaging
@@ -310,6 +299,7 @@ tags_raw:
 - Voice
 - SMS
 - Verification
+- Real-Time
 type: Index
 deliveryModel:
   model: saas
