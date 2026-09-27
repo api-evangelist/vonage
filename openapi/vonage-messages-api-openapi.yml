@@ -75,12 +75,6 @@ paths:
           description: Message updated successfully
 components:
   schemas:
-    MessageResponse:
-      type: object
-      properties:
-        message_uuid:
-          type: string
-          description: Unique identifier for the sent message.
     MessageRequest:
       type: object
       required:
@@ -125,6 +119,12 @@ components:
               type: string
             caption:
               type: string
+    MessageResponse:
+      type: object
+      properties:
+        message_uuid:
+          type: string
+          description: Unique identifier for the sent message.
   securitySchemes:
     basicAuth:
       type: http

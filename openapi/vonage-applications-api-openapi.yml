@@ -138,31 +138,6 @@ paths:
           description: Application deleted
 components:
   schemas:
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        capabilities:
-          type: object
-          properties:
-            voice:
-              type: object
-            messages:
-              type: object
-            rtc:
-              type: object
-            vbc:
-              type: object
-        keys:
-          type: object
-          properties:
-            public_key:
-              type: string
-            private_key:
-              type: string
     ApplicationRequest:
       type: object
       required:
@@ -223,6 +198,31 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Application'
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        capabilities:
+          type: object
+          properties:
+            voice:
+              type: object
+            messages:
+              type: object
+            rtc:
+              type: object
+            vbc:
+              type: object
+        keys:
+          type: object
+          properties:
+            public_key:
+              type: string
+            private_key:
+              type: string
   securitySchemes:
     basicAuth:
       type: http
