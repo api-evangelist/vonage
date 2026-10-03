@@ -273,68 +273,6 @@ paths:
           description: Text-to-speech stopped
 components:
   schemas:
-    CreateCallRequest:
-      type: object
-      required:
-      - to
-      - from
-      - ncco
-      properties:
-        to:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - phone
-                - sip
-                - websocket
-                - vbc
-              number:
-                type: string
-        from:
-          type: object
-          properties:
-            type:
-              type: string
-            number:
-              type: string
-        ncco:
-          type: array
-          description: Vonage Call Control Object instructions.
-          items:
-            type: object
-        record:
-          type: boolean
-          description: Record the call.
-        answer_url:
-          type: array
-          items:
-            type: string
-          description: Answer webhook URL.
-        event_url:
-          type: array
-          items:
-            type: string
-          description: Event webhook URL.
-    CallList:
-      type: object
-      properties:
-        count:
-          type: integer
-        page_size:
-          type: integer
-        record_index:
-          type: integer
-        _embedded:
-          type: object
-          properties:
-            calls:
-              type: array
-              items:
-                $ref: '#/components/schemas/Call'
     Call:
       type: object
       properties:
@@ -390,6 +328,68 @@ components:
               type: string
             number:
               type: string
+    CallList:
+      type: object
+      properties:
+        count:
+          type: integer
+        page_size:
+          type: integer
+        record_index:
+          type: integer
+        _embedded:
+          type: object
+          properties:
+            calls:
+              type: array
+              items:
+                $ref: '#/components/schemas/Call'
+    CreateCallRequest:
+      type: object
+      required:
+      - to
+      - from
+      - ncco
+      properties:
+        to:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - phone
+                - sip
+                - websocket
+                - vbc
+              number:
+                type: string
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        ncco:
+          type: array
+          description: Vonage Call Control Object instructions.
+          items:
+            type: object
+        record:
+          type: boolean
+          description: Record the call.
+        answer_url:
+          type: array
+          items:
+            type: string
+          description: Answer webhook URL.
+        event_url:
+          type: array
+          items:
+            type: string
+          description: Event webhook URL.
   securitySchemes:
     basicAuth:
       type: http

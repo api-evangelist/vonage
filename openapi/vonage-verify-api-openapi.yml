@@ -213,6 +213,31 @@ paths:
           description: Verification control command sent
 components:
   schemas:
+    VerifyResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Unique identifier for the verification request.
+        status:
+          type: string
+          description: Status code (0 = success).
+        error_text:
+          type: string
+    VerifyCheckResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        event_id:
+          type: string
+        status:
+          type: string
+          description: The status of the verification request (0 = success).
+        price:
+          type: string
+        currency:
+          type: string
     VerifySearchResponse:
       type: object
       properties:
@@ -251,31 +276,6 @@ components:
                 type: string
               ip_address:
                 type: string
-    VerifyCheckResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        event_id:
-          type: string
-        status:
-          type: string
-          description: The status of the verification request (0 = success).
-        price:
-          type: string
-        currency:
-          type: string
-    VerifyResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-          description: Unique identifier for the verification request.
-        status:
-          type: string
-          description: Status code (0 = success).
-        error_text:
-          type: string
   securitySchemes:
     basicAuth:
       type: http
