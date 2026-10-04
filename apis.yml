@@ -1,9 +1,6 @@
 aid: vonage
-
 url: https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/apis.yml
-
 name: Vonage
-
 tags:
 - Communications
 - Messaging
@@ -13,7 +10,6 @@ tags:
 - SMS
 - Verification
 - Real-Time
-
 deliveryModel:
   model: saas
   open_source: false
@@ -26,7 +22,6 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
-
 accessModel:
   pricing: paid
   onboarding: unknown
@@ -41,27 +36,20 @@ accessModel:
   - security
   generated: '2026-09-03'
   method: derived
-
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/vonage.png
-
 access: 3rd-Party
-
 created: '2025-02-08'
-
 modified: '2026-05-29'
-
 position: Consuming
-
-description: Vonage (part of Ericsson) provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform
-  enables businesses to embed communication capabilities into applications including voice calls, SMS, multi-channel messaging (WhatsApp, Messenger,
-  Viber, RCS), video conferencing, and two-factor authentication. SDKs are available for Node.js, Python, Java, PHP, Ruby, .NET, Go, and Kotlin.
-
+description: Vonage (part of Ericsson) provides cloud communications APIs for voice, SMS, messaging, video,
+  and verification. The Vonage API platform enables businesses to embed communication capabilities into
+  applications including voice calls, SMS, multi-channel messaging (WhatsApp, Messenger, Viber, RCS),
+  video conferencing, and two-factor authentication. SDKs are available for Node.js, Python, Java, PHP,
+  Ruby, .NET, Go, and Kotlin.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
-
 specificationVersion: '0.23'
-
 common:
 - type: FinOps
   url: finops/vonage-finops.yml
@@ -230,7 +218,8 @@ common:
   type: MCPServer
 - type: LlmsText
   url: https://developer.vonage.com/llms.txt
-
+- type: Integrations
+  url: https://developer.vonage.com/en/integrations
 apis:
 - aid: vonage:vonage-conversations-api
   name: Vonage Conversations API
@@ -246,8 +235,8 @@ apis:
   - Real-Time
   humanURL: https://developer.vonage.com/en/api/conversation
   baseURL: https://api.nexmo.com/v1
-  description: Build multi-channel conversation experiences with threading across SMS, voice, and messaging channels. Manage members, events,
-    and legs within conversation contexts.
+  description: Build multi-channel conversation experiences with threading across SMS, voice, and messaging
+    channels. Manage members, events, and legs within conversation contexts.
   properties:
   - url: https://developer.vonage.com/en/api/conversation
     type: Documentation
@@ -265,8 +254,8 @@ apis:
   - Reporting
   humanURL: https://developer.vonage.com/en/reports/overview
   baseURL: https://api.nexmo.com/v2/reports
-  description: Generate historical reports and lookup messages sent through your Vonage account. Access delivery receipts, call records, and usage
-    data.
+  description: Generate historical reports and lookup messages sent through your Vonage account. Access
+    delivery receipts, call records, and usage data.
   properties:
   - url: https://developer.vonage.com/en/reports/overview
     type: Documentation
@@ -286,8 +275,8 @@ apis:
   - WebRTC
   humanURL: https://developer.vonage.com/en/video/overview
   baseURL: https://api.opentok.com
-  description: Embed live, interactive video into web, mobile, and desktop applications using WebRTC. Supports sessions, tokens, broadcasting,
-    recording, and SIP interconnect.
+  description: Embed live, interactive video into web, mobile, and desktop applications using WebRTC.
+    Supports sessions, tokens, broadcasting, recording, and SIP interconnect.
   properties:
   - url: https://developer.vonage.com/en/video/overview
     type: Documentation
@@ -531,7 +520,6 @@ apis:
     url: json-schema/vonage-create-call-request-schema.json
   - type: JSONSchema
     url: json-schema/vonage-call-list-schema.json
-
 tags_raw:
 - Communication
 - Messaging
@@ -541,9 +529,7 @@ tags_raw:
 - SMS
 - Verification
 - Real-Time
-
 type: Index
-
 integrations:
 - name: Vonage
 x-enrichment:
