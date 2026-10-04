@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-verify-response-schema.json",
+  "title": "VerifyResponse",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-api-openapi.yml#/components/schemas/VerifyResponse",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "Unique identifier for the verification request."
+    },
+    "status": {
+      "type": "string",
+      "description": "Status code (0 = success)."
+    },
+    "error_text": {
+      "type": "string"
+    }
+  }
+}

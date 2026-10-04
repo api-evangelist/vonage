@@ -213,17 +213,6 @@ paths:
           description: Verification control command sent
 components:
   schemas:
-    VerifyResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-          description: Unique identifier for the verification request.
-        status:
-          type: string
-          description: Status code (0 = success).
-        error_text:
-          type: string
     VerifyCheckResponse:
       type: object
       properties:
@@ -237,6 +226,17 @@ components:
         price:
           type: string
         currency:
+          type: string
+    VerifyResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Unique identifier for the verification request.
+        status:
+          type: string
+          description: Status code (0 = success).
+        error_text:
           type: string
     VerifySearchResponse:
       type: object

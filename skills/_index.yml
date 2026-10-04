@@ -1,0 +1,25 @@
+generated: '2026-10-03'
+method: generated
+generator: extract-docs-artifacts.py skills (local)
+source: openapi/vonage-voice-api-openapi.yml
+skills:
+- file: skills/vonage-voice-outbound-call-with-audio.md
+  name: vonage-voice-outbound-call-with-audio
+  api: openapi/vonage-voice-api-openapi.yml
+  operations:
+  - createCall
+  - playAudioStream
+  - stopAudioStream
+- file: skills/vonage-verify-user.md
+  name: vonage-verify-user
+  api: openapi/vonage-verify-api-openapi.yml
+  operations:
+  - requestVerification
+  - checkVerification
+- file: skills/vonage-provision-number.md
+  name: vonage-provision-number
+  api: openapi/vonage-numbers-api-openapi.yml
+  operations:
+  - searchAvailableNumbers
+  - buyNumber
+  - updateNumber

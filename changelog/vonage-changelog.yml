@@ -1,0 +1,45 @@
+generated: '2026-10-03'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://developer.vonage.com/en/changelogs
+sources:
+- https://developer.vonage.com/en/changelogs
+- https://developer.vonage.com/en/identity-insights/guides/number-insights-transition
+- https://developer.vonage.com:443/en/changelogs
+entries:
+- breaking: false
+  highlights:
+  - Fixed an Android crash (SIGSEGV) that occurred during long-running calls with heavy stream churn.
+  - Fixed Android performance degradation during prolonged calls caused by unnecessary event processing.
+  - Fixed a JS listener lifecycle issue in OTSession where remounting a session accumulated duplicate global event listeners.
+  - Fixed shared-state leaks on Android where streams, publishers, and subscribers were not correctly removed from internal maps.
+  date: '2026-10-02'
+- breaking: false
+  highlights:
+  - React Native SDK update (Standard environment).
+  - See the release notes.
+  date: '2026-10-01'
+- breaking: false
+  highlights:
+  - Updates the Vonage Video Android SDK and iOS SDK to version 2.35.1.
+  - Upgrades the React Native version from 0.86 to 0.87, requiring React Native 0.87 or later.
+  - Raises the minimum iOS deployment target to 17.0.
+  - Requires compileSdk 37 for Android.
+  date: '2026-09-25'
+- breaking: false
+  highlights:
+  - Fixed an issue where retrieving WebRTC statistics could throw a TypeError on iOS WKWebView and Capacitor-wrapped apps.
+  - Fixed an issue where the audioLocalCandidateType, videoLocalCandidateType, audioRemoteCandidateType, and videoRemoteCandidateType fields could
+    report incorrect values.
+  - Improved the automatic reconnection logic so that the reconnection timeout window is no longer reset on every transport reconnection.
+  - Fixed an issue where video filters, background blur, and background replacement did not work on Safari 27 and iOS 27.
+  date: '2026-09-23'
+- breaking: false
+  highlights:
+  - Fixed an issue where a black flicker could briefly appear on a subscribed stream immediately after subscribing during 1-on-1 calls on Safari.
+  - Fixed an issue where retrieving WebRTC statistics could throw a TypeError on iOS WKWebView and Capacitor-wrapped apps.
+  - Fixed an issue on Firefox where rapidly toggling video off and on could intermittently leave the published video disabled.
+  - Fixed an issue where a subscriber could fail to start when the browser's autoplay policy blocked video playback.
+  date: '2026-09-08'
+note: The page does not specify an overall versioning scheme or a single current version for the changelog.
+docs: https://developer.vonage.com/en/changelogs

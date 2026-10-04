@@ -328,22 +328,6 @@ components:
               type: string
             number:
               type: string
-    CallList:
-      type: object
-      properties:
-        count:
-          type: integer
-        page_size:
-          type: integer
-        record_index:
-          type: integer
-        _embedded:
-          type: object
-          properties:
-            calls:
-              type: array
-              items:
-                $ref: '#/components/schemas/Call'
     CreateCallRequest:
       type: object
       required:
@@ -390,6 +374,22 @@ components:
           items:
             type: string
           description: Event webhook URL.
+    CallList:
+      type: object
+      properties:
+        count:
+          type: integer
+        page_size:
+          type: integer
+        record_index:
+          type: integer
+        _embedded:
+          type: object
+          properties:
+            calls:
+              type: array
+              items:
+                $ref: '#/components/schemas/Call'
   securitySchemes:
     basicAuth:
       type: http

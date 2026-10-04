@@ -1,0 +1,145 @@
+generated: '2026-10-03'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/vonage-applications-api-openapi.yml
+- openapi/vonage-messages-api-openapi.yml
+- openapi/vonage-numbers-api-openapi.yml
+- openapi/vonage-sms-api-openapi.yml
+- openapi/vonage-verify-api-openapi.yml
+- openapi/vonage-voice-api-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: 'No MCP server was found. The pre-flight posted tools/list to /mcp on api.nexmo.com, api.opentok.com, rest.nexmo.com, api.vonage.com; verdict
+  opaque (https://api.opentok.com/mcp answered 403: the edge authenticates before it routes, which proves nothing either way). Candidate tools
+  below are derived from the 25 operation(s) in the provider''s own OpenAPI (25 listed); they describe what a server WOULD expose, not one that
+  exists.'
+tools:
+- name: list_applications
+  operationId: listApplications
+  method: GET
+  path: /v2/applications
+  description: List Applications
+- name: send_message
+  operationId: sendMessage
+  method: POST
+  path: /v1/messages
+  description: Send a Message
+- name: list_owned_numbers
+  operationId: listOwnedNumbers
+  method: GET
+  path: /account/numbers
+  description: List Owned Numbers
+- name: send_sms
+  operationId: sendSms
+  method: POST
+  path: /sms/json
+  description: Send an SMS Message
+- name: request_verification
+  operationId: requestVerification
+  method: POST
+  path: /verify/{format}
+  description: Request a Verification
+- name: list_calls
+  operationId: listCalls
+  method: GET
+  path: /v1/calls
+  description: List Calls
+- name: create_application
+  operationId: createApplication
+  method: POST
+  path: /v2/applications
+  description: Create an Application
+- name: update_message
+  operationId: updateMessage
+  method: PATCH
+  path: /v1/messages/{message_uuid}
+  description: Update a Message
+- name: search_available_numbers
+  operationId: searchAvailableNumbers
+  method: GET
+  path: /number/search
+  description: Search Available Numbers
+- name: check_verification
+  operationId: checkVerification
+  method: POST
+  path: /verify/check/{format}
+  description: Check a Verification Code
+- name: create_call
+  operationId: createCall
+  method: POST
+  path: /v1/calls
+  description: Create an Outbound Call
+- name: get_application
+  operationId: getApplication
+  method: GET
+  path: /v2/applications/{id}
+  description: Get an Application
+- name: buy_number
+  operationId: buyNumber
+  method: POST
+  path: /number/buy
+  description: Buy a Number
+- name: search_verification
+  operationId: searchVerification
+  method: GET
+  path: /verify/search/{format}
+  description: Search Verifications
+- name: get_call
+  operationId: getCall
+  method: GET
+  path: /v1/calls/{uuid}
+  description: Get Call Details
+- name: update_application
+  operationId: updateApplication
+  method: PUT
+  path: /v2/applications/{id}
+  description: Update an Application
+- name: cancel_number
+  operationId: cancelNumber
+  method: POST
+  path: /number/cancel
+  description: Cancel a Number
+- name: control_verification
+  operationId: controlVerification
+  method: POST
+  path: /verify/control/{format}
+  description: Control a Verification
+- name: update_call
+  operationId: updateCall
+  method: PUT
+  path: /v1/calls/{uuid}
+  description: Modify an In-Progress Call
+- name: delete_application
+  operationId: deleteApplication
+  method: DELETE
+  path: /v2/applications/{id}
+  description: Delete an Application
+- name: update_number
+  operationId: updateNumber
+  method: POST
+  path: /number/update
+  description: Update a Number
+- name: play_audio_stream
+  operationId: playAudioStream
+  method: PUT
+  path: /v1/calls/{uuid}/stream
+  description: Play Audio Into a Call
+- name: stop_audio_stream
+  operationId: stopAudioStream
+  method: DELETE
+  path: /v1/calls/{uuid}/stream
+  description: Stop Audio Stream in a Call
+- name: play_text_to_speech
+  operationId: playTextToSpeech
+  method: PUT
+  path: /v1/calls/{uuid}/talk
+  description: Play Text-to-Speech in a Call
+- name: stop_text_to_speech
+  operationId: stopTextToSpeech
+  method: DELETE
+  path: /v1/calls/{uuid}/talk
+  description: Stop Text-to-Speech in a Call

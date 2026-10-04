@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-verify-search-response-schema.json",
+  "title": "VerifySearchResponse",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-api-openapi.yml#/components/schemas/VerifySearchResponse",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "account_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "number": {
+      "type": "string"
+    },
+    "price": {
+      "type": "string"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "sender_id": {
+      "type": "string"
+    },
+    "date_submitted": {
+      "type": "string"
+    },
+    "date_finalized": {
+      "type": "string"
+    },
+    "first_event_date": {
+      "type": "string"
+    },
+    "last_event_date": {
+      "type": "string"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date_received": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "ip_address": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

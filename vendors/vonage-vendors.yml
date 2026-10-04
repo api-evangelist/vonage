@@ -1,0 +1,77 @@
+generated: '2026-10-03'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: cloudflare
+  name: Cloudflare
+  area: cdn
+  host: www.vonage.com
+  evidence: cname:cloudflare.net
+  signal: cname
+  confidence: high
+  kin_score:
+  - https_enforced
+  - hsts
+- vendor: fastly
+  name: Fastly
+  area: cdn
+  host: www.vonage.com
+  evidence: header:x-served-by:cache-
+  signal: header
+  confidence: high
+  kin_score: []
+- vendor: slack
+  name: Slack
+  area: community
+  host: vonage-community.slack.com
+  evidence: https://vonage-community.slack.com/
+  signal: url:slack.com
+  confidence: high
+  kin_score:
+  - community_present
+- vendor: zendesk
+  name: Zendesk
+  area: support
+  host: api.support.vonage.com
+  evidence: cname:zendesk.com
+  signal: cname
+  confidence: high
+  kin_score:
+  - support_channel
+reliance:
+  areas_vendor_served:
+  - cdn
+  - community
+  - support
+  vendor_count: 4
+  areas_observed: 12
+  share_of_observable_areas: 0.25
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: custom'
+- www.vonage.com (Login)
+- developer.vonage.com (GettingStarted)
+- www.vonage.com (Website)
+- developer.vonage.com (Portal)
+- developer.vonage.com (Documentation)
+- api.support.vonage.com (Support)
+- www.vonage.com (Portal)
+- vonage-community.slack.com (Community)
+- api.nexmo.com (baseURL)
+- api.opentok.com (baseURL)
+- rest.nexmo.com (baseURL)

@@ -138,6 +138,31 @@ paths:
           description: Application deleted
 components:
   schemas:
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        capabilities:
+          type: object
+          properties:
+            voice:
+              type: object
+            messages:
+              type: object
+            rtc:
+              type: object
+            vbc:
+              type: object
+        keys:
+          type: object
+          properties:
+            public_key:
+              type: string
+            private_key:
+              type: string
     ApplicationList:
       type: object
       properties:
@@ -198,31 +223,6 @@ components:
                       type: object
                     status_url:
                       type: object
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        capabilities:
-          type: object
-          properties:
-            voice:
-              type: object
-            messages:
-              type: object
-            rtc:
-              type: object
-            vbc:
-              type: object
-        keys:
-          type: object
-          properties:
-            public_key:
-              type: string
-            private_key:
-              type: string
   securitySchemes:
     basicAuth:
       type: http

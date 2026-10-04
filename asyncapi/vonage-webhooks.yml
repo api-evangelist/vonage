@@ -1,0 +1,47 @@
+generated: '2026-10-03'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks
+sources:
+- https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks
+- https://developer.vonage.com/en/getting-started/concepts/signing-messages
+- https://developer.vonage.com/en/voice/voice-api/webhook-reference
+- https://developer.vonage.com/en/api/verify.v2
+description: 'Vonage provides webhook events for its Voice API. The pages list the following event names exactly as they appear:'
+events:
+- event: started
+  description: Indicates that the call has been created.
+- event: ringing
+  description: The call destination is ringing.
+- event: answered
+  description: The call was answered.
+- event: busy
+  description: The call encountered a busy signal.
+- event: cancelled
+  description: The call was cancelled.
+- event: unanswered
+  description: The call was not answered.
+- event: disconnected
+  description: The call was disconnected.
+- event: rejected
+  description: The call was rejected.
+- event: failed
+  description: The call failed.
+- event: human/machine
+  description: Human/machine detection result.
+- event: timeout
+  description: The call timed out.
+- event: completed
+  description: The call completed.
+- event: record
+  description: Recording event.
+- event: input
+  description: Input event.
+- event: transfer
+  description: Transfer event.
+delivery:
+  signature: Signed webhooks are enabled by default for Voice, Messages and Dispatch APIs. The incoming webhook includes a JWT token in the Authorization
+    header signed with your signature secret.
+  retries: If the webhook endpoint returns a non‑2xx status code, Vonage will retry the request once. For the Voice API event webhook, a retry
+    is also attempted when the response status is 429, 502, 503, or 504.
+docs: https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks

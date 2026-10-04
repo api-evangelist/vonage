@@ -31,7 +31,7 @@ info:
   license:
     name: Vonage Terms of Service
     url: https://www.vonage.com/legal/
-  externalDocs:
+  x-externalDocs:
     description: Vonage Voice API WebSocket concept guide
     url: https://developer.vonage.com/en/voice/voice-api/concepts/websockets
   x-generated-from: documentation
