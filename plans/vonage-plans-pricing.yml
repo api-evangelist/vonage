@@ -98,3 +98,33 @@ plans:
       - name: Volume discounts
       - name: Dedicated support
       - name: SLA enhancements
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  - subscription
+  units:
+  - compute
+  - message
+  - period
+  - request
+  plans:
+  - name: Pay As You Go
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - compute
+    - message
+    - request
+    periods:
+    - per-use
+  - name: Committed Use
+    access: enterprise
+    model: subscription
+    model_how: derived
+    units:
+    - period
+    periods:
+    - year
