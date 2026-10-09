@@ -1,54 +1,651 @@
 {
   "@context": {
-    "@vocab": "https://schema.org/",
-    "vonage": "https://developer.vonage.com/api/",
+    "@vocab": "https://vonage.com/schema#",
+    "schema": "https://schema.org/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-
-    "Message": "https://schema.org/Message",
-    "text": "https://schema.org/text",
-    "recipient": "https://schema.org/recipient",
-    "sender": "https://schema.org/sender",
-    "dateSent": "https://schema.org/dateSent",
-    "messageAttachmentObject": "https://schema.org/messageAttachmentObject",
-
-    "vonage:message_uuid": {"@type": "xsd:string"},
-    "vonage:message_type": {"@type": "xsd:string"},
-    "vonage:channel": {"@type": "xsd:string"},
-    "vonage:client_ref": {"@type": "xsd:string"},
-    "vonage:status": {"@type": "xsd:string"},
-
-    "Call": "https://schema.org/Thing",
-    "vonage:call_uuid": {"@type": "xsd:string"},
-    "vonage:call_status": {"@type": "xsd:string"},
-    "vonage:call_direction": {"@type": "xsd:string"},
-    "vonage:call_duration": {"@type": "xsd:decimal"},
-    "vonage:conversation_uuid": {"@type": "xsd:string"},
-
-    "Verification": "https://schema.org/Thing",
-    "vonage:request_id": {"@type": "xsd:string"},
-    "vonage:verify_status": {"@type": "xsd:string"},
-
-    "PhoneNumber": "https://schema.org/ContactPoint",
-    "telephone": "https://schema.org/telephone",
-    "vonage:msisdn": {"@type": "xsd:string"},
-    "vonage:country": {"@type": "xsd:string"},
-    "vonage:number_type": {"@type": "xsd:string"},
-    "vonage:features": {"@type": "@vocab"},
-
-    "Application": "https://schema.org/SoftwareApplication",
-    "vonage:app_id": {"@type": "xsd:string"},
-    "vonage:capabilities": {"@type": "@vocab"},
-
-    "Organization": "https://schema.org/Organization",
-    "vonage:api_key": {"@type": "xsd:string"}
+    "dcterms": "http://purl.org/dc/terms/",
+    "vonage": "https://vonage.com/schema#",
+    "AccountBalance": "vonage:AccountBalance",
+    "value": {
+      "@id": "vonage:value",
+      "@type": "xsd:decimal"
+    },
+    "autoReload": {
+      "@id": "vonage:autoReload",
+      "@type": "xsd:boolean"
+    },
+    "AccountSettings": "vonage:AccountSettings",
+    "mo-callback-url": {
+      "@id": "vonage:mo-callback-url",
+      "@type": "@id"
+    },
+    "dr-callback-url": {
+      "@id": "vonage:dr-callback-url",
+      "@type": "@id"
+    },
+    "max-outbound-request": {
+      "@id": "vonage:max-outbound-request",
+      "@type": "xsd:integer"
+    },
+    "max-inbound-request": {
+      "@id": "vonage:max-inbound-request",
+      "@type": "xsd:integer"
+    },
+    "max-calls-per-second": {
+      "@id": "vonage:max-calls-per-second",
+      "@type": "xsd:integer"
+    },
+    "SecretInfo": "vonage:SecretInfo",
+    "_links": {
+      "@id": "vonage:_links",
+      "@type": "@id"
+    },
+    "id": {
+      "@id": "vonage:id",
+      "@type": "xsd:string"
+    },
+    "created_at": {
+      "@id": "vonage:created_at",
+      "@type": "xsd:string"
+    },
+    "ErrorResponse": "vonage:ErrorResponse",
+    "type": {
+      "@id": "vonage:type",
+      "@type": "xsd:string"
+    },
+    "title": {
+      "@id": "vonage:title",
+      "@type": "xsd:string"
+    },
+    "detail": {
+      "@id": "vonage:detail",
+      "@type": "xsd:string"
+    },
+    "instance": {
+      "@id": "vonage:instance",
+      "@type": "xsd:string"
+    },
+    "HalLink": "vonage:HalLink",
+    "href": {
+      "@id": "vonage:href",
+      "@type": "xsd:string"
+    },
+    "templated": {
+      "@id": "vonage:templated",
+      "@type": "xsd:boolean"
+    },
+    "name": {
+      "@id": "vonage:name",
+      "@type": "xsd:string"
+    },
+    "SelfLink": "vonage:SelfLink",
+    "self": {
+      "@id": "vonage:self",
+      "@type": "@id"
+    },
+    "VoiceRegion": "vonage:VoiceRegion",
+    "ApplicationResponseCollection": "vonage:ApplicationResponseCollection",
+    "page_size": {
+      "@id": "vonage:page_size",
+      "@type": "xsd:integer"
+    },
+    "page": {
+      "@id": "vonage:page",
+      "@type": "xsd:integer"
+    },
+    "total_items": {
+      "@id": "vonage:total_items",
+      "@type": "xsd:integer"
+    },
+    "total_pages": {
+      "@id": "vonage:total_pages",
+      "@type": "xsd:integer"
+    },
+    "_embedded": {
+      "@id": "vonage:_embedded"
+    },
+    "ApplicationResponse": "vonage:ApplicationResponse",
+    "capabilities": {
+      "@id": "vonage:capabilities"
+    },
+    "privacy": {
+      "@id": "vonage:privacy"
+    },
+    "VideoResponse": "vonage:VideoResponse",
+    "webhooks": {
+      "@id": "vonage:webhooks"
+    },
+    "storage": {
+      "@id": "vonage:storage"
+    },
+    "user_lite": "vonage:user_lite",
+    "display_name": {
+      "@id": "vonage:display_name",
+      "@type": "@id"
+    },
+    "user_links": "vonage:user_links",
+    "user_properties": "vonage:user_properties",
+    "custom_data": {
+      "@id": "vonage:custom_data"
+    },
+    "ttl": {
+      "@id": "vonage:ttl",
+      "@type": "xsd:integer"
+    },
+    "user_channels": "vonage:user_channels",
+    "pstn": {
+      "@id": "vonage:pstn",
+      "@container": "@list"
+    },
+    "sip": {
+      "@id": "vonage:sip",
+      "@container": "@list"
+    },
+    "vbc": {
+      "@id": "vonage:vbc",
+      "@container": "@list"
+    },
+    "websocket": {
+      "@id": "vonage:websocket",
+      "@container": "@list"
+    },
+    "sms": {
+      "@id": "vonage:sms",
+      "@container": "@list"
+    },
+    "mms": {
+      "@id": "vonage:mms",
+      "@container": "@list"
+    },
+    "whatsapp": {
+      "@id": "vonage:whatsapp",
+      "@container": "@list"
+    },
+    "viber": {
+      "@id": "vonage:viber",
+      "@container": "@list"
+    },
+    "messenger": {
+      "@id": "vonage:messenger",
+      "@container": "@list"
+    },
+    "user": "vonage:user",
+    "image_url": {
+      "@id": "vonage:image_url",
+      "@type": "@id"
+    },
+    "properties": {
+      "@id": "vonage:properties",
+      "@type": "@id"
+    },
+    "channels": {
+      "@id": "vonage:channels",
+      "@type": "@id"
+    },
+    "EventTypes": "vonage:EventTypes",
+    "AuditResp": "vonage:AuditResp",
+    "AuditEvent": "vonage:AuditEvent",
+    "event_type": {
+      "@id": "vonage:event_type",
+      "@type": "@id"
+    },
+    "event_type_description": {
+      "@id": "vonage:event_type_description",
+      "@type": "xsd:string"
+    },
+    "user_email": {
+      "@id": "vonage:user_email",
+      "@type": "xsd:string"
+    },
+    "user_id": {
+      "@id": "vonage:user_id",
+      "@type": "xsd:integer"
+    },
+    "account_id": {
+      "@id": "vonage:account_id",
+      "@type": "xsd:string"
+    },
+    "source": {
+      "@id": "vonage:source",
+      "@type": "xsd:string"
+    },
+    "source_ip": {
+      "@id": "vonage:source_ip",
+      "@type": "xsd:string"
+    },
+    "source_description": {
+      "@id": "vonage:source_description",
+      "@type": "xsd:string"
+    },
+    "source_country": {
+      "@id": "vonage:source_country",
+      "@type": "xsd:string"
+    },
+    "context": {
+      "@id": "vonage:context"
+    },
+    "AuditEventTypesResp": "vonage:AuditEventTypesResp",
+    "eventTypes": {
+      "@id": "vonage:eventTypes",
+      "@container": "@list"
+    },
+    "AuditEventType": "vonage:AuditEventType",
+    "description": {
+      "@id": "vonage:description",
+      "@type": "xsd:string"
+    },
+    "EventLink": "vonage:EventLink",
+    "PaginationLinks": "vonage:PaginationLinks",
+    "next": {
+      "@id": "vonage:next"
+    },
+    "last": {
+      "@id": "vonage:last"
+    },
+    "PaginationData": "vonage:PaginationData",
+    "size": {
+      "@id": "vonage:size",
+      "@type": "xsd:integer"
+    },
+    "totalElements": {
+      "@id": "vonage:totalElements",
+      "@type": "xsd:integer"
+    },
+    "totalPages": {
+      "@id": "vonage:totalPages",
+      "@type": "xsd:integer"
+    },
+    "number": {
+      "@id": "vonage:number",
+      "@type": "xsd:integer"
+    },
+    "CallbackUrl": "vonage:CallbackUrl",
+    "method": {
+      "@id": "vonage:method",
+      "@type": "xsd:string"
+    },
+    "url": {
+      "@id": "vonage:url",
+      "@type": "@id"
+    },
+    "ContextAppCreate": "vonage:ContextAppCreate",
+    "appId": {
+      "@id": "vonage:appId",
+      "@type": "xsd:string"
+    },
+    "created": {
+      "@id": "vonage:created"
+    },
+    "ContextNumberLinking": "vonage:ContextNumberLinking",
+    "country": {
+      "@id": "vonage:country",
+      "@type": "xsd:string"
+    },
+    "account": {
+      "@id": "vonage:account",
+      "@type": "xsd:string"
+    },
+    "msisdn": {
+      "@id": "vonage:msisdn",
+      "@type": "xsd:string"
+    },
+    "applicationId": {
+      "@id": "vonage:applicationId",
+      "@type": "xsd:string"
+    },
+    "ContextNumberUpdate": "vonage:ContextNumberUpdate",
+    "voice-type": {
+      "@id": "vonage:voice-type",
+      "@type": "xsd:string"
+    },
+    "voice-value": {
+      "@id": "vonage:voice-value",
+      "@type": "xsd:string"
+    },
+    "http": {
+      "@id": "vonage:http",
+      "@type": "@id"
+    },
+    "ErrorBadRequest": "vonage:ErrorBadRequest",
+    "status": {
+      "@id": "vonage:status",
+      "@type": "xsd:integer"
+    },
+    "error": {
+      "@id": "vonage:error",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "vonage:message",
+      "@type": "xsd:string"
+    },
+    "ErrorUnauthorized": "vonage:ErrorUnauthorized",
+    "ErrorForbidden": "vonage:ErrorForbidden",
+    "ErrorNotFound": "vonage:ErrorNotFound",
+    "NoContent": "vonage:NoContent",
+    "StopStreamResponse": "vonage:StopStreamResponse",
+    "uuid": {
+      "@id": "vonage:uuid",
+      "@type": "xsd:string"
+    },
+    "StartStreamResponse": "vonage:StartStreamResponse",
+    "StartStreamRequest": "vonage:StartStreamRequest",
+    "stream_url": {
+      "@id": "vonage:stream_url",
+      "@container": "@list"
+    },
+    "loop": {
+      "@id": "vonage:loop",
+      "@type": "xsd:integer"
+    },
+    "level": {
+      "@id": "vonage:level",
+      "@type": "xsd:string"
+    },
+    "StopTalkResponse": "vonage:StopTalkResponse",
+    "language": "vonage:language",
+    "user_timestamp": "vonage:user_timestamp",
+    "updated": {
+      "@id": "vonage:updated",
+      "@type": "@id"
+    },
+    "destroyed": {
+      "@id": "vonage:destroyed",
+      "@type": "@id"
+    },
+    "conversation_lite": "vonage:conversation_lite",
+    "timestamp": {
+      "@id": "vonage:timestamp",
+      "@type": "@id"
+    },
+    "conversation_user": "vonage:conversation_user",
+    "sequence_number": {
+      "@id": "vonage:sequence_number",
+      "@type": "@id"
+    },
+    "conversation": "vonage:conversation",
+    "state": {
+      "@id": "vonage:state",
+      "@type": "@id"
+    },
+    "conversation_timestamp": "vonage:conversation_timestamp",
+    "conversation_state": "vonage:conversation_state",
+    "conversation_properties": "vonage:conversation_properties",
+    "conversation_links": "vonage:conversation_links",
+    "conversation_callback": "vonage:conversation_callback",
+    "event_mask": {
+      "@id": "vonage:event_mask",
+      "@type": "xsd:string"
+    },
+    "params": {
+      "@id": "vonage:params"
+    },
+    "conversation_numbers_phone": "vonage:conversation_numbers_phone",
+    "conversation_numbers_sip": "vonage:conversation_numbers_sip",
+    "uri": {
+      "@id": "vonage:uri",
+      "@type": "xsd:string"
+    },
+    "usenname": {
+      "@id": "vonage:usenname",
+      "@type": "xsd:string"
+    },
+    "password": {
+      "@id": "vonage:password",
+      "@type": "xsd:string"
+    },
+    "conversation_numbers_app": "vonage:conversation_numbers_app",
+    "conversation_numbers_websocket": "vonage:conversation_numbers_websocket",
+    "content_type": {
+      "@id": "vonage:content_type",
+      "@type": "xsd:string"
+    },
+    "conversation_numbers_vbc": "vonage:conversation_numbers_vbc",
+    "extension": {
+      "@id": "vonage:extension",
+      "@type": "xsd:string"
+    },
+    "conversation_numbers_whatsappvoice": "vonage:conversation_numbers_whatsappvoice",
+    "conversation_error_not_found": "vonage:conversation_error_not_found",
+    "code": {
+      "@id": "vonage:code",
+      "@type": "xsd:string"
+    },
+    "event_error_not_found": "vonage:event_error_not_found",
+    "conversation_members": "vonage:conversation_members",
+    "member_lite": "vonage:member_lite",
+    "member": "vonage:member",
+    "conversation_id": {
+      "@id": "vonage:conversation_id",
+      "@type": "@id"
+    },
+    "initiator": {
+      "@id": "vonage:initiator",
+      "@type": "@id"
+    },
+    "channel": {
+      "@id": "vonage:channel",
+      "@type": "@id"
+    },
+    "media": {
+      "@id": "vonage:media",
+      "@type": "@id"
+    },
+    "knocking_id": {
+      "@id": "vonage:knocking_id",
+      "@type": "xsd:string"
+    },
+    "invited_by": {
+      "@id": "vonage:invited_by",
+      "@type": "xsd:string"
+    },
+    "member_state_request": "vonage:member_state_request",
+    "member_state": "vonage:member_state",
+    "member_timestamp": "vonage:member_timestamp",
+    "invited": {
+      "@id": "vonage:invited",
+      "@type": "@id"
+    },
+    "joined": {
+      "@id": "vonage:joined",
+      "@type": "@id"
+    },
+    "left": {
+      "@id": "vonage:left",
+      "@type": "@id"
+    },
+    "member_error_not_found": "vonage:member_error_not_found",
+    "member_error_already_joined": "vonage:member_error_already_joined",
+    "member_error_invalid_state": "vonage:member_error_invalid_state",
+    "member_error_validation_state_invited": "vonage:member_error_validation_state_invited",
+    "invalid_parameters": {
+      "@id": "vonage:invalid_parameters",
+      "@container": "@list"
+    },
+    "member_error_validation_state": "vonage:member_error_validation_state",
+    "member_channel_from": "vonage:member_channel_from",
+    "action": "vonage:action",
+    "format": "vonage:format",
+    "transcription": "vonage:transcription",
+    "sentiment_analysis": {
+      "@id": "vonage:sentiment_analysis",
+      "@type": "xsd:boolean"
+    },
+    "event_url": {
+      "@id": "vonage:event_url",
+      "@container": "@list"
+    },
+    "event_method": {
+      "@id": "vonage:event_method",
+      "@type": "xsd:string"
+    },
+    "leg_state": "vonage:leg_state",
+    "timestamp_res_conversation": "vonage:timestamp_res_conversation",
+    "timestamp_obj_leg": "vonage:timestamp_obj_leg",
+    "start": {
+      "@id": "vonage:start",
+      "@type": "@id"
+    },
+    "end": {
+      "@id": "vonage:end",
+      "@type": "@id"
+    },
+    "request": {
+      "@id": "vonage:request",
+      "@type": "@id"
+    },
+    "channel_type": "vonage:channel_type",
+    "event_retrieved": "vonage:event_retrieved",
+    "from": {
+      "@id": "vonage:from",
+      "@type": "@id"
+    },
+    "to": {
+      "@id": "vonage:to",
+      "@type": "@id"
+    },
+    "body": {
+      "@id": "vonage:body",
+      "@type": "@id"
+    },
+    "event_user": "vonage:event_user",
+    "embedded_event_from": "vonage:embedded_event_from",
+    "from_user": {
+      "@id": "vonage:from_user",
+      "@type": "@id"
+    },
+    "from_member": {
+      "@id": "vonage:from_member"
+    },
+    "event_links": "vonage:event_links",
+    "event_media_boolean": "vonage:event_media_boolean",
+    "audio_settings": {
+      "@id": "vonage:audio_settings"
+    },
+    "audio": {
+      "@id": "vonage:audio",
+      "@type": "xsd:boolean"
+    },
+    "event_media": "vonage:event_media",
+    "event_channel": "vonage:event_channel",
+    "headers": {
+      "@id": "vonage:headers"
+    },
+    "event_sms_channel": "vonage:event_sms_channel",
+    "event_mms_channel": "vonage:event_mms_channel",
+    "event_whatsapp_channel": "vonage:event_whatsapp_channel",
+    "event_viber_channel": "vonage:event_viber_channel",
+    "event_messenger_channel": "vonage:event_messenger_channel",
+    "event_audio_channels": "vonage:event_audio_channels",
+    "leg_status": "vonage:leg_status",
+    "leg_status_complete": "vonage:leg_status_complete",
+    "successful": {
+      "@id": "vonage:successful",
+      "@type": "xsd:boolean"
+    },
+    "reason": {
+      "@id": "vonage:reason",
+      "@type": "xsd:string"
+    },
+    "leg_status_history_member": "vonage:leg_status_history_member",
+    "member_id": {
+      "@id": "vonage:member_id",
+      "@type": "xsd:string"
+    },
+    "date": {
+      "@id": "vonage:date",
+      "@type": "xsd:string"
+    },
+    "leg_status_history_knocker": "vonage:leg_status_history_knocker",
+    "knocker_id": {
+      "@id": "vonage:knocker_id",
+      "@type": "xsd:string"
+    },
+    "event_invited_member": "vonage:event_invited_member",
+    "audiodtmf_body_digit_no_method": "vonage:audiodtmf_body_digit_no_method",
+    "digit": {
+      "@id": "vonage:digit",
+      "@type": "xsd:string"
+    },
+    "dtmf_seq": {
+      "@id": "vonage:dtmf_seq",
+      "@type": "xsd:integer"
+    },
+    "audiodtmf_body_digits_no_method": "vonage:audiodtmf_body_digits_no_method",
+    "digits": {
+      "@id": "vonage:digits",
+      "@type": "xsd:string"
+    },
+    "audiodtmf_body_digits": "vonage:audiodtmf_body_digits",
+    "duration": {
+      "@id": "vonage:duration",
+      "@type": "xsd:integer"
+    },
+    "audiodtmf_body_digit": "vonage:audiodtmf_body_digit",
+    "message_body_text": "vonage:message_body_text",
+    "message_type": {
+      "@id": "vonage:message_type",
+      "@type": "xsd:string"
+    },
+    "text": {
+      "@id": "vonage:text",
+      "@type": "xsd:string"
+    },
+    "message_body_image": "vonage:message_body_image",
+    "image": {
+      "@id": "vonage:image"
+    },
+    "message_body_audio": "vonage:message_body_audio",
+    "message_body_video": "vonage:message_body_video",
+    "video": {
+      "@id": "vonage:video"
+    },
+    "message_body_file": "vonage:message_body_file",
+    "file": {
+      "@id": "vonage:file"
+    },
+    "message_body_template": "vonage:message_body_template",
+    "template": {
+      "@id": "vonage:template"
+    },
+    "message_body_custom": "vonage:message_body_custom",
+    "custom": {
+      "@id": "vonage:custom"
+    },
+    "message_body_vcard": "vonage:message_body_vcard",
+    "vcard": {
+      "@id": "vonage:vcard"
+    },
+    "message_body_location": "vonage:message_body_location",
+    "location": {
+      "@id": "vonage:location"
+    },
+    "message_body_random": "vonage:message_body_random",
+    "audioplay_event": "vonage:audioplay_event",
+    "audioplaystop_event": "vonage:audioplaystop_event",
+    "audiosay_event": "vonage:audiosay_event",
+    "audiosaystop_event": "vonage:audiosaystop_event",
+    "audiodtmf_event": "vonage:audiodtmf_event",
+    "audiorecord_event": "vonage:audiorecord_event",
+    "audiorecordstop_event": "vonage:audiorecordstop_event",
+    "audiomuteon_event": "vonage:audiomuteon_event",
+    "audiomuteoff_event": "vonage:audiomuteoff_event",
+    "audioearmuffon_event": "vonage:audioearmuffon_event",
+    "audioearmuffoff_event": "vonage:audioearmuffoff_event",
+    "audiospeakingon_event": "vonage:audiospeakingon_event",
+    "audiospeakingoff_event": "vonage:audiospeakingoff_event",
+    "custom_event": "vonage:custom_event",
+    "ephemeral_event": "vonage:ephemeral_event"
   },
-  "@graph": [
-    {
-      "@id": "https://developer.vonage.com/",
-      "@type": "Organization",
-      "name": "Vonage",
-      "description": "Cloud communications APIs provider (part of Ericsson)",
-      "url": "https://developer.vonage.com/"
-    }
+  "@type": "schema:Dataset",
+  "schema:name": "Vonage API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Vonage's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-08) from openapi/vonage-account-openapi.yml, openapi/vonage-application-v2-openapi.yml, openapi/vonage-audit-openapi.yml.",
+  "dcterms:created": "2026-10-08",
+  "dcterms:source": [
+    "openapi/vonage-account-openapi.yml",
+    "openapi/vonage-application-v2-openapi.yml",
+    "openapi/vonage-audit-openapi.yml",
+    "openapi/vonage-conversation-openapi.yml",
+    "openapi/vonage-dispatch-openapi.yml"
   ]
 }

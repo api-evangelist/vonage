@@ -1,20 +1,111 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/vonage-openapi.yml
+generated: '2026-10-08'
+method: searched
+source:
+- openapi/vonage-account-openapi.yml, openapi/vonage-application-v2-openapi.yml, openapi/vonage-audit-openapi.yml,
+  openapi/vonage-conversation-openapi.yml, openapi/vonage-dispatch-openapi.yml, openapi/vonage-external-accounts-openapi.yml,
+  openapi/vonage-identity-insights-openapi.yml, openapi/vonage-location-retrieval-openapi.yml, openapi/vonage-media-openapi.yml,
+  openapi/vonage-meetings-openapi.yml, openapi/vonage-messages-openapi.yml, openapi/vonage-number-insight-openapi.yml
+  ...
+- https://developer.vonage.com/en/getting-started/concepts/authentication
+- https://developer.vonage.com/en/getting-started/concepts/signing-messages
 summary:
   types:
-  - http
+  - http basic
+  - http bearer (JWT RS256)
+  - request signature
+  - digest (SIP)
+  secret_rotation: It is possible to have two API secrets to be used against one API key at the same time.
+  oauth2: false
 schemes:
 - name: basicAuth
   type: http
   scheme: basic
-  description: Base64-encoded API key and secret joined by a colon.
   sources:
-  - openapi/vonage-openapi.yml
+  - openapi/vonage-account-openapi.yml
+  - openapi/vonage-application-v2-openapi.yml
+  - openapi/vonage-audit-openapi.yml
+  - openapi/vonage-dispatch-openapi.yml
+  - openapi/vonage-external-accounts-openapi.yml
+  - openapi/vonage-media-openapi.yml
+  - openapi/vonage-messages-openapi.yml
+  - openapi/vonage-number-insight-openapi.yml
+  - openapi/vonage-numbers-openapi.yml
+  - openapi/vonage-pricing-openapi.yml
+  - openapi/vonage-redact-openapi.yml
+  - openapi/vonage-reports-openapi.yml
+  - openapi/vonage-sms-openapi.yml
+  - openapi/vonage-subaccounts-openapi.yml
+  - openapi/vonage-verify-openapi.yml
+  - openapi/vonage-verify-v2-openapi.yml
+  docs: https://developer.vonage.com/en/getting-started/concepts/authentication#basic-authentication
+  detail: 'Authorization: Basic base64(API_KEY:API_SECRET). Two API secrets may be active per key for rotation (Account
+    API retrieveAPISecrets / createAPISecret / revokeAPISecret).'
+  apis:
+  - Account
+  - Numbers
+  - Pricing
+  - SMS
+  - Verify v1
+  - Number Insight
+  - Reports
+  - Redact
+  - Audit
+  - Subaccounts
+  - External Accounts
+  - Messages (limited)
+  - Verify v2 (limited)
 - name: bearerAuth
   type: http
   scheme: bearer
   bearerFormat: JWT
-  description: JWT token for application-level authentication.
   sources:
-  - openapi/vonage-openapi.yml
+  - openapi/vonage-application-v2-openapi.yml
+  - openapi/vonage-conversation-openapi.yml
+  - openapi/vonage-dispatch-openapi.yml
+  - openapi/vonage-external-accounts-openapi.yml
+  - openapi/vonage-identity-insights-openapi.yml
+  - openapi/vonage-location-retrieval-openapi.yml
+  - openapi/vonage-media-openapi.yml
+  - openapi/vonage-meetings-openapi.yml
+  - openapi/vonage-messages-openapi.yml
+  - openapi/vonage-verify-v2-openapi.yml
+  - openapi/vonage-video-openapi.yml
+  - openapi/vonage-voice-openapi.yml
+  docs: https://developer.vonage.com/en/getting-started/concepts/authentication#json-web-tokens
+  detail: RS256 JWT signed with the application private key; claims application_id, iat, jti, nbf, exp (minimum
+    30 seconds, maximum 24 hours, default 15 minutes). Generate with vonage jwt create or a server SDK.
+  apis:
+  - Voice
+  - Messages
+  - Conversation
+  - Verify v2
+  - Video
+  - Meetings
+  - Media
+  - Dispatch
+  - Identity Insights
+  - Device Location Retrieval
+  - Application
+- name: Vonage-JWT
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: The Video API contract names its JWT scheme Vonage-JWT; same application JWT.
+  sources:
+  - openapi/vonage-video-openapi.yml
+- name: signature
+  type: apiKey
+  in: query
+  description: 'SMS API request signing: sig (MD5/HMAC of the sorted parameters + timestamp + SIGNATURE_SECRET)
+    and timestamp parameters; do not send an Authorization header when using sig.'
+  docs: https://developer.vonage.com/en/getting-started/concepts/signing-messages
+  sources:
+  - openapi/vonage-sms-openapi.yml
+- name: digest
+  type: http
+  scheme: digest
+  description: SIP Trunking uses Digest Authentication method with the API Key as user and API Secret as password.
+  docs: https://developer.vonage.com/en/getting-started/concepts/authentication
+  sources:
+  - docs only; not an HTTP API contract
+docs: https://developer.vonage.com/en/getting-started/concepts/authentication

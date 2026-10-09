@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-user-schema.json",
+  "title": "user",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-application-v2-openapi.yml#/components/schemas/user",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/user_id"
+    },
+    "name": {
+      "$ref": "#/$defs/user_name"
+    },
+    "display_name": {
+      "$ref": "#/$defs/user_display_name"
+    },
+    "image_url": {
+      "$ref": "#/$defs/user_image_url"
+    },
+    "properties": {
+      "$ref": "#/$defs/user_properties"
+    },
+    "channels": {
+      "$ref": "#/$defs/user_channels"
+    },
+    "_links": {
+      "$ref": "#/$defs/user_links"
+    }
+  },
+  "$defs": {
+    "user_channels": {
+      "type": "object",
+      "properties": {
+        "pstn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "sip": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uri": {
+                "type": "string",
+                "description": "Value must match regular expression ^(sip|sips):\\\\+?([\\\\w|:.\\\\-@;,=%&]+)"
+              },
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "vbc": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "extension": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "websocket": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uri": {
+                "type": "string",
+                "description": "Value must match regular expression ^(ws|wss):\\/\\/[a-zA-Z0-9~#%@&-_?\\\\/.,:;)(\\]\\[]*$"
+              },
+              "content-type": {
+                "type": "string",
+                "enum": [
+                  "audio/l16;rate=8000",
+                  "audio/l16;rate=16000"
+                ]
+              },
+              "headers": {
+                "description": "Details of the Websocket to connect to",
+                "type": "object",
+                "properties": {
+                  "customer_id": {
+                    "type": "string",
+                    "description": "This is an example header. You can provide any headers you may need"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "sms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "mms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "whatsapp": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "viber": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "messenger": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "user_display_name": {
+      "type": "string",
+      "description": "A string to be displayed as user name. It does not need to be unique"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID"
+    },
+    "user_image_url": {
+      "type": "string",
+      "description": "An image URL that you associate with the user"
+    },
+    "user_links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "user_name": {
+      "type": "string",
+      "description": "Unique name for a user"
+    },
+    "user_properties": {
+      "type": "object",
+      "description": "User properties",
+      "properties": {
+        "custom_data": {
+          "type": "object",
+          "description": "custom key/value pairs"
+        },
+        "ttl": {
+          "type": "integer",
+          "description": "Time to live in seconds",
+          "maximum": 2147483648
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-ni-response-xml-standard-schema.json",
+  "title": "niResponseXmlStandard",
+  "description": "Standard",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-number-insight-openapi.yml#/components/schemas/niResponseXmlStandard",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "The unique identifier for your request. This is a alphanumeric string up to 40 characters.",
+      "maxLength": 40
+    },
+    "international_format_number": {
+      "type": "string",
+      "description": "The `number` in your request in international format."
+    },
+    "local_number": {
+      "type": "object",
+      "description": "An object containing the `number` in your request in the format used by the country the number belongs to.",
+      "properties": {
+        "country_code": {
+          "type": "string",
+          "description": "Two character country code for `number`. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.",
+          "pattern": "[A-Z]{2}"
+        },
+        "country_code_iso3": {
+          "type": "string",
+          "description": "Three character country code for `number`. This is in [ISO 3166-1 alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) format.",
+          "pattern": "[A-Z]{3}"
+        },
+        "country_name": {
+          "type": "string",
+          "description": "The full name of the country that `number` is registered in."
+        },
+        "country_prefix": {
+          "type": "string",
+          "description": "The numeric prefix for the country that `number` is registered in."
+        },
+        "number": {
+          "type": "string",
+          "description": "The `number` in your request in the format used by the country the number belongs to."
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "The error code and status of your request",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The status code"
+        },
+        "status_text": {
+          "type": "string",
+          "description": "The status description of your request."
+        }
+      }
+    },
+    "request_price": {
+      "type": "string",
+      "description": "If there is an internal lookup error, the `refund_price` will reflect the lookup price. If `cnam` is requested for a non-US number the `refund_price` will reflect the `cnam` price. If both of these conditions occur, `refund_price` is the sum of the lookup price and `cnam` price."
+    },
+    "remaining_balance": {
+      "type": "string",
+      "description": "Your account balance in EUR after this request."
+    },
+    "current_carrier": {
+      "nullable": true,
+      "allOf": [
+        {
+          "$ref": "#/$defs/niCurrentCarrierProperties"
+        }
+      ]
+    },
+    "original_carrier": {
+      "$ref": "#/$defs/niInitialCarrierProperties"
+    },
+    "ported": {
+      "nullable": true,
+      "description": "If the user has changed carrier for number. The assumed status means that the information supplier has replied to the request but has not said explicitly that the number is ported",
+      "properties": {
+        "ported_message": {
+          "type": "string",
+          "description": "If the user has changed carrier for `number`. The assumed status means that the information supplier has replied to the request but has not said explicitly that the number is ported.",
+          "enum": [
+            "unknown",
+            "ported",
+            "not_ported",
+            "assumed_not_ported",
+            "assumed_ported"
+          ]
+        }
+      }
+    },
+    "caller_identity": {
+      "type": "object",
+      "x-nexmo-developer-collection-description-shown": true,
+      "description": "Contains details of the number owner, if `cnam` was set to `true` in the request.",
+      "properties": {
+        "caller-type": {
+          "type": "string",
+          "description": "The value will be `business` if the owner of a phone number is a business. If the owner is an individual the value will be `consumer`. The value will be `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.",
+          "enum": [
+            "business",
+            "consumer",
+            "unknown"
+          ]
+        },
+        "caller-name": {
+          "type": "string",
+          "description": "Full name of the person or business who owns the phone number. `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request."
+        },
+        "first-name": {
+          "type": "string",
+          "description": "First name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request."
+        },
+        "last-name": {
+          "type": "string",
+          "description": "Last name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request."
+        },
+        "caller_name": {
+          "type": "string",
+          "description": "Full name of the person or business who owns the phone number. `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request."
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request. `unknown` if this information is not available."
+        },
+        "firs_name": {
+          "type": "string",
+          "description": "First name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request. `unknown` if this information is not available."
+        },
+        "caller_type": {
+          "type": "string",
+          "description": "The value will be `business` if the owner of a phone number is a business. If the owner is an individual the value will be `consumer`. The value will be `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.",
+          "enum": [
+            "business",
+            "consumer",
+            "unknown"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "niCurrentCarrierProperties": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "x-nexmo-developer-collection-description-shown": true,
+      "description": "Information about the network `number` is currently connected to. While in some cases and regions it may return information for non-mobile numbers, this field is supported only for mobile numbers.",
+      "properties": {
+        "network_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The [https://en.wikipedia.org/wiki/Mobile_country_code](https://en.wikipedia.org/wiki/Mobile_country_code) for the carrier`number` is associated with. Unreal numbers are marked as`null` and the request is rejected altogether if the number is impossible according to the [E.164](https://en.wikipedia.org/wiki/E.164) guidelines."
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The full name of the carrier that `number` is associated with."
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The country that `number` is associated with. This is in ISO 3166-1 alpha-2   format."
+        },
+        "network_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The type of network that `number` is associated with.",
+          "enum": [
+            "mobile",
+            "landline",
+            "landline_premium",
+            "landline_tollfree",
+            "virtual",
+            "unknown",
+            "pager",
+            "null"
+          ]
+        }
+      }
+    },
+    "niInitialCarrierProperties": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "x-nexmo-developer-collection-description-shown": true,
+      "description": "Information about the network `number` was initially connected to.",
+      "properties": {
+        "network_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The [https://en.wikipedia.org/wiki/Mobile_country_code](https://en.wikipedia.org/wiki/Mobile_country_code) for the carrier`number` is associated with. Unreal numbers are marked as`null` and the request is rejected altogether if the number is impossible according to the [E.164](https://en.wikipedia.org/wiki/E.164) guidelines."
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The full name of the carrier that `number` is associated with."
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The country that `number` is associated with. This is in ISO 3166-1 alpha-2   format."
+        },
+        "network_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The type of network that `number` is associated with.",
+          "enum": [
+            "mobile",
+            "landline",
+            "landline_premium",
+            "landline_tollfree",
+            "virtual",
+            "unknown",
+            "pager",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

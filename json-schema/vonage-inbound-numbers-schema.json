@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-inbound-numbers-schema.json",
+  "title": "inbound-numbers",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-numbers-openapi.yml#/components/schemas/inbound-numbers",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer",
+      "description": "The total amount of numbers owned by the account"
+    },
+    "numbers": {
+      "type": "array",
+      "description": "A paginated array of numbers and their details",
+      "items": {
+        "$ref": "#/$defs/ownednumber"
+      }
+    }
+  },
+  "$defs": {
+    "country": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "description": "The two character country code in ISO 3166-1 alpha-2 format"
+    },
+    "number-limitation": {
+      "type": "object",
+      "properties": {
+        "feature": {
+          "type": "string",
+          "enum": [
+            "MMS",
+            "SMS",
+            "VOICE"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "INBOUND",
+            "OUTBOUND"
+          ]
+        },
+        "reach": {
+          "type": "string",
+          "enum": [
+            "DOMESTIC",
+            "INTERNATIONAL"
+          ]
+        }
+      },
+      "required": [
+        "feature",
+        "type",
+        "reach"
+      ]
+    },
+    "ownednumber": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "$ref": "#/$defs/country"
+        },
+        "msisdn": {
+          "type": "string",
+          "description": "An available inbound virtual number."
+        },
+        "moHttpUrl": {
+          "type": "string",
+          "format": "url",
+          "description": "The URL of the webhook endpoint that handles inbound messages"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of number: `landline`, `landline-toll-free` or `mobile-lvn`"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The capabilities of the number: `SMS` or `VOICE` or `SMS,VOICE` or `SMS,MMS` or `VOICE,MMS` or `SMS,MMS,VOICE`"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/number-limitation"
+          }
+        },
+        "messagesCallbackType": {
+          "type": "string",
+          "description": "The messages webhook type: always `app`"
+        },
+        "messagesCallbackValue": {
+          "type": "string",
+          "description": "An Application ID"
+        },
+        "voiceCallbackType": {
+          "type": "string",
+          "description": "The voice webhook type: `sip`, `tel`, or `app`"
+        },
+        "voiceCallbackValue": {
+          "type": "string",
+          "description": "A SIP URI, telephone number or Application ID"
+        },
+        "app_id": {
+          "type": "string",
+          "description": "The application ID linked to that number"
+        }
+      }
+    }
+  }
+}

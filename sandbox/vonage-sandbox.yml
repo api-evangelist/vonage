@@ -1,0 +1,47 @@
+generated: '2026-10-08'
+method: searched
+source: https://developer.vonage.com/en/messages/concepts/messages-api-sandbox
+docs:
+- https://developer.vonage.com/en/messages/concepts/messages-api-sandbox
+- https://api.support.vonage.com/hc/en-us/articles/11679887237276-What-is-the-Messages-API-sandbox-rate-limit
+- https://github.com/Vonage/vonage-cli#mock-server
+description: 'The Messages API Sandbox is a quick way to try out sending messages via certain messaging channels
+  using the Vonage Messages API. It does not need any external accounts to be set up with providers (such as WhatsApp
+  Business Account). Channels: WhatsApp, Viber, Facebook Messenger, Instagram. Recipients must first be allow-listed
+  per API key; the Sandbox uses a different API endpoint from the production Messages API (shown in the Dashboard).'
+modes:
+- name: Messages API Sandbox
+  scope: Messages API only (WhatsApp, Viber, Facebook Messenger, Instagram)
+  how: 'Dashboard > Messages API Sandbox: add your number/ID to the channel allow-list, configure Inbound and Status
+    webhook URLs, then send to the Sandbox endpoint'
+  pricing: The Messages API Sandbox is free to use. A monthly fair usage limit of 100 messages/month applies. If
+    this is exceeded, your message requests will return a 429 HTTP error .
+  rate_limit: The Messages API Sandbox has a rate limit of one message per second.
+  constraints:
+  - Allow-listed numbers and IDs are associated with specific Vonage API keys.
+  - It is not intended to be used as part of a QA or staging environment for testing your integration before going
+    live.
+  - WhatsApp 24-hour window still applies; WhatsApp templates are not enabled for the Sandbox
+- name: CLI mock server (Prism)
+  scope: SMS API (more APIs planned)
+  how: vonage mock sms — downloads the latest OpenAPI specification for the SMS API from the Vonage Developer Portal
+    and starts a Prism mock on localhost:4010 (--port, --host, --download-only, --latest)
+  source: https://github.com/Vonage/vonage-cli
+environments:
+  production: api.nexmo.com / rest.nexmo.com / api-{region}.vonage.com
+  sandbox: a separate Messages API Sandbox endpoint shown in the Dashboard; not a general sandbox for the other
+    APIs
+key_formats:
+  note: The same API key and secret are used for sandbox and production; there is no test-mode key prefix.
+test_values:
+  note: No fixed test phone numbers, test codes or hosted test tokens are published; you allow-list your own real
+    number per channel.
+time_simulation: null
+triggers:
+  webhook_retries: 'Inbound and Status webhooks are retried on a per-notification basis in the Messages API Sandbox.
+    Any non-200 response to a webhook will prompt Vonage to retry periodically at intervals of increasing length:
+    5, 10, 20, 40, 80, 160, 320, 640 seconds'
+gaps:
+- no sandbox for Voice, Verify, Video, Numbers or Account; those run against production with real spend
+- no test credentials or magic numbers
+- no time simulation

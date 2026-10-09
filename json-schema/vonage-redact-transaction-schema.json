@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-redact-transaction-schema.json",
+  "title": "RedactTransaction",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-redact-openapi.yml#/components/schemas/RedactTransaction",
+  "type": "object",
+  "required": [
+    "id",
+    "product",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The transaction ID to redact"
+    },
+    "product": {
+      "type": "string",
+      "description": "Product name that the ID provided relates to",
+      "enum": [
+        "sms",
+        "voice",
+        "number-insight",
+        "verify",
+        "verify-sdk",
+        "messages",
+        "network-api-event",
+        "vonage-qod"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "inbound",
+        "outbound"
+      ],
+      "default": "outbound",
+      "description": "Required if redacting SMS data"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-code-submit-success-schema.json",
+  "title": "CodeSubmitSuccess",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-v2-openapi.yml#/components/schemas/CodeSubmitSuccess",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}

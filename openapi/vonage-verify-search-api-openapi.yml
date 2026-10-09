@@ -1,0 +1,356 @@
+openapi: 3.2.0
+info:
+  title: Vonage Verify Search API
+  version: 1.2.4
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  license:
+    name: The MIT License (MIT)
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://www.nexmo.com/terms-of-use
+  x-label: Deprecated
+  x-metaDescription: Find quick answers to questions about the Vonage Verify API (v1.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Verify v1.0 API Reference | Vonage API Documentation
+  description: 'Operations tagged Verify Search across 2 of this provider''s published API definitions: vonage-verify-openapi.json, vonage-verify-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/verify
+security:
+- basicAuth: []
+tags:
+- name: Verify Search
+  description: Verify Search
+paths:
+  /search/{format}:
+    get:
+      description: 'Use Verify search to check the status of past or current verification requests:
+
+
+        1. Send a Verify search request containing the `request_id`s of the verification requests you are interested in.
+
+        2. Use the `status` of each verification request in the `checks` array of the response object to determine the outcome.
+
+
+        *Note that this endpoint is available by `POST` request as well as `GET`.*'
+      operationId: verifySearch
+      tags:
+      - Verify Search
+      summary: Verify Search
+      parameters:
+      - $ref: '#/components/parameters/format'
+      - name: request_id
+        required: true
+        in: query
+        description: The `request_id` you received in the Verify Request Response. Required if `request_ids` not provided.
+        schema:
+          type: string
+        example: abcdef0123456789abcdef0123456789
+      - name: request_ids
+        required: false
+        in: query
+        description: More than one `request_id`. Each `request_id` is a new parameter in the Verify Search request. Required if `request_id` not provided.
+        schema:
+          type: array
+          items:
+            type: string
+            example: abcdef0123456789abcdef0123456789
+          maxItems: 10
+        style: form
+        explode: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: The request was found
+                  value:
+                    request_id: abcdef0123456789abcdef0123456789
+                    account_id: abcdef01
+                    number: '447700900000'
+                    sender_id: verify
+                    date_submitted: '2020-01-01 12:00:00'
+                    date_finalized: '2020-01-01 12:00:00'
+                    checks:
+                    - date_received: '2020-01-01 12:00:00'
+                      code: '1111'
+                      status: INVALID
+                      ip_address: ''
+                    - date_received: '2020-01-01 12:02:00'
+                      code: '1234'
+                      status: VALID
+                      ip_address: ''
+                    first_event_date: '2020-01-01 12:00:00'
+                    last_event_date: '2020-01-01 12:00:00'
+                    price: '0.1000000'
+                    currency: EUR
+                    status: SUCCESS
+                    estimated_price_messages_sent: '0.06660000'
+                    events:
+                    - id: 0A00000012345678
+                      type: sms
+                    - id: 0A00000012345679
+                      type: sms
+                throttled:
+                  summary: Request limit exceeded
+                  value:
+                    status: '1'
+                    error_text: Throttled
+                missing-param:
+                  summary: Missing a parameter
+                  value:
+                    status: '2'
+                    error_text: Missing request_id
+                invalid-param:
+                  summary: Invalid parameter
+                  value:
+                    status: '3'
+                    error_text: 'Invalid value for param: request_id'
+                invalid-creds:
+                  summary: Invalid credentials
+                  value:
+                    status: '4'
+                    error_text: Bad credentials
+                internal-error:
+                  summary: Internal Error
+                  value:
+                    status: '5'
+                    error_text: Internal Error
+                not-found:
+                  summary: Request not found (this also occurs immediately after completion, wait 60 seconds and try again)
+                  value:
+                    status: '101'
+                    error_text: No response found
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/searchResponse'
+                - $ref: '#/components/schemas/searchErrorResponse'
+            text/xml:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/searchResponse'
+                - $ref: '#/components/schemas/searchErrorResponse'
+    servers:
+    - url: https://api.nexmo.com/verify
+components:
+  schemas:
+    searchResponse:
+      xml:
+        name: verify_request
+      type: object
+      description: Success
+      properties:
+        request_id:
+          type: string
+          description: The `request_id` that you received in the response to the Verify request and used in the Verify search request.
+          example: abcdef0123456789abcdef0123456789
+        account_id:
+          type: string
+          description: The Vonage account ID the request was for.
+          example: abcdef01
+        status:
+          type: string
+          example: IN PROGRESS
+          enum:
+          - IN PROGRESS
+          - SUCCESS
+          - FAILED
+          - EXPIRED
+          - CANCELLED
+          description: 'Code | Description
+
+            -- | --
+
+            IN PROGRESS | The search is still in progress.
+
+            SUCCESS | Your user entered a correct verification code.
+
+            FAILED | Your user entered an incorrect code more than three times.
+
+            EXPIRED | Your user did not enter a code before the `pin_expiry` time elapsed.
+
+            CANCELLED | The verification process was cancelled by a Verify control request.
+
+            '
+        number:
+          type: string
+          description: The phone number this verification request was used for.
+          example: '447700900000'
+        price:
+          type: string
+          description: The cost incurred for this verification request.
+          example: '0.10000000'
+        currency:
+          type: string
+          description: The currency code.
+          example: EUR
+        sender_id:
+          type: string
+          description: The `sender_id` you provided in the Verify request.
+          default: verify
+          example: mySenderId
+        date_submitted:
+          type: string
+          description: The date and time the verification request was submitted, in the following format YYYY-MM-DD HH:MM:SS.
+          example: '2020-01-01 12:00:00'
+        date_finalized:
+          type: string
+          description: The date and time the verification request was completed. This response parameter is in the following format YYYY-MM-DD HH:MM:SS.
+          example: '2020-01-01 12:00:00'
+        first_event_date:
+          type: string
+          description: The time the first verification attempt was made, in the following format YYYY-MM-DD HH:MM:SS.
+          example: '2020-01-01 12:00:00'
+        last_event_date:
+          type: string
+          description: The time the last verification attempt was made, in the following format YYYY-MM-DD HH:MM:SS.
+          example: '2020-01-01 12:00:00'
+        checks:
+          type: array
+          xml:
+            wrapped: true
+          description: The list of checks made for this verification and their outcomes.
+          items:
+            type: object
+            xml:
+              name: check
+            properties:
+              date_received:
+                type: string
+                description: The date and time this check was received (in the format YYYY-MM-DD HH:MM:SS)
+                example: '2020-01-01 12:00:00'
+              code:
+                type: string
+                description: The code supplied with this check request
+                example: '987654'
+              status:
+                type: string
+                enum:
+                - VALID
+                - INVALID
+              ip_address:
+                type: string
+                description: The IP address, if available (this field is no longer used).
+                deprecated: true
+                example: 123.0.0.255
+        events:
+          type: array
+          xml:
+            wrapped: true
+          description: The events that have taken place to verify this number, and their unique identifiers.
+          items:
+            type: object
+            xml:
+              name: event
+            properties:
+              type:
+                type: string
+                enum:
+                - tts
+                - sms
+              id:
+                type: string
+        estimated_price_messages_sent:
+          $ref: '#/components/schemas/estimated_price_messages_sent'
+    searchErrorResponse:
+      xml:
+        name: verify_request
+      type: object
+      description: Error
+      properties:
+        request_id:
+          type: string
+          description: The `request_id` that you received in the response to the Verify request and used in the Verify search request. May be empty in an error situation.
+          example: abcdef0123456789abcdef0123456789
+        status:
+          type: string
+          example: IN PROGRESS
+          enum:
+          - IN PROGRESS
+          - FAILED
+          - EXPIRED
+          - CANCELLED
+          - '101'
+          description: 'Code | Description
+
+            -- | --
+
+            IN PROGRESS | The search is still in progress.
+
+            SUCCESS | Your user entered a correct verification code.
+
+            FAILED | Your user entered an incorrect code more than three times.
+
+            EXPIRED | Your user did not enter a code before the `pin_expiry` time elapsed.
+
+            CANCELLED | The verification process was cancelled by a Verify control request.
+
+            101 | You supplied an invalid `request_id`, or the data is not available. Note that for recently-completed requests, there can be a delay of up to 1 minute before the results are available in search.
+
+            '
+        error_text:
+          type: string
+          description: If `status` is not `SUCCESS`, this message explains the issue encountered.
+          example: No response found
+    estimated_price_messages_sent:
+      type: string
+      description: 'This field may not be present, depending on your pricing model. The
+
+        value indicates the cost (in EUR) of the calls made and messages sent
+
+        for the verification process. This value may be updated during and
+
+        shortly after the request completes because user input events can
+
+        overlap with message/call events. When this field is present, the total
+
+        cost of the verification is the sum of this field and the `price` field.
+
+        '
+      example: '0.03330000'
+  parameters:
+    format:
+      name: format
+      required: true
+      in: path
+      description: The response format.
+      schema:
+        type: string
+        enum:
+        - json
+        - xml
+      example: json
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  description: More information on the Verify product on our Developer Portal
+  url: https://developer.nexmo.com/verify/overview
+x-refined-from:
+- vonage-verify-openapi.json
+- vonage-verify-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

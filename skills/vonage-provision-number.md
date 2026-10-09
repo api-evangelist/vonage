@@ -1,27 +1,32 @@
 ---
 name: vonage-provision-number
-description: Search for an available phone number, purchase it, and configure its settings.
-api: openapi/vonage-numbers-api-openapi.yml
+description: Search for an available phone number, buy it, and attach it to a Vonage application so Voice and Messages
+  webhooks route to you.
+api: openapi/vonage-numbers-openapi.yml
 operations:
-- searchAvailableNumbers
-- buyNumber
-- updateNumber
-generated: '2026-10-03'
+- getAvailableNumbers
+- buyANumber
+- updateANumber
+- cancelANumber
+generated: '2026-10-08'
 method: generated
-generator: extract-docs-artifacts.py skills (local)
-source: openapi/vonage-numbers-api-openapi.yml ; every operationId checked against the contract
+source: openapi/vonage-numbers-openapi.yml ; every operationId checked against the contract
 ---
 
 # vonage-provision-number
 
-Search for an available phone number, purchase it, and configure its settings.
+Search for an available phone number, buy it, and attach it to a Vonage application so Voice and Messages webhooks route to you.
 
 ## Steps
 
-1. 1. Use `searchAvailableNumbers` with query parameters such as `country`, `type`, and `pattern` to find numbers.
-2. 2. Use `buyNumber` with body fields `country`, `msisdn` (the number to purchase) and required authentication header.
-3. 3. Use `updateNumber` with body fields like `country`, `msisdn`, and any configuration options (e.g., `voiceCallbackType`).
+1. Use Basic auth (API key:secret) — the Numbers API is account-scoped.
+2. Call `getAvailableNumbers` (GET /number/search) with `country` (ISO 3166-1 alpha-2) and optional `features` (SMS,VOICE,MMS) and `pattern`.
+3. Call `buyANumber` (POST /number/buy) with `country` and `msisdn` from the search result; the response `error-code` is 200 on success.
+4. Call `updateANumber` (POST /number/update) with `app_id` to link the number to your application, or set `moHttpUrl` / `voiceCallbackValue` directly.
+5. To release the number later call `cancelANumber` (POST /number/cancel).
 
 ## Rules
 
-- Authentication: Include either a `Authorization: Basic <credentials>` header for basicAuth or a `Authorization: Bearer <token>` header for bearerAuth.
+- Numbers API is limited to 3 API requests per second (180 per minute); GET /account/numbers is 1 per second (rate-limits/).
+- buyANumber charges the account; there is no dry-run. cancelANumber is the reversal, with no stated window (conventions/ reversibility).
+- US long numbers need a registered 10DLC brand and campaign before sending SMS.

@@ -1,0 +1,242 @@
+openapi: 3.2.0
+info:
+  title: Vonage Signaling API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged Signaling across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: Signaling
+  description: APIs relating to sending and recieving Signals
+paths:
+  /v2/project/{application_id}/session/{session_id}/signal:
+    post:
+      tags:
+      - Signaling
+      parameters:
+      - $ref: '#/components/parameters/application_id'
+      - $ref: '#/components/parameters/session_id'
+      summary: Send a signal to all participants
+      description: Use the Signal REST API to send signals to all participants in an active Vonage Video session or to a specific client connected to that session. Signals sent from the server have an empty from parameter in the signal received handlers on clients connected to the session. For a signal sent from a participant in the session, the from property is set the connection ID of the client that sent the signal, but in this case there is no associated connection.
+      requestBody:
+        $ref: '#/components/requestBodies/Signal'
+      operationId: send-signal
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: One of the signal properties — data, type, sessionId or connectionId — is invalid.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: You are not authorized to send the signal. Check your authentication credentials.
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: The client specified by the connectionId property is not connected to the session.
+        '413':
+          description: Data length exceeded
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 413
+                    message:
+                      example: The type string exceeds the maximum length (128 bytes), or the data string exceeds the maximum size (8 kB).
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/connection/{connection_id}/signal:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    - name: connection_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Specific publisher connection ID
+    post:
+      tags:
+      - Signaling
+      summary: Send signal to a specific participant
+      description: Send signals to a specific participant in an active Vonage Video session
+      operationId: post-v2-projects-application_id-session-session_id-connection-connect_id-signal
+      requestBody:
+        $ref: '#/components/requestBodies/Signal'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: One of the signal properties — data, type, sessionId or connectionId — is invalid.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: You are not authorized to send the signal. Check your authentication credentials.
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: The client specified by the connectionId property is not connected to the session.
+        '413':
+          description: Data length exceeded
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 413
+                    message:
+                      example: The type string exceeds the maximum length (128 bytes), or the data string exceeds the maximum size (8 kB).
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  parameters:
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+    session_id:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Video session ID
+  schemas:
+    Video-Error:
+      description: Error thrown in the Vonage Video API
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP response code that is returned
+        message:
+          type: string
+          description: Error that was exhibited
+  requestBodies:
+    Signal:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Type of data that is being sent to the client. This cannot exceed 128 bytes.
+                example: chat
+              data:
+                type: string
+                description: Payload that is being sent to the client. This cannot exceed 8kb.
+                example: Text of the chat message
+            required:
+            - type
+            - data
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

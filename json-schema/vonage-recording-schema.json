@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-recording-schema.json",
+  "title": "Recording",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-meetings-openapi.yml#/components/schemas/Recording",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/Recording_Id"
+    },
+    "session_id": {
+      "$ref": "#/$defs/SessionId"
+    },
+    "started_at": {
+      "$ref": "#/$defs/Recording_StartedAt"
+    },
+    "ended_at": {
+      "$ref": "#/$defs/Recording_EndedAt"
+    },
+    "status": {
+      "$ref": "#/$defs/Recording_Status"
+    },
+    "_links": {
+      "type": "object",
+      "description": "Provide links for the current recording",
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/Recording_Url"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Recording_EndedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date the recording stopped"
+    },
+    "Recording_Id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The recording UUID"
+    },
+    "Recording_StartedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date the recording started"
+    },
+    "Recording_Status": {
+      "type": "string",
+      "enum": [
+        "started",
+        "stopped",
+        "paused",
+        "uploaded"
+      ],
+      "description": "The recording current status"
+    },
+    "Recording_Url": {
+      "type": "object",
+      "description": "The recording url",
+      "properties": {
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "SessionId": {
+      "type": "string",
+      "description": "Corresponds to the underlying Video API session id"
+    }
+  }
+}

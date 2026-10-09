@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-list-templates-response-schema.json",
+  "title": "ListTemplatesResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-v2-openapi.yml#/components/schemas/ListTemplatesResponse",
+  "type": "object",
+  "properties": {
+    "page_size": {
+      "type": "integer",
+      "description": "How many items in page"
+    },
+    "page": {
+      "type": "integer",
+      "description": "The current page number"
+    },
+    "total_pages": {
+      "type": "integer",
+      "description": "Count of pages"
+    },
+    "total_items": {
+      "type": "integer",
+      "description": "Total amount of all templates"
+    },
+    "_embedded": {
+      "type": "object",
+      "properties": {
+        "templates": {
+          "type": "array",
+          "description": "List of templates",
+          "items": {
+            "$ref": "#/$defs/Template"
+          }
+        }
+      }
+    },
+    "_links": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/PageLinks"
+        }
+      ]
+    }
+  },
+  "required": [
+    "page_size",
+    "page",
+    "total_pages",
+    "total_items",
+    "_embedded",
+    "_links"
+  ],
+  "$defs": {
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "description": "Target URL"
+        }
+      },
+      "required": [
+        "href"
+      ]
+    },
+    "PageLinks": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "$ref": "#/$defs/Link"
+        },
+        "next": {
+          "$ref": "#/$defs/Link"
+        },
+        "prev": {
+          "$ref": "#/$defs/Link"
+        },
+        "first": {
+          "$ref": "#/$defs/Link"
+        },
+        "last": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "Template": {
+      "type": "object",
+      "properties": {
+        "template_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "is_default": {
+          "type": "boolean"
+        },
+        "_links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "$ref": "#/$defs/Link"
+            },
+            "fragments": {
+              "$ref": "#/$defs/Link"
+            }
+          }
+        }
+      },
+      "required": [
+        "template_id",
+        "name",
+        "is_default",
+        "_links"
+      ]
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-channel-schema.json",
+  "title": "channel",
+  "description": "A user who joins a conversation as a member can have one channel per membership. For more details see [channel concept docs](/voice/voice-api/concepts/in-app-calling)",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-conversation-openapi.yml#/components/schemas/channel",
+  "type": "object",
+  "oneOf": [
+    {
+      "type": "object",
+      "title": "App",
+      "description": "Member is using app channel type",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "app"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "description": "Settings which control who this member can send messages to.",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "app"
+              ]
+            },
+            "user": {
+              "description": "The user ID of the member that this member can send messages to.",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "type": "object",
+      "title": "Phone",
+      "description": "Member is using phone channel type",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "phone"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "description": "Settings which control who this member can send messages to.",
+          "properties": {
+            "number": {
+              "type": "string",
+              "description": "The phone number of the member that this member can send messages to."
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "phone"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "type": "object",
+      "title": "SMS",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "sms"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "sms"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "MMS",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "mms"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "WhatsApp",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "whatsapp"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "Viber",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "viber"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "Messenger",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Channel type",
+          "enum": [
+            "messenger"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/member_channel_from"
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "member_channel_from": {
+      "type": "object",
+      "description": "Which channel types this member accepts messages from (if not set, all are accepted)",
+      "properties": {
+        "type": {
+          "description": "Comma sperated list, can include channel types `app`, `phone`, `sms`, `mms`, `whatsapp` , `viber`, or `messenger`",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

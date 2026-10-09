@@ -1,0 +1,190 @@
+openapi: 3.2.0
+info:
+  title: Vonage Audio Connector API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged Audio Connector across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: Audio Connector
+  description: APIs relating to audio connector
+paths:
+  /v2/project/{application_id}/connect:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    post:
+      tags:
+      - Audio Connector
+      summary: Start an audio connector connection
+      description: Use this method to send audio from a Vonage Video API session to a WebSocket.
+      operationId: start-audio-connector-connection
+      requestBody:
+        $ref: '#/components/requestBodies/Start-Audio-Connector'
+      responses:
+        '200':
+          $ref: '#/components/responses/Audio-Connector-Started'
+        '403':
+          description: Forbidden
+        '409':
+          description: Live captions have already been started for this session
+        '500':
+          description: Vonage Video API Platform error
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  parameters:
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+  schemas:
+    Start-Audio-Connector:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: The Vonage Video session ID that includes the Vonage Video streams you want to include in the WebSocket stream. The Audio Connector feature is only supported in routed sessions
+          example: 12312312-3811-4726-b508-e41a0f96c68f
+        token:
+          type: string
+          description: A valid Vonage Video token for the Audio Connector connection to the Vonage Video Session. You can add additional data to the JWT to identify that the connection is the Audio Connector endpoint or for any other identifying data.
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTkwNDMxMTEsImV4cCI6MTY5OTA2NDcxMSwianRpIjoiMW1pODlqRk9meVpRIiwiYXBwbGljYXRpb25faWQiOiIxMjMxMjMxMi0zODExLTQ3MjYtYjUwOC1lNDFhMGY5NmM2OGYiLCJzdWIiOiJ2aWRlbyIsImFjbCI6IiJ9.o3U506EejsS8D5Tob90FG1NC1cR69fh3pFOpxnyTHVFfgqI6NWuuN8lEwrS3Zb8bGxE_A9LyyUZ2y4uqLpyXRw
+        websocket:
+          type: object
+          properties:
+            uri:
+              type: string
+              description: A publicly reachable WebSocket URI to be used for the destination of the audio stream
+              example: wss://example.com/ws-endpoint
+            streams:
+              type: array
+              description: An array of stream IDs for the Vonage Video streams you want to include in the WebSocket audio. If you omit this property, all streams in the session will be included.
+              items:
+                type: string
+              example:
+              - streamId-1
+              - streamId-2
+            headers:
+              type: object
+              description: An object of key-value pairs of headers to be sent to your WebSocket server with each message, with a maximum length of 512 bytes.
+              additionalProperties:
+                type: string
+            audioRate:
+              type: number
+              description: A number representing the audio sampling rate in Hz.
+              example: 8000
+              enum:
+              - 8000
+              - 16000
+              - 24000
+            bidirectional:
+              type: boolean
+              description: Whether to send audio data from the WebSocket connection to a stream published in the session. For more information see the [Audio Connector documentation](video/guides/audio-connector).
+              default: false
+            audioTransport:
+              type: object
+              description: A JSON object that configures how audio is serialized on the WebSocket wire. By default, audio is sent as raw binary PCM 16-bit frames.
+              properties:
+                transport:
+                  type: string
+                  description: '''binary'' (raw PCM16, the default) or ''json''.'
+                  enum:
+                  - binary
+                  - json
+                encoding:
+                  type: string
+                  description: Required when transport is 'json'. Set to 'base64'.
+                  enum:
+                  - base64
+                audio_field:
+                  type: string
+                  description: The JSON key for the outbound audio data. Defaults to 'audio'.
+                receive_audio_field:
+                  type: string
+                  description: The JSON key for inbound audio data (when bidirectional is enabled). Defaults to the same value as audio_field.
+                static_fields:
+                  type: object
+                  description: An object of extra key-value pairs included in every outbound JSON audio message.
+              if:
+                required:
+                - transport
+                properties:
+                  transport:
+                    const: json
+              then:
+                required:
+                - encoding
+          required:
+          - uri
+      required:
+      - sessionId
+      - token
+      - websocket
+  responses:
+    Audio-Connector-Started:
+      description: Information about the audio connector session that was started
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: A unique ID identifying the Audio Connector WebSocket connection.
+                example: b0a5a8c7-dc38-459f-a48d-a7f2008da853
+              captionsId:
+                type: string
+                description: Unique ID of the audio captioning session
+                example: 7c0680fc-6274-4de5-a66f-d0648e8d3ac2
+            required:
+            - id
+            - captionsId
+  requestBodies:
+    Start-Audio-Connector:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Start-Audio-Connector'
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

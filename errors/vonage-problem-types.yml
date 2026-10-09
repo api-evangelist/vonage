@@ -1,0 +1,163 @@
+generated: '2026-10-08'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/vonage-account-openapi.yml
+- openapi/vonage-application-v2-openapi.yml
+- openapi/vonage-audit-openapi.yml
+- openapi/vonage-conversation-openapi.yml
+- openapi/vonage-dispatch-openapi.yml
+- openapi/vonage-external-accounts-openapi.yml
+- openapi/vonage-identity-insights-openapi.yml
+- openapi/vonage-location-retrieval-openapi.yml
+- openapi/vonage-media-openapi.yml
+- openapi/vonage-meetings-openapi.yml
+- openapi/vonage-messages-openapi.yml
+- openapi/vonage-number-insight-openapi.yml
+format: rfc9457
+envelope:
+  media_type: application/json
+  schema: ErrorResponse
+coverage:
+  operations: 170
+  statuses_declared: 18
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad Request
+  operations: 61
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: BadRequestError
+- status: 401
+  title: Unauthorized
+  description: Unauthorized
+  operations: 105
+  media_types:
+  - application/json
+  - application/problem+json
+  - text/xml
+  schema: AuthenticationError
+- status: 402
+  title: Payment Required
+  description: Payment Required
+  operations: 15
+  media_types:
+  - application/problem+json
+  schema: ErrorPaymentRequired
+- status: 403
+  title: Forbidden
+  description: Forbidden
+  operations: 64
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ErrorForbidden
+- status: 404
+  title: Not Found
+  description: Not Found
+  operations: 100
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ErrorNotFound
+- status: 405
+  title: Method Not Allowed
+  description: Invalid Request Method
+  operations: 6
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ErrorResponse
+- status: 406
+  title: Not Acceptable
+  description: Invalid Accept Header
+  operations: 10
+  media_types:
+  - application/json
+  schema: null
+- status: 408
+  title: Request Timeout
+  description: Invalid stream ID
+  operations: 2
+  media_types:
+  - application/json
+  schema: null
+- status: 409
+  title: Conflict
+  description: Conflict
+  operations: 24
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ErrorConflict
+- status: 410
+  title: Gone
+  description: Invalid Code
+  operations: 1
+  media_types:
+  - application/problem+json
+  schema: ErrorInvalidCode
+- status: 412
+  title: Precondition Failed
+  description: Precondition Failed
+  operations: 2
+  media_types:
+  - application/problem+json
+  schema: null
+- status: 413
+  title: Content Too Large
+  description: Data length exceeded
+  operations: 2
+  media_types:
+  - application/json
+  schema: null
+- status: 415
+  title: Unsupported Media Type
+  description: Unsupported Content Type Header
+  operations: 4
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ErrorResponse
+- status: 420
+  title: null
+  description: Action failed
+  operations: 1
+  media_types:
+  - application/json
+  - text/xml
+  schema: response420
+- status: 422
+  title: Unprocessable Content
+  description: Invalid Params
+  operations: 19
+  media_types:
+  - application/problem+json
+  - application/json
+  schema: ErrorInvalidParams
+- status: 429
+  title: Too Many Requests
+  description: Too Many Requests
+  operations: 38
+  media_types:
+  - application/problem+json
+  - application/json
+  schema: ErrorResponse
+- status: 500
+  title: Internal Server Error
+  description: Internal error
+  operations: 61
+  media_types:
+  - application/problem+json
+  - application/json
+  schema: ErrorResponse
+- status: 503
+  title: Service Unavailable
+  description: Service unavailable
+  operations: 2
+  media_types:
+  - application/problem+json
+  - application/json
+  schema: ErrorResponse

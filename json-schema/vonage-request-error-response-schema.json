@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-request-error-response-schema.json",
+  "title": "requestErrorResponse",
+  "description": "Error",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-openapi.yml#/components/schemas/requestErrorResponse",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "The unique ID of the Verify request. This may be blank in an error situation.",
+      "maxLength": 32
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "15",
+        "20",
+        "29"
+      ],
+      "description": "Code | Text | Description\n-- | -- | --\n0 | Success | The request was successfully accepted by Vonage.\n1 | Throttled | You are trying to send more than the maximum of 30 requests per second.\n2 | Your request is incomplete and missing the mandatory parameter `$parameter` | The stated parameter is missing.\n3 | Invalid value for parameter `$parameter` | Invalid value for parameter. If you see Facility not allowed in the error text, check that you are using the correct Base URL in your request.\n4 | Invalid credentials were provided | The supplied API key or secret in the request is either invalid or disabled.\n5 | Internal Error | An error occurred processing this request in the Cloud Communications Platform.\n6 | The Vonage platform was unable to process this message for the following reason: `$reason` | The request could not be routed.\n7 | The number you are trying to verify is blacklisted for verification. | Returns a `network` property but no `request_id` will be present in the response.\n8 | The api_key you supplied is for an account that has been barred from submitting messages. |\n9 | Partner quota exceeded | Your account does not have sufficient credit to process this request.\n10 | Concurrent verifications to the same number are not allowed. | This will return a `request_id`.\n15 | The destination number is not in a supported network | The request has been rejected. Find out more about this error in the [Knowledge Base](https://api.support.vonage.com/hc/en-us/articles/360018406532-Verify-On-demand-Service-to-High-Risk-Countries)\n20 | This account does not support the parameter: pin_code. | Only certain accounts have the ability to set the `pin_code`. Please contact your account manager for more information.\n29 | Non-Permitted Destination | Your Vonage account is still in demo mode. While in demo mode you must add target numbers to the approved list for your account. Add funds to your account to remove this limitation.\n"
+    },
+    "error_text": {
+      "type": "string",
+      "description": "If `status` is non-zero, this explains the error encountered."
+    },
+    "network": {
+      "type": "string",
+      "description": "The Network ID of the blocking network, if relevant to the error."
+    }
+  }
+}

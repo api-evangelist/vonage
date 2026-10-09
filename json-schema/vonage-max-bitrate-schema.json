@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-max-bitrate-schema.json",
+  "title": "Max-Bitrate",
+  "description": "The maximum video bitrate for the archive, in bits per second. This option is only valid for composed archives. Set the maximum video bitrate to control the size of the composed archive. This maximum bitrate applies to the video bitrate only. If the output archive has audio, those bits will be excluded from the limit.",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-video-openapi.yml#/components/schemas/Max-Bitrate",
+  "type": "number",
+  "minimum": 100000,
+  "maximum": 6000000
+}

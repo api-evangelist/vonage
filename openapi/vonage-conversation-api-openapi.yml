@@ -1,0 +1,629 @@
+openapi: 3.2.0
+info:
+  title: Vonage Conversation API
+  version: 5.5.1
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Find quick answers to questions about the Vonage Conversation API (v1.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Conversation API (v1.0) Reference | Vonage API Documentation
+  description: 'Operations tagged conversation across 2 of this provider''s published API definitions: vonage-conversation-openapi.json, vonage-conversation-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1
+security:
+- bearerAuth: []
+tags:
+- name: conversation
+paths:
+  /conversations:
+    get:
+      operationId: listConversations
+      tags:
+      - conversation
+      summary: List conversations
+      description: 'Get a list of all conversations that the provided JWT has access to.
+
+        Please note that not all data is available in the list endpoint. Once
+
+        you''ve identified the conversation you need to work with, use the
+
+        GET /conversations/:id endpoint to fetch all of the conversation details'
+      parameters:
+      - $ref: '#/components/parameters/date_start'
+      - $ref: '#/components/parameters/date_end'
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/cursor'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page_size:
+                    $ref: '#/components/schemas/page_size'
+                  _embedded:
+                    description: A list of conversation objects. See the [get details of a specific conversation](#retrieveConversation) response fields for a description of the nested objects
+                    type: object
+                    x-nexmo-developer-collection-description-shown: true
+                    properties:
+                      conversations:
+                        type: array
+                        description: List of conversations matching the provided filter
+                        items:
+                          $ref: '#/components/schemas/conversation_lite'
+                    required:
+                    - conversations
+                  _links:
+                    type: object
+                    description: A series of links between resources in this API in the [HAL Specification](http://stateless.co/hal_specification.html).
+                    properties:
+                      first:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/v1/conversations?order=desc&page_size=10
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/v1/conversations?order=desc&page_size=10&cursor=G%2B62WaHsQs7j85CkpyDW2TPwiyfOlRFNtZUyA2hb6eZYlCphM4erOEY%3D
+                      next:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/v1/conversations?order=desc&page_size=10&cursor=7EjDNQrAcipmOnc0HCzpQRkhBULzY44ljGUX4lXKyUIVfiZay5pv9wg%3D
+                      prev:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/v1/conversations?order=desc&page_size=10&cursor=7EjDNQrAcipmOnc0HCzpQRkhBULzY44ljGUX4lXKyUIVfiZay5pv9wg%3D
+                    required:
+                    - self
+                required:
+                - coursor
+                - page_size
+                - _embedded
+                - _links
+        '400':
+          $ref: '#/components/responses/General400ValidationFailDateStart'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    post:
+      operationId: createConversation
+      tags:
+      - conversation
+      summary: Create a conversation
+      description: Create a conversation with a unique name. The name must be unique across all conversations.
+      requestBody:
+        $ref: '#/components/requestBodies/conversation'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversation'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '409':
+          $ref: '#/components/responses/Conversation409DuplicateName'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    servers:
+    - url: https://api.nexmo.com/v1
+  /conversations/{conversation_id}:
+    parameters:
+    - $ref: '#/components/parameters/conversation_id'
+    get:
+      operationId: retrieveConversation
+      tags:
+      - conversation
+      summary: Retrieve a conversation
+      responses:
+        '200':
+          description: Retrieve a conversation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversation'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    put:
+      operationId: replaceConversation
+      tags:
+      - conversation
+      summary: Update a conversation
+      responses:
+        '200':
+          description: Update a conversation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversation'
+        '400':
+          $ref: '#/components/responses/General400ValidationFailName'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '409':
+          $ref: '#/components/responses/Conversation409DuplicateName'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+      requestBody:
+        $ref: '#/components/requestBodies/conversation'
+    delete:
+      operationId: deleteConversation
+      tags:
+      - conversation
+      summary: Delete a conversation
+      responses:
+        '204':
+          $ref: '#/components/responses/General204'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    servers:
+    - url: https://api.nexmo.com/v1
+components:
+  responses:
+    Conversation404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/conversation_error_not_found'
+    General500InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Internal Error.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:internal-error
+              code:
+                type: string
+                example: system:error:internal-error
+              detail:
+                type: string
+                example: Something went wrong.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+    Conversation409DuplicateName:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Conflict.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#conversation:error:duplicate-name
+              code:
+                type: string
+                example: conversation:error:duplicate-name
+              detail:
+                type: string
+                example: The request failed because the conversation name already exists. Please provide a unique conversation name and try again.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+    General400ValidationFailDateStart:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Bad request.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#http:error:validation-fail
+              code:
+                type: string
+                example: http:error:validation-fail
+              detail:
+                type: string
+                example: Input validation failure.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+              invalid_parameters:
+                type: array
+                description: List of invalid parameters
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: date_start
+                    reason:
+                      type: string
+                      example: '"date_start" must be a valid ISO 8601 date'
+    General204:
+      description: Success response with no content
+    General400ValidationFailName:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Bad request.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#http:error:validation-fail
+              code:
+                type: string
+                example: http:error:validation-fail
+              detail:
+                type: string
+                example: Input validation failure.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+              invalid_parameters:
+                type: array
+                description: List of invalid parameters
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: name
+                    reason:
+                      type: string
+                      example: '"name" must be a string'
+    General401InvalidToken:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Unauthorized.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:invalid-token
+              code:
+                type: string
+                example: system:error:invalid-token
+              detail:
+                type: string
+                example: You did not provide a valid token. Please provide a valid token.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+  schemas:
+    conversation_state:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - DELETED
+      example: ACTIVE
+      description: The state the conversation is in.
+    conversation_lite:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/conversation_id'
+        name:
+          $ref: '#/components/schemas/conversation_name'
+        display_name:
+          $ref: '#/components/schemas/conversation_display_name'
+        image_url:
+          $ref: '#/components/schemas/conversation_image_url'
+        timestamp:
+          $ref: '#/components/schemas/conversation_timestamp'
+        _links:
+          $ref: '#/components/schemas/conversation_links'
+    conversation_numbers:
+      type: array
+      description: An array containing number on different channels.
+      oneOf:
+      - type: object
+        description: Phone Channel
+        properties:
+          type:
+            type: string
+            enum:
+            - phone
+            example: phone
+          number:
+            type: string
+            example: '447700900000'
+    conversation_image_url:
+      type:
+      - string
+      - 'null'
+      example: https://example.com/image.png
+      description: An image URL that you associate with the conversation
+      format: uri
+      maxLength: 2048
+    conversation_display_name:
+      type:
+      - string
+      - 'null'
+      example: Customer Chat
+      description: The public facing name of the conversation
+      maxLength: 50
+    conversation_error_not_found:
+      type: object
+      description: Conversation not found
+      properties:
+        title:
+          type: string
+          example: Not found.
+        type:
+          type: string
+          example: https://developer.nexmo.com/api/conversation#conversation:error:not-found
+        code:
+          type: string
+          example: conversation:error:not-found
+        detail:
+          type: string
+          example: Conversation does not exist, or you do not have access.
+        instance:
+          type: string
+          example: 00a5916655d650e920ccf0daf40ef4ee
+    conversation_callback:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL to send conversation events to.
+          example: https://example.com/eventcallback
+          format: uri
+          maxLength: 2048
+        event_mask:
+          description: A comma separated string detailing the events to send to the callback URL. If not supplied all events will be sent.
+          example: member:invited, member:joined
+          type: string
+          maxLength: 200
+        params:
+          type: object
+          properties:
+            applicationId:
+              description: The application ID that the event is associated with.
+              type: string
+              maxLength: 200
+            ncco_url:
+              description: The URL to send the NCCO to.
+              example: https://example.com/ncco
+              type: string
+              format: uri
+              maxLength: 2048
+        method:
+          description: The HTTP method to use when sending events to the callback URL.
+          type: string
+          default: POST
+          enum:
+          - POST
+          - GET
+    conversation_id:
+      type: string
+      example: CON-d66d47de-5bcb-4300-94f0-0c9d4b948e9a
+      description: The unique identifier for this conversation
+    conversation_links:
+      type: object
+      properties:
+        self:
+          type: object
+          properties:
+            href:
+              type: string
+              example: https://api.nexmo.com/v1/conversations/CON-7f977ca5-6e86-46a8-bdc9-67b9d8c8dfa9
+    page_size:
+      type: integer
+      description: The amount of records returned in this response
+      minimum: 1
+      maximum: 100
+      default: 10
+      example: 10
+    conversation_properties:
+      type: object
+      description: Conversation properties
+      properties:
+        ttl:
+          type: integer
+          example: 60
+          description: Time to leave. After how many seconds an empty conversation is deleted.
+          minimum: 0
+          maximum: 2147483648
+        custom_data:
+          type: object
+          description: Custom Key value pairs to be included with conversation data
+          additionalProperties:
+            type: string
+    conversation_sequence_number:
+      type: integer
+      example: 0
+      description: The last Event ID in this conversation. This ID can be used to [retrieve a specific event](#getEvent).
+    conversation_timestamp:
+      type: object
+      properties:
+        created:
+          type: string
+          example: '2019-09-03T18:40:24.324Z'
+          description: The time that the conversation was created
+        updated:
+          type:
+          - string
+          - 'null'
+          example: '2019-09-03T18:50:24.324Z'
+          description: The time that the conversation was updated
+        destroyed:
+          type:
+          - string
+          - 'null'
+          example: '2019-09-05T18:40:24.324Z'
+          description: The time that the conversation was destroyed
+    conversation:
+      type: object
+      description: Conversation Object
+      properties:
+        id:
+          $ref: '#/components/schemas/conversation_id'
+        name:
+          $ref: '#/components/schemas/conversation_name'
+        display_name:
+          $ref: '#/components/schemas/conversation_display_name'
+        image_url:
+          $ref: '#/components/schemas/conversation_image_url'
+        state:
+          $ref: '#/components/schemas/conversation_state'
+        sequence_number:
+          $ref: '#/components/schemas/conversation_sequence_number'
+        timestamp:
+          $ref: '#/components/schemas/conversation_timestamp'
+        properties:
+          $ref: '#/components/schemas/conversation_properties'
+        _links:
+          $ref: '#/components/schemas/conversation_links'
+    conversation_name:
+      type: string
+      example: customer_chat
+      description: Your internal conversation name. Must be unique. If not supplied a randomly generated name will be used.
+      maxLength: 100
+  parameters:
+    page_size:
+      name: page_size
+      in: query
+      description: Return this amount of records in the response
+      required: false
+      schema:
+        $ref: '#/components/schemas/page_size'
+    cursor:
+      name: cursor
+      in: query
+      description: 'The cursor to start returning results from.
+
+
+        You are not expected to provide this manually, but to follow the url provided in `_links.next.href` or `_links.prev.href` in the response which contains a `cursor` value.
+
+        '
+      schema:
+        type: string
+      required: false
+    date_end:
+      name: date_end
+      in: query
+      required: false
+      description: Return the records that occurred before this point in time.
+      schema:
+        example: '2018-01-01 12:00:00'
+        type: string
+        format: dateTime
+    date_start:
+      name: date_start
+      in: query
+      required: false
+      description: Return the records that occurred after this point in time.
+      schema:
+        example: '2018-01-01 10:00:00'
+        type: string
+        format: dateTime
+    conversation_id:
+      name: conversation_id
+      in: path
+      required: true
+      description: Conversation ID
+      example: CON-f972836a-550f-45fa-956c-12a2ab5b7d22
+      schema:
+        type: string
+    order:
+      name: order
+      in: query
+      description: Return the records in ascending or descending order.
+      required: false
+      schema:
+        type: string
+        default: asc
+        enum:
+        - asc
+        - desc
+        - ASC
+        - DESC
+  requestBodies:
+    conversation:
+      description: Conversation Request Payload Object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/conversation_name'
+              display_name:
+                $ref: '#/components/schemas/conversation_display_name'
+              image_url:
+                $ref: '#/components/schemas/conversation_image_url'
+              properties:
+                $ref: '#/components/schemas/conversation_properties'
+              numbers:
+                $ref: '#/components/schemas/conversation_numbers'
+              callback:
+                $ref: '#/components/schemas/conversation_callback'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-conversation-openapi.json
+- vonage-conversation-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

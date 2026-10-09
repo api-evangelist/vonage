@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-silent-auth-confirmation-success-schema.json",
+  "title": "SilentAuthConfirmationSuccess",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-v2-openapi.yml#/components/schemas/SilentAuthConfirmationSuccess",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-aggregated-insight-request-schema.json",
+  "title": "AggregatedInsightRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-identity-insights-openapi.yml#/components/schemas/AggregatedInsightRequest",
+  "type": "object",
+  "required": [
+    "phone_number",
+    "insights"
+  ],
+  "properties": {
+    "phone_number": {
+      "type": "string",
+      "format": "e164",
+      "description": "A single phone number you want insights on, starting with the country code. You may optionally include a leading +, but do not use  00 at the beginning. Ideally, the number should follow the [E.164](https://en.wikipedia.org/wiki/E.164) format. However, the API is designed to extract the phone number even if the input string contains alphanumeric characters, spaces, or symbols like brackets."
+    },
+    "purpose": {
+      "type": "string",
+      "description": "Specifies the reason for the request. This property is required only for Insights that use the Network Registry. For a Network Registry of type Production, the value must match one of the network profile purposes associated with your application. For a Network Registry of type Playground, the value must be \"FraudPreventionAndDetection\"."
+    },
+    "insights": {
+      "type": "object",
+      "description": "A list of objects representing the insight(s) requested for the phone number. At least one insight must be requested.",
+      "properties": {
+        "format": {
+          "$ref": "#/$defs/FormatInsightRequest"
+        },
+        "sim_swap": {
+          "$ref": "#/$defs/SimSwapInsightRequest"
+        },
+        "original_carrier": {
+          "$ref": "#/$defs/OriginalCarrierInsightRequest"
+        },
+        "current_carrier": {
+          "$ref": "#/$defs/CurrentCarrierInsightRequest"
+        },
+        "location_verification": {
+          "$ref": "#/$defs/LocationVerificationInsightRequest"
+        },
+        "subscriber_match": {
+          "$ref": "#/$defs/SubscriberMatchInsightRequest"
+        },
+        "roaming": {
+          "$ref": "#/$defs/RoamingInsightRequest"
+        },
+        "reachability": {
+          "$ref": "#/$defs/ReachabilityInsightRequest"
+        },
+        "device_swap": {
+          "$ref": "#/$defs/DeviceSwapInsightRequest"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "CurrentCarrierInsightRequest": {
+      "type": "object",
+      "description": "Request the `current_carrier` insight. This field must always be set to an empty object `{}`."
+    },
+    "DeviceSwapInsightRequest": {
+      "type": "object",
+      "description": "Request the `device_swap` insight.",
+      "properties": {
+        "period": {
+          "type": "integer",
+          "description": "Specifies the time window (in hours) used to determine the `is_swapped` response field.",
+          "format": "int32",
+          "minimum": 1,
+          "maximum": 2400,
+          "default": 240
+        }
+      }
+    },
+    "FormatInsightRequest": {
+      "type": "object",
+      "description": "Request the `format` insight. This field must always be set to an empty object `{}`."
+    },
+    "LocationVerificationInsightRequest": {
+      "type": "object",
+      "description": "Request the `location_verification` insight.",
+      "x-custom-version-tag": "Developer Preview",
+      "properties": {
+        "location": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Type of area.",
+              "enum": [
+                "CIRCLE"
+              ]
+            },
+            "radius": {
+              "type": "integer",
+              "description": "Expected accuracy for the verification in meters, from location (radius)",
+              "format": "int32",
+              "minimum": 2000,
+              "maximum": 200000
+            },
+            "center": {
+              "type": "object",
+              "description": "Geographic center point defined by latitude and longitude coordinates.",
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90,
+                  "description": "Latitude in decimal degrees (WGS 84)."
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180,
+                  "description": "Longitude in decimal degrees (WGS 84)."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "OriginalCarrierInsightRequest": {
+      "type": "object",
+      "description": "Request the `original_carrier` insight. This field must always be set to an empty object `{}`."
+    },
+    "ReachabilityInsightRequest": {
+      "type": "object",
+      "description": "Request the `reachability` insight. This field must always be set to an empty object `{}`.",
+      "x-custom-version-tag": "Developer Preview"
+    },
+    "RoamingInsightRequest": {
+      "type": "object",
+      "description": "Request the `roaming` insight. This field must always be set to an empty object `{}`.",
+      "x-custom-version-tag": "Developer Preview"
+    },
+    "SimSwapInsightRequest": {
+      "type": "object",
+      "description": "Request the `sim_swap` insight.",
+      "properties": {
+        "period": {
+          "type": "integer",
+          "description": "Specifies the time window (in hours) used to determine the `is_swapped` response field.",
+          "format": "int32",
+          "minimum": 1,
+          "maximum": 2400,
+          "default": 240
+        }
+      }
+    },
+    "SubscriberMatchInsightRequest": {
+      "type": "object",
+      "description": "Request the `subscriber_match` insight.",
+      "x-custom-version-tag": "Beta",
+      "minProperties": 1,
+      "properties": {
+        "id_document": {
+          "type": "string",
+          "description": "Id number associated to the official identity document in the country. It may contain alphanumeric characters."
+        },
+        "given_name": {
+          "type": "string",
+          "description": "First/given name or compound first/given name of the customer."
+        },
+        "family_name": {
+          "type": "string",
+          "description": "Last name, family name, or surname of the customer."
+        },
+        "street_name": {
+          "type": "string",
+          "description": "Name of the street of the customer's address. It should not include the type of the street."
+        },
+        "street_number": {
+          "type": "string",
+          "description": "The street number of the customer's address.  Number identifying a specific property on the 'streetName'."
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "Zip code or postal code"
+        },
+        "locality": {
+          "type": "string",
+          "description": "Locality of the customer's address"
+        },
+        "region": {
+          "type": "string",
+          "description": "Region or prefecture of the customer's address"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country of the customer's address. Format ISO 3166-1 alpha-2"
+        },
+        "house_number_extension": {
+          "type": "string",
+          "description": "Specific identifier of the house needed depending on the property type. For example, number of apartment in an apartment building."
+        },
+        "birthdate": {
+          "type": "string",
+          "description": "The birthdate of the customer, in ISO 8601 calendar date format (YYYY-MM-DD)."
+        }
+      }
+    }
+  }
+}

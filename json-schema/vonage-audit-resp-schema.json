@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-audit-resp-schema.json",
+  "title": "AuditResp",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-audit-openapi.yml#/components/schemas/AuditResp",
+  "type": "object",
+  "properties": {
+    "_embedded": {
+      "type": "object",
+      "description": "Container containing the `events` array.",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AuditEvent"
+          }
+        }
+      }
+    },
+    "_links": {
+      "$ref": "#/$defs/PaginationLinks"
+    },
+    "page": {
+      "$ref": "#/$defs/PaginationData"
+    }
+  },
+  "$defs": {
+    "AuditEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the audit event"
+        },
+        "event_type": {
+          "$ref": "#/$defs/EventTypes"
+        },
+        "event_type_description": {
+          "type": "string",
+          "description": "A description of the event type"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "When the audit event was created.",
+          "format": "date-time"
+        },
+        "user_email": {
+          "type": "string",
+          "description": "Email of the user whose account the audit event is associated with.",
+          "format": "email"
+        },
+        "user_id": {
+          "type": "integer",
+          "description": "The ID of the user that the audit event is associated with."
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The NEXMO_API_KEY of the Vonage API account that the audit event is associated with."
+        },
+        "source": {
+          "type": "string",
+          "description": "The source of the event.\nCD: Customer Dashboard DEVAPI: via Developer API\n",
+          "enum": [
+            "CD",
+            "DEVAPI"
+          ]
+        },
+        "source_ip": {
+          "type": "string",
+          "format": "ipv4",
+          "description": "The IP address used to make the account change."
+        },
+        "source_description": {
+          "type": "string",
+          "description": "Description of the audit event source.",
+          "format": "A human readable description of the `source`.",
+          "enum": [
+            "Customer Dashboard",
+            "Developer API"
+          ]
+        },
+        "source_country": {
+          "type": "string",
+          "description": "ISO 3166-1 Alpha-2 country code recorded for the event."
+        },
+        "context": {
+          "type": "object",
+          "description": "A valid JSON object with information detailing the context of the audit event.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ContextAppCreate"
+            },
+            {
+              "$ref": "#/$defs/ContextNumberLinking"
+            },
+            {
+              "$ref": "#/$defs/ContextNumberUpdate"
+            }
+          ]
+        },
+        "_links": {
+          "$ref": "#/$defs/EventLink"
+        }
+      }
+    },
+    "CallbackUrl": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST"
+          ],
+          "description": "The HTTP method used to make a callback to your application"
+        },
+        "url": {
+          "type": "string",
+          "format": "url",
+          "description": "The URL used for a callback to your application"
+        }
+      }
+    },
+    "ContextAppCreate": {
+      "type": "object",
+      "description": "App Creation",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "description": "UUID of the app that was created"
+        },
+        "created": {
+          "type": "object",
+          "properties": {
+            "accountId": {
+              "type": "string",
+              "description": "Which account the app is associated with"
+            },
+            "appId": {
+              "type": "string",
+              "description": "UUID of the app that was created"
+            },
+            "name": {
+              "type": "string",
+              "description": "The name of the application created"
+            },
+            "answer_url": {
+              "$ref": "#/$defs/CallbackUrl"
+            },
+            "event_url": {
+              "$ref": "#/$defs/CallbackUrl"
+            },
+            "type": {
+              "type": "string",
+              "description": "The type of application created"
+            }
+          }
+        }
+      }
+    },
+    "ContextNumberLinking": {
+      "type": "object",
+      "description": "Number Linking",
+      "properties": {
+        "country": {
+          "type": "string",
+          "description": "The country of the number"
+        },
+        "account": {
+          "type": "string",
+          "description": "Which account the number is associated with"
+        },
+        "msisdn": {
+          "type": "string",
+          "description": "The phone number linked/unlinked to your application"
+        },
+        "applicationId": {
+          "type": "string",
+          "description": "UUID of the app the number is being linked/unlinked to"
+        }
+      }
+    },
+    "ContextNumberUpdate": {
+      "type": "object",
+      "description": "Number Update",
+      "properties": {
+        "country": {
+          "type": "string",
+          "description": "The country of the number"
+        },
+        "msisdn": {
+          "type": "string",
+          "description": "The phone number linked/unlinked to your application"
+        },
+        "voice-type": {
+          "type": "string",
+          "enum": [
+            "tel",
+            "sip",
+            "vxml",
+            "app"
+          ],
+          "description": "The type of endpoint the number has been forwarded to"
+        },
+        "voice-value": {
+          "type": "string",
+          "description": "The value of the endpoint the number has been forwarded to"
+        },
+        "http": {
+          "type": "string",
+          "format": "url",
+          "description": "The URL of the endpoint the number has been forwarded to"
+        }
+      }
+    },
+    "EventLink": {
+      "type": "object",
+      "description": "A link to this audit event object if you were to retrieve it individually.",
+      "properties": {
+        "self": {
+          "properties": {
+            "href": {
+              "type": "string",
+              "format": "uri",
+              "description": "URI of this document."
+            }
+          }
+        }
+      }
+    },
+    "EventTypes": {
+      "type": "string",
+      "description": "The type of the audit event.",
+      "enum": [
+        "USER_STATUS",
+        "USER_UPDATE",
+        "USER_BILLING_UPDATE",
+        "USER_CREATE",
+        "USER_LOGIN",
+        "USER_LOGOUT",
+        "USER_PRODUCT_SEARCH",
+        "USER_API_KEYS_UPDATE",
+        "ACCOUNT_SECRET_DELETE",
+        "ACCOUNT_SECRET_CREATE",
+        "ACCOUNT_UPDATE_SPAMMER",
+        "ACCOUNT_UPDATE_SETTINGS_API",
+        "NUMBER_ASSIGN",
+        "NUMBER_UPDATED",
+        "NUMBER_RELEASE",
+        "NUMBER_LINKED",
+        "NUMBER_UNLINKED",
+        "APP_CREATE",
+        "APP_UPDATE",
+        "APP_DELETE",
+        "APP_DISABLE",
+        "APP_ENABLE",
+        "IP_WHITELIST_CREATE",
+        "IP_WHITELIST_DELETE",
+        "AUTORELOAD_ENABLE",
+        "AUTORELOAD_UPDATE",
+        "AUTORELOAD_DISABLE"
+      ]
+    },
+    "PaginationData": {
+      "type": "object",
+      "description": "Page containing results.",
+      "properties": {
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 30,
+          "description": "The total number of items in this response (page)."
+        },
+        "totalElements": {
+          "type": "integer",
+          "description": "The total number of items across all pages."
+        },
+        "totalPages": {
+          "type": "integer",
+          "description": "The number of pages of data in the response."
+        },
+        "number": {
+          "type": "integer",
+          "description": "Which page of the pagination sequence you are looking at."
+        }
+      }
+    },
+    "PaginationLinks": {
+      "type": "object",
+      "description": "Container containing self, next and last page links.",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "format": "uri",
+              "description": "URI of this document."
+            }
+          }
+        },
+        "next": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "format": "uri",
+              "description": "URI of the next document."
+            }
+          }
+        },
+        "last": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "format": "uri",
+              "description": "URI of the last document in the sequence."
+            }
+          }
+        }
+      }
+    }
+  }
+}

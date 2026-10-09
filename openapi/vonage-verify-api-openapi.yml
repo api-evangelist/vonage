@@ -1,288 +1,1028 @@
 openapi: 3.2.0
 info:
-  title: Vonage Communications Verify API
-  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
-  version: 1.0.0
+  title: Vonage Verify API
+  version: 1.0.1
   contact:
-    name: Vonage Developer Support
-    url: https://api.support.vonage.com/hc/en-us
-  termsOfService: https://www.vonage.com/legal/
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.vonage.com/
+  x-metaDescription: Find quick answers to questions about the Vonage Verify API (v2.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Verify v2.0 API Reference | Vonage API Documentation
+  description: 'Operations tagged Verify across 2 of this provider''s published API definitions: vonage-verify-v2-openapi.json, vonage-verify-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://api.nexmo.com
-  description: Vonage API Main Server
-- url: https://rest.nexmo.com
-  description: Vonage REST API Server
-security:
-- basicAuth: []
-- bearerAuth: []
+- url: https://api.nexmo.com/v2/verify
 tags:
 - name: Verify
-  description: Two-factor authentication and phone verification
+  description: Provides 2FA authentication for end-users.
 paths:
-  /verify/{format}:
+  /:
     post:
-      operationId: requestVerification
-      summary: Request a Verification
-      description: Use Verify to ensure that you can contact a user at a specific number.
+      operationId: newRequest
+      summary: Request a verification be sent to a user
       tags:
       - Verify
-      servers:
-      - url: https://api.nexmo.com
-      parameters:
-      - name: format
-        in: path
-        required: true
-        schema:
-          type: string
-          enum:
-          - json
-          - xml
-        description: Response format.
+      description: Start the verification process to a given channel(s).
+      security:
+      - basicAuth: []
+      - bearerAuth: []
       requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-              - api_key
-              - api_secret
-              - number
-              - brand
-              properties:
-                api_key:
-                  type: string
-                api_secret:
-                  type: string
-                number:
-                  type: string
-                  description: The mobile or landline phone number to verify (E.164 format).
-                brand:
-                  type: string
-                  description: An 18-character alphanumeric string used as the brand name in the verification message.
-                code_length:
-                  type: integer
-                  enum:
-                  - 4
-                  - 6
-                  default: 4
-                  description: The length of the verification code.
-                lg:
-                  type: string
-                  description: By default, the SMS or TTS message is in the language that matches the number prefix.
-                workflow_id:
-                  type: integer
-                  description: Selects the predefined sequence of SMS and TTS (text-to-speech) actions to use.
+        $ref: '#/components/requestBodies/VerificationRequest'
       responses:
-        '200':
-          description: Verification request created
+        '202':
+          description: The request was started
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VerifyResponse'
-  /verify/check/{format}:
+                required:
+                - request_id
+                type: object
+                properties:
+                  request_id:
+                    $ref: '#/components/schemas/RequestId'
+                  check_url:
+                    type: string
+                    description: The URL to complete the Silent Authentication verification process. It is returned only when Silent Auth is the initial verification channel in the workflow and the network supports it, unless `coverage_check` is set to `false`. See the [documentation](https://developer.vonage.com/en/verify/concepts/silent-authentication#availability) for supported network availability.
+                    example: https://api.nexmo.com/v2/verify/c11236f4-00bf-4b89-84ba-88b25df97315/silent-auth/redirect
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '412':
+          $ref: '#/components/responses/ErrorResponse412'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    servers:
+    - url: https://api.nexmo.com/v2/verify
+  /{request_id}:
+    parameters:
+    - $ref: '#/components/parameters/request_id'
     post:
-      operationId: checkVerification
-      summary: Check a Verification Code
-      description: Confirm whether the PIN you received from your user matches the one sent by Vonage.
+      operationId: checkCode
+      summary: Check a supplied code against a request to see if it is valid
+      description: 'Allows a code to be checked against an existing Verification request.
+
+
+        Note on using Silent Authentication:
+
+
+        If you are checking a code against a Silent Authentication workflow, you will only
+
+        have one attempt to submit the code, as this should be handled by a Client SDK.'
       tags:
       - Verify
-      servers:
-      - url: https://api.nexmo.com
-      parameters:
-      - name: format
-        in: path
-        required: true
-        schema:
-          type: string
-          enum:
-          - json
-          - xml
+      security:
+      - basicAuth: []
+      - bearerAuth: []
       requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-              - api_key
-              - api_secret
-              - request_id
-              - code
-              properties:
-                api_key:
-                  type: string
-                api_secret:
-                  type: string
-                request_id:
-                  type: string
-                  description: The identifier of the Verify request to check.
-                code:
-                  type: string
-                  description: The verification code entered by your user.
+        $ref: '#/components/requestBodies/CheckCodeRequest'
       responses:
         '200':
-          description: Verification code checked
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VerifyCheckResponse'
-  /verify/search/{format}:
+                $ref: '#/components/schemas/CodeSubmitSuccess'
+        '400':
+          $ref: '#/components/responses/ErrorResponse400'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '410':
+          $ref: '#/components/responses/ErrorResponse410'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    delete:
+      operationId: cancelRequest
+      summary: Cancel a verification
+      description: 'If a verification request is still active, it aborts the workflow.
+
+
+        Cancellation is only possible 30 seconds after the start of the verification request and before the second event (either TTS or SMS) has taken place.'
+      tags:
+      - Verify
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No content
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    servers:
+    - url: https://api.nexmo.com/v2/verify
+  /{request_id}/next_workflow:
+    post:
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/request_id'
+      operationId: nextWorkflow
+      summary: Next workflow
+      description: Move the request onto the next workflow, if available.
+      tags:
+      - Verify
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409NextWorkflow'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    servers:
+    - url: https://api.nexmo.com/v2/verify
+  /{request_id}/silent-auth/redirect:
     get:
-      operationId: searchVerification
-      summary: Search Verifications
-      description: Lookup the status of one or more requests.
+      parameters:
+      - $ref: '#/components/parameters/request_id'
+      operationId: silentAuthCheck
+      summary: Attempt Silent Authentication completion
+      description: 'This is a URL that is returned from a new Silent Authentication request as `check_url` (or can also be obtained from the Silent Authentication webhook event, if your integration is asynchronous.) Performing a GET request on the URL provided will return a series of 30x redirects to follow. Following these 30xs will result in either success containing a `code` to submit or an error.
+
+
+        Note on Cellular Usage:
+
+
+        This URL (i.e. the `check_url`) must be hit by a device using cellular data in order for Silent Authentication to work correctly.
+
+
+        Note that errors will also be included as a fragment within the URL for the frontend to parse. These will take the following example format:
+
+
+        https:\\example.com\silent-auth\your-callback-route#error_description=The silent auth verification cannot be completed.
+
+
+        The possible error messages are as follows:
+
+
+        The silent auth verification cannot be completed.
+
+
+        Device MSISDN does not match.
+
+
+        Device number does not resolve to a supported Mobile Network Operator.
+
+
+        IP Address does not resolve to a cellular device.'
       tags:
       - Verify
-      servers:
-      - url: https://api.nexmo.com
-      parameters:
-      - name: format
-        in: path
-        required: true
-        schema:
-          type: string
-          enum:
-          - json
-          - xml
-      - name: api_key
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: api_secret
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: request_id
-        in: query
-        schema:
-          type: string
-        description: The request ID to search for.
       responses:
         '200':
-          description: Verification status retrieved
+          description: Carrier Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VerifySearchResponse'
-  /verify/control/{format}:
-    post:
-      operationId: controlVerification
-      summary: Control a Verification
-      description: Control the progress of your Verify requests, e.g., cancel or trigger next workflow.
-      tags:
-      - Verify
-      servers:
-      - url: https://api.nexmo.com
-      parameters:
-      - name: format
-        in: path
-        required: true
-        schema:
-          type: string
-          enum:
-          - json
-          - xml
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-              - api_key
-              - api_secret
-              - request_id
-              - cmd
-              properties:
-                api_key:
-                  type: string
-                api_secret:
-                  type: string
-                request_id:
-                  type: string
-                cmd:
-                  type: string
-                  enum:
-                  - cancel
-                  - trigger_next_event
-      responses:
-        '200':
-          description: Verification control command sent
+                $ref: '#/components/schemas/SilentAuthConfirmationSuccess'
+        '302':
+          description: Redirection(s) to complete carrier check. Can also be other 30x HTTP responses depending on the territory and routing.
+          headers:
+            Location:
+              description: URL to redirect to
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '412':
+          $ref: '#/components/responses/ErrorResponse412'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    servers:
+    - url: https://api.nexmo.com/v2/verify
 components:
   schemas:
-    VerifyCheckResponse:
+    WhatsAppChannel:
+      title: WhatsApp
+      x-tab-id: WorkflowWhatsApp
+      type: object
+      description: Request a code be sent to a user
+      required:
+      - channel
+      - to
+      - from
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - whatsapp
+          example: whatsapp
+        to:
+          $ref: '#/components/schemas/To'
+        from:
+          $ref: '#/components/schemas/FromWhatsApp'
+        mode:
+          $ref: '#/components/schemas/WhatsAppMode'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    To:
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: '447700900000'
+      description: The phone number to contact, in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a leading + or 00 when entering a phone number, start with the country code, for example, 447700900000.
+    FraudCheck:
+      type: boolean
+      description: Enables fraud checking for the verification request. When set to `true`, the request is checked against fraud detection rules and may be blocked if identified as fraudulent. This feature requires an account capability — contact [support](https://api.support.vonage.com) to enable it on your account.
+      default: false
+      example: true
+    CodeSubmitSuccess:
       type: object
       properties:
         request_id:
           type: string
-        event_id:
-          type: string
+          example: 90596ac8-e1f1-46a9-a80f-ebd55e2296ae
         status:
           type: string
-          description: The status of the verification request (0 = success).
-        price:
+          example: completed
+    FromWhatsApp:
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: '447700400080'
+      description: A WABA connected sender number, in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a leading + or 00 when entering a phone number, start with the country code, for example, 447700900000.
+    ErrorNetworkNotSupported:
+      type: object
+      description: Network not supported
+      properties:
+        title:
           type: string
-        currency:
+          description: Error description
+          example: Network not supported
+        type:
           type: string
-    VerifyResponse:
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#precondition-failed
+        detail:
+          type: string
+          description: Detailed error description
+          example: Device number does not resolve to a supported Mobile Network Operator.
+        instance:
+          type: string
+          description: The instance ID
+          example: 7435aa75-1604-4f88-92de-cb27afdc27a1
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorNotFound:
+      type: object
+      description: Template Fragment was not found.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Not Found
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#template-fragment-not-found
+        detail:
+          type: string
+          description: Detailed error description
+          example: Template Fragment was not found.
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorConflict:
+      type: object
+      description: Concurrent verifications to the same number are not allowed.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Conflict
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#concurrent
+        detail:
+          type: string
+          description: Detailed error description
+          example: Concurrent verifications to the same number are not allowed.
+        instance:
+          type: string
+          description: The instance ID
+          example: 738f9313-418a-4259-9b0d-6670f06fa82d
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    RCSChannel:
+      title: RCS
+      x-tab-id: WorkflowRCS
+      type: object
+      description: Request a code be sent to a user
+      required:
+      - channel
+      - to
+      - from
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - rcs
+          example: rcs
+        to:
+          $ref: '#/components/schemas/To'
+        from:
+          $ref: '#/components/schemas/FromRcs'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    FromRcs:
+      type: string
+      minLength: 1
+      maxLength: 15
+      example: agentname
+      description: An sender identifier in alphanumeric format.
+    ErrorInvalidCode:
+      type: object
+      description: The code you provided does not match the expected value.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Invalid Code
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#invalid-code
+        detail:
+          type: string
+          description: Detailed error description
+          example: The code you provided does not match the expected value.
+        instance:
+          type: string
+          description: The instance ID
+          example: 3208c715-d203-45dd-81b6-cab3692d3f83
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    CheckCodeByCode:
+      title: Check
+      x-tab-id: CheckCode
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          $ref: '#/components/schemas/code'
+    code:
+      type: string
+      description: The code provided by the user. The PIN code can be retried a maximum of three times.
+      example: '1234'
+      minLength: 4
+      maxLength: 10
+    ClientRef:
+      type: string
+      description: If the `client_ref` is set when the request is sent, it will be included in the callbacks
+      minLength: 1
+      maxLength: 40
+      pattern: ^[a-zA-Z0-9]*$
+      example: myPersonalRef
+    TemplateId:
+      type: string
+      example: 4ed3027d-8762-44a0-aa3f-c393717413a4
+      description: A custom template ID to use. This parameter works only when `channel` is `sms` or `rcs`.
+    CheckCodeByToken:
+      title: Silent Auth Advanced Check
+      x-tab-id: SilentAuthAdvancedCheck
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          $ref: '#/components/schemas/token'
+    ErrorInternalError:
+      type: object
+      description: There was an error processing your request in the Platform.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Internal error
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/api-errors#internal-error
+        detail:
+          type: string
+          description: Detailed error description
+          example: There was an error processing your request in the Platform.
+        instance:
+          type: string
+          description: The instance ID
+          example: fe7ca85d-bebc-4696-ba39-317edfd15b62
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ChannelTimeout:
+      type: integer
+      description: Specifies the wait time in seconds between attempts to deliver the verification code. On the Verify Success pricing model, the minimum `channel_timeout` is fixed at `60` seconds and cannot be changed; and if you are using Silent Authentication, the `channel_timeout` is always fixed at `60` seconds, irrespective of the pricing model.
+      minimum: 15
+      maximum: 900
+      default: 180
+      example: 180
+    ErrorJwtExpired:
+      description: JWT expired
+      type: object
+      required:
+      - type
+      - title
+      - details
+      - instance
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: You did not provide correct credentials.
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#jwt-expired
+        detail:
+          type: string
+          description: Additional information about the error
+          example: The JWT provided has expired.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    Language:
+      type: string
+      description: 'Languages that are available to use. See the full list of supported languages in the [Verify Languages Guide](https://developer.vonage.com/en/verify/guides/verify-v2-languages). It has no effect if the `channel` is `silent_auth`.
+
+        '
+      example: es-es
+      default: en-us
+    CoverageCheck:
+      type: boolean
+      description: Controls network coverage lookup. If `true`, a synchronous error is returned when the network is unsupported. If `false` a `check_url` is always returned and errors are reported via callbacks.
+      default: true
+      example: false
+    Brand:
+      type: string
+      minLength: 1
+      maxLength: 18
+      description: 'The brand that is sending the verification request. Please note that for security reasons, the following regex is used to escape this value: `^[^\/{}:$]*$`. A value that fails this check will result in a `422`.'
+      example: ACME
+    ErrorPaymentRequired:
+      type: object
+      description: This request could not be performed due to your account balance being low.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Low balance
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/#low-balance
+        detail:
+          type: string
+          description: Additional information about the error
+          example: This request could not be performed due to your account balance being low.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    RequestId:
+      type: string
+      description: The ID of the request
+      example: c11236f4-00bf-4b89-84ba-88b25df97315
+    SilentAuthChannel:
+      title: Silent Auth
+      x-tab-id: WorkflowSilentAuth
+      type: object
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - silent_auth
+          example: silent_auth
+        to:
+          $ref: '#/components/schemas/ToSilentAuth'
+        redirect_url:
+          $ref: '#/components/schemas/Redirect'
+        coverage_check:
+          $ref: '#/components/schemas/CoverageCheck'
+        mode:
+          $ref: '#/components/schemas/Mode'
+    VoiceChannel:
+      title: Voice
+      x-tab-id: WorkflowVoice
+      type: object
+      description: Request a code be sent to a user
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - voice
+          example: voice
+        to:
+          $ref: '#/components/schemas/To'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    ToSilentAuth:
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: '447700900000'
+      description: The phone number to use for authentication, in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a leading + or 00 when entering a phone number, start with the country code, for example, 447700900000.
+    CodeLength:
+      type: integer
+      description: Length of the code to send to the user. It applies to all channels defined in the workflow.
+      default: 4
+      example: 4
+      enum:
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+    SMSChannel:
+      title: SMS
+      type: object
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - sms
+          example: sms
+        to:
+          $ref: '#/components/schemas/To'
+        from:
+          $ref: '#/components/schemas/FromSms'
+        entity_id:
+          type: string
+          description: Optional PEID required for SMS delivery using Indian Carriers
+          minLength: 1
+          maxLength: 20
+          example: '1101407360000017170'
+        content_id:
+          type: string
+          description: Optional value corresponding to a templateID for SMS delivery using Indian Carriers
+          minLength: 1
+          maxLength: 20
+          example: '1107158078772563946'
+        app_hash:
+          type: string
+          description: Optional Android Application Hash Key for automatic code detection on a user's device.
+          minLength: 11
+          maxLength: 11
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    ToEmail:
+      type: string
+      format: email
+      example: alice@company.com
+      description: The email address to send the verification request to.
+    ErrorConflictTriggerNext:
+      type: object
+      description: The trigger-next operation cannot be performed at this time due to a replication delay. Please try again later.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Conflict
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#conflict
+        detail:
+          type: string
+          description: Detailed error description
+          example: The operation cannot be performed at this time. Please try again later.
+        instance:
+          type: string
+          description: The instance ID
+          example: my-trace-id-trigger-next-replication-delay
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorUnauthorizedMissingCredentials:
+      type: object
+      description: Invalid Credentials
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Unauthorized
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/api-errors#unauthorized
+        detail:
+          type: string
+          description: Additional information about the error
+          example: You did not provide correct credentials
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: 9e4dad0a-530d-48a9-bf79-849c8eaaa286
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorSilentAuth:
+      type: object
+      description: Silent authentication failed
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Silent authentication failed
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#precondition-failed
+        detail:
+          type: string
+          description: Detailed error description
+          example: The silent auth verification cannot be initiated
+        instance:
+          type: string
+          description: The instance ID
+          example: 7c8e4d92-6a3f-49a0-98da-0b3bafc93218
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    Code:
+      type: string
+      minLength: 4
+      maxLength: 10
+      pattern: ^[a-zA-Z0-9]+$
+      example: e4dR1Qz
+      description: An optional alphanumeric custom code to use if you don't want Vonage to generate the code. Only the Verify Conversion pricing model allows using this parameter, and it has no effect if the `channel` is `silent_auth`. If you provide a custom code, you must complete the verification flow by calling the `/check` endpoint with that PIN. For additional details, refer to [the documentation](https://developer.vonage.com/en/verify/guides/v2-anti-fraud?source=verify).
+    FromSms:
+      type: string
+      minLength: 1
+      maxLength: 15
+      example: '447700400080'
+      description: An optional sender identifier in either numeric or alphanumeric format. The maximum length is 11  characters for alphanumeric and 15 for numeric. When numeric, it must be in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a leading + or 00 when entering a phone number - start with the country code, for example `447700900000`.  If no `from` identifier is given, the request will default to the `brand`.
+    ErrorInvalidParams:
       type: object
       properties:
-        request_id:
+        title:
           type: string
-          description: Unique identifier for the verification request.
-        status:
+          description: Error description
+          example: Invalid params
+        type:
           type: string
-          description: Status code (0 = success).
-        error_text:
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#invalid-params
+        detail:
           type: string
-    VerifySearchResponse:
-      type: object
-      properties:
-        request_id:
+          description: Detailed error description
+          example: The value of one or more parameters is invalid.
+        instance:
           type: string
-        account_id:
-          type: string
-        status:
-          type: string
-        number:
-          type: string
-        price:
-          type: string
-        currency:
-          type: string
-        sender_id:
-          type: string
-        date_submitted:
-          type: string
-        date_finalized:
-          type: string
-        first_event_date:
-          type: string
-        last_event_date:
-          type: string
-        checks:
+          description: Internal Trace ID
+          example: 06032957-99ce-41ee-978b-9a390cd5a89b
+        invalid_parameters:
           type: array
+          description: Detailed array of errors
           items:
             type: object
             properties:
-              date_received:
+              name:
                 type: string
+              reason:
+                type: string
+          example:
+          - name: brand
+            reason: Brand is required
+    token:
+      type: string
+      description: The token for Silent Auth Advanced verification. This is mutually exclusive with the `code` parameter.
+      example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature
+    MailChannel:
+      title: EMail
+      x-tab-id: WorkflowEmail
+      description: Request an email code be sent to the user.
+      type: object
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - email
+          example: email
+        to:
+          $ref: '#/components/schemas/ToEmail'
+        from:
+          $ref: '#/components/schemas/FromEmail'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    Mode:
+      type: string
+      example: advanced
+      default: standard
+      enum:
+      - standard
+      - advanced
+      description: An optional parameter to specify whether to use Silent Authentication Advanced.
+    SilentAuthConfirmationSuccess:
+      type: object
+      properties:
+        request_id:
+          type: string
+          example: c11236f4-00bf-4b89-84ba-88b25df9731
+        code:
+          type: string
+          example: si9sfG
+    FromEmail:
+      type: string
+      format: email
+      example: bob@company.com
+      description: The email address to send the verification request from.
+    ReuseCode:
+      type: boolean
+      description: Use the same PIN code across multiple channels within a workflow
+      default: false
+      example: true
+    ErrorRateLimited:
+      type: object
+      description: Please wait, then retry your request.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Rate Limit Hit
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#throttled
+        detail:
+          type: string
+          description: Detailed error description
+          example: Please wait, then retry your request
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    WhatsAppMode:
+      type: string
+      description: Defines the WhatsApp verification experience. Use `zero_tap` for automatic verification on Android apps. Defaults to `otp_code`.
+      enum:
+      - zero_tap
+      - otp_code
+      default: otp_code
+      example: zero_tap
+    Redirect:
+      type: string
+      description: Optional final redirect added at the end of the `check_url` request/response lifecycle. See the documentation for integrations. Will contain the `request_id` and `code` as a url fragment after the URL.
+      example: https://acme-app.com/sa/redirect
+  responses:
+    ErrorResponse410:
+      description: Invalid Code
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidCode'
+    ErrorResponse400:
+      description: Invalid Code
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidCode'
+    ErrorResponse500:
+      description: Internal error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInternalError'
+    ErrorResponse409:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorConflict'
+    ErrorResponse429:
+      description: Rate limited
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorRateLimited'
+    ErrorResponse402:
+      description: Payment Required
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorPaymentRequired'
+    ErrorResponse409NextWorkflow:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorConflict'
+            - $ref: '#/components/schemas/ErrorConflictTriggerNext'
+    ErrorResponse422:
+      description: Invalid Params
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidParams'
+    ErrorResponse401:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorUnauthorizedMissingCredentials'
+            - $ref: '#/components/schemas/ErrorJwtExpired'
+    ErrorResponse404:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorNotFound'
+    ErrorResponse412:
+      description: Precondition Failed
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorSilentAuth'
+            - $ref: '#/components/schemas/ErrorNetworkNotSupported'
+  parameters:
+    request_id:
+      name: request_id
+      in: path
+      required: true
+      description: ID of the verify request
+      schema:
+        type: string
+  requestBodies:
+    VerificationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              locale:
+                $ref: '#/components/schemas/Language'
+              channel_timeout:
+                $ref: '#/components/schemas/ChannelTimeout'
+              client_ref:
+                $ref: '#/components/schemas/ClientRef'
+              code_length:
+                $ref: '#/components/schemas/CodeLength'
               code:
-                type: string
-              status:
-                type: string
-              ip_address:
-                type: string
+                $ref: '#/components/schemas/Code'
+              brand:
+                $ref: '#/components/schemas/Brand'
+              template_id:
+                $ref: '#/components/schemas/TemplateId'
+              fraud_check:
+                $ref: '#/components/schemas/FraudCheck'
+              workflow:
+                type: array
+                minItems: 1
+                maxItems: 3
+                description: Defines the sequence of actions (max 3) that Vonage uses to reach the end-user you want to verify with a PIN code. See [documentation](https://developer.vonage.com/en/verify/concepts/workflow)
+                items:
+                  oneOf:
+                  - $ref: '#/components/schemas/SilentAuthChannel'
+                  - $ref: '#/components/schemas/RCSChannel'
+                  - $ref: '#/components/schemas/SMSChannel'
+                  - $ref: '#/components/schemas/WhatsAppChannel'
+                  - $ref: '#/components/schemas/VoiceChannel'
+                  - $ref: '#/components/schemas/MailChannel'
+                example:
+                - channel: silent_auth
+                  to: '44770090000'
+                  redirect_url: https://acme-app.com/sa/redirect
+                - channel: sms
+                  to: '44770090000'
+                - channel: voice
+                  to: '44770090000'
+    CheckCodeRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/CheckCodeByCode'
+            - $ref: '#/components/schemas/CheckCodeByToken'
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
-      description: Base64-encoded API key and secret joined by a colon.
+      description: HTTP auth can be used for synchronous calls, for asynchronous calls and call backs use JWT authentication
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token for application-level authentication.
+x-refined-from:
+- vonage-verify-v2-openapi.json
+- vonage-verify-v2-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

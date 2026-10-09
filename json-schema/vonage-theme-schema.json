@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-theme-schema.json",
+  "title": "Theme",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-meetings-openapi.yml#/components/schemas/Theme",
+  "type": "object",
+  "properties": {
+    "theme_id": {
+      "$ref": "#/$defs/Theme_Id"
+    },
+    "theme_name": {
+      "$ref": "#/$defs/Theme_Name"
+    },
+    "domain": {
+      "$ref": "#/$defs/Theme_Domain"
+    },
+    "account_id": {
+      "$ref": "#/$defs/AccountId"
+    },
+    "application_id": {
+      "$ref": "#/$defs/ApplicationId"
+    },
+    "main_color": {
+      "$ref": "#/$defs/Theme_MainColor"
+    },
+    "short_company_url": {
+      "$ref": "#/$defs/Theme_ShortCompanyUrl"
+    },
+    "brand_text": {
+      "$ref": "#/$defs/Theme_BrandText"
+    },
+    "brand_image_colored": {
+      "type": "string",
+      "description": "Colored logo's key in storage system"
+    },
+    "brand_image_white": {
+      "type": "string",
+      "description": "White logo's key in storage system"
+    },
+    "branded_favicon": {
+      "type": "string",
+      "description": "Favicon key in storage system"
+    },
+    "brand_image_colored_url": {
+      "type": "string",
+      "description": "Colored logo's link"
+    },
+    "brand_image_white_url": {
+      "type": "string",
+      "description": "White logo's link"
+    },
+    "branded_favicon_url": {
+      "type": "string",
+      "description": "Favicon link"
+    }
+  },
+  "$defs": {
+    "AccountId": {
+      "type": "string",
+      "description": "The applications account id (ApiKey)"
+    },
+    "ApplicationId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The application Id"
+    },
+    "Theme_BrandText": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The text that will appear on the meeting homepage, in the case that there is no brand image"
+    },
+    "Theme_Domain": {
+      "type": "string",
+      "enum": [
+        "VCP",
+        "VBC"
+      ],
+      "description": "The domain of the theme"
+    },
+    "Theme_Id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The theme UUID"
+    },
+    "Theme_MainColor": {
+      "maxLength": 7,
+      "type": "string",
+      "pattern": "#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
+      "description": "The main color that will be used for the meeting room."
+    },
+    "Theme_Name": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The name of the theme (must be unique). If null, a UUID will automatically be generated"
+    },
+    "Theme_ShortCompanyUrl": {
+      "type": "string",
+      "maxLength": 128,
+      "pattern": "^(?=.*[a-zA-Z_~-])([a-zA-Z0-9_~-]+)$",
+      "description": "The URL that will represent every meeting room with this theme. The value must be unique across Vonage"
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-user-channels-schema.json",
+  "title": "user_channels",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-application-v2-openapi.yml#/components/schemas/user_channels",
+  "type": "object",
+  "properties": {
+    "pstn": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "sip": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "Value must match regular expression ^(sip|sips):\\\\+?([\\\\w|:.\\\\-@;,=%&]+)"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "vbc": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "extension": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "websocket": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "Value must match regular expression ^(ws|wss):\\/\\/[a-zA-Z0-9~#%@&-_?\\\\/.,:;)(\\]\\[]*$"
+          },
+          "content-type": {
+            "type": "string",
+            "enum": [
+              "audio/l16;rate=8000",
+              "audio/l16;rate=16000"
+            ]
+          },
+          "headers": {
+            "description": "Details of the Websocket to connect to",
+            "type": "object",
+            "properties": {
+              "customer_id": {
+                "type": "string",
+                "description": "This is an example header. You can provide any headers you may need"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "mms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "whatsapp": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "viber": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "messenger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

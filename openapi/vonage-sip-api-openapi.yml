@@ -1,0 +1,329 @@
+openapi: 3.2.0
+info:
+  title: Vonage SIP API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged SIP across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: sip
+  description: APIs relating to working with SIP calls in a video session
+paths:
+  /v2/project/{application_id}/dial:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    post:
+      tags:
+      - sip
+      summary: Initiate an outbound SIP call
+      operationId: initiate-sip-call
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: A unique ID for the SIP call.
+                    example: b0a5a8c7-dc38-459f-a48d-a7f2008da853
+                  connectionId:
+                    type: string
+                    description: The Vonage Video connection ID for the SIP call's connection in the Vonage Video session. You can use this connection ID to terminate the SIP call, using the Vonage Video REST API.
+                    example: e9f8c166-6c67-440d-994a-04fb6dfed007
+                  streamId:
+                    type: string
+                    description: The Vonage Video stream ID for the SIP call's stream in the Vonage Video session.
+                    example: 482bce73-f882-40fd-8ca5-cb74ff416036
+        '400':
+          description: 'Bad Request
+
+            You do not pass in a session ID or you pass in an invalid session ID.'
+        '403':
+          description: 'Forbidden
+
+            The HTTP response has a 403 status code if you pass in an invalid JSON web token.
+
+            '
+        '404':
+          description: 'Not Found
+
+            The HTTP response has a 404 status code if the session does not exist.
+
+            '
+        '409':
+          description: 'Conflict
+
+            The HTTP response has a 409 status code if you attempt to start a SIP call for a session that does not use the Vonage Video Media Router.'
+        '500':
+          description: 'Internal Server Error
+
+            The HTTP response has a 500 status code when the platform is temporarily unable to allocate a media server to handle the SIP call — for example, when the SIP/media infrastructure is unhealthy or at capacity. Before returning this error the platform automatically retries the request across multiple, geographically distributed media servers, so a 500 indicates a broad capacity or health issue rather than a single-server failure. The response body is a JSON object of the form `{"message": "Internal server error", "code": -1}`. This is a retryable error: clients should retry with exponential backoff.'
+      description: 'To connect your SIP platform to an Vonage Video session, submit an HTTP POST request to the dial method. The audio from your end of the SIP call is added to the Vonage Video session as an audio-only stream. The Vonage Video Media Router mixes audio from other streams in the session and sends the mixed audio to your SIP endpoint.
+
+
+        The call ends when your SIP server sends a `BYE` message (to terminate the call). You can also end a call using the Vonage Video REST API method to disconnect a client from a session. The Vonage Video SIP gateway automatically ends a call after 5 minutes of inactivity (5 minutes without media received). Also, as a security measure, the Vonage Video SIP gateway closes any SIP call that lasts longer than 6 hours.
+
+
+        The SIP interconnect feature requires that you use an Vonage Video session that uses the Vonage Video Media Router (a session with the media mode set to routed).
+
+
+        For more information, including technical details and security considerations, see the Vonage Video SIP interconnect developer guide.'
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: Content-Type
+        description: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 0
+              properties:
+                sessionId:
+                  type: string
+                  example: b40ef09b-3811-4726-b508-e41a0f96c68f
+                  description: The Vonage Video session ID for the SIP call to join.
+                token:
+                  type: string
+                  example: 78d335fa-323d-0114-9c3d-d6f0d48968cf
+                  description: The Vonage Video token to be used for the participant being called. You can add token data to identify that the participant is on a SIP endpoint or for other identifying data, such as phone numbers. (The Vonage Video client libraries include properties for inspecting the connection data for a client connected to a session.) See the Token Creation developer guide.
+                sip:
+                  type: object
+                  required:
+                  - uri
+                  properties:
+                    uri:
+                      type: string
+                      example: sip:user@sip.partner.com;transport=tls
+                      description: 'The SIP URI to be used as destination of the SIP call initiated from Vonage Video to your SIP platform.
+
+                        If the SIP ​uri​ contains a ​transport=tls​ header, the negotiation between Vonage and the SIP endpoint will be done securely. Note that this will only apply to the negotiation itself, and not to the transmission of audio. If you also audio transmission to be encrypted, set the ​secure​ property to ​true​.'
+                    from:
+                      type: string
+                      example: from@example.com
+                      description: The number or string that will be sent to the final SIP number as the caller. It must be a string in the form of from@example.com, where from can be a string or a number. If from is set to a number (for example, "14155550101@example.com"), it will show up as the incoming number on PSTN phones. If from is undefined or set to a string (for example, "joe@example.com"), +00000000 will show up as the incoming number on PSTN phones.
+                    headers:
+                      type: object
+                      description: This object defines custom headers to be added to the SIP ​INVITE​ request initiated from Vonage Video to your SIP platform.
+                      properties:
+                        headerKey:
+                          type: string
+                          example: some-value
+                    auth:
+                      type: object
+                      description: This object contains the username and password to be used in the SIP INVITE​ request for HTTP digest authentication, if it is required by your SIP platform.
+                      properties:
+                        username:
+                          type: string
+                          example: username
+                        password:
+                          type: string
+                          example: p@ssw0rd
+                    secure:
+                      type: boolean
+                      description: A Boolean flag that indicates whether the media must be transmitted encrypted (​true​) or not (​false​, the default)
+                      default: false
+                    video:
+                      type: boolean
+                      description: A Boolean flag that indicates whether the SIP call will include video (​true​) or not (​false​, the default). With video included, the SIP client's video is included in the Vonage Video stream that is sent to the Vonage Video session. SIP video is limited to 480p at 800 kbps. The SIP client will receive a single composed video of the published streams in the Vonage Video session.
+                      default: false
+                    observeForceMute:
+                      type: boolean
+                      description: A boolean flag that indicates whether the SIP end point observes force mute moderation (true) or not (false, the default). Also, with observeForceMute set to true, the caller can press "*6" to unmute and mute the published audio. For the "*6" mute toggle to work, the SIP caller must negotiate RFC2833 DTMFs (RFC2833/RFC4733 digits). The mute toggle is not supported with SIP INFO or in-band DTMFs. A message (in English) is played to the caller when the caller mutes and unmutes, or when the SIP client is muted through a force mute action.
+                      default: false
+              required:
+              - sessionId
+              - token
+              - sip
+        description: ''
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/projects/{application_id}/session/{session_id}/play-dtmf:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    post:
+      tags:
+      - sip
+      summary: Play DTMF tones into a SIP call
+      operationId: play-dtmf-into-session
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Bad Request
+
+            One of the properties — digits or sessionId — is invalid.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: One of the properties digits or sessionId is invalid.
+        '403':
+          description: 'Forbidden
+
+            Authentication error. This can occur if you use an invalid JSON web token'
+        '404':
+          description: 'Not Found
+
+            The specified session does not exist.'
+      description: 'Use the play-dtmf REST API to send DTMF digits to all participants in an active Vonage Video session.
+
+
+        Telephony events are negotiated over SDP and transmitted as RFC4733/RFC2833 digits to the remote endpoint.'
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: Content-Type
+        description: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                digits:
+                  type: string
+                  example: '1713'
+                  description: The string of DTMF digits to send. This can include 0-9, '*', '#', and 'p'. A p indicates a pause of 500ms (if you need to add a delay in sending the digits).
+              required:
+              - digits
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/projects/{application_id}/session/{session_id}/connection/{connection_id}/play-dtmf:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    - $ref: '#/components/parameters/connection_id'
+    post:
+      tags:
+      - sip
+      summary: Play DMTF tones into a specific connection
+      operationId: play-dtmf-into-connection
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Bad Request
+
+            One of the properties — digits or sessionId — is invalid.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: One of the properties digits or sessionId is invalid.
+        '403':
+          description: 'Forbidden
+
+            Authentication error. This can occur if you use an invalid JSON web token'
+        '404':
+          description: 'Not Found
+
+            The specified session does not exist.'
+      description: 'Use the play-dtmf REST API to send DTMF digits to a single participant in an Vonage Video call
+
+
+        Telephony events are negotiated over SDP and transmitted as RFC4733/RFC2833 digits to the remote endpoint.'
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: Content-Type
+        description: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                digits:
+                  type: string
+                  example: '1713'
+                  description: The string of DTMF digits to send. This can include 0-9, '*', '#', and 'p'. A p indicates a pause of 500ms (if you need to add a delay in sending the digits).
+              required:
+              - digits
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  parameters:
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+    connection_id:
+      name: connection_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Specific publisher connection ID
+    session_id:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Video session ID
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

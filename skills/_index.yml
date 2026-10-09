@@ -1,25 +1,36 @@
-generated: '2026-10-03'
+generated: '2026-10-08'
 method: generated
-generator: extract-docs-artifacts.py skills (local)
-source: openapi/vonage-voice-api-openapi.yml
+source: openapi/ (22 published Vonage OpenAPI documents; every operationId checked against the contract) + conventions/,
+  rate-limits/, errors/, sandbox/
 skills:
-- file: skills/vonage-voice-outbound-call-with-audio.md
-  name: vonage-voice-outbound-call-with-audio
-  api: openapi/vonage-voice-api-openapi.yml
-  operations:
-  - createCall
-  - playAudioStream
-  - stopAudioStream
 - file: skills/vonage-verify-user.md
   name: vonage-verify-user
-  api: openapi/vonage-verify-api-openapi.yml
+  api: openapi/vonage-verify-v2-openapi.yml
   operations:
-  - requestVerification
-  - checkVerification
+  - newRequest
+  - checkCode
+  - cancelRequest
 - file: skills/vonage-provision-number.md
   name: vonage-provision-number
-  api: openapi/vonage-numbers-api-openapi.yml
+  api: openapi/vonage-numbers-openapi.yml
   operations:
-  - searchAvailableNumbers
-  - buyNumber
-  - updateNumber
+  - getAvailableNumbers
+  - buyANumber
+  - updateANumber
+  - cancelANumber
+- file: skills/vonage-voice-outbound-call-with-audio.md
+  name: vonage-voice-outbound-call-with-audio
+  api: openapi/vonage-voice-openapi.yml
+  operations:
+  - createCall
+  - startStream
+  - stopStream
+  - startTalk
+  - stopTalk
+  - updateCall
+- file: skills/vonage-send-message-with-failover.md
+  name: vonage-send-message-with-failover
+  api: openapi/vonage-messages-openapi.yml
+  operations:
+  - SendMessage
+  - UpdateMessage

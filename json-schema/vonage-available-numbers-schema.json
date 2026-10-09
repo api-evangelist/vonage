@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-available-numbers-schema.json",
+  "title": "available-numbers",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-numbers-openapi.yml#/components/schemas/available-numbers",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer",
+      "description": "The total amount of numbers available in the pool."
+    },
+    "numbers": {
+      "type": "array",
+      "description": "A paginated array of available numbers and their details.",
+      "items": {
+        "$ref": "#/$defs/availablenumber"
+      }
+    }
+  },
+  "$defs": {
+    "availablenumber": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "$ref": "#/$defs/country"
+        },
+        "msisdn": {
+          "type": "string",
+          "description": "An available inbound virtual number."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of number: `landline`, `landline-toll-free` or `mobile-lvn`"
+        },
+        "initialPrice": {
+          "type": "string",
+          "description": "The initial setup fee for this number, in Euros"
+        },
+        "cost": {
+          "type": "string",
+          "description": "The monthly rental cost for this number, in Euros"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The capabilities of the number: `SMS` or `VOICE` or `SMS,VOICE` or `SMS,MMS` or `VOICE,MMS` or `SMS,MMS,VOICE`"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/number-limitation"
+          }
+        }
+      }
+    },
+    "country": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "description": "The two character country code in ISO 3166-1 alpha-2 format"
+    },
+    "number-limitation": {
+      "type": "object",
+      "properties": {
+        "feature": {
+          "type": "string",
+          "enum": [
+            "MMS",
+            "SMS",
+            "VOICE"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "INBOUND",
+            "OUTBOUND"
+          ]
+        },
+        "reach": {
+          "type": "string",
+          "enum": [
+            "DOMESTIC",
+            "INTERNATIONAL"
+          ]
+        }
+      },
+      "required": [
+        "feature",
+        "type",
+        "reach"
+      ]
+    }
+  }
+}

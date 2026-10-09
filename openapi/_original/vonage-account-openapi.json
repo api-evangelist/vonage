@@ -1,0 +1,957 @@
+{
+   "openapi": "3.0.3",
+   "info": {
+      "termsOfService": "https://www.vonage.com/legal/communications-apis/terms-of-use/",
+      "contact": {
+         "name": "Vonage Developer Relations",
+         "email": "devrel@vonage.com",
+         "url": "https://developer.vonage.com/"
+      },
+      "title": "Account API",
+      "license": {
+         "name": "Apache 2.0",
+         "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0.4",
+      "description": "Enables users to manage their Vonage API Account by programmable means.  More information is available here: <https://developer.vonage.com/>.",
+      "x-metaTitle": "Vonage Account API Reference | Vonage API Documentation",
+      "x-metaDescription": "Find quick answers to questions about the Vonage Account API in this reference guide. Learn more in Vonage's API documentation."
+   },
+   "servers": [
+      {
+         "url": "https://rest.nexmo.com",
+         "description": "Rest Server"
+      }
+   ],
+   "security": [
+      {
+         "basicAuth": []
+      }
+   ],
+   "tags": [
+      {
+         "name": "Balance",
+         "description": "This section shows how you can query the current balance of your account, and if you have auto-reload enabled how to trigger a top-up to your account without waiting for the next balance check."
+      },
+      {
+         "name": "Configuration",
+         "description": "Manage the settings on your account"
+      },
+      {
+         "name": "Secret Management",
+         "description": "Many of the Vonage APIs are accessed using an API key and secret. It is recommended that you change or \"rotate\" your secrets from time to time for security purposes. This section provides the API interface for achieving this.\nNote: to work on secrets for your secondary accounts, you may authenticate with your primary credentials and supply the secondary API keys as URL parameters to these API endpoints."
+      }
+   ],
+   "paths": {
+      "/account/get-balance": {
+         "get": {
+            "operationId": "getAccountBalance",
+            "summary": "Get Account Balance",
+            "description": "Retrieve the current balance of your Vonage API account",
+            "tags": [
+               "Balance"
+            ],
+            "responses": {
+               "200": {
+                  "$ref": "#/components/responses/CurrentBalanceResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         }
+      },
+      "/account/top-up": {
+         "post": {
+            "operationId": "topUpAccountBalance",
+            "summary": "Top Up Account Balance",
+            "description": "You can top up your account using this API when you have enabled auto-reload in the dashboard. The amount added by the top-up operation will be the same amount as was added in the payment when auto-reload was enabled.\nYour account balance is checked every 5-10 minutes and if it falls below the threshold and auto-reload is enabled, then it will be topped up automatically. Use this endpoint  if you need to top up at times when your credit may be exhausted more quickly than the auto-reload may occur.",
+            "tags": [
+               "Balance"
+            ],
+            "requestBody": {
+               "$ref": "#/components/requestBodies/AccountTopUpRequest"
+            },
+            "responses": {
+               "200": {
+                  "$ref": "#/components/responses/TopOffResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         }
+      },
+      "/account/settings": {
+         "post": {
+            "operationId": "changeAccountSettings",
+            "summary": "Change Account Settings",
+            "description": "Update the default webhook URLs associated with your account:\n  * Callback URL for incoming SMS messages\n  * Callback URL for delivery receipts\n\nNote that the URLs you provide must be valid and active. Vonage will check that they return a 200 OK response before the setting is saved.",
+            "tags": [
+               "Configuration"
+            ],
+            "requestBody": {
+               "$ref": "#/components/requestBodies/AccountSettingsRequest"
+            },
+            "responses": {
+               "200": {
+                  "$ref": "#/components/responses/AccountSettingsResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         }
+      },
+      "/accounts/{api_key}/secrets": {
+         "get": {
+            "description": "Retrieve API Secrets",
+            "operationId": "retrieveAPISecrets",
+            "tags": [
+               "Secret Management"
+            ],
+            "parameters": [
+               {
+                  "$ref": "#/components/parameters/APIKey"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "$ref": "#/components/responses/AccountsSecretsPageResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "404": {
+                  "$ref": "#/components/responses/404"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         },
+         "post": {
+            "description": "Create API Secret",
+            "operationId": "createAPISecret",
+            "tags": [
+               "Secret Management"
+            ],
+            "parameters": [
+               {
+                  "$ref": "#/components/parameters/APIKey"
+               }
+            ],
+            "requestBody": {
+               "$ref": "#/components/requestBodies/CreateSecretRequest"
+            },
+            "responses": {
+               "201": {
+                  "$ref": "#/components/responses/CreateAccountSecretResponse"
+               },
+               "400": {
+                  "$ref": "#/components/responses/BadRequestResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "404": {
+                  "$ref": "#/components/responses/404"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         }
+      },
+      "/accounts/{api_key}/secrets/{secret_id}": {
+         "get": {
+            "description": "Retrieve one API Secret",
+            "operationId": "retrieveAPISecret",
+            "tags": [
+               "Secret Management"
+            ],
+            "parameters": [
+               {
+                  "$ref": "#/components/parameters/APIKey"
+               },
+               {
+                  "$ref": "#/components/parameters/secretId"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "$ref": "#/components/responses/AccountSecretResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "404": {
+                  "$ref": "#/components/responses/404"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         },
+         "delete": {
+            "description": "Revoke an API Secret",
+            "operationId": "revokeAPISecret",
+            "tags": [
+               "Secret Management"
+            ],
+            "parameters": [
+               {
+                  "$ref": "#/components/parameters/APIKey"
+               },
+               {
+                  "$ref": "#/components/parameters/secretId"
+               }
+            ],
+            "responses": {
+               "204": {
+                  "headers": {
+                     "X-Request-Id": {
+                        "$ref": "#/components/headers/X-Request-Id"
+                     }
+                  },
+                  "description": "Revoked secret response (without body content)"
+               },
+               "400": {
+                  "$ref": "#/components/responses/BadRequestResponse"
+               },
+               "401": {
+                  "$ref": "#/components/responses/401"
+               },
+               "403": {
+                  "$ref": "#/components/responses/CannotRevokeSecretResponse"
+               },
+               "404": {
+                  "$ref": "#/components/responses/404"
+               },
+               "429": {
+                  "$ref": "#/components/responses/429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/500"
+               }
+            }
+         }
+      }
+   },
+   "components": {
+      "securitySchemes": {
+         "basicAuth": {
+            "type": "http",
+            "scheme": "basic"
+         }
+      },
+      "parameters": {
+         "APIKey": {
+            "name": "api_key",
+            "in": "path",
+            "description": "The API key to manage secrets for",
+            "example": "abcd1234",
+            "required": true,
+            "schema": {
+               "type": "string"
+            }
+         },
+         "secretId": {
+            "name": "secret_id",
+            "in": "path",
+            "description": "ID of the API Secret",
+            "example": "01234567-aaaa-bbbb-cccc-defdefdefdef",
+            "required": true,
+            "schema": {
+               "type": "string"
+            }
+         }
+      },
+      "requestBodies": {
+         "CreateSecretRequest": {
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "type": "object",
+                     "required": [
+                        "secret"
+                     ],
+                     "properties": {
+                        "secret": {
+                           "description": "The new secret must follow these rules:\n\n* minimum 8 characters\n* maximum 25 characters\n* minimum 1 lower case character\n* minimum 1 upper case character\n* minimum 1 digit\n",
+                           "type": "string",
+                           "example": "example-4PI-secret"
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "AccountTopUpRequest": {
+            "content": {
+               "application/x-www-form-urlencoded": {
+                  "schema": {
+                     "type": "object",
+                     "required": [
+                        "trx"
+                     ],
+                     "properties": {
+                        "trx": {
+                           "type": "string",
+                           "description": "The transaction reference of the transaction when balance was added and auto-reload was enabled on your account.",
+                           "example": "8ef2447e69604f642ae59363aa5f781b"
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "AccountSettingsRequest": {
+            "content": {
+               "application/x-www-form-urlencoded": {
+                  "schema": {
+                     "type": "object",
+                     "properties": {
+                        "moCallBackUrl": {
+                           "description": "The default webhook URL for inbound SMS. If an SMS is received at a Vonage number  that does not have its own inbound SMS webhook configured, Vonage makes a request here.\nSend an empty string to unset this value.",
+                           "type": "string",
+                           "format": "url",
+                           "example": "https://example.com/webhooks/inbound-sms"
+                        },
+                        "drCallBackUrl": {
+                           "description": "The webhook URL that Vonage makes a request to when a delivery receipt is available  for an SMS sent by one of your Vonage numbers.\nSend an empty string to unset this value.",
+                           "type": "string",
+                           "format": "url",
+                           "example": "https://example.com/webhooks/delivery-receipt"
+                        },
+                        "httpForwardMethod": {
+                           "description": "The HTTP method to use when making requests to the callback URLs.",
+                           "type": "string",
+                           "format": "enum",
+                           "enum": [
+                              "GET_QUERY_PARAMS",
+                              "POST_QUERY_PARAMS",
+                              "POST_JSON"
+                           ],
+                           "example": "POST_QUERY_PARAMS"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "responses": {
+         "401": {
+            "description": "Authentication failure",
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "oneOf": [
+                        {
+                           "description": "Missing or Invalid Credentials",
+                           "type": "object",
+                           "required": [
+                              "type",
+                              "title",
+                              "instance"
+                           ],
+                           "properties": {
+                              "type": {
+                                 "type": "string",
+                                 "description": "Link to error / remediation options",
+                                 "example": "https://developer.vonage.com/api-errors/#unathorized"
+                              },
+                              "title": {
+                                 "type": "string",
+                                 "description": "Generic error message",
+                                 "example": "You did not provide correct credentials."
+                              },
+                              "detail": {
+                                 "type": "string",
+                                 "description": "Additional information about the error",
+                                 "example": "Check that you're using the correct credentials, and that your account has this feature enabled"
+                              },
+                              "instance": {
+                                 "type": "string",
+                                 "description": "Internal Trace ID",
+                                 "example": "bf0ca0bf927b3b52e3cb03217e1a1ddf"
+                              }
+                           }
+                        },
+                        {
+                           "description": "Invalid Application Type",
+                           "type": "object",
+                           "required": [
+                              "type",
+                              "title",
+                              "instance"
+                           ],
+                           "properties": {
+                              "type": {
+                                 "type": "string",
+                                 "description": "Link to error / remediation options",
+                                 "example": "https://developer.vonage.com/api-errors/#unprovisioned"
+                              },
+                              "title": {
+                                 "type": "string",
+                                 "description": "Generic error message",
+                                 "example": "The crendentials provided do not have access to the requested product"
+                              },
+                              "detail": {
+                                 "type": "string",
+                                 "description": "Additional information about the error",
+                                 "example": "Check your API key is correct and has been whitelisted"
+                              },
+                              "instance": {
+                                 "type": "string",
+                                 "description": "Internal Trace ID",
+                                 "example": "bf0ca0bf927b3b52e3cb03217e1a1ddf"
+                              }
+                           }
+                        }
+                     ]
+                  }
+               }
+            }
+         },
+         "404": {
+            "description": "Not Found",
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  }
+               }
+            }
+         },
+         "429": {
+            "description": "Too Many Requests",
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               },
+               "X-RateLimit-Limit": {
+                  "$ref": "#/components/headers/X-RateLimit-Limit"
+               },
+               "X-RateLimit-Remaining": {
+                  "$ref": "#/components/headers/X-RateLimit-Remaining"
+               },
+               "X-RateLimit-Reset": {
+                  "$ref": "#/components/headers/X-RateLimit-Reset"
+               },
+               "Retry-After": {
+                  "$ref": "#/components/headers/Retry-After"
+               }
+            },
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  }
+               }
+            }
+         },
+         "500": {
+            "description": "Internal error",
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  }
+               }
+            }
+         },
+         "BadRequestResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "Secret not created",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "type": "object",
+                     "properties": {
+                        "type": {
+                           "type": "string",
+                           "description": "URL for further information",
+                           "example": "https://developer.nexmo.com/api-errors/account/secret-management#validation"
+                        },
+                        "title": {
+                           "type": "string",
+                           "description": "Description of the error",
+                           "example": "Bad Request"
+                        },
+                        "detail": {
+                           "type": "string",
+                           "description": "More detail regarding this error, including the API key supplied",
+                           "example": "The request failed due to secret validation errors"
+                        },
+                        "instance": {
+                           "type": "string",
+                           "description": "Internal Trace ID",
+                           "example": "bf0ca0bf927b3b52e3cb03217e1a1ddf"
+                        },
+                        "invalid_parameters": {
+                           "type": "array",
+                           "description": "Array of the parameters that are considered invalid, and explanations of why",
+                           "items": {
+                              "type": "object",
+                              "properties": {
+                                 "name": {
+                                    "type": "string",
+                                    "description": "Field name",
+                                    "example": "secret"
+                                 },
+                                 "reason": {
+                                    "type": "string",
+                                    "description": "Explanation of why parameter is considered invalid",
+                                    "example": "Does not meet complexity requirements"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "CreateAccountSecretResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "Secret created",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/SecretInfo"
+                  }
+               }
+            }
+         },
+         "AccountSecretResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "API secret response",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/SecretInfo"
+                  }
+               }
+            }
+         },
+         "CannotRevokeSecretResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "Operation forbidden by permissions or because this is the only API secret and you are required to have at least one.",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "properties": {
+                        "type": {
+                           "type": "string",
+                           "description": "URL for further information",
+                           "example": "https://developer.nexmo.com/api-errors/account/secret-management#delete-last-secret"
+                        },
+                        "title": {
+                           "type": "string",
+                           "description": "Description of the error",
+                           "example": "Secret Deletion Forbidden"
+                        },
+                        "detail": {
+                           "type": "string",
+                           "description": "More detail regarding this error",
+                           "example": "Can not delete the last secret. The account must always have at least 1 secret active at any time"
+                        },
+                        "instance": {
+                           "type": "string",
+                           "description": "Internal Trace ID",
+                           "example": "bf0ca0bf927b3b52e3cb03217e1a1ddf"
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "AccountsSecretsPageResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "The list of your current API secrets",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "properties": {
+                        "_links": {
+                           "$ref": "#/components/schemas/_links"
+                        },
+                        "_embedded": {
+                           "type": "object",
+                           "description": "The single `secrets` key returns an array of API secrets",
+                           "properties": {
+                              "secrets": {
+                                 "type": "array",
+                                 "description": "Array of API secrets",
+                                 "items": {
+                                    "$ref": "#/components/schemas/SecretInfo"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "AccountSettingsResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "OK. Settings were updated if supplied, the details of the current settings are included in the response.",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/AccountSettings"
+                  }
+               },
+               "application/xml": {
+                  "schema": {
+                     "$ref": "#/components/schemas/AccountSettings"
+                  }
+               }
+            }
+         },
+         "CurrentBalanceResponse": {
+            "description": "The current balance of your account",
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/AccountBalance"
+                  }
+               },
+               "application/xml": {
+                  "schema": {
+                     "$ref": "#/components/schemas/AccountBalance"
+                  }
+               }
+            }
+         },
+         "TopOffResponse": {
+            "headers": {
+               "X-Request-Id": {
+                  "$ref": "#/components/headers/X-Request-Id"
+               }
+            },
+            "description": "Success",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "type": "object",
+                     "properties": {
+                        "error-code": {
+                           "example": "200"
+                        },
+                        "error-code-label": {
+                           "example": "success"
+                        }
+                     }
+                  }
+               },
+               "application/xml": {
+                  "schema": {
+                     "type": "object",
+                     "xml": {
+                        "name": "response"
+                     },
+                     "properties": {
+                        "error-code": {
+                           "example": "200"
+                        },
+                        "error-code-label": {
+                           "example": "success"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "schemas": {
+         "AccountBalance": {
+            "type": "object",
+            "xml": {
+               "name": "accountBalance"
+            },
+            "properties": {
+               "value": {
+                  "type": "number",
+                  "description": "The balance of the account, in EUR",
+                  "example": 10.28
+               },
+               "autoReload": {
+                  "type": "boolean",
+                  "enum": [
+                     true,
+                     false
+                  ],
+                  "example": false,
+                  "description": "Whether the account has auto-reloading enabled"
+               }
+            }
+         },
+         "AccountSettings": {
+            "type": "object",
+            "xml": {
+               "name": "account-settings"
+            },
+            "properties": {
+               "mo-callback-url": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "The current or updated inbound message webhook URI",
+                  "example": "https://example.com/webhooks/inbound-sms"
+               },
+               "dr-callback-url": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "The current or updated delivery receipt webhook URI",
+                  "example": "https://example.com/webhooks/delivery-receipt"
+               },
+               "max-outbound-request": {
+                  "type": "integer",
+                  "description": "The maximum number of outbound messages per second.",
+                  "example": 30
+               },
+               "max-inbound-request": {
+                  "type": "integer",
+                  "description": "The maximum number of inbound messages per second.",
+                  "example": 30
+               },
+               "max-calls-per-second": {
+                  "type": "integer",
+                  "description": "The maximum number of API calls per second.",
+                  "example": 30
+               }
+            }
+         },
+         "SecretInfo": {
+            "type": "object",
+            "properties": {
+               "_links": {
+                  "$ref": "#/components/schemas/_links"
+               },
+               "id": {
+                  "type": "string",
+                  "description": "Secret ID",
+                  "example": "ad6dc56f-07b5-46e1-a527-85530e625800"
+               },
+               "created_at": {
+                  "type": "string",
+                  "description": "Creation date/time for this secret",
+                  "example": "2017-03-02T16:34:49Z"
+               }
+            }
+         },
+         "ErrorResponse": {
+            "type": "object",
+            "description": "Base error response following RFC 7807",
+            "required": [
+               "type",
+               "title",
+               "instance"
+            ],
+            "properties": {
+               "type": {
+                  "type": "string",
+                  "description": "Link to error / remediation options",
+                  "example": "https://developer.vonage.com/api-errors"
+               },
+               "title": {
+                  "type": "string",
+                  "description": "Generic error message",
+                  "example": "An error occurred"
+               },
+               "detail": {
+                  "type": "string",
+                  "description": "Additional information about the error",
+                  "example": "More details about what went wrong"
+               },
+               "instance": {
+                  "type": "string",
+                  "description": "Internal Trace ID",
+                  "example": "bf0ca0bf927b3b52e3cb03217e1a1ddf"
+               }
+            }
+         },
+         "HalLink": {
+            "type": "object",
+            "description": "A single HAL link object",
+            "required": [
+               "href"
+            ],
+            "properties": {
+               "href": {
+                  "type": "string",
+                  "description": "The URL for the resource",
+                  "example": "https://api.vonage.com/v1/resources/abc123"
+               },
+               "templated": {
+                  "type": "boolean",
+                  "description": "Indicates if the href is a URI template",
+                  "example": false
+               },
+               "type": {
+                  "type": "string",
+                  "description": "Media type hint for the target resource",
+                  "example": "application/json"
+               },
+               "name": {
+                  "type": "string",
+                  "description": "Secondary key for selecting link objects",
+                  "example": "resource-name"
+               },
+               "title": {
+                  "type": "string",
+                  "description": "Human-readable title for the link",
+                  "example": "Resource Title"
+               }
+            }
+         },
+         "SelfLink": {
+            "type": "object",
+            "description": "Link to the current resource (always required in HAL)",
+            "required": [
+               "self"
+            ],
+            "properties": {
+               "self": {
+                  "$ref": "#/components/schemas/HalLink"
+               }
+            }
+         },
+         "_links": {
+            "type": "object",
+            "description": "HAL Links object",
+            "allOf": [
+               {
+                  "$ref": "#/components/schemas/SelfLink"
+               }
+            ]
+         }
+      },
+      "headers": {
+         "X-Request-Id": {
+            "description": "A unique identifier for the request, used for tracking and debugging",
+            "schema": {
+               "type": "string",
+               "format": "uuid",
+               "example": "f94b4e56-604e-07e5-e5ad-5a7228618f81"
+            }
+         },
+         "X-RateLimit-Limit": {
+            "description": "Request limit per hour",
+            "schema": {
+               "type": "integer",
+               "example": 30
+            }
+         },
+         "X-RateLimit-Remaining": {
+            "description": "Remaining requests",
+            "schema": {
+               "type": "integer",
+               "example": 5
+            }
+         },
+         "X-RateLimit-Reset": {
+            "description": "Unix timestamp when limit resets",
+            "schema": {
+               "type": "integer",
+               "example": 1769182705723
+            }
+         },
+         "Retry-After": {
+            "description": "Seconds until next request allowed",
+            "schema": {
+               "type": "integer",
+               "example": 15
+            }
+         }
+      }
+   },
+   "x-errors": {
+      "validation": {
+         "description": "The provided payload is invalid",
+         "resolution": "Modify your request to provide a valid payload.\n* Minimum 8 characters\n* Maximum 25 characters\n* Minimum 1 lower case character\n* Minimum 1 upper case character\n* Minimum 1 digit\n",
+         "link": {
+            "text": "View API reference",
+            "url": "/api/account#createAPISecret"
+         }
+      },
+      "delete-last-secret": {
+         "description": "You can not delete your only API secret",
+         "resolution": "Add another API secret before deleting this one"
+      }
+   }
+}

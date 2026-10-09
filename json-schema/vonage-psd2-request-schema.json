@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-psd2-request-schema.json",
+  "title": "psd2Request",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-openapi.yml#/components/schemas/psd2Request",
+  "type": "object",
+  "required": [
+    "number",
+    "payee",
+    "amount"
+  ],
+  "properties": {
+    "number": {
+      "type": "string",
+      "description": "The mobile or landline phone number to verify. Unless you are setting `country` explicitly, this number must be in [E.164](https://en.wikipedia.org/wiki/E.164) format."
+    },
+    "country": {
+      "description": "If you do not provide `number` in international format or you are not sure if `number` is correctly formatted, specify the two-character country code in `country`. Verify will then format the number for you.",
+      "type": "string"
+    },
+    "payee": {
+      "description": "An alphanumeric string to indicate to the user the name of the recipient that they are confirming a payment to.",
+      "type": "string",
+      "maxLength": 18
+    },
+    "amount": {
+      "description": "The decimal amount of the payment to be confirmed, in Euros",
+      "type": "number",
+      "format": "float"
+    },
+    "code_length": {
+      "description": "The length of the verification code.",
+      "type": "integer",
+      "enum": [
+        4,
+        6
+      ],
+      "default": 4
+    },
+    "lg": {
+      "description": "By default, the SMS or text-to-speech (TTS) message is generated in the locale that matches the `number`. For example, the text message or TTS message for a `33*` number is sent in French. Use this parameter to explicitly control the language used.\n*Note: Voice calls in English for `bg-bg`, `ee-et`, `ga-ie`, `lv-lv`, `lt-lt`, `mt-mt`, `sk-sk`, `sk-si`",
+      "type": "string",
+      "default": "en-gb",
+      "enum": [
+        "en-gb",
+        "bg-bg",
+        "cs-cz",
+        "da-dk",
+        "de-de",
+        "ee-et",
+        "el-gr",
+        "es-es",
+        "fi-fi",
+        "fr-fr",
+        "ga-ie",
+        "hu-hu",
+        "it-it",
+        "lv-lv",
+        "lt-lt",
+        "mt-mt",
+        "nl-nl",
+        "pl-pl",
+        "sk-sk",
+        "sl-si",
+        "sv-se"
+      ]
+    },
+    "pin_expiry": {
+      "description": "How long the generated verification code is valid for, in seconds. When you specify both `pin_expiry` and `next_event_wait` then `pin_expiry` must be an integer multiple of `next_event_wait` otherwise `pin_expiry` is defaulted to equal next_event_wait. See [changing the event timings](https://developer.nexmo.com/verify/verify-v1/guides/changing-default-timings).",
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 3600,
+      "default": 300
+    },
+    "next_event_wait": {
+      "description": "Specifies the wait time in seconds between attempts to deliver the verification code.",
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 900,
+      "default": 300
+    },
+    "workflow_id": {
+      "description": "Selects the predefined sequence of SMS and TTS (Text To Speech) actions to use in order to convey the PIN to your user. For example, an id of 1 identifies the workflow SMS - TTS - TTS. For a list of all workflows and their associated ids, please visit the [developer portal](https://developer.nexmo.com/verify/verify-v1/guides/workflows-and-events).",
+      "type": "integer",
+      "default": 1,
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  }
+}

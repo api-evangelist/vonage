@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-ni-response-xml-basic-schema.json",
+  "title": "niResponseXmlBasic",
+  "description": "Basic",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-number-insight-openapi.yml#/components/schemas/niResponseXmlBasic",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "The unique identifier for your request. This is a alphanumeric string up to 40 characters.",
+      "maxLength": 40
+    },
+    "international_format_number": {
+      "type": "string",
+      "description": "The `number` in your request in international format."
+    },
+    "local_number": {
+      "type": "object",
+      "description": "An object containing the `number` in your request in the format used by the country the number belongs to.",
+      "properties": {
+        "country_code": {
+          "type": "string",
+          "description": "Two character country code for `number`. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.",
+          "pattern": "[A-Z]{2}"
+        },
+        "country_code_iso3": {
+          "type": "string",
+          "description": "Three character country code for `number`. This is in [ISO 3166-1 alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) format.",
+          "pattern": "[A-Z]{3}"
+        },
+        "country_name": {
+          "type": "string",
+          "description": "The full name of the country that `number` is registered in."
+        },
+        "country_prefix": {
+          "type": "string",
+          "description": "The numeric prefix for the country that `number` is registered in."
+        },
+        "number": {
+          "type": "string",
+          "description": "The `number` in your request in the format used by the country the number belongs to."
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "The error code and status of your request",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The status code"
+        },
+        "status_text": {
+          "type": "string",
+          "description": "The status description of your request."
+        }
+      }
+    }
+  }
+}

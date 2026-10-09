@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-conversation-schema.json",
+  "title": "conversation",
+  "description": "Conversation Object",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-conversation-openapi.yml#/components/schemas/conversation",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/conversation_id"
+    },
+    "name": {
+      "$ref": "#/$defs/conversation_name"
+    },
+    "display_name": {
+      "$ref": "#/$defs/conversation_display_name"
+    },
+    "image_url": {
+      "$ref": "#/$defs/conversation_image_url"
+    },
+    "state": {
+      "$ref": "#/$defs/conversation_state"
+    },
+    "sequence_number": {
+      "$ref": "#/$defs/conversation_sequence_number"
+    },
+    "timestamp": {
+      "$ref": "#/$defs/conversation_timestamp"
+    },
+    "properties": {
+      "$ref": "#/$defs/conversation_properties"
+    },
+    "_links": {
+      "$ref": "#/$defs/conversation_links"
+    }
+  },
+  "$defs": {
+    "conversation_display_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The public facing name of the conversation",
+      "maxLength": 50
+    },
+    "conversation_id": {
+      "type": "string",
+      "description": "The unique identifier for this conversation"
+    },
+    "conversation_image_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "An image URL that you associate with the conversation",
+      "format": "uri",
+      "maxLength": 2048
+    },
+    "conversation_links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "conversation_name": {
+      "type": "string",
+      "description": "Your internal conversation name. Must be unique. If not supplied a randomly generated name will be used.",
+      "maxLength": 100
+    },
+    "conversation_properties": {
+      "type": "object",
+      "description": "Conversation properties",
+      "properties": {
+        "ttl": {
+          "type": "integer",
+          "description": "Time to leave. After how many seconds an empty conversation is deleted.",
+          "minimum": 0,
+          "maximum": 2147483648
+        },
+        "custom_data": {
+          "type": "object",
+          "description": "Custom Key value pairs to be included with conversation data",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "conversation_sequence_number": {
+      "type": "integer",
+      "description": "The last Event ID in this conversation. This ID can be used to [retrieve a specific event](#getEvent)."
+    },
+    "conversation_state": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "DELETED"
+      ],
+      "description": "The state the conversation is in."
+    },
+    "conversation_timestamp": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "description": "The time that the conversation was created"
+        },
+        "updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The time that the conversation was updated"
+        },
+        "destroyed": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The time that the conversation was destroyed"
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,43 @@
-generated: '2026-10-03'
+generated: '2026-10-08'
 method: probed
-generator: harvest-packages.py
-source: registry metadata endpoints (registry.npmjs.org, pypi.org, rubygems.org, api.nuget.org, packagist.org, crates.io)
-ownership_rule: 'official: true only when the registry metadata (homepage, repository, author, URLs) names the provider''s domain (agentic-access/vonage-agentic-access.yml,
-  authentication/vonage-authentication.yml, capabilities/vonage-capability-edges.yml, linkedin.com, nexmo.com, opentok.com, postman.com, security/vonage-domain-security.yml,
-  security/vonage-vulnerability-disclosure.yml, slack.com, vonage.com) or its accepted GitHub org.'
+source: registry metadata endpoints (registry.npmjs.org, pypi.org/pypi/<pkg>/json, rubygems.org/api/v1/gems, api.nuget.org registration index,
+  search.maven.org solrsearch, repo.packagist.org/p2, proxy.golang.org/@latest, crates.io) read 2026-10-08; first-party status from the Vonage
+  GitHub organisation SDK pointers in apis.yml and the @vonage npm scope / com.vonage Maven group
+ownership_rule: 'official: true only for packages under the @vonage npm scope, the com.vonage Maven group, or whose registry record points at
+  a github.com/Vonage repository'
 packages:
+- name: '@vonage/server-sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@vonage/server-sdk
+  language: JavaScript/TypeScript
+  official: true
+  version: 3.30.1
+  published: '2026-09-09'
+  ownership_audit: metadata names vonage.com
+- name: '@vonage/cli'
+  registry: npm
+  url: https://www.npmjs.com/package/@vonage/cli
+  language: JavaScript (CLI)
+  official: true
+  version: 3.2.2
+  published: '2026-08-25'
+  ownership_audit: metadata names vonage.com
+- name: '@vonage/vonage-mcp-server-api-bindings'
+  registry: npm
+  url: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings
+  language: JavaScript (MCP server)
+  official: true
+  version: 1.5.1
+  published: '2026-05-27'
+  ownership_audit: metadata names vonage.com
+- name: '@vonage/client-sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@vonage/client-sdk
+  language: JavaScript (client SDK)
+  official: false
+  version: 2.7.6
+  published: '2026-10-05'
+  ownership_audit: 'registry has no such package: official downgraded (harvest-packages.py --audit)'
 - name: vonage
   registry: pypi
   url: https://pypi.org/project/vonage/
@@ -13,7 +45,7 @@ packages:
   official: true
   version: 4.9.0
   published: '2026-09-16'
-  evidence: metadata names vonage.com
+  ownership_audit: metadata names vonage.com
 - name: vonage
   registry: rubygems
   url: https://rubygems.org/gems/vonage
@@ -21,15 +53,54 @@ packages:
   official: false
   version: 7.36.0
   published: '2026-09-16'
-  evidence: 'name match only: the metadata names neither the provider''s domain nor its GitHub org'
-- name: vonage
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
+- name: Vonage
   registry: nuget
-  url: https://www.nuget.org/packages/vonage
-  language: C#
+  url: https://www.nuget.org/packages/Vonage
+  language: C#/.NET
   official: false
   version: 8.35.0
-  published: null
-  evidence: 'name match only: the metadata names neither the provider''s domain nor its GitHub org'
+  published: '2026-06-10'
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
+- name: com.vonage:server-sdk
+  registry: maven
+  url: https://central.sonatype.com/artifact/com.vonage/server-sdk
+  language: Java
+  official: true
+  version: 9.3.1
+  published: '2025-05-08'
+  note: search.maven.org index timestamp; developer.vonage.com/en/tools lists the Java SDK latest release as 13 Mar 2026, so the central index
+    may lag the GitHub release
+- name: com.vonage:server-sdk-kotlin
+  registry: maven
+  url: https://central.sonatype.com/artifact/com.vonage/server-sdk-kotlin
+  language: Kotlin
+  official: true
+  version: 2.1.1
+  published: '2025-05-08'
+- name: com.vonage:client-sdk
+  registry: maven
+  url: https://central.sonatype.com/artifact/com.vonage/client-sdk
+  language: Kotlin/Android (client SDK)
+  official: true
+  version: 2.0.0
+  published: '2025-02-07'
+- name: vonage/client
+  registry: packagist
+  url: https://packagist.org/packages/vonage/client
+  language: PHP
+  official: true
+  version: 4.3.0
+  published: '2026-01-06'
+  ownership_audit: metadata names vonage.com
+- name: github.com/vonage/vonage-go-sdk
+  registry: go
+  url: https://pkg.go.dev/github.com/vonage/vonage-go-sdk
+  language: Go
+  official: true
+  version: v0.14.0
+  published: '2021-12-01'
+  note: last module version on proxy.golang.org is from 2021; the Go SDK is the stalest first-party library
 - name: vonage
   registry: crates
   url: https://crates.io/crates/vonage
@@ -37,4 +108,4 @@ packages:
   official: false
   version: 0.1.1
   published: '2025-08-19'
-  evidence: 'name match only: the metadata names neither the provider''s domain nor its GitHub org'
+  note: not published under the Vonage GitHub organisation; publisher not verified as first-party

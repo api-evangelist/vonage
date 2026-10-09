@@ -1,0 +1,248 @@
+openapi: 3.2.0
+info:
+  title: Vonage Basic API
+  version: 1.2.1
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  license:
+    name: The MIT License (MIT)
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://www.nexmo.com/terms-of-use
+  x-metaDescription: Find quick answers to questions about the Vonage Number Insight API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Number Insight API Reference | Vonage API Documentation
+  description: 'Operations tagged Basic across 2 of this provider''s published API definitions: vonage-number-insight-openapi.json, vonage-number-insight-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/ni
+security:
+- basicAuth: []
+tags:
+- name: Basic
+paths:
+  /basic/{format}:
+    parameters:
+    - $ref: '#/components/parameters/format'
+    get:
+      operationId: getNumberInsightBasic
+      summary: Basic Number Insight
+      description: 'Provides basic number insight information about a number.
+
+
+        Note that this endpoint also supports `POST` requests.'
+      parameters:
+      - $ref: '#/components/parameters/number'
+      - $ref: '#/components/parameters/country'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/niResponseJsonBasic'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/niResponseXmlBasic'
+      tags:
+      - Basic
+    servers:
+    - url: https://api.nexmo.com/ni
+components:
+  schemas:
+    niResponseXmlBasic:
+      type: object
+      description: Basic
+      xml:
+        name: format
+      properties:
+        request_id:
+          type: string
+          description: The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+          example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+          maxLength: 40
+          xml:
+            name: request_id
+        international_format_number:
+          type: string
+          description: The `number` in your request in international format.
+          example: '447700900000'
+        local_number:
+          type: object
+          description: An object containing the `number` in your request in the format used by the country the number belongs to.
+          properties:
+            country_code:
+              type: string
+              description: Two character country code for `number`. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.
+              example: GB
+              pattern: '[A-Z]{2}'
+              xml:
+                attribute: true
+            country_code_iso3:
+              type: string
+              description: Three character country code for `number`. This is in [ISO 3166-1 alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) format.
+              example: GBR
+              pattern: '[A-Z]{3}'
+              xml:
+                attribute: true
+            country_name:
+              type: string
+              description: The full name of the country that `number` is registered in.
+              example: United Kingdom
+              xml:
+                attribute: true
+            country_prefix:
+              type: string
+              description: The numeric prefix for the country that `number` is registered in.
+              example: '44'
+              xml:
+                attribute: true
+            number:
+              type: string
+              description: The `number` in your request in the format used by the country the number belongs to.
+              example: 07700 900000
+              xml:
+                x-text: true
+        error:
+          type: object
+          description: The error code and status of your request
+          properties:
+            code:
+              type: string
+              description: The status code
+              example: '0'
+              xml:
+                attribute: true
+            status_text:
+              type: string
+              description: The status description of your request.
+              example: Success
+              xml:
+                x-text: true
+    niBasicStatus:
+      type: integer
+      enum:
+      - 0
+      - 1
+      - 3
+      - 4
+      - 5
+      - 9
+      example: 0
+      description: 'Code | Text
+
+        -- | --
+
+        0 | Success - request accepted for delivery by .
+
+        1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+
+        3 | Invalid - your request is incomplete and missing some mandatory parameters.
+
+        4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+
+        5 | Internal Error - the format of the recipient address is not valid.
+
+        9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
+
+        '
+    niResponseJsonBasic:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/niBasicStatus'
+        status_message:
+          type: string
+          description: The status description of your request.
+          example: Success
+        request_id:
+          type: string
+          description: The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+          example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+          maxLength: 40
+        international_format_number:
+          type: string
+          description: The `number` in your request in international format.
+          example: '447700900000'
+        national_format_number:
+          type: string
+          description: The `number` in your request in the format used by the country the number belongs to.
+          example: 07700 900000
+        country_code:
+          type: string
+          description: Two character country code for `number`. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.
+          example: GB
+          pattern: '[A-Z]{2}'
+        country_code_iso3:
+          type: string
+          description: Three character country code for `number`. This is in [ISO 3166-1 alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) format.
+          example: GBR
+          pattern: '[A-Z]{3}'
+        country_name:
+          type: string
+          description: The full name of the country that `number` is registered in.
+          example: United Kingdom
+        country_prefix:
+          type: string
+          description: The numeric prefix for the country that `number` is registered in.
+          example: '44'
+  parameters:
+    format:
+      name: format
+      in: path
+      required: true
+      description: The format of the response
+      example: json
+      schema:
+        type: string
+        enum:
+        - json
+        - xml
+    number:
+      name: number
+      in: query
+      description: A single phone number that you need insight about in national or international format.
+      example: '447700900000'
+      required: true
+      schema:
+        type: string
+        pattern: ^[0-9-+\(\)\s]*$
+    country:
+      name: country
+      in: query
+      example: GB
+      description: If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number.
+      schema:
+        type: string
+        pattern: '[A-Z]{2}'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  url: https://developer.nexmo.com/api/number-insight
+  x-sha1: 081f6d985e2e4a75586da1654fde880a96885405
+x-refined-from:
+- vonage-number-insight-openapi.json
+- vonage-number-insight-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

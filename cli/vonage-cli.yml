@@ -1,0 +1,47 @@
+generated: '2026-10-08'
+method: searched
+source:
+- https://github.com/Vonage/vonage-cli
+- https://registry.npmjs.org/@vonage/cli
+name: Vonage CLI
+binary: vonage
+version: 3.2.2
+version_published: '2026-08-25'
+docs: https://github.com/Vonage/vonage-cli#readme
+repo: https://github.com/Vonage/vonage-cli
+package: packages/vonage-packages.yml (@vonage/cli)
+description: 'The Vonage CLI has many commands that can bootstrap with Vonage''s APIs. Version 3: kebab-case flags,
+  JSON and YAML output, commands grouped by action, built with yargs, local (.vonagerc) or global configuration,
+  bundled Prism mock server.'
+install:
+  npm: npm install -g @vonage/cli
+  yarn: yarn global add @vonage/cli
+  requires: Node.js
+auth:
+  set: vonage auth set --api-key ... --api-secret ... (plus --app-id / --private-key for application-scoped APIs)
+  check: vonage auth check [--local]
+  show: vonage auth show
+  config: .vonagerc (local) or global config; only the CLI reads these values
+commands:
+  apps: Manage applications
+  auth: Manage authentication information
+  balance: Check your account balance
+  conversations: Manage conversations
+  jwt: Manage JWT tokens (vonage jwt create --app-id=... --private-key=...)
+  members: Manage conversation members
+  mock: Launch a mock server for Vonage APIs using Prism (vonage mock sms)
+  numbers: Manage numbers
+  users: Manage users
+key_flows:
+- name: Generate an application JWT
+  commands:
+  - vonage jwt create --app-id=00000000-0000-0000-0000-000000000000 --private-key=./private.key
+- name: Mock the SMS API locally
+  commands:
+  - vonage mock sms
+  - vonage mock sms --port 8080
+  - vonage mock sms --download-only --latest
+- name: Bootstrap credentials
+  commands:
+  - vonage auth set --api-key <key> --api-secret <secret>
+  - vonage auth check

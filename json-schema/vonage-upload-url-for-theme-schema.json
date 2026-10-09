@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-upload-url-for-theme-schema.json",
+  "title": "UploadUrlForTheme",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-meetings-openapi.yml#/components/schemas/UploadUrlForTheme",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Storage system URL"
+    },
+    "fields": {
+      "type": "object",
+      "description": "Fields property has to be part of the POST request's body",
+      "properties": {
+        "Content-Type": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string",
+          "description": "Logo's key in storage system"
+        },
+        "logoType": {
+          "type": "string",
+          "enum": [
+            "white",
+            "colored",
+            "favicon"
+          ]
+        },
+        "bucket": {
+          "type": "string",
+          "description": "Bucket name to upload to"
+        },
+        "X-Amz-Algorithm": {
+          "type": "string"
+        },
+        "X-Amz-Credential": {
+          "type": "string"
+        },
+        "X-Amz-Date": {
+          "type": "string"
+        },
+        "X-Amz-Security-Token": {
+          "type": "string"
+        },
+        "Policy": {
+          "type": "string"
+        },
+        "X-Amz-Signature": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

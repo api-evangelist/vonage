@@ -1,0 +1,431 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-member-schema.json",
+  "title": "member",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-conversation-openapi.yml#/components/schemas/member",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/member_id"
+    },
+    "conversation_id": {
+      "$ref": "#/$defs/conversation_id"
+    },
+    "_embedded": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/$defs/user_lite"
+        }
+      }
+    },
+    "state": {
+      "$ref": "#/$defs/member_state"
+    },
+    "timestamp": {
+      "$ref": "#/$defs/member_timestamp"
+    },
+    "initiator": {
+      "$ref": "#/$defs/member_initiator"
+    },
+    "channel": {
+      "$ref": "#/$defs/channel"
+    },
+    "media": {
+      "$ref": "#/$defs/media"
+    },
+    "knocking_id": {
+      "type": "string",
+      "description": "The ID of the original knocker request (if applicable)."
+    },
+    "invited_by": {
+      "type": "string",
+      "description": "The member ID of the member that invited this member to the conversation (if applicable)."
+    },
+    "_links": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/$defs/member_href"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "channel": {
+      "description": "A user who joins a conversation as a member can have one channel per membership. For more details see [channel concept docs](/voice/voice-api/concepts/in-app-calling)",
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "title": "App",
+          "description": "Member is using app channel type",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "app"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "description": "Settings which control who this member can send messages to.",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "app"
+                  ]
+                },
+                "user": {
+                  "description": "The user ID of the member that this member can send messages to.",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "type": "object",
+          "title": "Phone",
+          "description": "Member is using phone channel type",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "phone"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "description": "Settings which control who this member can send messages to.",
+              "properties": {
+                "number": {
+                  "type": "string",
+                  "description": "The phone number of the member that this member can send messages to."
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "phone"
+                  ]
+                }
+              }
+            }
+          },
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "type": "object",
+          "title": "SMS",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "sms"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "sms"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "title": "MMS",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "mms"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "title": "WhatsApp",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "whatsapp"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "title": "Viber",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "viber"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "title": "Messenger",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Channel type",
+              "enum": [
+                "messenger"
+              ]
+            },
+            "from": {
+              "$ref": "#/$defs/member_channel_from"
+            },
+            "to": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "conversation_id": {
+      "type": "string",
+      "description": "The unique identifier for this conversation"
+    },
+    "media": {
+      "type": "object",
+      "description": "Details about the current media setting states",
+      "properties": {
+        "audio_settings": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "description": "is audio currently enabled",
+              "type": "boolean"
+            },
+            "earmuffed": {
+              "description": "is audio currently earmuffed",
+              "type": "boolean"
+            },
+            "muted": {
+              "description": "is audio currently muted",
+              "type": "boolean"
+            }
+          }
+        },
+        "audio": {
+          "description": "Is an audio connection possible",
+          "type": "boolean"
+        }
+      }
+    },
+    "member_channel_from": {
+      "type": "object",
+      "description": "Which channel types this member accepts messages from (if not set, all are accepted)",
+      "properties": {
+        "type": {
+          "description": "Comma sperated list, can include channel types `app`, `phone`, `sms`, `mms`, `whatsapp` , `viber`, or `messenger`",
+          "type": "string"
+        }
+      }
+    },
+    "member_href": {
+      "type": "string",
+      "format": "url",
+      "description": "A link towards a member included in Conversation API"
+    },
+    "member_id": {
+      "type": "string",
+      "description": "Member ID"
+    },
+    "member_initiator": {
+      "oneOf": [
+        {
+          "type": "object",
+          "title": "Invited by User",
+          "properties": {
+            "joined": {
+              "type": "object",
+              "properties": {
+                "is_system": {
+                  "type": "boolean",
+                  "description": "`false` if the user was invited by a user."
+                },
+                "user_id": {
+                  "$ref": "#/$defs/user_id"
+                },
+                "member_id": {
+                  "$ref": "#/$defs/member_id"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "title": "Invited by Admin JWT",
+          "properties": {
+            "invited": {
+              "type": "object",
+              "properties": {
+                "is_system": {
+                  "type": "boolean",
+                  "description": "`true` if the user was invited by an admin JWT."
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "member_state": {
+      "type": "string",
+      "description": "The state that the member is in. Possible values are `INVITED`, `JOINED`, `LEFT`, or `UNKNOWN`",
+      "enum": [
+        "INVITED",
+        "JOINED",
+        "LEFT",
+        "UNKNOWN"
+      ]
+    },
+    "member_timestamp": {
+      "type": "object",
+      "properties": {
+        "invited": {
+          "description": "The time that the member was invited to a conversation",
+          "$ref": "#/$defs/timestamp"
+        },
+        "joined": {
+          "description": "The time that the member joined the conversation",
+          "$ref": "#/$defs/timestamp"
+        },
+        "left": {
+          "description": "The time that the member left the conversation",
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "user_display_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A string to be displayed as user name. It does not need to be unique"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID"
+    },
+    "user_links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "user_lite": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/user_id"
+        },
+        "name": {
+          "$ref": "#/$defs/user_name"
+        },
+        "display_name": {
+          "$ref": "#/$defs/user_display_name"
+        },
+        "_links": {
+          "$ref": "#/$defs/user_links"
+        }
+      }
+    },
+    "user_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Unique name for a user"
+    }
+  }
+}

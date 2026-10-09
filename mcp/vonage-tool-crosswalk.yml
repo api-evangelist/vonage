@@ -1,0 +1,198 @@
+generated: '2026-10-08'
+method: derived
+source:
+- mcp/vonage-mcp.yml
+- https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings
+- mcp/vonage-documentation-mcp-tools-list.json
+- openapi/ (22 published Vonage OpenAPI documents)
+crosswalk:
+- tool: balance
+  server: api-bindings
+  category: Account Management
+  rest:
+  - getAccountBalance
+  spec: openapi/vonage-account-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: list-applications
+  server: api-bindings
+  category: Account Management
+  rest:
+  - listApplication
+  spec: openapi/vonage-application-v2-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: create-application
+  server: api-bindings
+  category: Account Management
+  rest:
+  - createApplication
+  spec: openapi/vonage-application-v2-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: list-purchased-numbers
+  server: api-bindings
+  category: Account Management
+  rest:
+  - getOwnedNumbers
+  spec: openapi/vonage-numbers-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: search-available-numbers
+  server: api-bindings
+  category: Number Management
+  rest:
+  - getAvailableNumbers
+  spec: openapi/vonage-numbers-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: link-number-to-vonage-application
+  server: api-bindings
+  category: Number Management
+  rest:
+  - updateANumber
+  spec: openapi/vonage-numbers-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+  note: updateANumber carries the app_id field that links a number to an application
+- tool: get-records-report
+  server: api-bindings
+  category: Reports
+  rest:
+  - createSyncReportPublic
+  spec: openapi/vonage-reports-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: medium
+  note: the tool description says date-based or ID-based record queries; the synchronous records endpoint matches,
+    the async pair may also be used
+- tool: SMS
+  server: api-bindings
+  category: Messaging & Communication
+  rest:
+  - SendMessage
+  - send-an-sms
+  spec: openapi/vonage-messages-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: medium
+  note: the README does not say whether the tool posts to the Messages API or the legacy SMS API; both send an SMS
+- tool: whatsapp-send-text
+  server: api-bindings
+  category: Messaging & Communication
+  rest:
+  - SendMessage
+  spec: openapi/vonage-messages-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: whatsapp-send-text-with-sms-failover
+  server: api-bindings
+  category: Messaging & Communication
+  rest:
+  - createWorkflow
+  spec: openapi/vonage-dispatch-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+  note: failover across channels is the Dispatch API workflow
+- tool: rcs-send-text
+  server: api-bindings
+  category: Messaging & Communication
+  rest:
+  - SendMessage
+  spec: openapi/vonage-messages-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: rcs-send-text-with-sms-failover
+  server: api-bindings
+  category: Messaging & Communication
+  rest:
+  - createWorkflow
+  spec: openapi/vonage-dispatch-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+- tool: outbound-voice-message
+  server: api-bindings
+  category: Messaging & Communication
+  rest:
+  - createCall
+  spec: openapi/vonage-voice-openapi.yml
+  binding: name/semantics (the stdio server was not run; the npm README tool table was mapped onto the published
+    OpenAPI operationIds)
+  confidence: high
+  note: an outbound call whose NCCO speaks the message
+mcp_only:
+- tool: make-chart
+  server: api-bindings
+  reason: renders a chart from data already retrieved; no Vonage REST operation
+meta_tools:
+- tool: vonage_docs_search
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+- tool: vonage_code_generator
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+- tool: vonage_api_reference
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+- tool: vonage_troubleshooter
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+- tool: vonage_tutorial_finder
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+- tool: vonage_sdk_info
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+- tool: vonage_use_case_examples
+  server: documentation
+  reason: documentation retrieval over developer.vonage.com, not an API operation
+rest_only:
+  count: 152
+  note: 152 of 169 published operations have no MCP tool; e.g. the whole Video, Conversation, Meetings, Verify v2,
+    Subaccounts and Media surfaces
+surfaces:
+  openapi:
+  - openapi/vonage-sms-openapi.yml
+  - openapi/vonage-messages-openapi.yml
+  - openapi/vonage-voice-openapi.yml
+  - openapi/vonage-verify-openapi.yml
+  - openapi/vonage-verify-v2-openapi.yml
+  - openapi/vonage-numbers-openapi.yml
+  - openapi/vonage-application-v2-openapi.yml
+  - openapi/vonage-account-openapi.yml
+  - openapi/vonage-conversation-openapi.yml
+  - openapi/vonage-reports-openapi.yml
+  - openapi/vonage-video-openapi.yml
+  - openapi/vonage-dispatch-openapi.yml
+  - openapi/vonage-redact-openapi.yml
+  - openapi/vonage-audit-openapi.yml
+  - openapi/vonage-number-insight-openapi.yml
+  - openapi/vonage-identity-insights-openapi.yml
+  - openapi/vonage-location-retrieval-openapi.yml
+  - openapi/vonage-external-accounts-openapi.yml
+  - openapi/vonage-subaccounts-openapi.yml
+  - openapi/vonage-pricing-openapi.yml
+  - openapi/vonage-media-openapi.yml
+  - openapi/vonage-meetings-openapi.yml
+  mcp:
+    remote: https://documentation-mcp.vonage.dev/mcp (open, probed)
+    local-stdio: npx -y @vonage/vonage-mcp-server-api-bindings (api-key via env, documented)
+  graphql: null
+coverage:
+  mcp_tools_total: 21
+  documentation_tools: 7
+  binding_tools: 14
+  binding_tools_mapped: 13
+  rest_operations_total: 169
+  rest_operations_with_tool: 11
+  rest_operations_without_tool: 152

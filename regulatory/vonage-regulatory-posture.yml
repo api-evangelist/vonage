@@ -1,0 +1,32 @@
+generated: '2026-10-08'
+method: searched
+source:
+- openapi/_original/vonage-messages-openapi.json
+- openapi/_original/vonage-identity-insights-openapi.json
+- https://www.vonage.com/legal/
+- https://www.vonage.com/security/
+- well-known/vonage-well-known.yml
+- security/
+signals:
+  data_residency:
+    url: https://developer.vonage.com/api/v1/developer/api/file/messages?vendorId=vonage
+    section: servers[0].variables.api-region
+    note: The published Messages API contract offers regional API hosts (api, api-eu, api-us, api-ap on nexmo.com)
+      and the Identity Insights contract offers eu / us on vonage.com; no prose data-residency commitment page was
+      found on the docs or legal sites.
+    evidence:
+    - source: https://developer.vonage.com/api/v1/developer/api/file/messages?vendorId=vonage
+      http_status: 200
+      fetched: '2026-10-08'
+      quote: 'The region where the API request is sent. enum: api, api-eu, api-us, api-ap'
+checked_absent:
+  sbom: no SBOM link on www.vonage.com/security/ or the legal index
+  accessibility_conformance: the legal index links an Accessibility Statement for the VBC unified-communications
+    product; no VPAT/ACR for the APIs was found
+  subprocessors: no subprocessor list linked from www.vonage.com/legal/ (direct paths /legal/subprocessors/ and
+    /legal/dpa/ answered 403 to a plain client)
+  transparency_report: none found
+  ai_transparency: none found
+  global_privacy_control: no published statement found
+note: www.vonage.com answers 403 to a plain HTTP client; pages were read through fetch-url.py, which received 200
+  for /legal/ and /security/.

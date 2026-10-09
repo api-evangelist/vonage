@@ -1,0 +1,3640 @@
+openapi: 3.2.0
+info:
+  title: Vonage Event API
+  version: 5.5.1
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Find quick answers to questions about the Vonage Conversation API (v1.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Conversation API (v1.0) Reference | Vonage API Documentation
+  description: 'Operations tagged event across 2 of this provider''s published API definitions: vonage-conversation-openapi.json, vonage-conversation-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1
+security:
+- bearerAuth: []
+tags:
+- name: Event
+paths:
+  /conversations/{conversation_id}/events:
+    post:
+      operationId: createEvent
+      description: 'Events are used to record actions that take place within a conversation. Some events are created automatically when carrying out actions such as adding a user to a conversation, but you can also create custom events to record other actions that take place within a conversation.
+
+        For more details on event types and how they should be used please see the
+
+        event concept documentation.'
+      tags:
+      - Event
+      summary: Create an event
+      parameters:
+      - $ref: '#/components/parameters/conversation_id'
+      requestBody:
+        $ref: '#/components/requestBodies/event'
+      responses:
+        '201':
+          $ref: '#/components/responses/event'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    get:
+      operationId: getEvents
+      tags:
+      - Event
+      summary: Get a list of events
+      parameters:
+      - $ref: '#/components/parameters/event_start_id'
+      - $ref: '#/components/parameters/event_end_id'
+      - $ref: '#/components/parameters/event_type'
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/cursor'
+      - $ref: '#/components/parameters/exclude_deleted_events'
+      - $ref: '#/components/parameters/conversation_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/event_list'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    servers:
+    - url: https://api.nexmo.com/v1
+  /conversations/{conversation_id}/events/{event_id}:
+    get:
+      operationId: getEvent
+      tags:
+      - Event
+      summary: Get an event
+      parameters:
+      - $ref: '#/components/parameters/conversation_id'
+      - $ref: '#/components/parameters/event_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/event_single'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/conversation_error_not_found'
+                - $ref: '#/components/schemas/event_error_not_found'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    delete:
+      operationId: deleteEvent
+      tags:
+      - Event
+      summary: Delete an event
+      description: Only message and custom events can be deleted, and then only events your user created or if you use an admin token
+      parameters:
+      - in: path
+        name: conversation_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/conversation_id'
+        description: The conversation ID
+      - in: path
+        name: event_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/event_id'
+        description: The event ID
+      responses:
+        '204':
+          $ref: '#/components/responses/General204'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/conversation_error_not_found'
+                - $ref: '#/components/schemas/event_error_not_found'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    servers:
+    - url: https://api.nexmo.com/v1
+components:
+  schemas:
+    timestamp_updated:
+      type: string
+      example: '2020-01-01T14:05:00.00Z'
+      description: Time of last update
+    ephemeral_event:
+      description: ephemeral - Ephemeral
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ephemeral
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          description: any custom data you wish to send/receive.
+      required:
+      - type
+      - body
+    messageseen_event_response:
+      description: message:seen - Message seen
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - message:seen
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiodtmf_body_digit:
+      description: Digit no method and duration
+      properties:
+        digit:
+          type: string
+          pattern: ^([abcdABCD0-9*#pPeEfF])+$
+        channel:
+          $ref: '#/components/schemas/event_channel'
+        dtmf_seq:
+          type: integer
+        method:
+          type: string
+          enum:
+          - in
+        duration:
+          type: integer
+      required:
+      - digit
+      - method
+      - duration
+    conversation_numbers_sip:
+      description: SIP Channel
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - sip
+          example: sip
+        uri:
+          type: string
+          maxLength: 200
+          pattern: ^(sip|sips):\+?([\w|:.\-@;,=%&]+)
+          example: sip:+Htg:;xa
+        usenname:
+          type: string
+        password:
+          type: string
+      required:
+      - type
+      - uri
+    audiomuteon_event:
+      description: audio:mute:on - Mute audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:mute:on
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+          required:
+          - rtc_id
+      required:
+      - type
+      - body
+    audiorecorddone_event_response:
+      description: audio:record:done - Recording the audio has completed
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:record:done
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: integer
+            recording_id:
+              type: string
+            destination_url:
+              type: string
+            format:
+              type: string
+            start_time:
+              type: string
+              example: '2020-01-01T14:00:00.00Z'
+            end_time:
+              type: string
+              example: '2020-01-01T14:00:00.00Z'
+            size:
+              type: integer
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    conversation_numbers_vbc:
+      description: VBC Channel
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - vbc
+          example: vbc
+        extension:
+          type: string
+          example: '447700900000'
+      required:
+      - type
+      - extension
+    user_properties:
+      type: object
+      description: User properties
+      properties:
+        custom_data:
+          type: object
+    event_media_boolean:
+      type: object
+      description: Media Object with boolean audio
+      properties:
+        audio_settings:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            earmuffed:
+              type: boolean
+            muted:
+              type: boolean
+        audio:
+          type: boolean
+    audiosaystop_event:
+      description: audio:say:stop - Stop currently playing TTS
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:say:stop
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            say_id:
+              type: string
+          required:
+          - say_id
+      required:
+      - type
+      - body
+    audioplaystop_event_response:
+      description: audio:play:stop - Stop currently playing audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:play:stop
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            play_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    timestamp_res_conversation:
+      type: object
+      properties:
+        created:
+          $ref: '#/components/schemas/timestamp_created'
+        updated:
+          $ref: '#/components/schemas/timestamp_updated'
+        destroyed:
+          $ref: '#/components/schemas/timestamp_destroyed'
+    rtchangup_event_response:
+      description: rtc:hangup - RTC hangup
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - rtc:hangup
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            quality:
+              type: object
+              properties:
+                mos_score:
+                  type: number
+                quality_percentage:
+                  type: number
+                jitter_min_var:
+                  type: number
+                jitter_max_var:
+                  type: number
+                jitter_loss_rate:
+                  type: number
+                jitter_burst_rate:
+                  type: number
+                flaw_total:
+                  type: number
+                packet_cnt:
+                  type: number
+                packet_loss_perc:
+                  type: number
+            bandwidth:
+              type: object
+              properties:
+                byte_in:
+                  type: number
+                byte_out:
+                  type: number
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+            reason:
+              type: object
+              properties:
+                text:
+                  type: string
+                code:
+                  type: string
+                sip_code:
+                  type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    messageundeliverable_event:
+      description: message:undeliverable - Message undeliverable
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - message:undeliverable
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+          required:
+          - event_id
+      required:
+      - type
+      - body
+    conversation_error_not_found:
+      type: object
+      description: Conversation not found
+      properties:
+        title:
+          type: string
+          example: Not found.
+        type:
+          type: string
+          example: https://developer.nexmo.com/api/conversation#conversation:error:not-found
+        code:
+          type: string
+          example: conversation:error:not-found
+        detail:
+          type: string
+          example: Conversation does not exist, or you do not have access.
+        instance:
+          type: string
+          example: 00a5916655d650e920ccf0daf40ef4ee
+    rtcanswered_event_response:
+      description: rtc:answered - RTC answered
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - rtc:answered
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiodtmf_body_digits_no_method:
+      description: Digits no method and duration
+      properties:
+        digits:
+          type: string
+          pattern: ^([abcdABCD0-9*#pPeEfF])+$
+        channel:
+          $ref: '#/components/schemas/event_channel'
+        dtmf_seq:
+          type: integer
+      required:
+      - digits
+    event_links:
+      type: object
+      properties:
+        self:
+          type: object
+          properties:
+            href:
+              type: string
+    event_id:
+      type: string
+      example: '5'
+      description: Event id. This is a progressive integer
+    audioplay_event_response:
+      description: audio:play - Play Audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:play
+        from:
+          description: Member ID
+          type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+        body:
+          type: object
+          properties:
+            queue:
+              type: boolean
+            level:
+              type: number
+              exclusiveMinimum: -1
+              exclusiveMaximum: 1
+            loop:
+              type: integer
+            stream_url:
+              type: array
+              items:
+                type: string
+    conversation_id:
+      type: string
+      example: CON-d66d47de-5bcb-4300-94f0-0c9d4b948e9a
+      description: The unique identifier for this conversation
+    memberleft_event_response:
+      description: member:left - Member Jeft
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - member:left
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            member_id:
+              type: string
+            user:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/user_id'
+                member_id:
+                  type: string
+                user_id:
+                  type: string
+                name:
+                  $ref: '#/components/schemas/user_name'
+                display_name:
+                  $ref: '#/components/schemas/user_display_name'
+                image_url:
+                  $ref: '#/components/schemas/user_image_url'
+                properties:
+                  $ref: '#/components/schemas/user_properties'
+                media:
+                  oneOf:
+                  - $ref: '#/components/schemas/event_media_boolean'
+                  - $ref: '#/components/schemas/event_media'
+            channel:
+              oneOf:
+              - $ref: '#/components/schemas/event_sms_channel'
+              - $ref: '#/components/schemas/event_mms_channel'
+              - $ref: '#/components/schemas/event_whatsapp_channel'
+              - $ref: '#/components/schemas/event_viber_channel'
+              - $ref: '#/components/schemas/event_messenger_channel'
+            timestamp:
+              type: object
+              properties:
+                invited:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                left:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                joined:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+            initiator:
+              type: object
+              properties:
+                joined:
+                  type: object
+                  properties:
+                    isSystem:
+                      type: boolean
+                    member_id:
+                      type: string
+                    user_id:
+                      type: string
+                left:
+                  type: object
+                  properties:
+                    isSystem:
+                      type: boolean
+                    member_id:
+                      type: string
+                    user_id:
+                      type: string
+            reason:
+              type: object
+              properties:
+                code:
+                  type: string
+                text:
+                  type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    user_id:
+      type: string
+      example: USR-82e028d9-5201-4f1e-8188-604b2d3471ec
+      description: User ID
+    sipmachine_event_response:
+      description: sip:machine - SIP machine
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - sip:machine
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            type:
+              type: string
+            confidence:
+              type: integer
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_text:
+      description: Text Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    audiodtmf_event:
+      description: audio:dtmf - Play DTMF audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:dtmf
+        from:
+          description: Member ID
+          type: string
+        body:
+          description: method and duration are added when you want any IP user in a call to not only recieve the event but hear the dialtones in the mixer.
+          oneOf:
+          - $ref: '#/components/schemas/audiodtmf_body_digit_no_method'
+          - $ref: '#/components/schemas/audiodtmf_body_digits_no_method'
+          - $ref: '#/components/schemas/audiodtmf_body_digit'
+          - $ref: '#/components/schemas/audiodtmf_body_digits'
+      required:
+      - type
+      - body
+    audiorecordstop_event_response:
+      description: audio:record:stop - Stop current recording of audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:record:stop
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            record_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    leg_status_history_knocker:
+      type: object
+      description: Leg Status History with Knocker ID
+      properties:
+        knocker_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - started
+          - ringing
+          - answered
+          - completed
+          - machine
+          - failed
+          - busy
+          - timeout
+          - cancelled
+          - rejected
+        state:
+          oneOf:
+          - $ref: '#/components/schemas/leg_status_complete'
+          - $ref: '#/components/schemas/leg_status'
+        date:
+          type: string
+    event_whatsapp_channel:
+      description: Whatsapp Channel
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            number:
+              type: string
+        from:
+          type: object
+          properties:
+            number:
+              type: string
+        type:
+          type: string
+          enum:
+          - whatsapp
+    message_body_custom:
+      description: Custom Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - custom
+        custom:
+          type: object
+          properties:
+            custom_field:
+              type: string
+    memberjoined_event_response:
+      description: member:joined - Member Joined
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - member:joined
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            member_id:
+              type: string
+            user:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/user_id'
+                member_id:
+                  type: string
+                user_id:
+                  type: string
+                name:
+                  $ref: '#/components/schemas/user_name'
+                display_name:
+                  $ref: '#/components/schemas/user_display_name'
+                image_url:
+                  $ref: '#/components/schemas/user_image_url'
+                properties:
+                  $ref: '#/components/schemas/user_properties'
+                media:
+                  oneOf:
+                  - $ref: '#/components/schemas/event_media_boolean'
+                  - $ref: '#/components/schemas/event_media'
+            channel:
+              oneOf:
+              - $ref: '#/components/schemas/event_sms_channel'
+              - $ref: '#/components/schemas/event_mms_channel'
+              - $ref: '#/components/schemas/event_whatsapp_channel'
+              - $ref: '#/components/schemas/event_viber_channel'
+              - $ref: '#/components/schemas/event_messenger_channel'
+            timestamp:
+              type: object
+              properties:
+                invited:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                left:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                joined:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+            initiator:
+              type: object
+              properties:
+                joined:
+                  type: object
+                  properties:
+                    isSystem:
+                      type: boolean
+                    member_id:
+                      type: string
+                    user_id:
+                      type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    sipstatus_event_response:
+      description: sip:status - Status of SIP
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - sip:status
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            price:
+              type: string
+            rate:
+              type: string
+            duration:
+              type: string
+            to:
+              type: string
+            from:
+              type: string
+            network_code:
+              type: string
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+            request_time:
+              type: string
+            start_time:
+              type: string
+            end_time:
+              type: string
+            status:
+              type: string
+              enum:
+              - started
+              - ringing
+              - answered
+              - completed
+              - machine
+              - failed
+              - busy
+              - timeout
+              - cancelled
+              - rejected
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            state:
+              oneOf:
+              - $ref: '#/components/schemas/leg_status'
+              - $ref: '#/components/schemas/leg_status_complete'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiodtmf_body_digit_no_method:
+      description: Digit no method and duration
+      properties:
+        digit:
+          type: string
+          pattern: ^([abcdABCD0-9*#pPeEfF])+$
+        channel:
+          $ref: '#/components/schemas/event_channel'
+        dtmf_seq:
+          type: integer
+      required:
+      - digit
+    message_event:
+      description: message - Message (Text, Image, Audio, Video, File, Template, Custom, VCard, Location, Random)
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - message
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/message_body_text'
+          - $ref: '#/components/schemas/message_body_image'
+          - $ref: '#/components/schemas/message_body_audio'
+          - $ref: '#/components/schemas/message_body_video'
+          - $ref: '#/components/schemas/message_body_file'
+          - $ref: '#/components/schemas/message_body_template'
+          - $ref: '#/components/schemas/message_body_custom'
+          - $ref: '#/components/schemas/message_body_vcard'
+          - $ref: '#/components/schemas/message_body_location'
+          - $ref: '#/components/schemas/message_body_random'
+      required:
+      - type
+      - body
+    timestamp_destroyed:
+      type: string
+      example: '2020-01-01T14:20:00.00Z'
+      description: Time of last update
+    user_name:
+      type:
+      - string
+      - 'null'
+      example: my_user_name
+      description: Unique name for a user
+    audioearmuffoff_event:
+      description: audio:earmuff:off - Earmuff audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:earmuff:off
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+          required:
+          - rtc_id
+      required:
+      - type
+      - body
+    event_channel:
+      type: object
+      properties:
+        to:
+          $ref: '#/components/schemas/channel'
+        from:
+          $ref: '#/components/schemas/channel'
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - app
+          - phone
+          - sip
+          - websocket
+          - vbc
+          - whatsapp-voice
+        headers:
+          type: object
+    message_body_file:
+      description: File Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - file
+        file:
+          type: object
+          properties:
+            url:
+              type: string
+    audiodtmf_event_response:
+      description: audio:dtmf - Play DTMF audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:dtmf
+        from:
+          description: Member ID
+          type: string
+        body:
+          description: method and duration are added when you want any IP user in a call to not only recieve the event but hear the dialtones in the mixer.
+          oneOf:
+          - $ref: '#/components/schemas/audiodtmf_body_digit_no_method'
+          - $ref: '#/components/schemas/audiodtmf_body_digits_no_method'
+          - $ref: '#/components/schemas/audiodtmf_body_digit'
+          - $ref: '#/components/schemas/audiodtmf_body_digits'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiorecord_event_response:
+      description: audio:record - Record the audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:record
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            recording_id:
+              type: string
+            validity:
+              type: integer
+            streamed:
+              type: boolean
+            format:
+              type: string
+            beep_start:
+              type: boolean
+            beep_stop:
+              type: boolean
+            detect_speech:
+              type: boolean
+            split:
+              type: boolean
+            mulitrack:
+              type: boolean
+            channels:
+              type: integer
+            transcription:
+              type: object
+              properties:
+                language:
+                  type: string
+                sentiment_analysis:
+                  type: boolean
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    sipringing_event_response:
+      description: sip:ringing - SIP ringing
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - sip:ringing
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiodtmf_body_digits:
+      description: Digits no method and duration
+      properties:
+        digits:
+          type: string
+          pattern: ^([abcdABCD0-9*#pPeEfF])+$
+        channel:
+          $ref: '#/components/schemas/event_channel'
+        dtmf_seq:
+          type: integer
+        method:
+          type: string
+          enum:
+          - in
+        duration:
+          type: integer
+      required:
+      - digits
+      - method
+      - duration
+    audioearmuffon_event:
+      description: audio:earmuff:on - Earmuff audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:earmuff:on
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+          required:
+          - rtc_id
+      required:
+      - type
+      - body
+    channel:
+      description: A user who joins a conversation as a member can have one channel per membership. For more details see [channel concept docs](/voice/voice-api/concepts/in-app-calling)
+      type: object
+      oneOf:
+      - type: object
+        title: App
+        description: Member is using app channel type
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - app
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            description: Settings which control who this member can send messages to.
+            properties:
+              type:
+                type: string
+                enum:
+                - app
+              user:
+                description: The user ID of the member that this member can send messages to.
+                type: string
+        required:
+        - type
+      - type: object
+        title: Phone
+        description: Member is using phone channel type
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - phone
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            description: Settings which control who this member can send messages to.
+            properties:
+              number:
+                type: string
+                description: The phone number of the member that this member can send messages to.
+              type:
+                type: string
+                enum:
+                - phone
+        required:
+        - type
+      - type: object
+        title: SMS
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - sms
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            properties:
+              number:
+                type: string
+              type:
+                type: string
+                enum:
+                - sms
+      - type: object
+        title: MMS
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - mms
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            properties:
+              number:
+                type: string
+      - type: object
+        title: WhatsApp
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - whatsapp
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            properties:
+              number:
+                type: string
+      - type: object
+        title: Viber
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - viber
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            properties:
+              id:
+                type: string
+      - type: object
+        title: Messenger
+        properties:
+          type:
+            type: string
+            description: Channel type
+            enum:
+            - messenger
+          from:
+            $ref: '#/components/schemas/member_channel_from'
+          to:
+            type: object
+            properties:
+              id:
+                type: string
+    event_sms_channel:
+      description: SMS Channel
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            number:
+              type: string
+        from:
+          type: object
+          properties:
+            number:
+              type: string
+        type:
+          type: string
+          enum:
+          - sms
+    audiosaystop_event_response:
+      description: audio:say:stop - Stop currently playing TTS
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:say:stop
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            say_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_event_response:
+      description: message - Message (Text, Image, Audio, Video, File, Template, Custom, VCard, Location, Random)
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - message
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/message_body_text'
+          - $ref: '#/components/schemas/message_body_image'
+          - $ref: '#/components/schemas/message_body_audio'
+          - $ref: '#/components/schemas/message_body_video'
+          - $ref: '#/components/schemas/message_body_file'
+          - $ref: '#/components/schemas/message_body_template'
+          - $ref: '#/components/schemas/message_body_custom'
+          - $ref: '#/components/schemas/message_body_vcard'
+          - $ref: '#/components/schemas/message_body_location'
+          - $ref: '#/components/schemas/message_body_random'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audioplaystop_event:
+      description: audio:play:stop - Stop currently playing audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:play:stop
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            play_id:
+              type: string
+          required:
+          - play_id
+      required:
+      - type
+      - body
+    custom_event_response:
+      description: custom - Custom event
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          pattern: ^custom:[\w\-:]+
+          example: custom:test
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          description: any custom data you wish to send/receive.
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_template:
+      description: Template Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - template
+        template:
+          type: object
+          properties:
+            name:
+              type: string
+            parameters:
+              type: array
+              items:
+                type: string
+            whatsapp:
+              type: object
+              properties:
+                policy:
+                  type: string
+                locale:
+                  type: string
+    rtcringing_event_response:
+      description: rtc:ringing - RTC ringing
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - rtc:ringing
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiomuteon_event_response:
+      description: audio:mute:on - Mute audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:mute:on
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    legstatusupdate_event_response:
+      description: leg:status:update - Leg status update
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - leg:status:update
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            leg_id:
+              type: string
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            type:
+              type: string
+              enum:
+              - app
+              - phone
+              - sip
+              - websocket
+              - vbc
+              - whatsapp-voice
+            status:
+              type: string
+              enum:
+              - started
+              - ringing
+              - answered
+              - completed
+              - machine
+              - failed
+              - busy
+              - timeout
+              - cancelled
+              - rejected
+            state:
+              oneOf:
+              - $ref: '#/components/schemas/leg_status_complete'
+              - $ref: '#/components/schemas/leg_status'
+            statusHistory:
+              type: array
+              items:
+                type: object
+                oneOf:
+                - $ref: '#/components/schemas/leg_status_history_member'
+                - $ref: '#/components/schemas/leg_status_history_knocker'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    leg_status_complete:
+      type: object
+      description: Leg Status completed
+      properties:
+        status:
+          type: string
+          enum:
+          - completed
+        successful:
+          type: boolean
+        reason:
+          type: string
+          enum:
+          - failed
+          - busy
+          - timeout
+          - cancelled
+          - rejected
+          - ok
+          - not_found
+          - request_terminated
+          - bad_extension
+          - busy_here
+          - request_timeout
+          - temporarily_unavailable
+          - forbidden
+          - gone
+          - bad_gateway
+          - address_incomplete
+          - server_internal_error
+          - not_implemented
+          - server_timeout
+          - version_not_supported
+          - service_unavailable
+          - payment_required
+          - banned_call_ended
+          - flow_failed
+    page_size:
+      type: integer
+      description: The amount of records returned in this response
+      minimum: 1
+      maximum: 100
+      default: 10
+      example: 10
+    user_display_name:
+      type:
+      - string
+      - 'null'
+      example: My User Name
+      description: A string to be displayed as user name. It does not need to be unique
+    user_image_url:
+      type: string
+      example: https://example.com/image.png
+      description: An image URL that you associate with the user
+    sipamdmachine_event_response:
+      description: sip:amd_machine - SIP AMD machine
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - sip:amd_machine
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            type:
+              type: string
+            confidence:
+              type: integer
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    event_audio_channels:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - app
+          - phone
+          - sip
+          - websocket
+          - vbc
+          - whatsapp-voice
+        to:
+          oneOf:
+          - $ref: '#/components/schemas/conversation_numbers_phone'
+          - $ref: '#/components/schemas/conversation_numbers_sip'
+          - $ref: '#/components/schemas/conversation_numbers_app'
+          - $ref: '#/components/schemas/conversation_numbers_vbc'
+          - $ref: '#/components/schemas/conversation_numbers_websocket'
+          - $ref: '#/components/schemas/conversation_numbers_whatsappvoice'
+        from:
+          oneOf:
+          - $ref: '#/components/schemas/conversation_numbers_phone'
+          - $ref: '#/components/schemas/conversation_numbers_sip'
+          - $ref: '#/components/schemas/conversation_numbers_app'
+          - $ref: '#/components/schemas/conversation_numbers_vbc'
+          - $ref: '#/components/schemas/conversation_numbers_websocket'
+          - $ref: '#/components/schemas/conversation_numbers_whatsappvoice'
+        headers:
+          type: object
+    message_body_vcard:
+      description: VCard Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - vcard
+        vcard:
+          type: object
+          properties:
+            url:
+              type: string
+        image:
+          type: object
+          properties:
+            url:
+              type: string
+    audiorecordstop_event:
+      description: audio:record:stop - Stop current recording of audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:record:stop
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            record_id:
+              type: string
+          required:
+          - record_id
+      required:
+      - type
+      - body
+    ephemeral_event_response:
+      description: ephemeral - Ephemeral
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - ephemeral
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          description: any custom data you wish to send/receive.
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    messagesubmitted_event:
+      description: message:submitted - Message submitted
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - message:submitted
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+          required:
+          - event_id
+      required:
+      - type
+      - body
+    audioearmuffon_event_response:
+      description: audio:earmuff:on - Turn on audio earmuff
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:earmuff:on
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiospeakingoff_event_response:
+      description: audio:speaking:off - Speaking off
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:speaking:off
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            channel:
+              $ref: '#/components/schemas/event_channel'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiorecord_event:
+      description: audio:record - Record the audio in the conversation
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:record
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            validity:
+              type: integer
+            streamed:
+              type: boolean
+            format:
+              type: string
+            beep_start:
+              type: boolean
+            beep_stop:
+              type: boolean
+            detect_speech:
+              type: boolean
+            split:
+              type: boolean
+            mulitrack:
+              type: boolean
+            channels:
+              type: integer
+            transcription:
+              type: object
+              properties:
+                language:
+                  type: string
+                sentiment_analysis:
+                  type: boolean
+              required:
+              - language
+      required:
+      - type
+      - body
+    audiomuteoff_event_response:
+      description: audio:mute:off - Unmute audio
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:mute:off
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audioplaydone_event_response:
+      description: audio:play:done - Playing audio has stopped
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:play:done
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            play_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_location:
+      description: Location Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - location
+        location:
+          type: object
+          properties:
+            longitude:
+              type: string
+            latitude:
+              type: string
+            name:
+              type: string
+            address:
+              type: string
+    eventdelete_event_response:
+      description: event:delete - Event has been Deleted
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - event:delete
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    rtcanswer_event_response:
+      description: rtc:answer - RTC answer
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - rtc:answer
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            answer:
+              type: string
+            rtc_id:
+              type: string
+            isFromMB:
+              type: boolean
+            session_destination:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    conversation_numbers_whatsappvoice:
+      description: Whatsapp Voice Channel
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - whatsapp-voice
+        number:
+          type: string
+    event_user:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/user_id'
+        name:
+          $ref: '#/components/schemas/user_name'
+        display_name:
+          $ref: '#/components/schemas/user_display_name'
+        image_url:
+          $ref: '#/components/schemas/user_image_url'
+        custom_data:
+          type: object
+    conversation_numbers_phone:
+      description: Phone Channel
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - phone
+          example: phone
+        number:
+          type: string
+          example: '447700900000'
+      required:
+      - type
+      - number
+    event_invited_member:
+      type: object
+      properties:
+        channel:
+          oneOf:
+          - $ref: '#/components/schemas/event_sms_channel'
+          - $ref: '#/components/schemas/event_mms_channel'
+          - $ref: '#/components/schemas/event_whatsapp_channel'
+          - $ref: '#/components/schemas/event_viber_channel'
+          - $ref: '#/components/schemas/event_messenger_channel'
+        media:
+          oneOf:
+          - $ref: '#/components/schemas/event_media_boolean'
+          - $ref: '#/components/schemas/event_media'
+        member_id:
+          type: string
+        name:
+          type: string
+        state:
+          type: string
+          enum:
+          - INVITED
+          - JOINED
+          - LEFT
+          - UNKNOWN
+        timestamp:
+          type: object
+          properties:
+            invited:
+              type: string
+              example: '2020-01-01T14:00:00.00Z'
+            left:
+              type: string
+              example: '2020-01-01T14:00:00.00Z'
+            joined:
+              type: string
+              example: '2020-01-01T14:00:00.00Z'
+        user_id:
+          type: string
+    messagerejected_event:
+      description: message:rejected - Message rejected
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - message:rejected
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+          required:
+          - event_id
+      required:
+      - type
+      - body
+    member_channel_from:
+      type: object
+      description: Which channel types this member accepts messages from (if not set, all are accepted)
+      properties:
+        type:
+          description: Comma sperated list, can include channel types `app`, `phone`, `sms`, `mms`, `whatsapp` , `viber`, or `messenger`
+          type: string
+    siphangup_event_response:
+      description: sip:hangup - SIP hangup
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - sip:hangup
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            quality:
+              type: object
+              properties:
+                mos_score:
+                  type: number
+                quality_percentage:
+                  type: number
+                jitter_min_var:
+                  type: number
+                jitter_max_var:
+                  type: number
+                jitter_loss_rate:
+                  type: number
+                jitter_burst_rate:
+                  type: number
+                flaw_total:
+                  type: number
+                packet_cnt:
+                  type: number
+                packet_loss_perc:
+                  type: number
+            bandwidth:
+              type: object
+              properties:
+                byte_in:
+                  type: number
+                byte_out:
+                  type: number
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+            reason:
+              type: object
+              properties:
+                text:
+                  type: string
+                code:
+                  type: string
+                sip_code:
+                  type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    messagesubmitted_event_response:
+      description: message:submitted - Message submitted
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - message:submitted
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    rtctransfer_event_response:
+      description: rtc:transfer - RTC transfer
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - rtc:transfer
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            was_member:
+              type: string
+            user_id:
+              type: string
+            transferred_from:
+              type: string
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_video:
+      description: Video Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - video
+        video:
+          type: object
+          properties:
+            url:
+              type: string
+    audioasrdone_event_response:
+      description: audio:asr:done - Automatic speech recognition completed
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:asr:done
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            channel:
+              $ref: '#/components/schemas/event_channel'
+            asr:
+              type: object
+              properties:
+                results:
+                  type: array
+                  items:
+                    properties:
+                      word:
+                        type: string
+                      confidence:
+                        type: number
+                error:
+                  type: string
+                asr_id:
+                  type: string
+                call_id:
+                  type: string
+                timeout_reason:
+                  type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiosay_event_response:
+      description: audio:say - Use TTS to speak the given text
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:say
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            level:
+              type: number
+              exclusiveMinimum: -1
+              exclusiveMaximum: 1
+            loop:
+              type: integer
+            queue:
+              type: boolean
+            voice_name:
+              type: string
+            language:
+              type: string
+            style:
+              type: integer
+            premium:
+              type: boolean
+            text:
+              type: string
+            ssml:
+              type: boolean
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    event_media:
+      type: object
+      description: Media Object with object audio
+      properties:
+        audio_settings:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            earmuffed:
+              type: boolean
+            muted:
+              type: boolean
+        audio:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            earmuffed:
+              type: boolean
+            muted:
+              type: boolean
+    event_viber_channel:
+      description: Viber Channel
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            number:
+              type: string
+        from:
+          type: object
+          properties:
+            id:
+              type: string
+        type:
+          type: string
+          enum:
+          - viber
+    messagedelivered_event:
+      description: message:delivered - Message delivered
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - message:delivered
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+          required:
+          - event_id
+      required:
+      - type
+      - body
+    audiospeakingon_event_response:
+      description: audio:speaking:on - Speaking on
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:speaking:on
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            channel:
+              $ref: '#/components/schemas/event_channel'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    event_error_not_found:
+      type: object
+      description: Event not found
+      properties:
+        title:
+          type: string
+          example: Not found.
+        type:
+          type: string
+          example: https://developer.nexmo.com/api/conversation#event:error:not-found
+        code:
+          type: string
+          example: event:error:not-found
+        detail:
+          type: string
+          example: Event does not exist, or you do not have access.
+        instance:
+          type: string
+          example: fd26b002-91de-4ec5-8e95-2c04a261118a
+    sipanswered_event_response:
+      description: sip:answered - SIP answered
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - sip:answered
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            direction:
+              type: string
+              enum:
+              - inbound
+              - outbound
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    memberinvited_event_response:
+      description: member:invited - Member Invited
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - member:invited
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            cname:
+              type: string
+            invited_by:
+              type: string
+            member_id:
+              type: string
+            sdp:
+              type: string
+            conversation:
+              type: object
+              properties:
+                conversation_id:
+                  type: string
+                display_name:
+                  type: string
+                name:
+                  type: string
+                image_url:
+                  type: string
+            user:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/user_id'
+                member_id:
+                  type: string
+                user_id:
+                  type: string
+                name:
+                  $ref: '#/components/schemas/user_name'
+                display_name:
+                  $ref: '#/components/schemas/user_display_name'
+                image_url:
+                  $ref: '#/components/schemas/user_image_url'
+                properties:
+                  $ref: '#/components/schemas/user_properties'
+                media:
+                  oneOf:
+                  - $ref: '#/components/schemas/event_media_boolean'
+                  - $ref: '#/components/schemas/event_media'
+            channel:
+              oneOf:
+              - $ref: '#/components/schemas/event_sms_channel'
+              - $ref: '#/components/schemas/event_mms_channel'
+              - $ref: '#/components/schemas/event_whatsapp_channel'
+              - $ref: '#/components/schemas/event_viber_channel'
+              - $ref: '#/components/schemas/event_messenger_channel'
+            media:
+              oneOf:
+              - $ref: '#/components/schemas/event_media_boolean'
+              - $ref: '#/components/schemas/event_media'
+            timestamp:
+              type: object
+              properties:
+                invited:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                left:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                joined:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+            initiator:
+              type: object
+              properties:
+                invited:
+                  type: object
+                  properties:
+                    isSystem:
+                      type: boolean
+                    member_id:
+                      type: string
+                    user_id:
+                      type: string
+            invited_by_member:
+              $ref: '#/components/schemas/event_invited_member'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    leg_status:
+      type: object
+      description: Leg Status started, ringing or answered
+      properties:
+        status:
+          type: string
+          enum:
+          - started
+          - ringing
+          - answered
+    messageseen_event:
+      description: message:seen - Message seen
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - message:seen
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+          required:
+          - event_id
+      required:
+      - type
+      - body
+    rtcstatus_event_response:
+      description: rtc:status - RTC status
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - rtc:status
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            duration:
+              type: string
+            end_time:
+              type: string
+            mos:
+              type: number
+            price:
+              type: string
+            price_currency:
+              type: string
+            start_time:
+              type: string
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_audio:
+      description: Audio Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - audio
+        audio:
+          type: object
+          properties:
+            url:
+              type: string
+    audiosay_event:
+      description: audio:say - Use TTS to speak the given text
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:say
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          description: Either set voice_name to use the old style TTS voices, otherwise set language, style, premium and SSML to use new voices. For more infomation see [text to speech docs.](https://developer.vonage.com/en/voice/voice-api/concepts/text-to-speech)
+          properties:
+            level:
+              type: number
+              exclusiveMinimum: -1
+              exclusiveMaximum: 1
+            loop:
+              type: integer
+            queue:
+              type: boolean
+            voice_name:
+              type: string
+            language:
+              type: string
+            style:
+              type: integer
+            premium:
+              type: boolean
+            text:
+              type: string
+            ssml:
+              type: boolean
+          required:
+          - level
+          - loop
+          - text
+      required:
+      - type
+      - body
+    audioearmuffoff_event_response:
+      description: audio:earmuff:off - Turn off audio earmuff
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:earmuff:off
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    event_messenger_channel:
+      description: Messenger Channel
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            id:
+              type: string
+        from:
+          type: object
+          properties:
+            id:
+              type: string
+        type:
+          type: string
+          enum:
+          - viber
+    messagedelivered_event_response:
+      description: message:delivered - Message delivered
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - message:delivered
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audioplay_event:
+      description: audio:play - Play audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:play
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            queue:
+              type: boolean
+            level:
+              type: number
+              exclusiveMinimum: -1
+              exclusiveMaximum: 1
+            loop:
+              type: integer
+            stream_url:
+              type: array
+              items:
+                type: string
+          required:
+          - level
+          - loop
+          - stream_url
+      required:
+      - type
+      - body
+    leg_status_history_member:
+      type: object
+      description: Leg Status History with Member ID
+      properties:
+        conversation_id:
+          type: string
+        member_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - started
+          - ringing
+          - answered
+          - completed
+          - machine
+          - failed
+          - busy
+          - timeout
+          - cancelled
+          - rejected
+        state:
+          oneOf:
+          - $ref: '#/components/schemas/leg_status_complete'
+          - $ref: '#/components/schemas/leg_status'
+        date:
+          type: string
+    messageundeliverable_event_response:
+      description: message:undeliverable - Message undeliverable
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - message:undeliverable
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_random:
+      description: Random Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - random
+    conversation_numbers_websocket:
+      description: Websocket Channel
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - websocket
+          example: websocket
+        uri:
+          type: string
+          maxLength: 200
+          example: ws://example.com:8080
+        content_type:
+          type: string
+      required:
+      - type
+      - uri
+    audiosaydone_event_response:
+      description: audio:say:done - Playing TTS has stopped
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:say:done
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            say_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    message_body_image:
+      description: Image Message Body
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+          - image
+        image:
+          type: object
+          properties:
+            url:
+              type: string
+    membermessagestatus_event_response:
+      description: member:message:status - Member Message Status
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - member:message:status
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            original_event_id:
+              type: string
+            message_type:
+              type: string
+              enum:
+              - text
+              - image
+              - video
+              - audio
+              - file
+              - vcard
+              - custom
+              - template
+              - location
+            channel_type:
+              type: string
+              enum:
+              - sms
+              - mms
+              - whatsapp
+              - viber
+              - messenger
+            from:
+              type: string
+            to:
+              type: string
+            message_uuid:
+              type: string
+            error:
+              type: object
+            text:
+              type: string
+            image:
+              type: object
+              properties:
+                url:
+                  type: string
+            audio:
+              type: object
+              properties:
+                url:
+                  type: string
+            video:
+              type: object
+              properties:
+                url:
+                  type: string
+            file:
+              type: object
+              properties:
+                url:
+                  type: string
+            template:
+              type: object
+              properties:
+                name:
+                  type: string
+                parameters:
+                  type: array
+                  items:
+                    type: string
+            whatsapp:
+              type: object
+              properties:
+                policy:
+                  type: string
+                locale:
+                  type: string
+            custom:
+              type: object
+            vcard:
+              type: object
+              properties:
+                url:
+                  type: string
+            location:
+              type: object
+              properties:
+                longitude:
+                  type: string
+                latitude:
+                  type: string
+                name:
+                  type: string
+                address:
+                  type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    conversationupdate_event_response:
+      description: conversation:updated - Conversation details have been updated
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - conversation:updated
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            timestamp:
+              $ref: '#/components/schemas/timestamp_res_conversation'
+            display_name:
+              type: string
+            image_url:
+              type: string
+            state:
+              type: string
+              enum:
+              - ACTIVE
+              - INACTIVE
+              - DELETED
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audiomuteoff_event:
+      description: audio:mute:off - Unmute audio
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - audio:mute:off
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            rtc_id:
+              type: string
+          required:
+          - rtc_id
+      required:
+      - type
+      - body
+    embedded_event_from:
+      type: object
+      properties:
+        from_user:
+          $ref: '#/components/schemas/event_user'
+        from_member:
+          type: object
+          properties:
+            id:
+              type: string
+    conversation_numbers_app:
+      description: App Channel
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - app
+          example: app
+        user:
+          type: string
+      required:
+      - type
+    membermedia_event_response:
+      description: member:media - Member Media
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - member:media
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            audio:
+              type: boolean
+            media:
+              oneOf:
+              - $ref: '#/components/schemas/event_media_boolean'
+              - $ref: '#/components/schemas/event_media'
+            channel:
+              $ref: '#/components/schemas/event_audio_channels'
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    messagerejected_event_response:
+      description: message:rejected - Message rejected
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - message:rejected
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            event_id:
+              type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    audioasrrecorddone_event_response:
+      description: audio:asr:record:done - Automatic speech recognition of recording completed
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Event id. This is a progressive integer
+        type:
+          type: string
+          enum:
+          - audio:asr:record:done
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          properties:
+            channel:
+              $ref: '#/components/schemas/event_channel'
+            asr:
+              type: object
+              properties:
+                error:
+                  type: string
+                asr_id:
+                  type: string
+                call_id:
+                  type: string
+                destination_url:
+                  type: string
+                format:
+                  type: string
+                  enum:
+                  - mp3
+                  - wav
+                start_time:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                end_time:
+                  type: string
+                  example: '2020-01-01T14:00:00.00Z'
+                size:
+                  type: integer
+                media_service_uuid:
+                  type: string
+        timestamp:
+          $ref: '#/components/schemas/timestamp_created'
+        _embedded:
+          $ref: '#/components/schemas/embedded_event_from'
+        _links:
+          $ref: '#/components/schemas/event_links'
+    timestamp_created:
+      type: string
+      example: '2020-01-01T14:00:00.00Z'
+      description: Time of creation
+    event_mms_channel:
+      description: MMS Channel
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            number:
+              type: string
+        from:
+          type: object
+          properties:
+            number:
+              type: string
+        type:
+          type: string
+          enum:
+          - mms
+    custom_event:
+      description: custom - Custom event
+      type: object
+      properties:
+        type:
+          type: string
+          pattern: ^custom:[\w\-:]+
+          example: custom:test
+        from:
+          description: Member ID
+          type: string
+        body:
+          type: object
+          description: any custom data you wish to send/receive.
+      required:
+      - type
+      - body
+  responses:
+    General500InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Internal Error.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:internal-error
+              code:
+                type: string
+                example: system:error:internal-error
+              detail:
+                type: string
+                example: Something went wrong.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+    General204:
+      description: Success response with no content
+    General401InvalidToken:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Unauthorized.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:invalid-token
+              code:
+                type: string
+                example: system:error:invalid-token
+              detail:
+                type: string
+                example: You did not provide a valid token. Please provide a valid token.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+    event_list:
+      description: Events Response Payload Object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              page_size:
+                $ref: '#/components/schemas/page_size'
+              _links:
+                type: object
+                description: A series of links between resources in this API in the http://stateless.co/hal_specification.html.
+                properties:
+                  first:
+                    type: object
+                    properties:
+                      href:
+                        type: string
+                  self:
+                    type: object
+                    properties:
+                      href:
+                        type: string
+                  next:
+                    type: object
+                    properties:
+                      href:
+                        type: string
+                  prev:
+                    type: object
+                    properties:
+                      href:
+                        type: string
+              _embedded:
+                type: array
+                items:
+                  oneOf:
+                  - $ref: '#/components/schemas/message_event_response'
+                  - $ref: '#/components/schemas/messagesubmitted_event_response'
+                  - $ref: '#/components/schemas/messagerejected_event_response'
+                  - $ref: '#/components/schemas/messageundeliverable_event_response'
+                  - $ref: '#/components/schemas/messageseen_event_response'
+                  - $ref: '#/components/schemas/messagedelivered_event_response'
+                  - $ref: '#/components/schemas/membermessagestatus_event_response'
+                  - $ref: '#/components/schemas/custom_event_response'
+                  - $ref: '#/components/schemas/audioplay_event_response'
+                  - $ref: '#/components/schemas/audioplaystop_event_response'
+                  - $ref: '#/components/schemas/audioplaydone_event_response'
+                  - $ref: '#/components/schemas/audiosay_event_response'
+                  - $ref: '#/components/schemas/audiosaystop_event_response'
+                  - $ref: '#/components/schemas/audiosaydone_event_response'
+                  - $ref: '#/components/schemas/audiodtmf_event_response'
+                  - $ref: '#/components/schemas/audiorecord_event_response'
+                  - $ref: '#/components/schemas/audiorecordstop_event_response'
+                  - $ref: '#/components/schemas/audiorecorddone_event_response'
+                  - $ref: '#/components/schemas/audiomuteon_event_response'
+                  - $ref: '#/components/schemas/audiomuteoff_event_response'
+                  - $ref: '#/components/schemas/audioearmuffon_event_response'
+                  - $ref: '#/components/schemas/audioearmuffoff_event_response'
+                  - $ref: '#/components/schemas/audiospeakingon_event_response'
+                  - $ref: '#/components/schemas/audiospeakingoff_event_response'
+                  - $ref: '#/components/schemas/audioasrdone_event_response'
+                  - $ref: '#/components/schemas/audioasrrecorddone_event_response'
+                  - $ref: '#/components/schemas/memberinvited_event_response'
+                  - $ref: '#/components/schemas/memberjoined_event_response'
+                  - $ref: '#/components/schemas/memberleft_event_response'
+                  - $ref: '#/components/schemas/membermedia_event_response'
+                  - $ref: '#/components/schemas/conversationupdate_event_response'
+                  - $ref: '#/components/schemas/eventdelete_event_response'
+                  - $ref: '#/components/schemas/sipstatus_event_response'
+                  - $ref: '#/components/schemas/siphangup_event_response'
+                  - $ref: '#/components/schemas/sipanswered_event_response'
+                  - $ref: '#/components/schemas/sipmachine_event_response'
+                  - $ref: '#/components/schemas/sipamdmachine_event_response'
+                  - $ref: '#/components/schemas/sipringing_event_response'
+                  - $ref: '#/components/schemas/rtcstatus_event_response'
+                  - $ref: '#/components/schemas/rtctransfer_event_response'
+                  - $ref: '#/components/schemas/rtchangup_event_response'
+                  - $ref: '#/components/schemas/rtcanswered_event_response'
+                  - $ref: '#/components/schemas/rtcringing_event_response'
+                  - $ref: '#/components/schemas/rtcanswer_event_response'
+                  - $ref: '#/components/schemas/legstatusupdate_event_response'
+    event_single:
+      description: Event Response Payload Object
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/message_event_response'
+            - $ref: '#/components/schemas/messagesubmitted_event_response'
+            - $ref: '#/components/schemas/messagerejected_event_response'
+            - $ref: '#/components/schemas/messageundeliverable_event_response'
+            - $ref: '#/components/schemas/messageseen_event_response'
+            - $ref: '#/components/schemas/messagedelivered_event_response'
+            - $ref: '#/components/schemas/custom_event_response'
+            - $ref: '#/components/schemas/audioplay_event_response'
+            - $ref: '#/components/schemas/audioplaystop_event_response'
+            - $ref: '#/components/schemas/audioplaydone_event_response'
+            - $ref: '#/components/schemas/audiosay_event_response'
+            - $ref: '#/components/schemas/audiosaystop_event_response'
+            - $ref: '#/components/schemas/audiosaydone_event_response'
+            - $ref: '#/components/schemas/audiodtmf_event_response'
+            - $ref: '#/components/schemas/audiorecord_event_response'
+            - $ref: '#/components/schemas/audiorecordstop_event_response'
+            - $ref: '#/components/schemas/audiorecorddone_event_response'
+            - $ref: '#/components/schemas/audiomuteon_event_response'
+            - $ref: '#/components/schemas/audiomuteoff_event_response'
+            - $ref: '#/components/schemas/audioearmuffon_event_response'
+            - $ref: '#/components/schemas/audioearmuffoff_event_response'
+            - $ref: '#/components/schemas/audiospeakingon_event_response'
+            - $ref: '#/components/schemas/audiospeakingoff_event_response'
+            - $ref: '#/components/schemas/audioasrdone_event_response'
+            - $ref: '#/components/schemas/audioasrrecorddone_event_response'
+            - $ref: '#/components/schemas/memberinvited_event_response'
+            - $ref: '#/components/schemas/memberjoined_event_response'
+            - $ref: '#/components/schemas/memberleft_event_response'
+            - $ref: '#/components/schemas/membermedia_event_response'
+            - $ref: '#/components/schemas/membermessagestatus_event_response'
+            - $ref: '#/components/schemas/conversationupdate_event_response'
+            - $ref: '#/components/schemas/eventdelete_event_response'
+            - $ref: '#/components/schemas/sipstatus_event_response'
+            - $ref: '#/components/schemas/siphangup_event_response'
+            - $ref: '#/components/schemas/sipanswered_event_response'
+            - $ref: '#/components/schemas/sipmachine_event_response'
+            - $ref: '#/components/schemas/sipamdmachine_event_response'
+            - $ref: '#/components/schemas/sipringing_event_response'
+            - $ref: '#/components/schemas/rtcstatus_event_response'
+            - $ref: '#/components/schemas/rtctransfer_event_response'
+            - $ref: '#/components/schemas/rtchangup_event_response'
+            - $ref: '#/components/schemas/rtcanswered_event_response'
+            - $ref: '#/components/schemas/rtcringing_event_response'
+            - $ref: '#/components/schemas/rtcanswer_event_response'
+            - $ref: '#/components/schemas/legstatusupdate_event_response'
+    Conversation404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/conversation_error_not_found'
+    event:
+      description: Event Response Payload Object
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/message_event_response'
+            - $ref: '#/components/schemas/messagesubmitted_event_response'
+            - $ref: '#/components/schemas/messagerejected_event_response'
+            - $ref: '#/components/schemas/messageundeliverable_event_response'
+            - $ref: '#/components/schemas/messageseen_event_response'
+            - $ref: '#/components/schemas/messagedelivered_event_response'
+            - $ref: '#/components/schemas/custom_event_response'
+            - $ref: '#/components/schemas/ephemeral_event_response'
+            - $ref: '#/components/schemas/audioplay_event_response'
+            - $ref: '#/components/schemas/audioplaystop_event_response'
+            - $ref: '#/components/schemas/audiosay_event_response'
+            - $ref: '#/components/schemas/audiosaystop_event_response'
+            - $ref: '#/components/schemas/audiodtmf_event_response'
+            - $ref: '#/components/schemas/audiorecord_event_response'
+            - $ref: '#/components/schemas/audiorecordstop_event_response'
+            - $ref: '#/components/schemas/audiomuteon_event_response'
+            - $ref: '#/components/schemas/audiomuteoff_event_response'
+            - $ref: '#/components/schemas/audioearmuffon_event_response'
+            - $ref: '#/components/schemas/audioearmuffoff_event_response'
+  parameters:
+    order:
+      name: order
+      in: query
+      description: Return the records in ascending or descending order.
+      required: false
+      schema:
+        type: string
+        default: asc
+        enum:
+        - asc
+        - desc
+        - ASC
+        - DESC
+    conversation_id:
+      name: conversation_id
+      in: path
+      required: true
+      description: Conversation ID
+      example: CON-f972836a-550f-45fa-956c-12a2ab5b7d22
+      schema:
+        type: string
+    page_size:
+      name: page_size
+      in: query
+      description: Return this amount of records in the response
+      required: false
+      schema:
+        $ref: '#/components/schemas/page_size'
+    exclude_deleted_events:
+      name: exclude_deleted_events
+      in: query
+      description: Exclude deleted events from the response
+      schema:
+        type: boolean
+    cursor:
+      name: cursor
+      in: query
+      description: 'The cursor to start returning results from.
+
+
+        You are not expected to provide this manually, but to follow the url provided in `_links.next.href` or `_links.prev.href` in the response which contains a `cursor` value.
+
+        '
+      schema:
+        type: string
+      required: false
+    event_id:
+      name: event_id
+      in: path
+      description: Event ID
+      required: true
+      schema:
+        type: string
+    event_start_id:
+      name: start_id
+      in: query
+      schema:
+        type: string
+      example: 13
+      required: false
+      description: The ID to start returning events at
+    event_type:
+      name: event_type
+      in: query
+      schema:
+        type: string
+        enum:
+        - leg:status:update
+        - audio:dtmf
+        - audio:earmuff:off
+        - audio:earmuff:on
+        - audio:mute:off
+        - audio:mute:on
+        - audio:play:stop
+        - audio:play:done
+        - audio:play
+        - audio:record:stop
+        - audio:record:done
+        - audio:record
+        - audio:asr:done
+        - audio:asr:record:done
+        - audio:say:stop
+        - audio:say:done
+        - audio:say
+        - audio:speaking:on
+        - audio:speaking:off
+        - message
+        - message:submitted
+        - message:rejected
+        - message:undeliverable
+        - message:seen
+        - message:delivered
+        - member:joined
+        - member:left
+        - member:media
+        - member:message:status
+        - member:invited
+        - conversation:updated
+        - event:delete
+        - rtc:status
+        - rtc:transfer
+        - rtc:hangup
+        - rtc:answered
+        - rtc:ringing
+        - rtc:answer
+        - rtc:terminate
+        - sip:status
+        - sip:hangup
+        - sip:answered
+        - sip:machine
+        - sip:amd_machine
+        - sip:ringing
+      example: member:joined
+      required: false
+      description: The type of event to search for. Does not currently support custom events
+    event_end_id:
+      name: end_id
+      in: query
+      schema:
+        type: string
+      example: 19
+      required: false
+      description: The ID to end returning events at
+  requestBodies:
+    event:
+      description: Event Request Payload Object
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/message_event'
+            - $ref: '#/components/schemas/messagesubmitted_event'
+            - $ref: '#/components/schemas/messagerejected_event'
+            - $ref: '#/components/schemas/messageundeliverable_event'
+            - $ref: '#/components/schemas/messageseen_event'
+            - $ref: '#/components/schemas/messagedelivered_event'
+            - $ref: '#/components/schemas/ephemeral_event'
+            - $ref: '#/components/schemas/custom_event'
+            - $ref: '#/components/schemas/audioplay_event'
+            - $ref: '#/components/schemas/audioplaystop_event'
+            - $ref: '#/components/schemas/audiosay_event'
+            - $ref: '#/components/schemas/audiosaystop_event'
+            - $ref: '#/components/schemas/audiodtmf_event'
+            - $ref: '#/components/schemas/audiorecord_event'
+            - $ref: '#/components/schemas/audiorecordstop_event'
+            - $ref: '#/components/schemas/audiomuteon_event'
+            - $ref: '#/components/schemas/audiomuteoff_event'
+            - $ref: '#/components/schemas/audioearmuffon_event'
+            - $ref: '#/components/schemas/audioearmuffoff_event'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-conversation-openapi.json
+- vonage-conversation-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

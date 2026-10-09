@@ -1,0 +1,386 @@
+openapi: 3.2.0
+info:
+  title: Vonage Facebook Messenger API
+  version: 0.1.6
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-label: Developer Preview
+  x-metaDescription: Find quick answers to questions about the Vonage Account API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Account API Reference | Vonage API Documentation
+  description: 'Operations tagged Facebook Messenger across 2 of this provider''s published API definitions: vonage-external-accounts-openapi.json, vonage-external-accounts-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/beta/chatapp-accounts
+tags:
+- name: Facebook Messenger
+  description: Managing your Facebook Messenger account
+paths:
+  /messenger:
+    post:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Create a Messenger account
+      operationId: CreateMessengerAccount
+      tags:
+      - Facebook Messenger
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - external_id
+              - access_token
+              properties:
+                external_id:
+                  type: string
+                  example: '12345678'
+                  description: This is the unique identifier within the provider's domain. In this case it is the Page ID for your Facebook Page. Go to your Facebook Page, click "Settings", click "Messenger platform " scroll down to "Messenger link" to find your Page ID.
+                access_token:
+                  type: string
+                  example: myAccessToken
+                  description: 'This is the Facebook Business Page token. You can obtain the token using one of the following methods:
+
+
+                    * Linking your Facebook Business Page to your account [with our Dashboard tool](${CUSTOMER_DASHBOARD_URL}/messages/social-channels/facebook-connect)
+
+                    * Requesting a Page Access Token using the steps in the [Facebook token reference](https://developers.facebook.com/docs/pages/access-tokens/)
+
+                    '
+                name:
+                  type: string
+                  example: optionalName
+                  description: Custom account name
+                applications:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+                  minItems: 0
+                  maxItems: 1
+                  description: Contains a list of application IDs which are linked to the account. <ul> <li>There is just one application allowed per an account.</li> <li>The application type must be type "messages".</li> </ul> For more information see [Application API spec](https://developer.nexmo.com/api/application.v2)
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessengerAccountResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: https://www.nexmo.com/messages/Errors#InvalidParams
+                  title:
+                    type: string
+                    example: Your request parameters didn't validate.
+                  detail:
+                    type: string
+                    example: Found errors validating 1 of your submitted parameters.
+                  instance:
+                    type: string
+                    example: null
+                  invalid_params:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: external_id
+                        reason:
+                          type: string
+                          example: Missing `external_id` field
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403Response'
+    servers:
+    - url: https://api.nexmo.com/beta/chatapp-accounts
+  /messenger/{external_id}:
+    get:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Retrieve a Messenger account
+      operationId: GetMessengerAccount
+      tags:
+      - Facebook Messenger
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+        description: External id of the account you want to retrieve. In this case it is the Facebook Page ID.
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessengerAccountResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '404':
+          description: Not Found.
+    patch:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Update a Messenger account
+      operationId: UpdateMessengerAccount
+      tags:
+      - Facebook Messenger
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+        description: External id of the account you want to update. In this case it is the Facebook Page ID.
+      requestBody:
+        description: Request body can contain any of the following
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: newName
+                  description: The new account name
+                applications:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+                access_token:
+                  type: string
+                  example: updatedAccessToken
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - external_id
+                - api_key
+                - provider
+                - access_token
+                properties:
+                  name:
+                    type: string
+                    example: newName
+                    description: The account name
+                  applications:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+                    description: The array of associated application ids
+                  external_id:
+                    type: string
+                    example: '12345678'
+                    description: The external identifier for this account. In this case it is the Facebook Page ID.
+                  api_key:
+                    type: string
+                    example: abcd1234
+                    description: The external api key for this account
+                  provider:
+                    type: string
+                    example: messenger
+                    description: The provider (will be `messenger`).
+                  access_token:
+                    type: string
+                    example: updatedAccessToken
+                    description: The provider access token
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: https://www.nexmo.com/messages/Errors#InvalidParams
+                  title:
+                    type: string
+                    example: Your request parameters didn't validate.
+                  detail:
+                    type: string
+                    example: Found errors validating 1 of your submitted parameters.
+                  instance:
+                    type: string
+                    example: null
+                  invalid_params:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: external_id
+                        reason:
+                          type: string
+                          example: '''external_id'' parameter cannot be changed'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403Response'
+        '404':
+          description: Not Found.
+    delete:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Delete a Messenger account
+      operationId: DeleteMessengerAccount
+      tags:
+      - Facebook Messenger
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+        description: External id of the account you want to delete. In this case it is the Facebook Page ID.
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403Response'
+        '404':
+          description: Not Found.
+    servers:
+    - url: https://api.nexmo.com/beta/chatapp-accounts
+components:
+  schemas:
+    403Response:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Wrong authentication - You are not authorised to access this resource
+    MessengerAccountResponse:
+      type: object
+      required:
+      - external_id
+      - api_key
+      - provider
+      - access_token
+      properties:
+        name:
+          type: string
+          example: optionalName
+          description: The account name
+        applications:
+          type: array
+          items:
+            type: string
+          example:
+          - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+          description: The array of associated application ids
+        external_id:
+          type: string
+          example: '12345678'
+          description: The external identifier for this account
+        api_key:
+          type: string
+          example: abcd1234
+          description: The external api key for this account
+        provider:
+          type: string
+          example: messenger
+          description: The provider (will be `messenger`).
+        access_token:
+          type: string
+          example: myAccessToken
+          description: The provider access token
+    401Response:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Unauthorised
+        detail:
+          type: string
+          example: Request header 'Authorization' missing / Invalid Token
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
+x-refined-from:
+- vonage-external-accounts-openapi.json
+- vonage-external-accounts-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

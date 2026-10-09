@@ -1,0 +1,52 @@
+generated: '2026-10-08'
+method: searched
+source:
+- https://developer.vonage.com/en/changelogs
+- https://developer.vonage.com/en/identity-insights/guides/number-insights-transition
+- https://developer.vonage.com/llms.txt
+- https://vonageapi.statuspage.io/api/v2/status.json
+- openapi/ (22 published OpenAPI documents, servers[] and operations)
+versioning:
+  scheme: URL path per product
+  detail: Each product API is versioned in its base path (rest.nexmo.com/sms, api.nexmo.com/v1/calls, api.nexmo.com/v2/verify,
+    api.nexmo.com/v0.1/dispatch, api.nexmo.com/beta/audit, api-eu.vonage.com/v1/meetings); the published OpenAPI
+    documents carry their own semantic info.version (SMS 1.5.1, Messages 1.20.0, Voice 1.10.0, Verify v2 1.0.1,
+    Conversation 5.5.1, Video 0.3.2 ...). No header-based versioning is documented.
+  policy_url: null
+  changelog: https://developer.vonage.com/en/changelogs
+  changelog_note: Per-product release notes and deprecation notices, dated, newest first (SDKs and APIs).
+deprecation:
+  policy_url: null
+  headers: No Deprecation or Sunset response headers are documented or declared in the published contracts.
+  note: Deprecations are announced as product transition guides and changelog entries rather than under a published
+    deprecation policy.
+deprecated_products:
+- product: Number Insight API
+  successor: Identity Insights API
+  sunset: 2027-02
+  statement: As part of this consolidation, the Number Insights API will effectively sunset in February 2027 . After
+    this date, Number Insights will be deprecated.
+  url: https://developer.vonage.com/en/identity-insights/guides/number-insights-transition
+  contract: openapi/vonage-number-insight-openapi.yml
+- product: Verify API v1
+  successor: Verify API v2
+  sunset: null
+  statement: Legacy endpoints (`POST https://api.nexmo.com/verify/json`). Basic Auth only. Migrate to Verify v2.
+  url: https://developer.vonage.com/llms.txt
+  contract: openapi/vonage-verify-openapi.yml
+- product: OpenTok / TokBox Video
+  successor: Vonage Video API (video.api.vonage.com)
+  sunset: null
+  statement: Migrate from TokBox/OpenTok using the transition guide below.
+  url: https://developer.vonage.com/en/video/how-tos/opentok-to-vonage-transition
+  contract: openapi/vonage-video-openapi.yml
+deprecated_operations: []
+deprecated_operations_note: 'None of the 169 operations in the 22 published OpenAPI documents is marked deprecated:
+  true; the deprecations above are whole products.'
+status_page: https://vonageapi.statuspage.io
+status_page_api: https://vonageapi.statuspage.io/api/v2/status.json
+status_page_note: Atlassian Statuspage; the JSON status endpoint answered 200 on 2026-10-08 (indicator minor, Partially
+  Degraded Service). www.vonage.com/system-status/ is the corporate status landing page.
+sla: null
+sla_note: No public API SLA page was found on developer.vonage.com or under www.vonage.com/legal/ (the API Terms
+  of Use at /legal/communications-apis/terms-of-use/ were not read for SLA clauses).

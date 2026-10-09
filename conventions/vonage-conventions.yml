@@ -1,0 +1,148 @@
+generated: '2026-10-08'
+method: searched
+source:
+- https://developer.vonage.com/en/getting-started/concepts/authentication
+- https://developer.vonage.com/en/api-errors
+- https://developer.vonage.com/en/getting-started/concepts/signing-messages
+- openapi/ (22 published OpenAPI documents)
+- https://developer.vonage.com/en/messages/concepts/messages-api-sandbox
+authentication:
+  styles:
+  - Basic (API key:secret, Base64, Authorization header) on the account-scoped APIs
+  - Bearer JWT (RS256, signed with the application private key) on the application-scoped APIs (Voice, Messages,
+    Conversation, Verify v2, Video, Meetings)
+  - Request signatures (SIGNATURE_SECRET, sig + timestamp parameters) on the SMS API
+  - Digest authentication on SIP trunking
+  docs: https://developer.vonage.com/en/getting-started/concepts/authentication
+  jwt_claims: application_id, iat, jti, nbf, exp (min 30 seconds, max 24 hours, default 15 minutes)
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  retention: null
+  docs: null
+  note: No Idempotency-Key or equivalent replay-protection header is documented or declared on any of the 169 published
+    operations. The Messages API client_ref field is a caller reference echoed in webhooks, not a de-duplication
+    key.
+reversibility:
+  grade: verified
+  surfaces:
+  - write: newRequest (Verify v2, start a verification)
+    reversal: cancelRequest DELETE /v2/verify/{request_id}
+    window: Cancellation is only possible 30 seconds after the start of the verification request and before the
+      second event (either TTS or SMS) has taken place.
+    docs: https://developer.vonage.com/en/api/verify.v2
+    contract: openapi/vonage-verify-v2-openapi.yml
+  - write: createCall (Voice)
+    reversal: updateCall PUT /v1/calls/{uuid} with action hangup
+    window: while the call is in progress
+    docs: https://developer.vonage.com/en/api/voice
+    contract: openapi/vonage-voice-openapi.yml
+  - write: buyANumber (Numbers)
+    reversal: cancelANumber POST /number/cancel
+    window: not stated
+    docs: https://developer.vonage.com/en/api/numbers
+    contract: openapi/vonage-numbers-openapi.yml
+  - write: SendMessage (Messages)
+    reversal: UpdateMessage PATCH /v1/messages/{message_uuid} (revoke outbound messages, certain channels only)
+    window: not stated; channel-dependent
+    docs: https://developer.vonage.com/en/api/messages
+    contract: openapi/vonage-messages-openapi.yml
+  - write: createApplication (Application v2)
+    reversal: deleteApplication DELETE /v2/applications/{id}
+    window: not stated
+    docs: https://developer.vonage.com/en/api/application.v2
+    contract: openapi/vonage-application-v2-openapi.yml
+  - write: createAsyncReportPublic (Reports)
+    reversal: abortAsyncReportPublic
+    window: while the report is pending
+    docs: https://developer.vonage.com/en/api/reports
+    contract: openapi/vonage-reports-openapi.yml
+  - write: post-v2-project-application_id-archive / start-broadcast (Video)
+    reversal: stop-archive / stop-broadcast; delete-v2-project-application_id-archive-archive_id
+    window: while recording or broadcasting
+    docs: https://developer.vonage.com/en/api/video
+    contract: openapi/vonage-video-openapi.yml
+  note: Only the Verify v2 cancel states a window in the published contract; the other reversal paths exist but
+    their windows are not stated, so they grade as documented.
+dry_run_mode:
+  available: false
+  note: No dry-run or validate-only flag is documented. The Messages API Sandbox (allow-listed recipients, 1 msg/s,
+    100 msg/month) and the CLI mock server (vonage mock sms, Prism on the published spec) are the rehearsal surfaces.
+pagination:
+  styles:
+  - style: page/page_size
+    params:
+    - page
+    - page_size
+    response_fields:
+    - page_size
+    - _embedded
+    - _links (first/self/next/prev)
+    apis:
+    - Application v2
+    - Conversation (members/events use cursor)
+    - Verify v2 templates
+  - style: cursor
+    params:
+    - cursor
+    - page_size
+    apis:
+    - Conversation (listConversations, getMembers, getEvents)
+  - style: index/size
+    params:
+    - index
+    - size
+    apis:
+    - Numbers (getOwnedNumbers, getAvailableNumbers)
+  - style: record_index/page_index
+    params:
+    - record_index
+    - page_index
+    apis:
+    - Audit, Reports download, Media
+  note: HAL-style _links objects are used by the application-scoped APIs.
+versioning:
+  style: URL path per product (v1, v2, v0.1, beta)
+  see: lifecycle/vonage-lifecycle.yml
+error_envelope:
+  format: RFC 7807 application/problem+json
+  fields:
+  - type
+  - title
+  - detail
+  - instance
+  - invalid_parameters (validation errors)
+  legacy: the SMS, Messages and Conversation APIs also return numeric per-product status codes (see errors/vonage-error-codes.yml)
+  docs: https://developer.vonage.com/en/api-errors
+rate_limit_signaling:
+  status: 429
+  headers:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - Retry-After
+  declared_in:
+  - openapi/vonage-account-openapi.yml
+  - openapi/vonage-messages-openapi.yml
+  - openapi/vonage-reports-openapi.yml
+  problem_type: throttled
+  see: rate-limits/vonage-rate-limits.yml
+request_tracing:
+  header: X-Request-Id
+  declared_in:
+  - openapi/vonage-account-openapi.yml
+  - openapi/vonage-messages-openapi.yml
+  - openapi/vonage-reports-openapi.yml
+  problem_instance: the RFC 7807 instance field carries a trace id
+field_expansion: null
+metadata:
+  client_ref: Messages API client_ref (string) is echoed back in status webhooks
+webhooks:
+  signing: JWT-signed webhooks (signed webhooks) for Messages and Verify v2; sig/timestamp HMAC signatures on SMS
+    webhooks
+  see: asyncapi/vonage-webhooks.yml
+regional_endpoints:
+  messages: https://{api-region}.nexmo.com/v1 (api, api-eu, api-us, api-ap)
+  identity_insights: https://api-{region}.vonage.com/identity-insights/v1 (eu, us)
+  network_apis: https://api-eu.vonage.com

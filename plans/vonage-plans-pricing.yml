@@ -1,130 +1,17 @@
-name: Vonage API Plans
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Vonage
-providerId: vonage
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-reconciled: true
-tags:
-  - Communications
-  - SMS
-  - Voice
-  - Verify
-description: 'Vonage Communications API pay-as-you-go: per-message SMS, per-minute Voice. US rates.'
-sources:
-  - https://www.vonage.com/communications-apis/pricing/
-plans:
-  - id: vonage-payg
-    name: Pay As You Go
-    type: usage-based
-    description: No platform/monthly fee; per-message and per-minute rates.
-    entries:
-      - label: SMS outbound (US)
-        name: sms_out
-        type: metered
-        metric: message
-        limit: -1
-        timeFrame: usage
-        geo: US
-        unit: 1
-        price: '0.00809'
-        userMultiplied: false
-      - label: SMS inbound (US)
-        name: sms_in
-        type: metered
-        metric: message
-        limit: -1
-        timeFrame: usage
-        geo: US
-        unit: 1
-        price: '0.00649'
-        userMultiplied: false
-      - label: Voice outbound (US local)
-        name: voice_out
-        type: metered
-        metric: minute
-        limit: -1
-        timeFrame: usage
-        geo: US
-        unit: 1
-        price: '0.00798'
-        userMultiplied: false
-      - label: Voice inbound (US)
-        name: voice_in
-        type: metered
-        metric: minute
-        limit: -1
-        timeFrame: usage
-        geo: US
-        unit: 1
-        price: '0.0085'
-        userMultiplied: false
-      - label: Verify (per check)
-        name: verify
-        type: metered
-        metric: check
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1
-        price: varies by channel/country
-        userMultiplied: false
-    elements:
-      - name: No platform fee
-      - name: Per-message/minute pricing
-      - name: Carrier surcharges apply
-      - name: Add-ons may push real cost 50-100% above base
-  - id: vonage-committed
-    name: Committed Use
-    type: enterprise
-    description: Volume contracts with negotiated discounts.
-    entries:
-      - label: Annual (custom)
-        name: annual
-        type: subscription
-        metric: year
-        limit: -1
-        timeFrame: year
-        geo: global
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Volume discounts
-      - name: Dedicated support
-      - name: SLA enhancements
-x-canonical:
-  generated: '2026-10-08'
-  vocabulary: all/0-working/economics/plans-canonical.yml
-  models:
-  - metered
-  - subscription
-  units:
-  - compute
-  - message
-  - period
-  - request
-  plans:
-  - name: Pay As You Go
-    access: other
-    model: metered
-    model_how: stated
-    units:
-    - compute
-    - message
-    - request
-    periods:
-    - per-use
-  - name: Committed Use
-    access: enterprise
-    model: subscription
-    model_how: derived
-    units:
-    - period
-    periods:
-    - year
+name: Vonage Communications APIs pricing
+generated: '2026-10-08'
+method: searched
+source: https://www.vonage.com/communications-apis/pricing
+audience: developer-api
+pricing_basis: usage-other
+published: false
+plan_count: 0
+plans: []
+delivery:
+  delivery: managed
+note: The pricing page states the model in prose ('They're all based on a pay as you go API pricing model, meaning
+  you're charged based on usage') and loads per-product, per-country unit prices (SMS, Voice, Verify, Video, Messages
+  channels) through JavaScript that a plain fetch and a headless render both return without numeric prices; no tiers
+  or plan names are published, so no price_text can be quoted verbatim. Per-product pricing pages (…/communications-apis/sms/pricing/
+  etc.) exist for the same unit-price tables. The Messages API Sandbox is free with a 100 messages/month fair-usage
+  limit (see sandbox/).

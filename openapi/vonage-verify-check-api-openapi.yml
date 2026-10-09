@@ -1,0 +1,275 @@
+openapi: 3.2.0
+info:
+  title: Vonage Verify Check API
+  version: 1.2.4
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  license:
+    name: The MIT License (MIT)
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://www.nexmo.com/terms-of-use
+  x-label: Deprecated
+  x-metaDescription: Find quick answers to questions about the Vonage Verify API (v1.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Verify v1.0 API Reference | Vonage API Documentation
+  description: 'Operations tagged Verify Check across 2 of this provider''s published API definitions: vonage-verify-openapi.json, vonage-verify-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/verify
+security:
+- basicAuth: []
+tags:
+- name: Verify Check
+  description: Verify Check
+paths:
+  /check/{format}:
+    post:
+      description: 'Use Verify check to confirm that the PIN you received from your user matches the one sent by Vonage in your Verify request.
+
+
+        1. Send the verification `code` that your user supplied, with the corresponding `request_id` from the Verify request.
+
+        2. Check the `status` of the response to determine if the code the user supplied matches the one sent by Vonage.
+
+
+        *Note that this endpoint is available by `GET` request as well as `POST`.*'
+      operationId: verifyCheck
+      tags:
+      - Verify Check
+      summary: Verify Check
+      parameters:
+      - $ref: '#/components/parameters/format'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/checkRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: The supplied code is correct for this request. Verification successful.
+                  value:
+                    request_id: abcdef0123456789abcdef0123456789
+                    event_id: 0A00000012345678
+                    status: '0'
+                    price: '0.10000000'
+                    currency: EUR
+                    estimated_price_messages_sent: '0.03330000'
+                throttled:
+                  summary: Request limit exceeded
+                  value:
+                    status: '1'
+                    error_text: Throttled
+                missing-param:
+                  summary: Missing a parameter
+                  value:
+                    status: '2'
+                    error_text: Missing request_id
+                invalid-param:
+                  summary: Invalid parameter
+                  value:
+                    status: '3'
+                    error_text: 'Invalid value for param: request_id'
+                invalid-creds:
+                  summary: Invalid credentials
+                  value:
+                    status: '4'
+                    error_text: Bad credentials
+                internal-error:
+                  summary: Internal Error
+                  value:
+                    status: '5'
+                    error_text: Internal Error
+                unknown-requestid:
+                  summary: This request_id is unknown or inactive
+                  value:
+                    status: '6'
+                    error_text: 'The Vonage platform was unable to process this message for the following reason: Request ''abcdef0123456789abcdef0123456789'' was not found or it has been verified already.'
+                incorrect-code:
+                  summary: PIN code is incorrect
+                  value:
+                    status: '16'
+                    error_text: The code inserted does not match the expected value
+                too-many-fails:
+                  summary: Too many incorrect codes
+                  value:
+                    status: '17'
+                    error_text: The wrong code was provided too many times. Request terminated
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/checkResponse'
+                - $ref: '#/components/schemas/checkErrorResponse'
+            text/xml:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/checkResponse'
+                - $ref: '#/components/schemas/checkErrorResponse'
+    servers:
+    - url: https://api.nexmo.com/verify
+components:
+  schemas:
+    checkResponse:
+      type: object
+      description: Success
+      properties:
+        request_id:
+          type: string
+          description: The `request_id` that you received in the response to the Verify request and used in the Verify check request.
+          example: abcdef0123456789abcdef0123456789
+        event_id:
+          type: string
+          description: The ID of the verification event, such as an SMS or TTS call.
+          example: 0A00000012345678
+        status:
+          type: string
+          description: A value of `0` indicates that your user entered the correct code. If it is non-zero, check the `error_text`.
+          example: '0'
+        price:
+          type: string
+          description: The cost incurred for this request.
+          example: '0.10000000'
+        currency:
+          type: string
+          description: The currency code.
+          example: EUR
+        estimated_price_messages_sent:
+          $ref: '#/components/schemas/estimated_price_messages_sent'
+      xml:
+        name: verify_response
+    checkErrorResponse:
+      type: object
+      description: Error
+      properties:
+        request_id:
+          type: string
+          description: The `request_id` that you received in the response to the Verify request and used in the Verify check request.
+          example: abcdef0123456789abcdef0123456789
+        status:
+          type: string
+          example: '16'
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '16'
+          - '17'
+          description: 'Code | Text | Description
+
+            -- | -- | --
+
+            0 | Success | The request was successfully accepted by Vonage.
+
+            1 | Throttled | You are trying to send more than the maximum of 30 requests per second.
+
+            2 | Your request is incomplete and missing the mandatory parameter `$parameter` | The stated parameter is missing.
+
+            3 | Invalid value for parameter `$parameter` | Invalid value for parameter. If you see Facility not allowed in the error text, check that you are using the correct Base URL in your request.
+
+            4 | Invalid credentials were provided | The supplied API key or secret in the request is either invalid or disabled.
+
+            5 | Internal Error | An error occurred processing this request in the Cloud Communications Platform.
+
+            6 | The Vonage platform was unable to process this message for the following reason: `$reason` | The request could not be routed.
+
+            16 | The code inserted does not match the expected value |
+
+            17 | The wrong code was provided too many times | You can run Verify check on a specific `request_id` up to three times unless a new verification code is generated. If you check a request more than three times, it is set to FAILED and you cannot check it again.
+
+            '
+        error_text:
+          type: string
+          description: If the `status` is non-zero, this explains the error encountered.
+          example: The code inserted does not match the expected value
+      xml:
+        name: verify_response
+    checkRequest:
+      type: object
+      required:
+      - request_id
+      - code
+      properties:
+        request_id:
+          description: The Verify request to check. This is the `request_id` you received in the response to the Verify request.
+          type: string
+          maxLength: 32
+          example: abcdef0123456789abcdef0123456789
+        code:
+          description: The verification code entered by your user.
+          type: string
+          minLength: 4
+          maxLength: 6
+          example: '1234'
+        ip_address:
+          description: (This field is no longer used)
+          type: string
+          deprecated: true
+          example: 123.0.0.255
+    estimated_price_messages_sent:
+      type: string
+      description: 'This field may not be present, depending on your pricing model. The
+
+        value indicates the cost (in EUR) of the calls made and messages sent
+
+        for the verification process. This value may be updated during and
+
+        shortly after the request completes because user input events can
+
+        overlap with message/call events. When this field is present, the total
+
+        cost of the verification is the sum of this field and the `price` field.
+
+        '
+      example: '0.03330000'
+  parameters:
+    format:
+      name: format
+      required: true
+      in: path
+      description: The response format.
+      schema:
+        type: string
+        enum:
+        - json
+        - xml
+      example: json
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  description: More information on the Verify product on our Developer Portal
+  url: https://developer.nexmo.com/verify/overview
+x-refined-from:
+- vonage-verify-openapi.json
+- vonage-verify-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

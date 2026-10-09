@@ -1,0 +1,284 @@
+openapi: 3.2.0
+info:
+  title: Vonage Record API
+  version: 5.5.1
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Find quick answers to questions about the Vonage Conversation API (v1.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Conversation API (v1.0) Reference | Vonage API Documentation
+  description: 'Operations tagged record across 2 of this provider''s published API definitions: vonage-conversation-openapi.json, vonage-conversation-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1
+security:
+- bearerAuth: []
+tags:
+- name: Record
+paths:
+  /conversations/{conversation_id}/record:
+    parameters:
+    - $ref: '#/components/parameters/conversation_id'
+    put:
+      tags:
+      - Record
+      summary: Start or stop a conversation recording
+      description: Start or stop a recording for a conversation.
+      operationId: recordConversation
+      requestBody:
+        $ref: '#/components/requestBodies/RecordConversation'
+      responses:
+        '200':
+          description: Recording action successfully initiated.
+        '400':
+          $ref: '#/components/responses/General400ValidationFailName'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    servers:
+    - url: https://api.nexmo.com/v1
+components:
+  responses:
+    Conversation404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/conversation_error_not_found'
+    General500InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Internal Error.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:internal-error
+              code:
+                type: string
+                example: system:error:internal-error
+              detail:
+                type: string
+                example: Something went wrong.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+    General400ValidationFailName:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Bad request.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#http:error:validation-fail
+              code:
+                type: string
+                example: http:error:validation-fail
+              detail:
+                type: string
+                example: Input validation failure.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+              invalid_parameters:
+                type: array
+                description: List of invalid parameters
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: name
+                    reason:
+                      type: string
+                      example: '"name" must be a string'
+    General401InvalidToken:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Unauthorized.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:invalid-token
+              code:
+                type: string
+                example: system:error:invalid-token
+              detail:
+                type: string
+                example: You did not provide a valid token. Please provide a valid token.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+  schemas:
+    format:
+      type: string
+      description: Record the Conversation in a specific format.
+      example: mp3
+      default: mp3
+      enum:
+      - mp3
+      - wav
+      - vorbis
+    transcription:
+      type: object
+      description: Options to transcribe the recording into text.
+      properties:
+        language:
+          type: string
+          default: en-US
+          description: 'The language to transcribe the recording into. See supported languages at https://developer.vonage.com/en/voice/voice-api/concepts/asr#language
+
+            '
+        sentiment_analysis:
+          type: boolean
+          description: Whether to include sentiment analysis in the transcription.
+        event_url:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: The URL(s) where the transcription callback will be sent.
+        event_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          description: The HTTP method used when calling the transcription event_url.
+    conversation_error_not_found:
+      type: object
+      description: Conversation not found
+      properties:
+        title:
+          type: string
+          example: Not found.
+        type:
+          type: string
+          example: https://developer.nexmo.com/api/conversation#conversation:error:not-found
+        code:
+          type: string
+          example: conversation:error:not-found
+        detail:
+          type: string
+          example: Conversation does not exist, or you do not have access.
+        instance:
+          type: string
+          example: 00a5916655d650e920ccf0daf40ef4ee
+    event_url:
+      type: array
+      items:
+        type: string
+        format: url
+      example:
+      - https://example.com/event
+      x-nexmo-developer-collection-description-shown: true
+      description: The webhook endpoint where recording progress events are sent to.
+    timeout:
+      type: integer
+      description: The maximum duration of the recording in seconds.
+      default: 7200
+      maximum: 7200
+    event_method:
+      type: string
+      description: The HTTP method used to send event information to event_url.
+      example: POST
+      default: POST
+    split:
+      type: string
+      description: Record the sent and received audio in separate channels of a stereo recording
+      example: conversation
+      default: conversation
+    retention_ttl:
+      type: integer
+      description: The total number of days the recording will be stored for.
+      default: 31
+      minimum: 1
+      maximum: 400
+    action:
+      type: string
+      example: start
+      description: Recording Action
+      enum:
+      - start
+      - stop
+  requestBodies:
+    RecordConversation:
+      description: Record Conversation Request Payload Object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              action:
+                $ref: '#/components/schemas/action'
+              event_url:
+                $ref: '#/components/schemas/event_url'
+              event_method:
+                $ref: '#/components/schemas/event_method'
+              split:
+                $ref: '#/components/schemas/split'
+              format:
+                $ref: '#/components/schemas/format'
+              retention_ttl:
+                $ref: '#/components/schemas/retention_ttl'
+              timeout:
+                $ref: '#/components/schemas/timeout'
+              transcription:
+                $ref: '#/components/schemas/transcription'
+            required:
+            - action
+  parameters:
+    conversation_id:
+      name: conversation_id
+      in: path
+      required: true
+      description: Conversation ID
+      example: CON-f972836a-550f-45fa-956c-12a2ab5b7d22
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-conversation-openapi.json
+- vonage-conversation-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

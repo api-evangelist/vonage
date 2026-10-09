@@ -1,0 +1,512 @@
+openapi: 3.2.0
+info:
+  title: Vonage Account API
+  x-refined-note:
+  - x-apiClientRegistration differs across the merged source definitions and was not carried
+  - x-label differs across the merged source definitions and was not carried
+  - x-metaDescription differs across the merged source definitions and was not carried
+  - x-metaTitle differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Account across 4 of this provider''s published API definitions: vonage-external-accounts-openapi.json, vonage-numbers-openapi.json, vonage-external-accounts-openapi.yml, vonage-numbers-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/beta/chatapp-accounts
+- url: https://rest.nexmo.com
+tags:
+- name: Account
+  description: An external-account used as the `from` field in the Messages API and Dispatch API
+paths:
+  /:
+    get:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Retrieve all accounts you own
+      operationId: GetAllAccounts
+      tags:
+      - Account
+      parameters:
+      - in: query
+        name: provider
+        schema:
+          type: string
+          enum:
+          - messenger
+          - viber_service_msg
+          - whatsapp
+          - rcs
+        required: false
+        description: Filter by provider
+      - in: query
+        name: page_number
+        schema:
+          type: integer
+          example: 1
+          default: 1
+        required: false
+        description: Page number of the results
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          example: 1
+          default: 20
+        required: false
+        description: Page size of the results
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page_number:
+                    type: integer
+                    example: 1
+                  page_size:
+                    type: integer
+                    example: 10
+                  _embedded:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GetAllAccountResponse'
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/beta/chatapp-accounts?page_number=1&page_size=10
+                      next:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/beta/chatapp-accounts?page_number=3&page_size=10
+                      prev:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/beta/chatapp-accounts?page_number=1&page_size=10
+                      first:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/beta/chatapp-accounts?page_number=1&page_size=10
+                      last:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: https://api.nexmo.com/beta/chatapp-accounts?page_number=4&page_size=10
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+    servers:
+    - url: https://api.nexmo.com/beta/chatapp-accounts
+  /account/numbers:
+    get:
+      operationId: getOwnedNumbers
+      summary: List the numbers you own
+      description: Retrieve all the inbound numbers associated with your Vonage account.
+      parameters:
+      - $ref: '#/components/parameters/application_id'
+      - $ref: '#/components/parameters/has_application'
+      - name: country
+        required: false
+        in: query
+        schema:
+          $ref: '#/components/schemas/country'
+      - $ref: '#/components/parameters/pattern'
+      - $ref: '#/components/parameters/search_pattern'
+      - $ref: '#/components/parameters/size'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inbound-numbers'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/inbound-numbers'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account-unauthorized'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/account-unauthorized'
+      tags:
+      - Account
+      security:
+      - basicAuth: []
+    servers:
+    - url: https://rest.nexmo.com
+components:
+  schemas:
+    401Response:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Unauthorised
+        detail:
+          type: string
+          example: Request header 'Authorization' missing / Invalid Token
+    MessengerAccountResponse:
+      type: object
+      required:
+      - external_id
+      - api_key
+      - provider
+      - access_token
+      properties:
+        name:
+          type: string
+          example: optionalName
+          description: The account name
+        applications:
+          type: array
+          items:
+            type: string
+          example:
+          - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+          description: The array of associated application ids
+        external_id:
+          type: string
+          example: '12345678'
+          description: The external identifier for this account
+        api_key:
+          type: string
+          example: abcd1234
+          description: The external api key for this account
+        provider:
+          type: string
+          example: messenger
+          description: The provider (will be `messenger`).
+        access_token:
+          type: string
+          example: myAccessToken
+          description: The provider access token
+    WAAccountResponse:
+      type: object
+      required:
+      - external_id
+      - api_key
+      - provider
+      properties:
+        name:
+          type: string
+          example: optionalName
+          description: The account name
+        applications:
+          type: array
+          items:
+            type: string
+          example:
+          - optionalApplicationId
+          description: The array of associated application ids
+        external_id:
+          type: string
+          example: '12345678'
+          description: The external identifier for this account
+        api_key:
+          type: string
+          example: abcd1234
+          description: The external api key for this account
+        provider:
+          type: string
+          example: whatsapp
+          description: The provider (will be `whatsapp`).
+    VSMAccountResponse:
+      type: object
+      required:
+      - external_id
+      - api_key
+      - provider
+      properties:
+        name:
+          type: string
+          example: optionalName
+          description: The account name
+        applications:
+          type: array
+          items:
+            type: string
+          example:
+          - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+          description: The array of associated application ids
+        external_id:
+          type: string
+          example: '12345678'
+          description: The external identifier for this account
+        api_key:
+          type: string
+          example: abcd1234
+          description: The external api key for this account
+        provider:
+          type: string
+          example: viber_service_msg
+          description: The provider (will be `viber_service_msg`).
+    GetAllAccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/MessengerAccountResponse'
+      - $ref: '#/components/schemas/VSMAccountResponse'
+      - $ref: '#/components/schemas/WAAccountResponse'
+    account-unauthorized:
+      type: object
+      xml:
+        name: inbound-numbers
+      properties:
+        error-code:
+          type: string
+          example: '401'
+          description: The status code of the response. `200` indicates a successful request.
+        error-code-label:
+          type: string
+          example: authentication failed
+          description: The status code description
+    inbound-numbers:
+      type: object
+      xml:
+        name: inbound-numbers
+      properties:
+        count:
+          type: integer
+          description: The total amount of numbers owned by the account
+          example: 1
+        numbers:
+          type: array
+          description: A paginated array of numbers and their details
+          items:
+            $ref: '#/components/schemas/ownednumber'
+    country:
+      type: string
+      minLength: 2
+      maxLength: 2
+      example: GB
+      description: The two character country code in ISO 3166-1 alpha-2 format
+    number-limitation:
+      type: object
+      xml:
+        name: limitation
+      properties:
+        feature:
+          type: string
+          xml:
+            attribute: true
+          enum:
+          - MMS
+          - SMS
+          - VOICE
+          example: SMS
+        type:
+          type: string
+          xml:
+            attribute: true
+          enum:
+          - INBOUND
+          - OUTBOUND
+          example: OUTBOUND
+        reach:
+          type: string
+          xml:
+            attribute: true
+          enum:
+          - DOMESTIC
+          - INTERNATIONAL
+          example: INTERNATIONAL
+      required:
+      - feature
+      - type
+      - reach
+    ownednumber:
+      type: object
+      properties:
+        country:
+          $ref: '#/components/schemas/country'
+        msisdn:
+          type: string
+          example: '447700900000'
+          description: An available inbound virtual number.
+        moHttpUrl:
+          type: string
+          format: url
+          example: https://example.com/webhooks/inbound-sms
+          description: The URL of the webhook endpoint that handles inbound messages
+        type:
+          type: string
+          example: mobile-lvn
+          description: 'The type of number: `landline`, `landline-toll-free` or `mobile-lvn`'
+        features:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            xml:
+              name: feature
+            type: string
+          example:
+          - VOICE
+          - SMS
+          - MMS
+          description: 'The capabilities of the number: `SMS` or `VOICE` or `SMS,VOICE` or `SMS,MMS` or `VOICE,MMS` or `SMS,MMS,VOICE`'
+        limitations:
+          type: array
+          xml:
+            wrapped: true
+          example:
+          - feature: SMS
+            type: OUTBOUND
+            reach: INTERNATIONAL
+          - feature: VOICE
+            type: OUTBOUND
+            reach: DOMESTIC
+          items:
+            $ref: '#/components/schemas/number-limitation'
+        messagesCallbackType:
+          type: string
+          example: app
+          description: 'The messages webhook type: always `app`'
+        messagesCallbackValue:
+          type: string
+          example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+          description: An Application ID
+        voiceCallbackType:
+          type: string
+          example: app
+          description: 'The voice webhook type: `sip`, `tel`, or `app`'
+        voiceCallbackValue:
+          type: string
+          example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+          description: A SIP URI, telephone number or Application ID
+        app_id:
+          type: string
+          example: 1ded6eee-e2ec-4d61-8c71-e2b2ece17d1b
+          description: The application ID linked to that number
+  parameters:
+    search_pattern:
+      name: search_pattern
+      required: false
+      in: query
+      description: 'The strategy you want to use for matching:
+
+
+
+        * `0` - Search for numbers that start with `pattern` (Note: all numbers are in E.164 format, so the starting pattern includes the country code, such as 1 for USA)
+
+        * `1` - Search for numbers that contain `pattern`
+
+        * `2` - Search for numbers that end with `pattern`
+
+        '
+      schema:
+        type: integer
+        default: 0
+        enum:
+        - 0
+        - 1
+        - 2
+      example: 1
+    has_application:
+      name: has_application
+      required: false
+      in: query
+      description: 'Set this optional field to `true` to restrict your results to numbers
+
+        associated with an Application (any Application). Set to `false` to
+
+        find all numbers not associated with any Application. Omit the field
+
+        to avoid filtering on whether or not the number is assigned to an
+
+        Application.
+
+        '
+      schema:
+        type: boolean
+      example: false
+    pattern:
+      name: pattern
+      required: false
+      in: query
+      description: The number pattern you want to search for. Use in conjunction with `search_pattern`.
+      schema:
+        type: string
+      example: '12345'
+    size:
+      name: size
+      required: false
+      in: query
+      description: Page size
+      schema:
+        type: integer
+        maximum: 100
+        default: 10
+      example: 10
+    application_id:
+      name: application_id
+      required: false
+      in: query
+      description: The Application that you want to return the numbers for.
+      schema:
+        type: string
+      example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+    index:
+      name: index
+      required: false
+      in: query
+      description: Page index
+      schema:
+        type: integer
+        default: 1
+      example: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  description: Numbers product documentation on the Vonage Developer Portal
+  url: https://developer.nexmo.com/numbers/overview
+x-refined-from:
+- vonage-external-accounts-openapi.json
+- vonage-numbers-openapi.json
+- vonage-external-accounts-openapi.yml
+- vonage-numbers-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

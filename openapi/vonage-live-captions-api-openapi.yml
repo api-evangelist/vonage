@@ -1,0 +1,238 @@
+openapi: 3.2.0
+info:
+  title: Vonage Live Captions API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged Live Captions across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: Live Captions
+  description: APIs relating to live captioning
+paths:
+  /v2/project/{application_id}/captions:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    post:
+      tags:
+      - Live Captions
+      summary: Start Live Captions for a Vonage Video stream
+      operationId: start-live-captions
+      description: 'Use this method to start real-time Live Captions for an Vonage Video Session.
+
+
+        The maximum allowed duration is 4 hours, after which the audio captioning will stop without any effect on the ongoing Vonage Video Session. An event will be posted to your callback URL if provided when starting the captions.
+
+
+        Each Vonage Video Session supports only one audio captioning session.'
+      parameters:
+      - schema: null
+        type: string
+        in: header
+        name: Content-Type
+        description: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/Start-Live-Captions'
+      responses:
+        '202':
+          $ref: '#/components/responses/Captions-Started'
+        '400':
+          description: 'Bad Request
+
+            This response may indicate that data provided in your request is an invalid JSON, or the request couldn''t be fulfilled because the broadcast was started with streamMode set to "auto", which does not support stream manipulation.'
+        '403':
+          description: Forbidden
+        '409':
+          description: Live captions have already been started for this session
+        '500':
+          description: Vonage Video API Platform error
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/captions/{captions_id}/stop:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/captions_id'
+    post:
+      tags:
+      - Live Captions
+      summary: Stop live captions for a session
+      operationId: stop-live-captions
+      responses:
+        '202':
+          description: Accepted
+        '403':
+          description: Forbidden
+        '404':
+          description: The captions ID was not found
+        '500':
+          description: Vonage Video API Platform error
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  responses:
+    Captions-Started:
+      description: ID of the Captions stream that was started
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              captionsId:
+                type: string
+                description: Unique ID of the audio captioning session
+                example: 7c0680fc-6274-4de5-a66f-d0648e8d3ac2
+            required:
+            - captionsId
+  requestBodies:
+    Start-Live-Captions:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Start-Live-Captions'
+  parameters:
+    captions_id:
+      name: captions_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the connection used for captions
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+  schemas:
+    Start-Live-Captions:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: The session ID of the Vonage Video session. The audio from Publishers publishing into this session will be used to generate the captions.
+          example: 12312312-3811-4726-b508-e41a0f96c68f
+        token:
+          type: string
+          description: A valid Vonage Video token with role set to Moderator.
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTkwNDMxMTEsImV4cCI6MTY5OTA2NDcxMSwianRpIjoiMW1pODlqRk9meVpRIiwiYXBwbGljYXRpb25faWQiOiIxMjMxMjMxMi0zODExLTQ3MjYtYjUwOC1lNDFhMGY5NmM2OGYiLCJzdWIiOiJ2aWRlbyIsImFjbCI6IiJ9.o3U506EejsS8D5Tob90FG1NC1cR69fh3pFOpxnyTHVFfgqI6NWuuN8lEwrS3Zb8bGxE_A9LyyUZ2y4uqLpyXRw
+        languageCode:
+          type: string
+          description: The BCP-47 code for a spoken language used on this call. The default value is "en-US".
+          default: en-US
+          example: en-US
+          enum:
+          - af-ZA
+          - ar-AE
+          - ar-SA
+          - eu-ES
+          - ca-ES
+          - zh-HK
+          - zh-CN
+          - zh-TW
+          - hr-HR
+          - cs-CZ
+          - da-DK
+          - nl-NL
+          - en-AU
+          - en-GB
+          - en-IN
+          - en-IE
+          - en-NZ
+          - en-AB
+          - en-ZA
+          - en-US
+          - en-WL
+          - fa-IR
+          - fi-FI
+          - fr-FR
+          - fr-CA
+          - gl-ES
+          - de-DE
+          - de-CH
+          - el-GR
+          - he-IL
+          - hi-IN
+          - id-ID
+          - it-IT
+          - ja-JP
+          - ko-KR
+          - lv-LV
+          - ms-MY
+          - no-NO
+          - pl-PL
+          - pt-PT
+          - pt-BR
+          - ro-RO
+          - ru-RU
+          - sr-RS
+          - sk-SK
+          - so-SO
+          - es-ES
+          - es-US
+          - sv-SE
+          - tl-PH
+          - th-TH
+          - uk-UA
+          - vi-VN
+          - zu-ZA
+        maxDuration:
+          type: number
+          description: The maximum duration for the audio captioning, in seconds. The default value is 14,400 seconds (4 hours), the maximum duration allowed. The minimum value for maxDuration is 300 (300 seconds, or 5 minutes).
+          example: 1800
+          default: 14400
+          minimum: 300
+        partialCaptions:
+          type: boolean
+          description: Whether to enable this to faster captioning at the cost of some degree of inaccuracies.
+          default: true
+          example: true
+        statusCallbackUrl:
+          type: string
+          description: A publicly reachable URL controlled by the customer and capable of generating the content to be rendered without user intervention
+          minLength: 15
+          maxLength: 2048
+          example: https://send-status-to.me
+      required:
+      - sessionId
+      - token
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

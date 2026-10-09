@@ -1,27 +1,31 @@
 ---
 name: vonage-verify-user
-description: Verify a user by requesting a verification and then checking the verification code.
-api: openapi/vonage-verify-api-openapi.yml
+description: 'Verify a user''s phone number with Verify v2: start a verification, check the code the user enters,
+  cancel inside the window if they abandon it.'
+api: openapi/vonage-verify-v2-openapi.yml
 operations:
-- requestVerification
-- checkVerification
-generated: '2026-10-03'
+- newRequest
+- checkCode
+- cancelRequest
+generated: '2026-10-08'
 method: generated
-generator: extract-docs-artifacts.py skills (local)
-source: openapi/vonage-verify-api-openapi.yml ; every operationId checked against the contract
+source: openapi/vonage-verify-v2-openapi.yml ; every operationId checked against the contract
 ---
 
 # vonage-verify-user
 
-Verify a user by requesting a verification and then checking the verification code.
+Verify a user's phone number with Verify v2: start a verification, check the code the user enters, cancel inside the window if they abandon it.
 
 ## Steps
 
-1. 1. Call `requestVerification` with the required request body fields (e.g., number, brand) and include an Authorization header (basicAuth or bearerAuth).
-2. 2. Call `checkVerification` with the verification request ID and the user‑provided code, also including an Authorization header.
+1. Mint an application JWT (RS256, exp <= 24h) or use Basic auth; both are declared on the Verify v2 contract.
+2. Call `newRequest` (POST /v2/verify) with `brand` and a `workflow[]` of channels (sms, whatsapp, voice, email, silent_auth); keep the returned `request_id`.
+3. When the user submits a code call `checkCode` (POST /v2/verify/{request_id}) with `code`; a 200 means verified, a 400 with `invalid_code` means retry.
+4. If the user abandons, call `cancelRequest` (DELETE /v2/verify/{request_id}).
 
 ## Rules
 
-- Authentication: Provide an Authorization header using either basicAuth or bearerAuth as defined by the API.
-- No idempotency key is required for these operations.
-- No pagination applies to these endpoints.
+- Cancellation is only possible 30 seconds after the start of the verification request and before the second event (either TTS or SMS) has taken place.
+- Default throughput is 30 Verify API requests per second per account (rate-limits/).
+- No idempotency key: do not retry `newRequest` blindly, re-use the `request_id` you already hold.
+- Errors arrive as RFC 7807 application/problem+json (errors/).

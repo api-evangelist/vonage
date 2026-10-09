@@ -1,0 +1,1658 @@
+openapi: 3.2.0
+info:
+  title: Vonage Application API
+  x-refined-note:
+  - x-label differs across the merged source definitions and was not carried
+  - x-metaDescription differs across the merged source definitions and was not carried
+  - x-metaTitle differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged application across 4 of this provider''s published API definitions: vonage-application-v2-openapi.json, vonage-external-accounts-openapi.json, vonage-application-v2-openapi.yml, vonage-external-accounts-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com
+- url: https://api.nexmo.com/beta/chatapp-accounts
+tags:
+- name: Application
+paths:
+  /v2/applications:
+    get:
+      security:
+      - basicAuth: []
+      tags:
+      - Application
+      operationId: listApplication
+      summary: List available applications
+      parameters:
+      - name: page_size
+        in: query
+        description: The number of applications per page
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: The current page number (starts at 1)
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponseCollection'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  type:
+                    type: string
+                    example: https://developer.vonage.com/api-errors/application#list-validation
+                  title:
+                    type: string
+                    example: Bad Request
+                  detail:
+                    type: string
+                    example: The request failed due to validation errors
+                  invalid_parameters:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: page_size
+                        reason:
+                          type: string
+                          example: must be between 1 and 100
+                  instance:
+                    $ref: '#/components/schemas/instance'
+        '401':
+          $ref: '#/components/responses/BadCredentialsError'
+        '405':
+          $ref: '#/components/responses/InvalidRequestMethod'
+        '406':
+          $ref: '#/components/responses/InvalidAcceptHeader'
+    post:
+      security:
+      - basicAuth: []
+      tags:
+      - Application
+      summary: Create an application
+      operationId: createApplication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              properties:
+                name:
+                  description: Application Name
+                  example: Demo Application
+                  type: string
+                keys:
+                  type: object
+                  properties:
+                    public_key:
+                      type: string
+                      example: '-----BEGIN PUBLIC KEY-----
+
+                        MIIBIjANBgkqhkiG9w0BAQEFAAOCA
+
+                        KOxjsU4pf/sMFi9N0jqcSLcjxu33G
+
+                        d/vynKnlw9SENi+UZR44GdjGdmfm1
+
+                        tL1eA7IBh2HNnkYXnAwYzKJoa4eO3
+
+                        0kYWekeIZawIwe/g9faFgkev+1xsO
+
+                        OUNhPx2LhuLmgwWSRS4L5W851Xe3f
+
+                        UQIDAQAB
+
+                        -----END PUBLIC KEY-----
+
+                        '
+                      description: Public key
+                capabilities:
+                  type: object
+                  description: Your application can use multiple products. This contains the configuration for each product. This replaces the application `type` from version 1 of the Application API.
+                  x-nexmo-developer-collection-description-shown: true
+                  properties:
+                    voice:
+                      type: object
+                      description: Voice application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            answer_url:
+                              type: object
+                              description: The URL that Vonage makes a request to when a call is placed/received. Must return an NCCO
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/answer
+                                http_method:
+                                  type: string
+                                  example: GET
+                                  enum:
+                                  - GET
+                                  - POST
+                                connect_timeout:
+                                  type: integer
+                                  description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 500
+                                  default: 1000
+                                  maximum: 1000
+                                  minimum: 300
+                                socket_timeout:
+                                  type: integer
+                                  description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 3000
+                                  default: 5000
+                                  maximum: 5000
+                                  minimum: 1000
+                            fallback_answer_url:
+                              type: object
+                              description: 'If your `answer_url` is offline or returns a HTTP error code, Vonage will make a request to a
+
+                                `fallback_answer_url` if it is set. This URL must return an NCCO.
+
+                                '
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://fallback.example.com/webhooks/answer
+                                http_method:
+                                  type: string
+                                  example: GET
+                                  enum:
+                                  - GET
+                                  - POST
+                                connect_timeout:
+                                  type: integer
+                                  description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 500
+                                  default: 1000
+                                  maximum: 1000
+                                  minimum: 300
+                                socket_timeout:
+                                  type: integer
+                                  description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 3000
+                                  default: 5000
+                                  maximum: 5000
+                                  minimum: 1000
+                            event_url:
+                              type: object
+                              description: Vonage will send call events (e.g. `ringing`, `answered`) to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/event
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - GET
+                                  - POST
+                                connect_timeout:
+                                  type: integer
+                                  description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 500
+                                  default: 1000
+                                  maximum: 1000
+                                  minimum: 300
+                                socket_timeout:
+                                  type: integer
+                                  description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 3000
+                                  default: 10000
+                                  maximum: 10000
+                                  minimum: 1000
+                        signed_callbacks:
+                          description: Whether to use signed webhooks. This is a way of verifying that the request is coming from Vonage. Refer to [the Webhooks documentation](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks) for more information.
+                          type: boolean
+                          default: 'true'
+                          example: false
+                        conversations_ttl:
+                          description: The length of time named conversations will remain active for after creation, in hours. Maximum value is 9000 (i.e. 365 days).
+                          type: integer
+                          example: 12
+                          default: 48
+                          maximum: 9000
+                          minimum: 1
+                        leg_persistence_time:
+                          description: The persistence duration for legs, in days. Maximum value is 31.
+                          type: integer
+                          example: 10
+                          default: 2
+                          maximum: 31
+                          minimum: 1
+                        region:
+                          $ref: '#/components/schemas/VoiceRegion'
+                    rtc:
+                      type: object
+                      description: RTC / Client SDK application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            event_url:
+                              type: object
+                              description: Vonage will send RTC events to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/event
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - GET
+                                  - POST
+                        signed_callbacks:
+                          description: Whether to use signed webhooks. This is a way of verifying that the request is coming from Vonage. Refer to [the Webhooks documentation](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks) for more information.
+                          type: boolean
+                          default: 'true'
+                          example: false
+                    messages:
+                      type: object
+                      description: Messages and Dispatch application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        version:
+                          type: string
+                          description: If not populated will be set to v1
+                        webhooks:
+                          type: object
+                          properties:
+                            inbound_url:
+                              type: object
+                              description: Vonage will forward inbound messages to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/inbound
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                            status_url:
+                              type: object
+                              description: Vonage will send message status updates (e.g. `delivered`, `seen`) to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/status
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                    vbc:
+                      type: object
+                      description: Specify `vbc` capability to enable zero-rated calls for VBC number programmability service applications. This must be an empty object.
+                      x-nexmo-developer-collection-description-shown: true
+                    network_apis:
+                      type: object
+                      description: Network APIs
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        network_application_id:
+                          type: string
+                          example: 2bzfIFqRG128IcjSj1YhZNtw6LADG
+                        redirect_uri:
+                          type: string
+                          example: https://my-redirect-uri.example.com
+                    meetings:
+                      type: object
+                      description: Meetings related configuration
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            recording_changed:
+                              type: object
+                              description: The URL that Vonage forwards recording information to on your server
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/recordings
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                            room_changed:
+                              type: object
+                              description: The URL that Vonage forwards meeting room information on your server.
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/rooms
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                            session_changed:
+                              type: object
+                              description: The URL that Vonage forwards session information on your server.
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/sessions
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                    verify:
+                      type: object
+                      description: Verify v2 application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            status_url:
+                              type: object
+                              description: Vonage will send Verify updates to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/status
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                    video:
+                      $ref: '#/components/schemas/VideoResponse'
+                privacy:
+                  type: object
+                  description: Application privacy config
+                  properties:
+                    improve_ai:
+                      type: boolean
+                      description: If set to `true`, Vonage may store and use your content and data for the improvement of Vonage's AI based services and technologies.
+                      example: true
+                      default: true
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApplicationResponse'
+                - type: object
+                  properties:
+                    keys:
+                      type: object
+                      properties:
+                        public_key:
+                          type: string
+                          example: '-----BEGIN PUBLIC KEY-----
+
+                            MIIBIjANBgkqhkiG9w0BAQEFAAOCA
+
+                            KOxjsU4pf/sMFi9N0jqcSLcjxu33G
+
+                            d/vynKnlw9SENi+UZR44GdjGdmfm1
+
+                            tL1eA7IBh2HNnkYXnAwYzKJoa4eO3
+
+                            0kYWekeIZawIwe/g9faFgkev+1xsO
+
+                            OUNhPx2LhuLmgwWSRS4L5W851Xe3f
+
+                            UQIDAQAB
+
+                            -----END PUBLIC KEY-----
+
+                            '
+                        private_key:
+                          type: string
+                          example: 'REDACTED_PRIVATE_KEY_EXAMPLE
+
+                            '
+        '400':
+          $ref: '#/components/responses/InvalidPayloadError'
+        '401':
+          $ref: '#/components/responses/BadCredentialsError'
+        '405':
+          $ref: '#/components/responses/InvalidRequestMethod'
+        '406':
+          $ref: '#/components/responses/InvalidAcceptHeader'
+        '415':
+          $ref: '#/components/responses/UnsupportedContentTypeHeader'
+    servers:
+    - url: https://api.nexmo.com
+  /v2/applications/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      description: The ID of the application
+      example: 78d335fa-323d-0114-9c3d-d6f0d48968cf
+      schema:
+        type: string
+    get:
+      security:
+      - basicAuth: []
+      tags:
+      - Application
+      operationId: getApplication
+      summary: Get an application
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '401':
+          $ref: '#/components/responses/BadCredentialsError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '405':
+          $ref: '#/components/responses/InvalidRequestMethod'
+        '406':
+          $ref: '#/components/responses/InvalidAcceptHeader'
+    put:
+      security:
+      - basicAuth: []
+      tags:
+      - Application
+      summary: Update an application
+      operationId: updateApplication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              properties:
+                name:
+                  description: Application Name
+                  example: Demo Application
+                  type: string
+                keys:
+                  type: object
+                  properties:
+                    public_key:
+                      type: string
+                      example: '-----BEGIN PUBLIC KEY-----
+
+                        MIIBIjANBgkqhkiG9w0BAQEFAAOCA
+
+                        KOxjsU4pf/sMFi9N0jqcSLcjxu33G
+
+                        d/vynKnlw9SENi+UZR44GdjGdmfm1
+
+                        tL1eA7IBh2HNnkYXnAwYzKJoa4eO3
+
+                        0kYWekeIZawIwe/g9faFgkev+1xsO
+
+                        OUNhPx2LhuLmgwWSRS4L5W851Xe3f
+
+                        UQIDAQAB
+
+                        -----END PUBLIC KEY-----
+
+                        '
+                      description: Public key
+                capabilities:
+                  type: object
+                  description: Your application can use multiple products. This contains the configuration for each product. This replaces the application `type` from version 1 of the Application API.
+                  x-nexmo-developer-collection-description-shown: true
+                  properties:
+                    voice:
+                      type: object
+                      description: Voice application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            answer_url:
+                              type: object
+                              description: The URL that Vonage make a request to when a call is placed/received. Must return an NCCO
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/answer
+                                http_method:
+                                  type: string
+                                  example: GET
+                                  enum:
+                                  - GET
+                                  - POST
+                                connect_timeout:
+                                  type: integer
+                                  description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 500
+                                  default: 1000
+                                  maximum: 1000
+                                  minimum: 300
+                                socket_timeout:
+                                  type: integer
+                                  description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 3000
+                                  default: 5000
+                                  maximum: 5000
+                                  minimum: 1000
+                            fallback_answer_url:
+                              type: object
+                              description: 'If your `answer_url` is offline or returns a HTTP error code, Vonage will make a request to a
+
+                                `fallback_answer_url` if it is set. This URL must return an NCCO
+
+                                '
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://fallback.example.com/webhooks/answer
+                                http_method:
+                                  type: string
+                                  example: GET
+                                  enum:
+                                  - GET
+                                  - POST
+                                connect_timeout:
+                                  type: integer
+                                  description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 500
+                                  default: 1000
+                                  maximum: 1000
+                                  minimum: 300
+                                socket_timeout:
+                                  type: integer
+                                  description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 3000
+                                  default: 5000
+                                  maximum: 5000
+                                  minimum: 1000
+                            event_url:
+                              type: object
+                              description: Vonage will send call events (e.g. `ringing`, `answered`) to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/event
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - GET
+                                  - POST
+                                connect_timeout:
+                                  type: integer
+                                  description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 500
+                                  default: 1000
+                                  maximum: 1000
+                                  minimum: 300
+                                socket_timeout:
+                                  type: integer
+                                  description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                                  example: 3000
+                                  default: 10000
+                                  maximum: 10000
+                                  minimum: 1000
+                        signed_callbacks:
+                          description: Whether to use signed webhooks. This is a way of verifying that the request is coming from Vonage. Refer to [the Webhooks documentation](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks) for more information.
+                          type: boolean
+                          default: 'true'
+                          example: false
+                        conversations_ttl:
+                          description: The length of time named conversations will remain active for after creation, in hours. Maximum value is 9000 (i.e. 365 days).
+                          type: integer
+                          example: 12
+                          default: 48
+                          maximum: 9000
+                          minimum: 1
+                        leg_persistence_time:
+                          description: The persistence duration for legs, in days. Maximum value is 31.
+                          type: integer
+                          example: 10
+                          default: 2
+                          maximum: 31
+                          minimum: 1
+                        region:
+                          $ref: '#/components/schemas/VoiceRegion'
+                    rtc:
+                      type: object
+                      description: RTC / Client SDK application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            event_url:
+                              type: object
+                              description: Vonage will send RTC events to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/event
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - GET
+                                  - POST
+                        signed_callbacks:
+                          description: Whether to use signed webhooks. This is a way of verifying that the request is coming from Vonage. Refer to [the Webhooks documentation](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks) for more information.
+                          type: boolean
+                          default: 'true'
+                          example: false
+                    messages:
+                      type: object
+                      description: Messages and Dispatch application webhook config
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            inbound_url:
+                              type: object
+                              description: Vonage will forward inbound messages to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/inbound
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                            status_url:
+                              type: object
+                              description: Vonage will send message status updates (e.g. `delivered`, `seen`) to this URL
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/status
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                    vbc:
+                      type: object
+                      description: Specify the `vbc` capability to enable zero-rated calls for VBC number programmability service applications.  This must be an empty object.
+                      x-nexmo-developer-collection-description-shown: true
+                    network_apis:
+                      type: object
+                      description: Network APIs
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        network_application_id:
+                          type: string
+                          example: 2bzfIFqRG128IcjSj1YhZNtw6LADG
+                        redirect_uri:
+                          type: string
+                          example: https://my-redirect-uri.example.com
+                    meetings:
+                      type: object
+                      description: Meetings related configuration
+                      x-nexmo-developer-collection-description-shown: true
+                      properties:
+                        webhooks:
+                          type: object
+                          properties:
+                            recording_url:
+                              type: object
+                              description: The URL that Vonage forwards recording information to on your server
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/recordings
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                            rooms_url:
+                              type: object
+                              description: The URL that Vonage forwards meeting room information on your server.
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/rooms
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                            sessions_url:
+                              type: object
+                              description: The URL that Vonage forwards session information on your server.
+                              x-nexmo-developer-collection-description-shown: true
+                              properties:
+                                address:
+                                  type: string
+                                  example: https://example.com/webhooks/sessions
+                                http_method:
+                                  type: string
+                                  example: POST
+                                  enum:
+                                  - POST
+                    video:
+                      $ref: '#/components/schemas/VideoResponse'
+                privacy:
+                  type: object
+                  description: Application privacy config
+                  properties:
+                    improve_ai:
+                      type: boolean
+                      description: If set to `true`, Vonage may store and use your content and data for the improvement of Vonage's AI based services and technologies.
+                      example: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApplicationResponse'
+                - type: object
+                  properties:
+                    keys:
+                      type: object
+                      properties:
+                        public_key:
+                          type: string
+                          example: '-----BEGIN PUBLIC KEY-----
+
+                            MIIBIjANBgkqhkiG9w0BAQEFAAOCA
+
+                            KOxjsU4pf/sMFi9N0jqcSLcjxu33G
+
+                            d/vynKnlw9SENi+UZR44GdjGdmfm1
+
+                            tL1eA7IBh2HNnkYXnAwYzKJoa4eO3
+
+                            0kYWekeIZawIwe/g9faFgkev+1xsO
+
+                            OUNhPx2LhuLmgwWSRS4L5W851Xe3f
+
+                            UQIDAQAB
+
+                            -----END PUBLIC KEY-----
+
+                            '
+                        private_key:
+                          type: string
+                          example: 'REDACTED_PRIVATE_KEY_EXAMPLE
+
+                            '
+        '400':
+          $ref: '#/components/responses/InvalidPayloadError'
+        '401':
+          $ref: '#/components/responses/BadCredentialsError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '405':
+          $ref: '#/components/responses/InvalidRequestMethod'
+        '406':
+          $ref: '#/components/responses/InvalidAcceptHeader'
+        '415':
+          $ref: '#/components/responses/UnsupportedContentTypeHeader'
+    delete:
+      security:
+      - basicAuth: []
+      tags:
+      - Application
+      operationId: deleteApplication
+      summary: Delete an application
+      description: Deleting an application **cannot be undone**.
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/BadCredentialsError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '405':
+          $ref: '#/components/responses/InvalidRequestMethod'
+        '406':
+          $ref: '#/components/responses/InvalidAcceptHeader'
+    servers:
+    - url: https://api.nexmo.com
+  /{provider}/{external_id}/applications:
+    post:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Link application to an account
+      operationId: LinkApplication
+      tags:
+      - Application
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          enum:
+          - messenger
+          - viber_service_msg
+          - whatsapp
+          - rcs
+        required: true
+        description: Provider of the account you want to assign an application to
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+        description: External id of the account you want to assign an application to. This is channel dependent. For Facebook it will be your Facebook Page ID, for Viber your Viber Service Message ID and for WhatsApp your WhatsApp number, for RCS it will be the RCS Agent ID.
+      requestBody:
+        description: Request body can contain any of the following. Please note, the only one application can be linked to the account.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - application
+              properties:
+                application:
+                  type: string
+                  example: 78d335fa-323d-0114-9c3d-d6f0d48968cf
+                  description: There is just one application allowed per an account. The application type must be type "messages". For more information please see [Application API Spec](https://developer.nexmo.com/api/application.v2)
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: https://www.nexmo.com/messages/Errors#Forbidden
+                  title:
+                    type: string
+                    example: Forbidden
+                  detail:
+                    type: string
+                    example: Cannot link application
+                    description: The application does not exist or the application type is not "messages"
+        '409':
+          description: Conflict.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: https://www.nexmo.com/messages/Errors#Conflict
+                  title:
+                    type: string
+                    example: Application conflict
+                  detail:
+                    type: string
+                    example: Unable to link application
+                    description: The account reached limit of maximum number of linked applications. (The only one application is allowed per an account)
+    servers:
+    - url: https://api.nexmo.com/beta/chatapp-accounts
+  /{provider}/{external_id}/applications/{application_id}:
+    delete:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Unlink application from an account
+      operationId: UnliWithoutApplicationnkApplication
+      tags:
+      - Application
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          enum:
+          - messenger
+          - viber_service_msg
+          - whatsapp
+          - rcs
+        required: true
+        description: Provider of the account you want to unlink an application from
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+        description: External id of the account you want to unlink an application from
+      - in: path
+        name: application_id
+        schema:
+          type: string
+        required: true
+        description: Id of the application you want to unlink
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: https://www.nexmo.com/messages/Errors#Forbidden
+                  title:
+                    type: string
+                    example: Forbidden
+                  detail:
+                    type: string
+                    example: Cannot unlink application
+        '409':
+          description: Conflict.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: https://www.nexmo.com/messages/Errors#Conflict
+                  title:
+                    type: string
+                    example: Application conflict
+                  detail:
+                    type: string
+                    example: Unable to unlink application
+                    description: The application is not linked or doesn't exist.
+    servers:
+    - url: https://api.nexmo.com/beta/chatapp-accounts
+components:
+  schemas:
+    VideoResponse:
+      type: object
+      description: Video related configuration
+      properties:
+        webhooks:
+          type: object
+          properties:
+            archive_status:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events informing about the archive status
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            connection_created:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a video connection is created
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            connection_destroyed:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a video connection is destroyed
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            session_created:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a video session is created
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            session_destroyed:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a video session is destroyed
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            session_notification:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends session notifications to
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            stream_created:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a stream is created
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            stream_destroyed:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a stream is destroyed
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            render_status:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a render status changes
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            captions_status:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when captions status changes
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            broadcast_status:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a broadcast status changes
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            sip_call_created:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a sip call is created
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            sip_call_updated:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a sip call is updated
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            sip_call_destroyed:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a sip call is destroyed
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+            sip_call_mute_forced:
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: https://example.com/webhooks/event
+                  description: The URL that Vonage sends events when a sip call is muted
+                active:
+                  $ref: '#/components/schemas/active_webhook'
+        storage:
+          type: object
+          properties:
+            server_side_encryption:
+              type: boolean
+              example: false
+              description: Whether to use server-side encryption
+            end_to_end_encryption:
+              type: boolean
+              example: false
+              description: Whether to use end-to-end encryption
+            cloud_storage:
+              type: boolean
+              example: false
+              description: Whether to use cloud storage feature
+    ApplicationResponseCollection:
+      properties:
+        page_size:
+          type: integer
+          example: 10
+          description: The number of applications per page
+        page:
+          type: integer
+          example: 1
+          description: The current page number (starts at 1)
+        total_items:
+          type: integer
+          example: 6
+          description: The total number of applications
+        total_pages:
+          type: integer
+          example: 1
+          description: The total number of pages returned
+        _embedded:
+          type: object
+          description: A list of applications matching your existing filters
+          properties:
+            applications:
+              type: array
+              items:
+                $ref: '#/components/schemas/ApplicationResponse'
+    active_webhook:
+      type: boolean
+      example: true
+      description: Whether the webhook is active
+    instance:
+      description: Instance ID
+      type: string
+      example: 797a8f199c45014ab7b08bfe9cc1c12c
+    ApplicationResponse:
+      properties:
+        id:
+          type: string
+          example: 78d335fa-323d-0114-9c3d-d6f0d48968cf
+          description: The application's ID
+        name:
+          type: string
+          example: My Application
+          description: Friendly identifier for your application. This is not unique
+        capabilities:
+          type: object
+          description: Configuration for the products available in this application
+          properties:
+            voice:
+              type: object
+              description: Voice related configuration
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    answer_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/answer
+                          description: The URL that Vonage requests when a call is placed/received. Must return an NCCO
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to fetch your NCCO from your `answer_url`
+                        connect_timeout:
+                          type: integer
+                          description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                          example: 500
+                        socket_timeout:
+                          type: integer
+                          description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                          example: 3000
+                    fallback_answer_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://fallback.example.com/webhooks/answer
+                          description: 'If your `answer_url` is offline or returns a HTTP error code, Vonage will make a request to a
+
+                            `fallback_answer_url` if it is set. This URL must return an NCCO.
+
+                            '
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to fetch your NCCO from your `answer_url`
+                        connect_timeout:
+                          type: integer
+                          description: Connection timeout in milliseconds
+                          example: 500
+                        socket_timeout:
+                          type: integer
+                          description: Reading timeout in milliseconds
+                          example: 3000
+                    event_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/event
+                          description: The URL that Vonage sends events related to your call to
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send events to your server
+                        connect_timeout:
+                          type: integer
+                          description: If Vonage can't connect to the webhook URL for this specified amount of time, then Vonage makes one additional attempt to connect to the webhook endpoint. This is an integer value specified in milliseconds.
+                          example: 500
+                        socket_timeout:
+                          type: integer
+                          description: If a response from the webhook URL can't be read for this specified amount of time, then Vonage makes one additional attempt to read the webhook endpoint. This is an integer value specified in milliseconds.
+                          example: 3000
+                signed_callbacks:
+                  description: Whether to use signed webhooks. This is a way of verifying that the request is coming from Vonage. Refer to [the Webhooks documentation](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks) for more information.
+                  type: boolean
+                  default: 'true'
+                  example: false
+                conversations_ttl:
+                  description: The length of time named conversations will remain active for after creation, in hours. Maximum value is 9000 (i.e. 365 days).
+                  type: integer
+                  example: 12
+                  default: 48
+                  maximum: 9000
+                  minimum: 1
+                leg_persistence_time:
+                  description: The persistence duration for legs, in days. Maximum value is 31.
+                  type: integer
+                  example: 10
+                  default: 2
+                  maximum: 31
+                  minimum: 1
+                region:
+                  $ref: '#/components/schemas/VoiceRegion'
+            messages:
+              type: object
+              description: Messages / Dispatch related configuration
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    inbound_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/inbound
+                          description: The URL that Vonage forwards inbound messages to on your server
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send inbound messages to your server
+                    status_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/status
+                          description: The URL that Vonage sends events related to your messages to
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send events to your server (always `POST`)
+            rtc:
+              type: object
+              description: RTC / Conversation Service related configuration
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    event_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/event
+                        http_method:
+                          type: string
+                          example: POST
+                signed_callbacks:
+                  description: Whether to use signed webhooks. This is a way of verifying that the request is coming from Vonage. Refer to [the Webhooks documentation](https://developer.vonage.com/en/getting-started/concepts/webhooks#decoding-signed-webhooks) for more information.
+                  type: boolean
+                  default: 'true'
+                  example: false
+            vbc:
+              type: object
+              description: Specify the `vbc` capability to enable zero-rated calls for VBC number programmability service applications. This is always an empty object.
+            network_apis:
+              type: object
+              description: Network APIs
+              properties:
+                network_application_id:
+                  type: string
+                  example: 2bzfIFqRG128IcjSj1YhZNtw6LADG
+                redirect_uri:
+                  type: string
+                  example: https://my-redirect-uri.example.com
+            meetings:
+              type: object
+              description: Meetings related configuration
+              properties:
+                webhooks:
+                  type: object
+                  properties:
+                    recording_changed:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/recordings
+                          description: The URL that Vonage forwards recording information to on your server
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send recording information to your server (always `POST`)
+                    room_changed:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/rooms
+                          description: The URL that Vonage forwards meeting room information on your server.
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send meeting room information to your server (always `POST`)
+                    session_changed:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/sessions
+                          description: The URL that Vonage forwards session information on your server.
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send session information to your server (always `POST`)
+            verify:
+              type: object
+              description: Verify v2 related configuration
+              properties:
+                version:
+                  type: string
+                  example: v2
+                  description: The version of the Verify API to use
+                webhooks:
+                  type: object
+                  properties:
+                    status_url:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: https://example.com/webhooks/status
+                          description: The URL that Vonage sends events related to your verify requests to
+                        http_method:
+                          type: string
+                          example: POST
+                          description: The HTTP method used to send events to your server (always `POST`)
+            video:
+              $ref: '#/components/schemas/VideoResponse'
+        privacy:
+          type: object
+          description: Application privacy config
+          properties:
+            improve_ai:
+              type: boolean
+              description: If set to `true`, Vonage may store and use your content and data for the improvement of Vonage's AI based services and technologies.
+              example: true
+    VoiceRegion:
+      description: "Selecting a region means all inbound, programmable SIP and SIP connect calls will be sent to the selected region unless the call is sent to a regional endpoint, if the call is using a regional endpoint this will override the application setting. Use the following parameter values:\n  * **na-east** - North America - East (api-us-3.vonage.com)\n  * **na-west** - North America - West (api-us-4.vonage.com)\n  * **eu-east** - Europe - East (api-eu-4.vonage.com)\n  * **eu-west** - Europe - West (api-eu-3.vonage.com)\n  * **apac-sng** - Singapore (api-ap-3.vonage.com)\n  * **apac-australia** - Australia (api-ap-4.vonage.com)\n"
+      type: string
+      example: eu-west
+      enum:
+      - na-east
+      - na-west
+      - eu-east
+      - eu-west
+      - apac-sng
+      - apac-australia
+    AccountResponse:
+      type: object
+      required:
+      - external_id
+      - api_key
+      - provider
+      properties:
+        name:
+          type: string
+          example: name
+          description: The account name
+        applications:
+          type: array
+          items:
+            type: string
+          example:
+          - 78d335fa-323d-0114-9c3d-d6f0d48968cf
+          description: The array of associated application ids
+        external_id:
+          type: string
+          example: '12345678'
+          description: The external identifier for this account
+        api_key:
+          type: string
+          example: abcd1234
+          description: The external api key for this account
+        provider:
+          type: string
+          enum:
+          - messenger
+          - viber_service_msg
+          - whatsapp
+          - rcs
+          example: messenger
+          description: The provider (will be one of `messenger, viber_service_msg, whatsapp, rcs`).
+        access_token:
+          type: string
+          example: accessToken
+          description: The provider access token (only for `messenger`)
+    401Response:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Unauthorised
+        detail:
+          type: string
+          example: Request header 'Authorization' missing / Invalid Token
+  responses:
+    InvalidAcceptHeader:
+      description: Invalid Accept Header
+      content:
+        application/json:
+          schema:
+            properties:
+              type:
+                type: string
+                example: https://developer.vonage.com/api-errors#accept-header
+              title:
+                type: string
+                example: Invalid Accept header
+              detail:
+                type: string
+                example: 'Invalid Accept header provided. Must be one of the following: ''application/json'''
+              instance:
+                $ref: '#/components/schemas/instance'
+    UnsupportedContentTypeHeader:
+      description: Unsupported Content Type Header
+      content:
+        application/json:
+          schema:
+            properties:
+              type:
+                type: string
+                example: https://developer.vonage.com/api-errors#content-type-header
+              title:
+                type: string
+                example: Unsupported Content-Type header
+              detail:
+                type: string
+                example: 'Unsupported Content-Type header provided. Must be one of the following: ''application/json'''
+              instance:
+                $ref: '#/components/schemas/instance'
+    BadCredentialsError:
+      description: Credential is missing or invalid
+      content:
+        application/json:
+          schema:
+            properties:
+              type:
+                type: string
+                example: https://developer.vonage.com/api-errors#unauthorized
+              title:
+                type: string
+                example: Invalid credentials supplied
+              detail:
+                type: string
+                example: You did not provide correct credentials.
+              instance:
+                $ref: '#/components/schemas/instance'
+    NotFoundError:
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            properties:
+              type:
+                type: string
+                example: https://developer.vonage.com/api-errors#not-found
+              title:
+                type: string
+                example: Not Found
+              detail:
+                type: string
+                example: ID 'ABC123' does not exist, or you do not have access
+              instance:
+                $ref: '#/components/schemas/instance'
+    InvalidRequestMethod:
+      description: Invalid Request Method
+      content:
+        application/json:
+          schema:
+            properties:
+              type:
+                type: string
+                example: https://developer.vonage.com/api-errors#wrong-verb
+              title:
+                type: string
+                example: Request method not allowed
+              detail:
+                type: string
+                example: Request method 'TRACE' not supported
+              instance:
+                $ref: '#/components/schemas/instance'
+    InvalidPayloadError:
+      description: Invalid Request
+      content:
+        application/json:
+          schema:
+            properties:
+              type:
+                type: string
+                example: https://developer.vonage.com/api-errors/application#payload-validation
+              title:
+                type: string
+                example: Bad Request
+              detail:
+                type: string
+                example: The request failed due to validation errors
+              invalid_parameters:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: capabilities.voice.webhooks.answer_url.http_method
+                    reason:
+                      type: string
+                      example: 'must be one of: GET, POST'
+              instance:
+                $ref: '#/components/schemas/instance'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-application-v2-openapi.json
+- vonage-external-accounts-openapi.json
+- vonage-application-v2-openapi.yml
+- vonage-external-accounts-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

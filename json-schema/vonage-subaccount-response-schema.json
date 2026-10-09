@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-subaccount-response-schema.json",
+  "title": "SubaccountResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-subaccounts-openapi.yml#/components/schemas/SubaccountResponse",
+  "properties": {
+    "api_key": {
+      "type": "string",
+      "description": "Unique subaccount ID."
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the subaccount."
+    },
+    "primary_account_api_key": {
+      "type": "string",
+      "description": "Unique primary account ID."
+    },
+    "use_primary_account_balance": {
+      "type": "boolean",
+      "description": "Flag showing if balance is shared with primary account."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Subaccount creation date and time."
+    },
+    "suspended": {
+      "type": "boolean",
+      "description": "Subaccount suspension status."
+    },
+    "balance": {
+      "type": "number",
+      "description": "Balance of the subAccount. Value is null if balance is shared with primary account."
+    },
+    "credit_limit": {
+      "type": "number",
+      "description": "Credit limit of the subAccount. Value is null if balance is shared with primary account."
+    }
+  }
+}

@@ -1,0 +1,77 @@
+openapi: 3.2.0
+info:
+  title: Vonage Dial In Numbers API
+  version: 0.1.7
+  x-metaDescription: Find quick answers to questions about the Vonage Meetings API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Meetings API Reference | Vonage API Documentation
+  x-noIndex: true
+  description: 'Operations tagged Dial In Numbers across 2 of this provider''s published API definitions: vonage-meetings-openapi.json, vonage-meetings-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api-eu.vonage.com/v1/meetings
+tags:
+- name: Dial In Numbers
+paths:
+  /dial-in-numbers:
+    get:
+      summary: Get numbers that can be used to dial into a meeting
+      operationId: getDialInNumbers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DialInNumber'
+      tags:
+      - Dial In Numbers
+    servers:
+    - url: https://api-eu.vonage.com/v1/meetings
+components:
+  schemas:
+    DialInNumber:
+      type: object
+      properties:
+        number:
+          type: string
+          example: 17323338801
+          description: The phone number
+        locale:
+          type: string
+          example: en-US
+          description: The language culture name
+        display_name:
+          type: string
+          example: United States
+          description: The name of the number
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-meetings-openapi.json
+- vonage-meetings-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

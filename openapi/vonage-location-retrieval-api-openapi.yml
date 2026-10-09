@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  title: Vonage Location retrieval API
+  version: 0.4.0
+  contact:
+    name: Vonage Developer Relations
+    email: devrel@vonage.com
+    url: https://developer.vonage.com/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-metaTitle: Vonage Device Location Retrieval API Reference | Vonage API Documentation
+  description: 'Operations tagged Location retrieval across 2 of this provider''s published API definitions: vonage-location-retrieval-openapi.json, vonage-location-retrieval-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api-eu.vonage.com/network-location/v0.1
+  description: EU region production endpoint
+tags:
+- name: Location Retrieval
+  description: Retrieve the location of a device
+paths:
+  /retrieval:
+    post:
+      tags:
+      - Location Retrieval
+      summary: Retrieve the location of a user’s mobile device based on their phone number
+      description: Retrieve the location of a user's mobile device
+      operationId: retrieveLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalLocationRequest'
+      responses:
+        '200':
+          description: Location retrieval result
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Circle'
+                - $ref: '#/components/schemas/Polygon'
+        '400':
+          $ref: '#/components/responses/Generic400'
+        '401':
+          $ref: '#/components/responses/Generic401'
+        '403':
+          $ref: '#/components/responses/Generic403'
+        '404':
+          $ref: '#/components/responses/LocationNotFound404'
+        '415':
+          $ref: '#/components/responses/Generic415'
+        '500':
+          $ref: '#/components/responses/Generic500'
+        '503':
+          $ref: '#/components/responses/Generic503'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api-eu.vonage.com/network-location/v0.1
+      description: EU region production endpoint
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+      required:
+      - title
+      - detail
+    PointList:
+      description: List of points defining a polygon
+      type: array
+      items:
+        $ref: '#/components/schemas/Point'
+      minItems: 3
+      maxItems: 15
+    Point:
+      type: object
+      description: Coordinates (latitude, longitude) defining a location in a map
+      required:
+      - latitude
+      - longitude
+      properties:
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+      example:
+        latitude: 50.735851
+        longitude: 7.10066
+    LocationCircle:
+      type: object
+      description: Location object
+      required:
+      - type
+      - center
+      - radius_meters
+      properties:
+        type:
+          type: string
+          description: Type of area
+          example: CIRCLE
+        center:
+          $ref: '#/components/schemas/Point'
+        radius_meters:
+          type: number
+          description: Distance from the center in meters
+          minimum: 1
+          example: 800
+    LocationPolygon:
+      type: object
+      description: Location object
+      required:
+      - type
+      - boundary
+      properties:
+        type:
+          type: string
+          description: Type of area
+          example: POLYGON
+        boundary:
+          $ref: '#/components/schemas/PointList'
+    LastLocationTime:
+      type: object
+      properties:
+        last_location_time:
+          description: Last date and time when the device was located. It follows the RFC 3339 including the time zone. The format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+          type: string
+          format: date-time
+          example: '2023-10-17T13:18:23.682Z'
+    Polygon:
+      description: Polygonal area
+      required:
+      - last_location_time
+      - location
+      allOf:
+      - $ref: '#/components/schemas/LastLocationTime'
+      - type: object
+        properties:
+          location:
+            $ref: '#/components/schemas/LocationPolygon'
+    RetrievalLocationRequest:
+      description: Request to retrieve the location of a phone number of an end-user device capable of connecting to a mobile network.
+      type: object
+      required:
+      - phone_number
+      properties:
+        phone_number:
+          description: A public identifier addressing a telephone subscription. In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+          type: string
+          pattern: ^\+[1-9][0-9]{4,14}$
+          example: '+123456789'
+        location_age_seconds:
+          description: Maximum age of the location information which is accepted for the location retrieval (in seconds). Absence of location_max_seconds means "any age" and location_max_seconds=0 means a fresh calculation.
+          type: integer
+          example: 604800
+    Longitude:
+      description: Longitude component of location
+      type: number
+      format: double
+      minimum: -180
+      maximum: 180
+    Circle:
+      description: Circular area
+      required:
+      - last_location_time
+      - location
+      allOf:
+      - $ref: '#/components/schemas/LastLocationTime'
+      - type: object
+        properties:
+          location:
+            $ref: '#/components/schemas/LocationCircle'
+    Latitude:
+      description: Latitude component of a location
+      type: number
+      format: double
+      minimum: -90
+      maximum: 90
+  responses:
+    Generic503:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Generic500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Generic415:
+      description: Invalid Content-Type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    LocationNotFound404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Generic403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Generic400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Generic401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  description: Project documentation at Camara
+  url: https://github.com/camaraproject/DeviceLocation
+x-refined-from:
+- vonage-location-retrieval-openapi.json
+- vonage-location-retrieval-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

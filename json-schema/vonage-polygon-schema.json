@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-polygon-schema.json",
+  "title": "Polygon",
+  "description": "Polygonal area",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-location-retrieval-openapi.yml#/components/schemas/Polygon",
+  "required": [
+    "last_location_time",
+    "location"
+  ],
+  "allOf": [
+    {
+      "$ref": "#/$defs/LastLocationTime"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "location": {
+          "$ref": "#/$defs/LocationPolygon"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "LastLocationTime": {
+      "type": "object",
+      "properties": {
+        "last_location_time": {
+          "description": "Last date and time when the device was located. It follows the RFC 3339 including the time zone. The format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Latitude": {
+      "description": "Latitude component of a location",
+      "type": "number",
+      "format": "double",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "LocationPolygon": {
+      "type": "object",
+      "description": "Location object",
+      "required": [
+        "type",
+        "boundary"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of area"
+        },
+        "boundary": {
+          "$ref": "#/$defs/PointList"
+        }
+      }
+    },
+    "Longitude": {
+      "description": "Longitude component of location",
+      "type": "number",
+      "format": "double",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "Point": {
+      "type": "object",
+      "description": "Coordinates (latitude, longitude) defining a location in a map",
+      "required": [
+        "latitude",
+        "longitude"
+      ],
+      "properties": {
+        "latitude": {
+          "$ref": "#/$defs/Latitude"
+        },
+        "longitude": {
+          "$ref": "#/$defs/Longitude"
+        }
+      }
+    },
+    "PointList": {
+      "description": "List of points defining a polygon",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Point"
+      },
+      "minItems": 3,
+      "maxItems": 15
+    }
+  }
+}

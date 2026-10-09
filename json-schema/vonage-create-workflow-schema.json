@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-create-workflow-schema.json",
+  "title": "createWorkflow",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-dispatch-openapi.yml#/components/schemas/createWorkflow",
+  "type": "object",
+  "properties": {
+    "template": {
+      "description": "The template that the Dispatch API will execute. For the initial version of the API the only available value will be failover",
+      "type": "string",
+      "enum": [
+        "failover"
+      ]
+    },
+    "workflow": {
+      "description": "Contains a message object that must reflect the current /messages resource. All parameters within the content object reflect the /messages docs.",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/sendWithFailoverMessage"
+          },
+          {
+            "$ref": "#/$defs/sendMessage"
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "AudioProperty": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the audio attachment. `messenger` supports .mp3. `whatsapp` supports .aac, .m4a, .amr, .mp3 and .opus.",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      }
+    },
+    "FailoverProperty": {
+      "description": "Please note that last message does not have failover attribute inside it. All other messages must contain a failover attribute.",
+      "type": "object",
+      "properties": {
+        "expiry_time": {
+          "description": "In seconds. Minimum value is 15 and maximum value is 86,400 seconds (1 day).",
+          "type": "integer",
+          "minimum": 15,
+          "maximum": 86400
+        },
+        "condition_status": {
+          "description": "Set the status the message must reach in the expiry_time before failing over. Options are delivered or read.",
+          "type": "string",
+          "enum": [
+            "delivered",
+            "read"
+          ]
+        }
+      }
+    },
+    "FileProperty": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the file attachment. `messenger` supports a wide range of attachments including .zip, .csv and .pdf. `whatsapp` supports .pdf, .doc(x), .ppt(x) and .xls(x).",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "caption": {
+          "type": "string",
+          "description": "Additional text to accompany the image. Supported by WhatsApp and MMS.",
+          "minLength": 1,
+          "maxLength": 3000
+        }
+      }
+    },
+    "FromProperty": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of message that you want to send.",
+          "enum": [
+            "sms",
+            "viber_service_msg",
+            "messenger",
+            "whatsapp"
+          ]
+        },
+        "id": {
+          "description": "Your ID for the platform that you are sending from.\n\n**Messenger**: This value should be the `to.id` value you received in the inbound messenger event.\n\n**Viber**: This is your Service Message ID given to you by your Vonage Account Manager. To find out more please visit [vonage.com](https://www.vonage.com/communications-apis/messages/).\n\n**SMS**: **MMS**: or **WhatsApp** This value is not required.\n",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "description": "**SMS**: or **MMS**: The phone number of the message sender in the [E.164](https://en.wikipedia.org/wiki/E.164) format.\n\n**WhatsApp**: This is your WhatsApp Business Number given to you by your Vonage Account Manager. To find out more please visit [vonage.com](https://www.vonage.com/communications-apis/messages/).\n\n**Messenger**: or **Viber**: This value is not required.\n"
+        }
+      }
+    },
+    "ImageProperty": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the image attachment. `messenger` and `mms` supports .jpg, .jpeg, .png and .gif. `viber_service_msg` supports .jpg .jpeg, and .png. `whatsapp` supports .jpg .jpeg, and .png.",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "caption": {
+          "type": "string",
+          "description": "Additional text to accompany the image. Supported by WhatsApp and MMS.",
+          "minLength": 1,
+          "maxLength": 3000
+        }
+      }
+    },
+    "MessageProperty": {
+      "type": "object",
+      "required": [
+        "content"
+      ],
+      "properties": {
+        "content": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "description": "The type of message that you are sending.\n\n**Messenger**: supports `text`, `image`, `audio`, `video` and `file`.\n\n**Viber Business Messages**: supports `image` and `text`.\n\n**WhatsApp**: supports `template`, `text`, `image`, `audio`, `video` and `file`.\n\n**SMS**: supports `text`.\n",
+              "type": "string",
+              "enum": [
+                "text",
+                "image",
+                "audio",
+                "video",
+                "file",
+                "template",
+                "custom"
+              ]
+            },
+            "text": {
+              "description": "The text of the message.\n\n**Messenger**: Is limited to 640 characters\n\n**SMS** or **Viber**: Is 1000 characters\n\n**WhatsApp**: is 4096 characters\n",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "image": {
+              "$ref": "#/$defs/ImageProperty"
+            },
+            "audio": {
+              "$ref": "#/$defs/AudioProperty"
+            },
+            "video": {
+              "$ref": "#/$defs/VideoProperty"
+            },
+            "file": {
+              "$ref": "#/$defs/FileProperty"
+            },
+            "template": {
+              "$ref": "#/$defs/TemplateProperty"
+            }
+          }
+        },
+        "viber_service_msg": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "description": "The use of different category tags enables the business to send messages for different use cases. For Viber Business Messages the first message sent from a business to a user must be personal, informative and a targeted message - not promotional. By default Vonage sends the `transaction` category to Viber Business Messages.",
+              "type": "string",
+              "enum": [
+                "transaction",
+                "promotion"
+              ]
+            },
+            "ttl": {
+              "description": "Only valid for Viber Business Messages. Set the time-to-live of message to be delivered in seconds. i.e. if the message is not delivered in 600 seconds then delete the message.",
+              "type": "integer",
+              "minimum": 30,
+              "maximum": 86400
+            }
+          }
+        },
+        "messenger": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "description": "The use of different category tags enables the business to send messages for different use cases. For Facebook Messenger they need to comply with their [Messaging Types policy]( https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types). Vonage maps our `category` to their `messaging_type`. If `message_tag` is used, then an additional `tag` for that type is mandatory. By default Vonage sends the `response` category to Facebook Messenger.",
+              "type": "string",
+              "enum": [
+                "response",
+                "update",
+                "message_tag"
+              ]
+            },
+            "tag": {
+              "description": "‘A full list of the possible tags is available on [developers.facebook.com](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags)'",
+              "type": "string"
+            }
+          }
+        },
+        "whatsapp": {
+          "type": "object",
+          "properties": {
+            "policy": {
+              "description": "Please note that WhatsApp will deprecate `fallback` policy in January 2020. There are two policies that you can specify when sending a Message Template: `deterministic` and `fallback`. `deterministic` — Deliver the Message Template in exactly the language and locale asked for. `fallback` — Deliver the Message Template in the language that matches users language/locale setting on device. If one can not be found, deliver using the specified fallback language.",
+              "type": "string",
+              "enum": [
+                "fallback",
+                "deterministic"
+              ]
+            },
+            "locale": {
+              "description": "We are using the industry standard, BCP 47, for locales. So in your API call to the /messages API you will need to put “en-GB” and this will refer to the “en_GB” template for WhatsApp. A full list of the possible locales is available on [developers.facebook.com](https://developers.facebook.com/docs/whatsapp/message-templates/creation#translations).",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "TemplateProperty": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the template."
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "default": {
+                "type": "string",
+                "description": "The parameters are an array. The first value being `{{1}}` in the template."
+              }
+            }
+          }
+        }
+      }
+    },
+    "ToProperty": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of message that you want to send.",
+          "enum": [
+            "sms",
+            "viber_service_msg",
+            "messenger",
+            "whatsapp"
+          ]
+        },
+        "id": {
+          "description": "The ID of the message recipient.\n\n**Messenger**: This value should be the `from.id` value you received in the inbound messenger event.\n\n**SMS**: or **Viber**: or **WhatsApp** This value is not required.\n",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "description": "**SMS**: or **MMS**: or **Viber**: or **WhatsApp** The phone number of the message recipient in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a leading + or 00 when entering a phone number, start with the country code, for example, 447700900000.\n\n**Messenger**: This value is not required.\n"
+        }
+      }
+    },
+    "VideoProperty": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the video attachment.\n\n**messenger** supports .mp4\n\n**whatsapp** supports .mp4 and .3gpp. Note, only H.264 video codec and AAC audio codec is supported.\n",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      }
+    },
+    "sendMessage": {
+      "type": "object",
+      "description": "Send Message",
+      "required": [
+        "to",
+        "from",
+        "message"
+      ],
+      "properties": {
+        "to": {
+          "$ref": "#/$defs/ToProperty"
+        },
+        "from": {
+          "$ref": "#/$defs/FromProperty"
+        },
+        "message": {
+          "$ref": "#/$defs/MessageProperty"
+        }
+      }
+    },
+    "sendWithFailoverMessage": {
+      "type": "object",
+      "description": "Send With Failover Message",
+      "required": [
+        "to",
+        "from",
+        "message"
+      ],
+      "properties": {
+        "to": {
+          "$ref": "#/$defs/ToProperty"
+        },
+        "from": {
+          "$ref": "#/$defs/FromProperty"
+        },
+        "message": {
+          "$ref": "#/$defs/MessageProperty"
+        },
+        "failover": {
+          "$ref": "#/$defs/FailoverProperty"
+        }
+      }
+    }
+  }
+}

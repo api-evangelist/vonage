@@ -1,0 +1,285 @@
+openapi: 3.2.0
+info:
+  title: Vonage Configuration API
+  version: 1.0.4
+  contact:
+    name: Vonage Developer Relations
+    email: devrel@vonage.com
+    url: https://developer.vonage.com/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.vonage.com/legal/communications-apis/terms-of-use/
+  x-metaDescription: Find quick answers to questions about the Vonage Account API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Account API Reference | Vonage API Documentation
+  description: 'Operations tagged Configuration across 2 of this provider''s published API definitions: vonage-account-openapi.json, vonage-account-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://rest.nexmo.com
+  description: Rest Server
+security:
+- basicAuth: []
+tags:
+- name: Configuration
+  description: Manage the settings on your account
+paths:
+  /account/settings:
+    post:
+      operationId: changeAccountSettings
+      summary: Change Account Settings
+      description: 'Update the default webhook URLs associated with your account:
+
+        * Callback URL for incoming SMS messages
+
+        * Callback URL for delivery receipts
+
+
+        Note that the URLs you provide must be valid and active. Vonage will check that they return a 200 OK response before the setting is saved.'
+      tags:
+      - Configuration
+      requestBody:
+        $ref: '#/components/requestBodies/AccountSettingsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AccountSettingsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    servers:
+    - url: https://rest.nexmo.com
+      description: Rest Server
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Base error response following RFC 7807
+      required:
+      - type
+      - title
+      - instance
+      properties:
+        type:
+          type: string
+          description: Link to error / remediation options
+          example: https://developer.vonage.com/api-errors
+        title:
+          type: string
+          description: Generic error message
+          example: An error occurred
+        detail:
+          type: string
+          description: Additional information about the error
+          example: More details about what went wrong
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    AccountSettings:
+      type: object
+      xml:
+        name: account-settings
+      properties:
+        mo-callback-url:
+          type: string
+          format: url
+          description: The current or updated inbound message webhook URI
+          example: https://example.com/webhooks/inbound-sms
+        dr-callback-url:
+          type: string
+          format: url
+          description: The current or updated delivery receipt webhook URI
+          example: https://example.com/webhooks/delivery-receipt
+        max-outbound-request:
+          type: integer
+          description: The maximum number of outbound messages per second.
+          example: 30
+        max-inbound-request:
+          type: integer
+          description: The maximum number of inbound messages per second.
+          example: 30
+        max-calls-per-second:
+          type: integer
+          description: The maximum number of API calls per second.
+          example: 30
+  requestBodies:
+    AccountSettingsRequest:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              moCallBackUrl:
+                description: 'The default webhook URL for inbound SMS. If an SMS is received at a Vonage number  that does not have its own inbound SMS webhook configured, Vonage makes a request here.
+
+                  Send an empty string to unset this value.'
+                type: string
+                format: url
+                example: https://example.com/webhooks/inbound-sms
+              drCallBackUrl:
+                description: 'The webhook URL that Vonage makes a request to when a delivery receipt is available  for an SMS sent by one of your Vonage numbers.
+
+                  Send an empty string to unset this value.'
+                type: string
+                format: url
+                example: https://example.com/webhooks/delivery-receipt
+              httpForwardMethod:
+                description: The HTTP method to use when making requests to the callback URLs.
+                type: string
+                format: enum
+                enum:
+                - GET_QUERY_PARAMS
+                - POST_QUERY_PARAMS
+                - POST_JSON
+                example: POST_QUERY_PARAMS
+  headers:
+    X-RateLimit-Reset:
+      description: Unix timestamp when limit resets
+      schema:
+        type: integer
+        example: 1769182705723
+    X-Request-Id:
+      description: A unique identifier for the request, used for tracking and debugging
+      schema:
+        type: string
+        format: uuid
+        example: f94b4e56-604e-07e5-e5ad-5a7228618f81
+    Retry-After:
+      description: Seconds until next request allowed
+      schema:
+        type: integer
+        example: 15
+    X-RateLimit-Remaining:
+      description: Remaining requests
+      schema:
+        type: integer
+        example: 5
+    X-RateLimit-Limit:
+      description: Request limit per hour
+      schema:
+        type: integer
+        example: 30
+  responses:
+    '500':
+      description: Internal error
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    AccountSettingsResponse:
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      description: OK. Settings were updated if supplied, the details of the current settings are included in the response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountSettings'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/AccountSettings'
+    '401':
+      description: Authentication failure
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - description: Missing or Invalid Credentials
+              type: object
+              required:
+              - type
+              - title
+              - instance
+              properties:
+                type:
+                  type: string
+                  description: Link to error / remediation options
+                  example: https://developer.vonage.com/api-errors/#unathorized
+                title:
+                  type: string
+                  description: Generic error message
+                  example: You did not provide correct credentials.
+                detail:
+                  type: string
+                  description: Additional information about the error
+                  example: Check that you're using the correct credentials, and that your account has this feature enabled
+                instance:
+                  type: string
+                  description: Internal Trace ID
+                  example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+            - description: Invalid Application Type
+              type: object
+              required:
+              - type
+              - title
+              - instance
+              properties:
+                type:
+                  type: string
+                  description: Link to error / remediation options
+                  example: https://developer.vonage.com/api-errors/#unprovisioned
+                title:
+                  type: string
+                  description: Generic error message
+                  example: The crendentials provided do not have access to the requested product
+                detail:
+                  type: string
+                  description: Additional information about the error
+                  example: Check your API key is correct and has been whitelisted
+                instance:
+                  type: string
+                  description: Internal Trace ID
+                  example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    '429':
+      description: Too Many Requests
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Reset:
+          $ref: '#/components/headers/X-RateLimit-Reset'
+        Retry-After:
+          $ref: '#/components/headers/Retry-After'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-refined-from:
+- vonage-account-openapi.json
+- vonage-account-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

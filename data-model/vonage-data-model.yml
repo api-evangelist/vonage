@@ -1,55 +1,2713 @@
-generated: '2026-10-03'
+generated: '2026-10-08'
 method: derived
 generator: derive-data-model.py
 source:
-- openapi/vonage-applications-api-openapi.yml
-- openapi/vonage-messages-api-openapi.yml
-- openapi/vonage-numbers-api-openapi.yml
-- openapi/vonage-sms-api-openapi.yml
-- openapi/vonage-verify-api-openapi.yml
-- openapi/vonage-voice-api-openapi.yml
+- openapi/vonage-account-openapi.yml
+- openapi/vonage-application-v2-openapi.yml
+- openapi/vonage-audit-openapi.yml
+- openapi/vonage-conversation-openapi.yml
+- openapi/vonage-dispatch-openapi.yml
+- openapi/vonage-external-accounts-openapi.yml
+- openapi/vonage-identity-insights-openapi.yml
+- openapi/vonage-location-retrieval-openapi.yml
+- openapi/vonage-media-openapi.yml
+- openapi/vonage-meetings-openapi.yml
+- openapi/vonage-messages-openapi.yml
+- openapi/vonage-number-insight-openapi.yml
 notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
 summary:
-  entities: 15
-  entities_in_spec: 15
-  relationships: 2
+  entities: 400
+  entities_in_spec: 626
+  relationships: 410
 entities:
-- name: Application
-  fields: 4
-- name: ApplicationList
-  fields: 5
-- name: ApplicationRequest
+- name: 401Response
   fields: 2
-- name: AvailableNumberList
-  fields: 2
-- name: Call
-  fields: 12
-- name: CallList
-  fields: 4
-- name: CreateCallRequest
-  fields: 6
-- name: MessageRequest
-  fields: 6
-- name: MessageResponse
+- name: 403Response
   fields: 1
-- name: Number
-  fields: 5
-- name: NumberList
+- name: AMD_ASYNC
+  fields: 0
+  description: Voice AMD (Advanced Machine Detection)
+- name: ASR_ASYNC
+  fields: 0
+  description: Voice ASR
+- name: AccountBalance
   fields: 2
-- name: SmsResponse
-  fields: 2
-- name: VerifyCheckResponse
+- name: AccountResponse
+  fields: 6
+- name: AccountSettings
   fields: 5
-- name: VerifyResponse
+- name: Add-Stream
   fields: 3
-- name: VerifySearchResponse
+- name: Add-Stream-To-Archive
+  fields: 3
+- name: AggregatedInsightRequest
+  fields: 3
+- name: AggregatedInsightResponse
+  fields: 2
+- name: AmdFields
+  fields: 1
+  description: Answering Machine Detection (AMD)
+- name: AmdReportResponse
+  fields: 0
+  description: Voice AMD (Advanced Machine Detection)
+- name: Application
+  fields: 3
+- name: ApplicationResponse
+  fields: 4
+- name: ApplicationResponseCollection
+  fields: 5
+- name: Archive-Detail
+  fields: 20
+- name: AsrFields
+  fields: 4
+  description: Automatic Speech Recognition (ASR)
+- name: AsrReportResponse
+  fields: 0
+  description: Voice ASR
+- name: AsyncBaseRequest
+  fields: 0
+  description: Base structure for asynchronous report request bodies
+- name: AsyncRequestFields
+  fields: 2
+  description: Fields for asynchronous report requests
+- name: Audio
+  fields: 0
+- name: AudioProperty
+  fields: 1
+- name: AuditEvent
+  fields: 13
+- name: AuditEventType
+  fields: 2
+- name: AuditEventTypesResp
+  fields: 1
+- name: AuditResp
+  fields: 3
+- name: AuthenticationError
+  fields: 2
+- name: AvailableFeatures
+  fields: 5
+- name: BadRequestError
+  fields: 3
+- name: BaseRecordsResponse
+  fields: 8
+  description: Base synchronous response containing request metadata and pagination links.
+- name: BaseRequestParams
+  fields: 4
+  description: Base parameters for all report requests
+- name: BaseStatus
+  fields: 2
+  description: Indicates the status of the information returned for the specified phone number.
+- name: Broadcast-Detail
+  fields: 16
+- name: Button
+  fields: 0
+- name: CONVERSATION-EVENT_ASYNC
+  fields: 0
+  description: Conversation Event
+- name: CONVERSATION-MESSAGE_ASYNC
+  fields: 0
+  description: Conversation Message
+- name: CallbackUrl
+  fields: 2
+- name: CallbackUrls
+  fields: 3
+  description: Provides callback URLs to listen to events
+- name: CheckCodeByCode
+  fields: 1
+- name: CheckCodeByToken
+  fields: 1
+- name: Circle
+  fields: 0
+  description: Circular area
+- name: CodeSubmitSuccess
+  fields: 2
+- name: ConflictError
+  fields: 3
+- name: Content
+  fields: 0
+- name: Context
+  fields: 2
+  description: This is only present for the Inbound Message where the user is quoting or reacting to another message.
+    It provides information about the quoted message and/or the product message being responded to.
+- name: ContextAppCreate
+  fields: 2
+  description: App Creation
+- name: ContextNumberLinking
+  fields: 4
+  description: Number Linking
+- name: ContextNumberUpdate
+  fields: 5
+  description: Number Update
+- name: ConversationEventFields
+  fields: 2
+  description: Conversation Event API
+- name: ConversationEventReportResponse
+  fields: 0
+  description: Conversation Event
+- name: ConversationMessageFields
+  fields: 1
+  description: Conversation Message API
+- name: ConversationMessageReportResponse
+  fields: 0
+  description: Conversation Message
+- name: ConversationsEventRecord
+  fields: 11
+- name: ConversationsEventRecordsResponse
+  fields: 0
+  description: Conversations Event
+- name: ConversationsMessageRecord
+  fields: 15
+  description: Conversations Message
+- name: ConversationsMessageRecordsResponse
+  fields: 0
+  description: Conversations Message
+- name: CountryObject
+  fields: 6
+- name: CreateCallRequestAnswerUrl
+  fields: 0
+- name: CreateCallRequestBase
+  fields: 9
+- name: CreateCallRequestNcco
+  fields: 0
+- name: CreateCallResponse
+  fields: 4
+- name: CreateInstantRoomRequest
+  fields: 10
+- name: CreateLongTermRoomRequest
   fields: 12
+- name: CreateThemeDetails
+  fields: 4
+- name: CurrentCarrierInsightRequest
+  fields: 0
+  description: Request the `current_carrier` insight. This field must always be set to an empty object `{}`.
+- name: CurrentCarrierInsightResponse
+  fields: 5
+  description: Information about the network the number is currently assigned. This is applicable to mobile numbers
+    only.
+- name: Custom
+  fields: 0
+- name: DTMFRequest
+  fields: 1
+- name: DTMFResponse
+  fields: 2
+- name: DeliveryReceipt
+  fields: 11
+- name: Destination
+  fields: 1
+- name: DeviceSwapInsightRequest
+  fields: 1
+  description: Request the `device_swap` insight.
+- name: DeviceSwapInsightResponse
+  fields: 3
+  description: Information about any recent physical device change for a mobile phone number. A recent device swap
+    may indicate a potential risk of account takeover.
+- name: DialInNumber
+  fields: 3
+- name: EmailContent
+  fields: 0
+- name: EmailContentHtml
+  fields: 2
+- name: EmailContentText
+  fields: 2
+- name: EndpointApp
+  fields: 2
+  description: Connect to an App User
+- name: EndpointPhoneFrom
+  fields: 2
+  description: 'Connect to a Phone (PSTN) number. This property is mutually exclusive with `random_from_number`:
+    you must specify one (`from`) or the other (`random_from_number: true`).'
+- name: EndpointPhoneTo
+  fields: 4
+  description: Connect to a Phone (PSTN) number
+- name: EndpointSip
+  fields: 4
+  description: Connect to a SIP Endpoint
+- name: EndpointVBCExtension
+  fields: 2
+  description: Connect to a VBC extension
+- name: EndpointWebsocket
+  fields: 5
+  description: Connect to a Websocket
+- name: Error
+  fields: 4
+  description: The error format is standardized to the 4xx/5xx range with a code and a human readable explanation.
+- name: ErrorBadRequest
+  fields: 3
+- name: ErrorChannel
+  fields: 4
+  description: Unsupported channel
+- name: ErrorChannelParams
+  fields: 5
+  description: Invalid channel parameters
+- name: ErrorClientReference
+  fields: 4
+  description: Invalid client reference
+- name: ErrorConflict
+  fields: 4
+  description: Concurrent verifications to the same number are not allowed.
+- name: ErrorConflictTriggerNext
+  fields: 4
+  description: The trigger-next operation cannot be performed at this time due to a replication delay. Please try
+    again later.
+- name: ErrorForbidden
+  fields: 3
+- name: ErrorInternalError
+  fields: 4
+  description: There was an error processing your request in the Platform.
+- name: ErrorInvalidCode
+  fields: 4
+  description: The code you provided does not match the expected value.
+- name: ErrorInvalidId
+  fields: 4
+- name: ErrorInvalidJson
+  fields: 4
+  description: Invalid JSON
+- name: ErrorInvalidParams
+  fields: 5
+- name: ErrorJwtExpired
+  fields: 4
+  description: JWT expired
+- name: ErrorMessage
+  fields: 2
+- name: ErrorMessageParams
+  fields: 5
+  description: Invalid message parameters
+- name: ErrorMessageType
+  fields: 4
+  description: Invalid message type
+- name: ErrorNetworkNotSupported
+  fields: 4
+  description: Network not supported
+- name: ErrorNotFound
+  fields: 3
+- name: ErrorPaymentRequired
+  fields: 4
+  description: This request could not be performed due to your account balance being low.
+- name: ErrorPrematureRedaction
+  fields: 4
+  description: Premature Redaction
+- name: ErrorRateLimited
+  fields: 4
+  description: Please wait, then retry your request.
+- name: ErrorRecipient
+  fields: 4
+  description: Invalid recipient
+- name: ErrorResponse
+  fields: 4
+  description: Base error response following RFC 7807
+- name: ErrorResponseWithInvalidParameters
+  fields: 0
+- name: ErrorSender
+  fields: 4
+  description: Invalid sender
+- name: ErrorSilentAuth
+  fields: 4
+  description: Silent authentication failed
+- name: ErrorThrottled
+  fields: 4
+- name: ErrorUnauthorized
+  fields: 3
+- name: ErrorUnauthorizedMissingCredentials
+  fields: 4
+  description: Invalid Credentials
+- name: ErrorUnprovisioned
+  fields: 4
+  description: Unprovisioned
+- name: ErrorUnsupportedProduct
+  fields: 4
+  description: Unsupported Product
+- name: ErrorXml
+  fields: 1
+  description: Error
+- name: EventLink
+  fields: 1
+  description: A link to this audit event object if you were to retrieve it individually.
+- name: Experience-Composer
+  fields: 0
+- name: Experience-Composer-Base
+  fields: 11
+- name: Failover
+  fields: 1
+- name: FailoverProperty
+  fields: 2
+  description: Please note that last message does not have failover attribute inside it. All other messages must
+    contain a failover attribute.
+- name: FormatInsightResponse
+  fields: 9
+  description: Validates the format of a phone number and provides information based on that format.
+- name: FromProperty
+  fields: 3
+- name: GetCallResponse
+  fields: 13
+- name: HalLink
+  fields: 5
+  description: A single HAL link object
+- name: InAppVoiceFields
+  fields: 3
+  description: In-App Voice
+- name: InboundMessage
+  fields: 16
+- name: InboundOrigin
+  fields: 1
+- name: InboundReaction
+  fields: 0
+- name: InitialJoinOptions
+  fields: 1
+  description: Sets the default options for participants
+- name: InsightStatus
+  fields: 0
+- name: Link
+  fields: 1
+- name: ListFragmentsResponse
+  fields: 6
+- name: ListTemplatesResponse
+  fields: 6
+- name: LocationCircle
+  fields: 3
+  description: Location object
+- name: LocationPolygon
+  fields: 2
+  description: Location object
+- name: LocationVerificationInsightResponse
+  fields: 4
+  description: Verify whether the location of certain user device is within the area specified.
+- name: Message
+  fields: 8
+- name: MessageProperty
+  fields: 4
+- name: MessageStatus
+  fields: 8
+  description: The callbacks for the message status are the same as defined in the Messaging API. The only difference
+    will be that dispatch_uuid and link will be appended.
+- name: MessagesInboundRecord
+  fields: 14
+  description: Messages (Inbound)
+- name: MessagesInboundRecordsResponse
+  fields: 0
+  description: Messages (Inbound)
+- name: MessagesOutboundRecord
+  fields: 30
+  description: Messages (Outbound)
+- name: MessagesOutboundRecordsResponse
+  fields: 0
+  description: Messages (Outbound)
+- name: NetworkApiEventRecord
+  fields: 17
+  description: Network API Event
+- name: NetworkApiEventRecordsResponse
+  fields: 0
+  description: Network API Event
+- name: NetworkObject
+  fields: 7
+- name: NumberInsightRecord
+  fields: 20
+  description: Number Insight v1
+- name: NumberInsightRecordsResponse
+  fields: 0
+  description: Number Insight
+- name: OriginalCarrierInsightResponse
+  fields: 5
+  description: Information about the network the number was initially assigned. Information based on the numbering
+    plan prefix.
+- name: OutboundEmailContent
+  fields: 0
+- name: OutboundEmailHtml
+  fields: 0
+- name: OutboundEmailText
+  fields: 0
+- name: OutboundMMSAudio
+  fields: 0
+- name: OutboundMMSContent
+  fields: 0
+- name: OutboundMMSFile
+  fields: 0
+- name: OutboundMMSImage
+  fields: 0
+- name: OutboundMMSText
+  fields: 0
+- name: OutboundMMSVideo
+  fields: 0
+- name: OutboundMMSvCard
+  fields: 0
+- name: OutboundMessengerAudio
+  fields: 0
+- name: OutboundMessengerFile
+  fields: 0
+- name: OutboundMessengerImage
+  fields: 0
+- name: OutboundMessengerText
+  fields: 0
+- name: OutboundMessengerVideo
+  fields: 0
+- name: OutboundRCSCard
+  fields: 0
+- name: OutboundRCSCarousel
+  fields: 0
+- name: OutboundRCSCustom
+  fields: 0
+- name: OutboundRCSFile
+  fields: 0
+- name: OutboundRCSImage
+  fields: 0
+- name: OutboundRCSText
+  fields: 0
+- name: OutboundRCSVideo
+  fields: 0
+- name: OutboundReaction
+  fields: 0
+- name: OutboundSMSText
+  fields: 0
+- name: OutboundViberFile
+  fields: 0
+- name: OutboundViberImage
+  fields: 0
+- name: OutboundViberText
+  fields: 0
+- name: OutboundViberVideo
+  fields: 0
+- name: OutboundWhatsAppAudio
+  fields: 0
+- name: OutboundWhatsAppCustom
+  fields: 0
+- name: OutboundWhatsAppFile
+  fields: 0
+- name: OutboundWhatsAppImage
+  fields: 0
+- name: OutboundWhatsAppReaction
+  fields: 0
+- name: OutboundWhatsAppSticker
+  fields: 0
+- name: OutboundWhatsAppTemplate
+  fields: 0
+- name: OutboundWhatsAppText
+  fields: 0
+- name: OutboundWhatsAppVideo
+  fields: 0
+- name: PageLinks
+  fields: 5
+- name: PaginationData
+  fields: 4
+  description: Page containing results.
+- name: PaginationLinks
+  fields: 3
+  description: Container containing self, next and last page links.
+- name: ParticipantJoinedCallback
+  fields: 7
+  description: Participant joined
+- name: ParticipantLeftCallback
+  fields: 7
+  description: Participant left
+- name: Point
+  fields: 2
+  description: Coordinates (latitude, longitude) defining a location in a map
+- name: Polygon
+  fields: 0
+  description: Polygonal area
+- name: PricingCountriesResponse
+  fields: 2
+- name: PricingCountryResponse
+  fields: 7
+- name: RCSCardProperties
+  fields: 8
+- name: RCSSuggestedActionCreateCalendarEvent
+  fields: 0
+- name: RCSSuggestedActionDial
+  fields: 0
+- name: RCSSuggestedActionOpenURL
+  fields: 0
+- name: RCSSuggestedActionOpenURLWebview
+  fields: 0
+- name: RCSSuggestedActionShareLocation
+  fields: 0
+- name: RCSSuggestedActionViewLocation
+  fields: 0
+- name: RCSSuggestedReply
+  fields: 3
+- name: ReachabilityInsightResponse
+  fields: 4
+  description: Check the connectivity status for a given device, including if it is connected to the newtork for
+    data, SMS, or both.
+- name: ReactionReact
+  fields: 2
+  description: React
+- name: ReactionUnreact
+  fields: 1
+  description: Unreact
+- name: Recording
+  fields: 6
+- name: RecordingEndedCallback
+  fields: 6
+  description: Recording ended
+- name: RecordingOptions
+  fields: 2
+  description: An object containing various meeting recording options
+- name: RecordingStartedCallback
+  fields: 3
+  description: Recording started
+- name: RecordingUploadedCallback
+  fields: 8
+  description: Recording uploaded
+- name: ReportsUsageRecord
+  fields: 18
+  description: Reports Usage
+- name: ReportsUsageRecordsResponse
+  fields: 0
+  description: Reports Usage
+- name: RoamingInsightResponse
+  fields: 4
+  description: Check roaming status and country for a given device on a mobile network.
+- name: Room
+  fields: 17
+- name: RoomExpiredCallback
+  fields: 5
+  description: Room expired
+- name: SMS
+  fields: 2
+  description: Message sent
+- name: SMSChannel
+  fields: 7
+- name: SMSXml
+  fields: 1
+  description: Message sent
+- name: SecretInfo
+  fields: 3
+- name: SelfLink
+  fields: 1
+  description: Link to the current resource (always required in HAL)
+- name: SessionEndedCallback
+  fields: 5
+  description: Session ended
+- name: SessionStartedCallback
+  fields: 4
+  description: Session started
+- name: SimSwapInsightResponse
+  fields: 3
+  description: Information about any recent SIM pairing changes related to a mobile account. A recent SIM swap may
+    indicate a potential risk of account takeover.
+- name: SmsInboundRecord
+  fields: 15
+  description: SMS (Inbound)
+- name: SmsInboundRecordsResponse
+  fields: 0
+  description: SMS (Inbound)
+- name: SmsOutboundRecord
+  fields: 30
+  description: SMS (Outbound)
+- name: SmsOutboundRecordsResponse
+  fields: 0
+  description: SMS (Outbound)
+- name: SmsTrafficControlRecord
+  fields: 6
+  description: SMS Traffic Control
+- name: SmsTrafficControlRecordsResponse
+  fields: 0
+  description: SMS Traffic Control
+- name: Sticker
+  fields: 0
+- name: StickerWithID
+  fields: 1
+  description: Sticker with ID (deprecated)
+- name: StickerWithURL
+  fields: 1
+  description: Sticker with URL
+- name: SubscriberMatchInsightResponse
+  fields: 13
+  description: Compare the information associated with a particular mobile phone user with that on file (and verified)
+    by the mobile phone user's Operator and trusted third-party data sources.
+- name: SubscriberMatchStatus
+  fields: 0
+- name: Theme
+  fields: 14
+- name: ToProperty
+  fields: 3
+- name: Transcription
+  fields: 5
+  description: Properties of the transcription attached to this archive
+- name: UiSettings
+  fields: 1
+  description: Provides options to customize the user interface
+- name: Usage
+  fields: 2
+- name: VerifyRecord
+  fields: 24
+  description: Verify v1
+- name: VerifyRecordsResponse
+  fields: 0
+  description: Verify v1
+- name: VerifyV2Record
+  fields: 23
+  description: Verify v2
+- name: VerifyV2RecordsResponse
+  fields: 0
+  description: Verify v2
+- name: VideoApiRecord
+  fields: 17
+  description: Video API
+- name: VideoApiRecordsResponse
+  fields: 0
+  description: Video API
+- name: VoiceAmdRecord
+  fields: 13
+  description: Voice AMD (Advanced Machine Detection)
+- name: VoiceAmdRecordsResponse
+  fields: 0
+  description: Voice AMD (Advanced Machine Detection)
+- name: VoiceAsrRecord
+  fields: 16
+  description: Voice ASR
+- name: VoiceAsrRecordsResponse
+  fields: 0
+  description: Voice ASR
+- name: VoiceFailedRecord
+  fields: 15
+  description: Voice Failed
+- name: VoiceFailedRecordsResponse
+  fields: 0
+  description: Voice Failed
+- name: VoiceInAppRecord
+  fields: 15
+  description: In-App Voice
+- name: VoiceInAppRecordsResponse
+  fields: 0
+  description: In-App Voice
+- name: VoiceRecord
+  fields: 21
+  description: Voice Call
+- name: VoiceRecordsResponse
+  fields: 0
+  description: Voice Call
+- name: VoiceTtsRecord
+  fields: 22
+  description: Voice TTS
+- name: VoiceTtsRecordsResponse
+  fields: 0
+  description: Voice TTS
+- name: VoiceWebSocketRecord
+  fields: 10
+  description: Voice WebSocket Call
+- name: VoiceWebSocketRecordsResponse
+  fields: 0
+  description: Voice WebSocket Call
+- name: WhatsAppSender
+  fields: 1
+- name: WhatsAppUserIdentity
+  fields: 3
+- name: WhatsAppUserProfile
+  fields: 2
+- name: _links
+  fields: 0
+  description: HAL Links object
+- name: audioasrdone_event_response
+  fields: 7
+  description: audio:asr:done - Automatic speech recognition completed
+- name: audioasrrecorddone_event_response
+  fields: 7
+  description: audio:asr:record:done - Automatic speech recognition of recording completed
+- name: audiodtmf_body_digit
+  fields: 5
+  description: Digit no method and duration
+- name: audiodtmf_body_digit_no_method
+  fields: 3
+  description: Digit no method and duration
+- name: audiodtmf_body_digits
+  fields: 5
+  description: Digits no method and duration
+- name: audiodtmf_body_digits_no_method
+  fields: 3
+  description: Digits no method and duration
+- name: audiodtmf_event
+  fields: 3
+  description: audio:dtmf - Play DTMF audio
+- name: audiodtmf_event_response
+  fields: 7
+  description: audio:dtmf - Play DTMF audio
+- name: audioearmuffoff_event_response
+  fields: 7
+  description: audio:earmuff:off - Turn off audio earmuff
+- name: audioearmuffon_event_response
+  fields: 7
+  description: audio:earmuff:on - Turn on audio earmuff
+- name: audiomuteoff_event_response
+  fields: 7
+  description: audio:mute:off - Unmute audio
+- name: audiomuteon_event_response
+  fields: 7
+  description: audio:mute:on - Mute audio
+- name: audioplay_event_response
+  fields: 7
+  description: audio:play - Play Audio
+- name: audioplaydone_event_response
+  fields: 7
+  description: audio:play:done - Playing audio has stopped
+- name: audioplaystop_event_response
+  fields: 7
+  description: audio:play:stop - Stop currently playing audio
+- name: audiorecord_event_response
+  fields: 7
+  description: audio:record - Record the audio
+- name: audiorecorddone_event_response
+  fields: 7
+  description: audio:record:done - Recording the audio has completed
+- name: audiorecordstop_event_response
+  fields: 7
+  description: audio:record:stop - Stop current recording of audio
+- name: audiosay_event_response
+  fields: 7
+  description: audio:say - Use TTS to speak the given text
+- name: audiosaydone_event_response
+  fields: 7
+  description: audio:say:done - Playing TTS has stopped
+- name: audiosaystop_event_response
+  fields: 7
+  description: audio:say:stop - Stop currently playing TTS
+- name: audiospeakingoff_event_response
+  fields: 7
+  description: audio:speaking:off - Speaking off
+- name: audiospeakingon_event_response
+  fields: 7
+  description: audio:speaking:on - Speaking on
+- name: available-numbers
+  fields: 2
+- name: availablenumber
+  fields: 7
+- name: channel
+  fields: 0
+  description: A user who joins a conversation as a member can have one channel per membership. For more details
+    see [channel concept docs](/voice/voice-api/concepts/in-app-calling)
+- name: channelOptionsMms
+  fields: 7
+- name: conversation
+  fields: 9
+  description: Conversation Object
+- name: conversation_links
+  fields: 1
+- name: conversation_lite
+  fields: 6
+- name: conversation_members
+  fields: 2
+- name: conversation_numbers_app
+  fields: 2
+  description: App Channel
+- name: conversation_numbers_phone
+  fields: 2
+  description: Phone Channel
+- name: conversation_numbers_sip
+  fields: 4
+  description: SIP Channel
+- name: conversation_numbers_vbc
+  fields: 2
+  description: VBC Channel
+- name: conversation_numbers_websocket
+  fields: 3
+  description: Websocket Channel
+- name: conversation_numbers_whatsappvoice
+  fields: 2
+  description: Whatsapp Voice Channel
+- name: conversation_properties
+  fields: 2
+  description: Conversation properties
+- name: conversation_timestamp
+  fields: 3
+- name: conversation_user
+  fields: 9
+- name: conversationupdate_event_response
+  fields: 7
+  description: conversation:updated - Conversation details have been updated
+- name: createWorkflow
+  fields: 2
+- name: custom_event_response
+  fields: 7
+  description: custom - Custom event
+- name: embedded_event_from
+  fields: 2
+- name: ephemeral_event_response
+  fields: 7
+  description: ephemeral - Ephemeral
+- name: event_audio_channels
+  fields: 5
+- name: event_body
+  fields: 0
+  description: Event Body
+- name: event_channel
+  fields: 5
+- name: event_invited_member
+  fields: 7
+- name: event_links
+  fields: 1
+- name: event_media
+  fields: 2
+  description: Media Object with object audio
+- name: event_media_boolean
+  fields: 2
+  description: Media Object with boolean audio
+- name: event_messenger_channel
+  fields: 3
+  description: Messenger Channel
+- name: event_mms_channel
+  fields: 3
+  description: MMS Channel
+- name: event_retrieved
+  fields: 8
+  description: Retrieve Events Response Payload Object Item
+- name: event_sms_channel
+  fields: 3
+  description: SMS Channel
+- name: event_user
+  fields: 5
+- name: event_viber_channel
+  fields: 3
+  description: Viber Channel
+- name: event_whatsapp_channel
+  fields: 3
+  description: Whatsapp Channel
+- name: eventdelete_event_response
+  fields: 7
+  description: event:delete - Event has been Deleted
+- name: from
+  fields: 2
+  description: The endpoint you called from. Possible values are the same as `to`.
+- name: inbound-numbers
+  fields: 2
+- name: inboundMessageMMS
+  fields: 7
+- name: inboundMessageSMS
+  fields: 9
+- name: inboundWhatsAppMessageCommon
+  fields: 9
+- name: leg_status
+  fields: 1
+  description: Leg Status started, ringing or answered
+- name: leg_status_complete
+  fields: 3
+  description: Leg Status completed
+- name: leg_status_history_knocker
+  fields: 4
+  description: Leg Status History with Knocker ID
+- name: leg_status_history_member
+  fields: 5
+  description: Leg Status History with Member ID
+- name: legstatusupdate_event_response
+  fields: 7
+  description: leg:status:update - Leg status update
+- name: media
+  fields: 2
+  description: Details about the current media setting states
+- name: member
+  fields: 11
+- name: member_timestamp
+  fields: 3
+- name: memberinvited_event_response
+  fields: 7
+  description: member:invited - Member Invited
+- name: memberjoined_event_response
+  fields: 7
+  description: member:joined - Member Joined
+- name: memberleft_event_response
+  fields: 7
+  description: member:left - Member Jeft
+- name: membermedia_event_response
+  fields: 7
+  description: member:media - Member Media
+- name: membermessagestatus_event_response
+  fields: 7
+  description: member:message:status - Member Message Status
+- name: messageStatusBase
+  fields: 6
+- name: messageStatusError
+  fields: 4
+  description: If the message encountered a problem a descriptive error will be supplied in this object.
+- name: messageStatusMMS
+  fields: 0
+- name: messageStatusRCS
+  fields: 0
+- name: messageStatusSMS
+  fields: 0
+- name: messageStatusWhatsApp
+  fields: 0
+- name: message_body_audio
+  fields: 2
+  description: Audio Message Body
+- name: message_body_custom
+  fields: 2
+  description: Custom Message Body
+- name: message_body_file
+  fields: 2
+  description: File Message Body
+- name: message_body_image
+  fields: 2
+  description: Image Message Body
+- name: message_body_location
+  fields: 2
+  description: Location Message Body
+- name: message_body_random
+  fields: 1
+  description: Random Message Body
+- name: message_body_template
+  fields: 2
+  description: Template Message Body
+- name: message_body_text
+  fields: 2
+  description: Text Message Body
+- name: message_body_vcard
+  fields: 3
+  description: VCard Message Body
+- name: message_body_video
+  fields: 2
+  description: Video Message Body
+- name: message_event
+  fields: 3
+  description: message - Message (Text, Image, Audio, Video, File, Template, Custom, VCard, Location, Random)
+- name: message_event_response
+  fields: 7
+  description: message - Message (Text, Image, Audio, Video, File, Template, Custom, VCard, Location, Random)
+- name: messagedelivered_event_response
+  fields: 7
+  description: message:delivered - Message delivered
+- name: messagerejected_event_response
+  fields: 7
+  description: message:rejected - Message rejected
+- name: messageseen_event_response
+  fields: 7
+  description: message:seen - Message seen
+- name: messagesubmitted_event_response
+  fields: 7
+  description: message:submitted - Message submitted
+- name: messageundeliverable_event_response
+  fields: 7
+  description: message:undeliverable - Message undeliverable
+- name: mmsMessageObject
+  fields: 1
+  description: An object of optional settings for the MMS message.
+- name: niCallerIdentity
+  fields: 4
+  description: Information about the network `number` is currently connected to.
+- name: niCurrentCarrierProperties
+  fields: 4
+  description: Information about the network `number` is currently connected to. While in some cases and regions
+    it may return information for non-mobile numbers, this field is supported only for mobile numbers.
+- name: niInitialCarrierProperties
+  fields: 4
+  description: Information about the network `number` was initially connected to.
+- name: niRealtimeData
+  fields: 2
+  description: <b>[This parameter is deprecated]</b>  Real time data about the `number`
+- name: niResponseJsonAdvancedAsync
+  fields: 21
+  description: Advanced Response (Async)
+- name: niResponseJsonAdvancedRoamingUnknown
+  fields: 21
+  description: Unknown Roaming
+- name: niResponseJsonAdvancedSync
+  fields: 22
+  description: Advanced Response (sync)
+- name: niResponseJsonStandard
+  fields: 0
+  description: Standard Response
+- name: niResponseXmlAdvanced
+  fields: 19
+  description: Advanced
+- name: niResponseXmlStandard
+  fields: 10
+  description: Standard
+- name: niRoaming
+  fields: 4
+  description: Information about the roaming status for `number`. This is applicable to mobile numbers only. If
+    unknown, this may return a string of `unknown` instead of an object.
+- name: number-limitation
+  fields: 3
+- name: ownednumber
+  fields: 11
+- name: rtcanswer_event_response
+  fields: 7
+  description: rtc:answer - RTC answer
+- name: rtcanswered_event_response
+  fields: 7
+  description: rtc:answered - RTC answered
+- name: rtchangup_event_response
+  fields: 7
+  description: rtc:hangup - RTC hangup
+- name: rtcringing_event_response
+  fields: 7
+  description: rtc:ringing - RTC ringing
+- name: rtcstatus_event_response
+  fields: 7
+  description: rtc:status - RTC status
+- name: rtctransfer_event_response
+  fields: 7
+  description: rtc:transfer - RTC transfer
+- name: sendMessage
+  fields: 3
+  description: Send Message
+- name: sendWithFailoverMessage
+  fields: 4
+  description: Send With Failover Message
+- name: sipamdmachine_event_response
+  fields: 7
+  description: sip:amd_machine - SIP AMD machine
+- name: sipanswered_event_response
+  fields: 7
+  description: sip:answered - SIP answered
+- name: siphangup_event_response
+  fields: 7
+  description: sip:hangup - SIP hangup
+- name: sipmachine_event_response
+  fields: 7
+  description: sip:machine - SIP machine
+- name: sipringing_event_response
+  fields: 7
+  description: sip:ringing - SIP ringing
+- name: sipstatus_event_response
+  fields: 7
+  description: sip:status - Status of SIP
+- name: user
+  fields: 7
+- name: user_channels
+  fields: 9
+- name: user_links
+  fields: 1
+- name: user_lite
+  fields: 4
+- name: user_properties
+  fields: 2
+  description: User properties
 relationships:
-- from: AvailableNumberList
-  to: Number
+- from: SecretInfo
+  to: _links
+  type: has_one
+  via: _links
+- from: SelfLink
+  to: HalLink
+  type: has_one
+  via: self
+- from: user_lite
+  to: user_links
+  type: has_one
+  via: _links
+- from: user
+  to: user_properties
+  type: has_one
+  via: properties
+- from: user
+  to: user_channels
+  type: has_one
+  via: channels
+- from: user
+  to: user_links
+  type: has_one
+  via: _links
+- from: AuditResp
+  to: PaginationLinks
+  type: has_one
+  via: _links
+- from: AuditResp
+  to: PaginationData
+  type: has_one
+  via: page
+- from: AuditEvent
+  to: user
+  type: belongs_to
+  via: user_id
+- from: AuditEvent
+  to: ContextAppCreate
+  type: has_one
+  via: context
+- from: AuditEvent
+  to: ContextNumberLinking
+  type: has_one
+  via: context
+- from: AuditEvent
+  to: ContextNumberUpdate
+  type: has_one
+  via: context
+- from: AuditEvent
+  to: EventLink
+  type: has_one
+  via: _links
+- from: AuditEventTypesResp
+  to: AuditEventType
+  type: has_many
+  via: eventTypes
+- from: ContextNumberLinking
+  to: Application
+  type: belongs_to
+  via: applicationId
+- from: conversation_lite
+  to: conversation_timestamp
+  type: has_one
+  via: timestamp
+- from: conversation_lite
+  to: conversation_links
+  type: has_one
+  via: _links
+- from: conversation_user
+  to: conversation_properties
+  type: has_one
+  via: properties
+- from: conversation_user
+  to: conversation_timestamp
+  type: has_one
+  via: timestamp
+- from: conversation_user
+  to: conversation_links
+  type: has_one
+  via: _links
+- from: conversation_user
+  to: conversation_members
+  type: has_one
+  via: _embedded
+- from: conversation
+  to: conversation_timestamp
+  type: has_one
+  via: timestamp
+- from: conversation
+  to: conversation_properties
+  type: has_one
+  via: properties
+- from: conversation
+  to: conversation_links
+  type: has_one
+  via: _links
+- from: member
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: member
+  to: member_timestamp
+  type: has_one
+  via: timestamp
+- from: member
+  to: channel
+  type: has_one
+  via: channel
+- from: member
+  to: media
+  type: has_one
+  via: media
+- from: event_retrieved
+  to: event_body
+  type: has_one
+  via: body
+- from: embedded_event_from
+  to: event_user
+  type: has_one
+  via: from_user
+- from: event_channel
+  to: channel
+  type: has_one
+  via: to
+- from: event_channel
+  to: channel
+  type: has_one
+  via: from
+- from: event_audio_channels
+  to: conversation_numbers_phone
+  type: has_one
+  via: to
+- from: event_audio_channels
+  to: conversation_numbers_sip
+  type: has_one
+  via: to
+- from: event_audio_channels
+  to: conversation_numbers_app
+  type: has_one
+  via: to
+- from: event_audio_channels
+  to: conversation_numbers_vbc
+  type: has_one
+  via: to
+- from: event_audio_channels
+  to: conversation_numbers_websocket
+  type: has_one
+  via: to
+- from: event_audio_channels
+  to: conversation_numbers_whatsappvoice
+  type: has_one
+  via: to
+- from: event_audio_channels
+  to: conversation_numbers_phone
+  type: has_one
+  via: from
+- from: event_audio_channels
+  to: conversation_numbers_sip
+  type: has_one
+  via: from
+- from: event_audio_channels
+  to: conversation_numbers_app
+  type: has_one
+  via: from
+- from: event_audio_channels
+  to: conversation_numbers_vbc
+  type: has_one
+  via: from
+- from: event_audio_channels
+  to: conversation_numbers_websocket
+  type: has_one
+  via: from
+- from: event_audio_channels
+  to: conversation_numbers_whatsappvoice
+  type: has_one
+  via: from
+- from: leg_status_history_member
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: leg_status_history_member
+  to: member
+  type: belongs_to
+  via: member_id
+- from: leg_status_history_member
+  to: leg_status_complete
+  type: has_one
+  via: state
+- from: leg_status_history_member
+  to: leg_status
+  type: has_one
+  via: state
+- from: leg_status_history_knocker
+  to: leg_status_complete
+  type: has_one
+  via: state
+- from: leg_status_history_knocker
+  to: leg_status
+  type: has_one
+  via: state
+- from: event_invited_member
+  to: event_sms_channel
+  type: has_one
+  via: channel
+- from: event_invited_member
+  to: event_mms_channel
+  type: has_one
+  via: channel
+- from: event_invited_member
+  to: event_whatsapp_channel
+  type: has_one
+  via: channel
+- from: event_invited_member
+  to: event_viber_channel
+  type: has_one
+  via: channel
+- from: event_invited_member
+  to: event_messenger_channel
+  type: has_one
+  via: channel
+- from: event_invited_member
+  to: event_media_boolean
+  type: has_one
+  via: media
+- from: event_invited_member
+  to: event_media
+  type: has_one
+  via: media
+- from: event_invited_member
+  to: member
+  type: belongs_to
+  via: member_id
+- from: event_invited_member
+  to: user
+  type: belongs_to
+  via: user_id
+- from: audiodtmf_body_digit_no_method
+  to: event_channel
+  type: has_one
+  via: channel
+- from: audiodtmf_body_digits_no_method
+  to: event_channel
+  type: has_one
+  via: channel
+- from: audiodtmf_body_digits
+  to: event_channel
+  type: has_one
+  via: channel
+- from: audiodtmf_body_digit
+  to: event_channel
+  type: has_one
+  via: channel
+- from: audiodtmf_event
+  to: audiodtmf_body_digit_no_method
+  type: has_one
+  via: body
+- from: audiodtmf_event
+  to: audiodtmf_body_digits_no_method
+  type: has_one
+  via: body
+- from: audiodtmf_event
+  to: audiodtmf_body_digit
+  type: has_one
+  via: body
+- from: audiodtmf_event
+  to: audiodtmf_body_digits
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_text
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_image
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_audio
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_video
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_file
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_template
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_custom
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_vcard
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_location
+  type: has_one
+  via: body
+- from: message_event
+  to: message_body_random
+  type: has_one
+  via: body
+- from: audioplay_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioplay_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audioplaystop_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioplaystop_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audioplaydone_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioplaydone_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiosay_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiosay_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiosaystop_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiosaystop_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiosaydone_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiosaydone_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiodtmf_event_response
+  to: audiodtmf_body_digit_no_method
+  type: has_one
+  via: body
+- from: audiodtmf_event_response
+  to: audiodtmf_body_digits_no_method
+  type: has_one
+  via: body
+- from: audiodtmf_event_response
+  to: audiodtmf_body_digit
+  type: has_one
+  via: body
+- from: audiodtmf_event_response
+  to: audiodtmf_body_digits
+  type: has_one
+  via: body
+- from: audiodtmf_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiodtmf_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiorecord_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiorecord_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiorecorddone_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiorecorddone_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiorecordstop_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiorecordstop_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiomuteon_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiomuteon_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiomuteoff_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiomuteoff_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audioearmuffon_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioearmuffon_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audioearmuffoff_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioearmuffoff_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiospeakingon_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiospeakingon_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audiospeakingoff_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audiospeakingoff_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audioasrdone_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioasrdone_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: audioasrrecorddone_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: audioasrrecorddone_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: custom_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: custom_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: ephemeral_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: ephemeral_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: memberinvited_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: memberinvited_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: memberjoined_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: memberjoined_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: memberleft_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: memberleft_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: membermedia_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: membermedia_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: conversationupdate_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: conversationupdate_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: eventdelete_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: eventdelete_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: sipstatus_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: sipstatus_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: siphangup_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: siphangup_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: sipanswered_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: sipanswered_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: sipmachine_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: sipmachine_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: sipamdmachine_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: sipamdmachine_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: sipringing_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: sipringing_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: rtcstatus_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: rtcstatus_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: rtctransfer_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: rtctransfer_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: rtchangup_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: rtchangup_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: rtcanswered_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: rtcanswered_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: rtcringing_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: rtcringing_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: rtcanswer_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: rtcanswer_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: legstatusupdate_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: legstatusupdate_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: message_event_response
+  to: message_body_text
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_image
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_audio
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_video
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_file
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_template
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_custom
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_vcard
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_location
+  type: has_one
+  via: body
+- from: message_event_response
+  to: message_body_random
+  type: has_one
+  via: body
+- from: message_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: message_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: messagesubmitted_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: messagesubmitted_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: messagerejected_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: messagerejected_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: messageundeliverable_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: messageundeliverable_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: messageseen_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: messageseen_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: messagedelivered_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: messagedelivered_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: membermessagestatus_event_response
+  to: embedded_event_from
+  type: has_one
+  via: _embedded
+- from: membermessagestatus_event_response
+  to: event_links
+  type: has_one
+  via: _links
+- from: createWorkflow
+  to: sendWithFailoverMessage
+  type: has_many
+  via: workflow
+- from: createWorkflow
+  to: sendMessage
+  type: has_many
+  via: workflow
+- from: sendWithFailoverMessage
+  to: ToProperty
+  type: has_one
+  via: to
+- from: sendWithFailoverMessage
+  to: FromProperty
+  type: has_one
+  via: from
+- from: sendWithFailoverMessage
+  to: MessageProperty
+  type: has_one
+  via: message
+- from: sendWithFailoverMessage
+  to: FailoverProperty
+  type: has_one
+  via: failover
+- from: sendMessage
+  to: ToProperty
+  type: has_one
+  via: to
+- from: sendMessage
+  to: FromProperty
+  type: has_one
+  via: from
+- from: sendMessage
+  to: MessageProperty
+  type: has_one
+  via: message
+- from: MessageStatus
+  to: ToProperty
+  type: has_one
+  via: to
+- from: MessageStatus
+  to: FromProperty
+  type: has_one
+  via: from
+- from: RoamingInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: ReachabilityInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: FormatInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: SimSwapInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: DeviceSwapInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: CurrentCarrierInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: OriginalCarrierInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: LocationVerificationInsightResponse
+  to: InsightStatus
+  type: has_one
+  via: status
+- from: SubscriberMatchInsightResponse
+  to: SubscriberMatchStatus
+  type: has_one
+  via: status
+- from: LocationCircle
+  to: Point
+  type: has_one
+  via: center
+- from: Circle
+  to: LocationCircle
+  type: has_one
+  via: location
+- from: Polygon
+  to: LocationPolygon
+  type: has_one
+  via: location
+- from: Room
+  to: RecordingOptions
+  type: has_one
+  via: recording_options
+- from: Room
+  to: Theme
+  type: belongs_to
+  via: theme_id
+- from: Room
+  to: InitialJoinOptions
+  type: has_one
+  via: initial_join_options
+- from: Room
+  to: CallbackUrls
+  type: has_one
+  via: callback_urls
+- from: Room
+  to: AvailableFeatures
+  type: has_one
+  via: available_features
+- from: Room
+  to: UiSettings
+  type: has_one
+  via: ui_settings
+- from: CreateInstantRoomRequest
+  to: RecordingOptions
+  type: has_one
+  via: recording_options
+- from: CreateInstantRoomRequest
+  to: Theme
+  type: belongs_to
+  via: theme_id
+- from: CreateInstantRoomRequest
+  to: InitialJoinOptions
+  type: has_one
+  via: initial_join_options
+- from: CreateInstantRoomRequest
+  to: CallbackUrls
+  type: has_one
+  via: callback_urls
+- from: CreateInstantRoomRequest
+  to: AvailableFeatures
+  type: has_one
+  via: available_features
+- from: CreateInstantRoomRequest
+  to: UiSettings
+  type: has_one
+  via: ui_settings
+- from: CreateLongTermRoomRequest
+  to: RecordingOptions
+  type: has_one
+  via: recording_options
+- from: CreateLongTermRoomRequest
+  to: Theme
+  type: belongs_to
+  via: theme_id
+- from: CreateLongTermRoomRequest
+  to: InitialJoinOptions
+  type: has_one
+  via: initial_join_options
+- from: CreateLongTermRoomRequest
+  to: CallbackUrls
+  type: has_one
+  via: callback_urls
+- from: CreateLongTermRoomRequest
+  to: AvailableFeatures
+  type: has_one
+  via: available_features
+- from: CreateLongTermRoomRequest
+  to: UiSettings
+  type: has_one
+  via: ui_settings
+- from: Theme
+  to: Application
+  type: belongs_to
+  via: application_id
+- from: RoomExpiredCallback
+  to: Room
+  type: belongs_to
+  via: room_id
+- from: SessionStartedCallback
+  to: Room
+  type: belongs_to
+  via: room_id
+- from: SessionEndedCallback
+  to: Room
+  type: belongs_to
+  via: room_id
+- from: RecordingStartedCallback
+  to: Recording
+  type: belongs_to
+  via: recording_id
+- from: RecordingEndedCallback
+  to: Recording
+  type: belongs_to
+  via: recording_id
+- from: RecordingUploadedCallback
+  to: Recording
+  type: belongs_to
+  via: recording_id
+- from: RecordingUploadedCallback
+  to: Room
+  type: belongs_to
+  via: room_id
+- from: ParticipantJoinedCallback
+  to: Room
+  type: belongs_to
+  via: room_id
+- from: ParticipantLeftCallback
+  to: Room
+  type: belongs_to
+  via: room_id
+- from: OutboundRCSText
+  to: RCSSuggestedReply
+  type: has_many
+  via: suggestions
+- from: OutboundRCSText
+  to: RCSSuggestedActionDial
+  type: has_many
+  via: suggestions
+- from: OutboundRCSText
+  to: RCSSuggestedActionViewLocation
+  type: has_many
+  via: suggestions
+- from: OutboundRCSText
+  to: RCSSuggestedActionShareLocation
+  type: has_many
+  via: suggestions
+- from: OutboundRCSText
+  to: RCSSuggestedActionOpenURL
+  type: has_many
+  via: suggestions
+- from: OutboundRCSText
+  to: RCSSuggestedActionOpenURLWebview
+  type: has_many
+  via: suggestions
+- from: OutboundRCSText
+  to: RCSSuggestedActionCreateCalendarEvent
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCard
+  to: RCSCardProperties
+  type: has_one
+  via: card
+- from: OutboundRCSCarousel
+  to: RCSSuggestedReply
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCarousel
+  to: RCSSuggestedActionDial
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCarousel
+  to: RCSSuggestedActionViewLocation
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCarousel
+  to: RCSSuggestedActionShareLocation
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCarousel
+  to: RCSSuggestedActionOpenURL
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCarousel
+  to: RCSSuggestedActionOpenURLWebview
+  type: has_many
+  via: suggestions
+- from: OutboundRCSCarousel
+  to: RCSSuggestedActionCreateCalendarEvent
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedReply
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedActionDial
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedActionViewLocation
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedActionShareLocation
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedActionOpenURL
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedActionOpenURLWebview
+  type: has_many
+  via: suggestions
+- from: RCSCardProperties
+  to: RCSSuggestedActionCreateCalendarEvent
+  type: has_many
+  via: suggestions
+- from: OutboundEmailContent
+  to: EmailContentText
+  type: has_many
+  via: content
+- from: OutboundEmailContent
+  to: EmailContentHtml
+  type: has_many
+  via: content
+- from: Failover
+  to: OutboundSMSText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSImage
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSvCard
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSAudio
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSVideo
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSFile
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMMSContent
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSImage
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSVideo
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSFile
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSCard
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSCarousel
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundRCSCustom
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppImage
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppAudio
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppVideo
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppFile
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppTemplate
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppSticker
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppReaction
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundWhatsAppCustom
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMessengerText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMessengerImage
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMessengerAudio
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMessengerVideo
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundMessengerFile
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundViberText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundViberImage
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundViberVideo
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundViberFile
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundEmailText
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundEmailHtml
+  type: has_many
+  via: failover
+- from: Failover
+  to: OutboundEmailContent
+  type: has_many
+  via: failover
+- from: Sticker
+  to: StickerWithURL
+  type: has_one
+  via: sticker
+- from: Sticker
+  to: StickerWithID
+  type: has_one
+  via: sticker
+- from: OutboundReaction
+  to: ReactionReact
+  type: has_one
+  via: reaction
+- from: OutboundReaction
+  to: ReactionUnreact
+  type: has_one
+  via: reaction
+- from: InboundReaction
+  to: ReactionReact
+  type: has_one
+  via: reaction
+- from: InboundReaction
+  to: ReactionUnreact
+  type: has_one
+  via: reaction
+- from: channelOptionsMms
+  to: mmsMessageObject
+  type: has_one
+  via: mms
+- from: messageStatusBase
+  to: messageStatusError
+  type: has_one
+  via: error
+- from: messageStatusSMS
+  to: Destination
+  type: has_one
+  via: destination
+- from: messageStatusMMS
+  to: Destination
+  type: has_one
+  via: destination
+- from: messageStatusRCS
+  to: Destination
+  type: has_one
+  via: destination
+- from: messageStatusWhatsApp
+  to: WhatsAppUserProfile
+  type: has_one
+  via: profile
+- from: inboundWhatsAppMessageCommon
+  to: WhatsAppUserProfile
+  type: has_one
+  via: profile
+- from: inboundWhatsAppMessageCommon
+  to: Context
+  type: has_one
+  via: context
+- from: WhatsAppUserIdentity
+  to: user
+  type: belongs_to
+  via: user_id
+- from: WhatsAppSender
+  to: WhatsAppUserIdentity
+  type: has_one
+  via: sender
+- from: inboundMessageSMS
+  to: Usage
+  type: has_one
+  via: usage
+- from: inboundMessageSMS
+  to: InboundOrigin
+  type: has_one
+  via: origin
+- from: inboundMessageMMS
+  to: InboundOrigin
+  type: has_one
+  via: origin
+- from: inboundMessageMMS
+  to: mmsMessageObject
+  type: has_one
+  via: mms
+- from: niResponseXmlStandard
+  to: niCurrentCarrierProperties
+  type: has_one
+  via: current_carrier
+- from: niResponseXmlStandard
+  to: niInitialCarrierProperties
+  type: has_one
+  via: original_carrier
+- from: niResponseXmlAdvanced
+  to: niCurrentCarrierProperties
+  type: has_one
+  via: current_carrier
+- from: niResponseXmlAdvanced
+  to: niInitialCarrierProperties
+  type: has_one
+  via: original_carrier
+- from: niResponseXmlAdvanced
+  to: niRoaming
+  type: has_one
+  via: roaming
+- from: niResponseJsonStandard
+  to: niCurrentCarrierProperties
+  type: has_one
+  via: current_carrier
+- from: niResponseJsonStandard
+  to: niInitialCarrierProperties
+  type: has_one
+  via: original_carrier
+- from: niResponseJsonStandard
+  to: niCallerIdentity
+  type: has_one
+  via: caller_identity
+- from: niResponseJsonAdvancedSync
+  to: niCurrentCarrierProperties
+  type: has_one
+  via: current_carrier
+- from: niResponseJsonAdvancedSync
+  to: niInitialCarrierProperties
+  type: has_one
+  via: original_carrier
+- from: niResponseJsonAdvancedSync
+  to: niRoaming
+  type: has_one
+  via: roaming
+- from: niResponseJsonAdvancedSync
+  to: niCallerIdentity
+  type: has_one
+  via: caller_identity
+- from: niResponseJsonAdvancedSync
+  to: niRealtimeData
+  type: has_one
+  via: real_time_data
+- from: niResponseJsonAdvancedAsync
+  to: niCurrentCarrierProperties
+  type: has_one
+  via: current_carrier
+- from: niResponseJsonAdvancedAsync
+  to: niInitialCarrierProperties
+  type: has_one
+  via: original_carrier
+- from: niResponseJsonAdvancedAsync
+  to: niRoaming
+  type: has_one
+  via: roaming
+- from: niResponseJsonAdvancedAsync
+  to: niCallerIdentity
+  type: has_one
+  via: caller_identity
+- from: niResponseJsonAdvancedRoamingUnknown
+  to: niCurrentCarrierProperties
+  type: has_one
+  via: current_carrier
+- from: niResponseJsonAdvancedRoamingUnknown
+  to: niInitialCarrierProperties
+  type: has_one
+  via: original_carrier
+- from: niResponseJsonAdvancedRoamingUnknown
+  to: niCallerIdentity
+  type: has_one
+  via: caller_identity
+- from: ownednumber
+  to: number-limitation
+  type: has_many
+  via: limitations
+- from: availablenumber
+  to: number-limitation
+  type: has_many
+  via: limitations
+- from: inbound-numbers
+  to: ownednumber
   type: has_many
   via: numbers
-- from: NumberList
-  to: Number
+- from: available-numbers
+  to: availablenumber
   type: has_many
   via: numbers
+- from: PricingCountryResponse
+  to: NetworkObject
+  type: has_many
+  via: networks
+- from: PricingCountriesResponse
+  to: CountryObject
+  type: has_many
+  via: countries
+- from: CountryObject
+  to: NetworkObject
+  type: has_many
+  via: networks
+- from: InAppVoiceFields
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: ConversationEventFields
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: ConversationMessageFields
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: SmsOutboundRecordsResponse
+  to: SmsOutboundRecord
+  type: has_many
+  via: records
+- from: SmsInboundRecordsResponse
+  to: SmsInboundRecord
+  type: has_many
+  via: records
+- from: SmsTrafficControlRecordsResponse
+  to: SmsTrafficControlRecord
+  type: has_many
+  via: records
+- from: VoiceRecordsResponse
+  to: VoiceRecord
+  type: has_many
+  via: records
+- from: VoiceInAppRecordsResponse
+  to: VoiceInAppRecord
+  type: has_many
+  via: records
+- from: VoiceTtsRecordsResponse
+  to: VoiceTtsRecord
+  type: has_many
+  via: records
+- from: VoiceAsrRecordsResponse
+  to: VoiceAsrRecord
+  type: has_many
+  via: records
+- from: VoiceWebSocketRecordsResponse
+  to: VoiceWebSocketRecord
+  type: has_many
+  via: records
+- from: VoiceFailedRecordsResponse
+  to: VoiceFailedRecord
+  type: has_many
+  via: records
+- from: VoiceAmdRecordsResponse
+  to: VoiceAmdRecord
+  type: has_many
+  via: records
+- from: MessagesOutboundRecordsResponse
+  to: MessagesOutboundRecord
+  type: has_many
+  via: records
+- from: MessagesInboundRecordsResponse
+  to: MessagesInboundRecord
+  type: has_many
+  via: records
+- from: VerifyRecordsResponse
+  to: VerifyRecord
+  type: has_many
+  via: records
+- from: VerifyV2RecordsResponse
+  to: VerifyV2Record
+  type: has_many
+  via: records
+- from: NumberInsightRecordsResponse
+  to: NumberInsightRecord
+  type: has_many
+  via: records
+- from: ConversationsEventRecordsResponse
+  to: ConversationsEventRecord
+  type: has_many
+  via: records
+- from: ConversationsMessageRecordsResponse
+  to: ConversationsMessageRecord
+  type: has_many
+  via: records
+- from: ReportsUsageRecordsResponse
+  to: ReportsUsageRecord
+  type: has_many
+  via: records
+- from: NetworkApiEventRecordsResponse
+  to: NetworkApiEventRecord
+  type: has_many
+  via: records
+- from: VideoApiRecordsResponse
+  to: VideoApiRecord
+  type: has_many
+  via: records
+- from: SmsOutboundRecord
+  to: Message
+  type: belongs_to
+  via: message_id
+- from: SmsInboundRecord
+  to: Message
+  type: belongs_to
+  via: message_id
+- from: SmsTrafficControlRecord
+  to: Message
+  type: belongs_to
+  via: message_id
+- from: VoiceInAppRecord
+  to: Application
+  type: belongs_to
+  via: application_id
+- from: VoiceInAppRecord
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: VoiceInAppRecord
+  to: user
+  type: belongs_to
+  via: user_id
+- from: VoiceTtsRecord
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: MessagesOutboundRecord
+  to: Message
+  type: belongs_to
+  via: message_id
+- from: MessagesInboundRecord
+  to: Message
+  type: belongs_to
+  via: message_id
+- from: ConversationsEventRecord
+  to: Application
+  type: belongs_to
+  via: application_id
+- from: ConversationsEventRecord
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: ConversationsEventRecord
+  to: user
+  type: belongs_to
+  via: user_id
+- from: ConversationsMessageRecord
+  to: Application
+  type: belongs_to
+  via: application_id
+- from: ConversationsMessageRecord
+  to: conversation
+  type: belongs_to
+  via: conversation_id
+- from: ReportsUsageRecord
+  to: BaseRequestParams
+  type: has_one
+  via: request_params
+- from: NetworkApiEventRecord
+  to: Application
+  type: belongs_to
+  via: application_id
+- from: VideoApiRecord
+  to: Application
+  type: belongs_to
+  via: application_id
+- from: ErrorXml
+  to: ErrorMessage
+  type: has_many
+  via: messages
+- from: SMS
+  to: Message
+  type: has_many
+  via: messages
+- from: SMSXml
+  to: Message
+  type: has_many
+  via: messages
+- from: InboundMessage
+  to: Message
+  type: belongs_to
+  via: messageId
+- from: DeliveryReceipt
+  to: Message
+  type: belongs_to
+  via: messageId
+- from: SMSChannel
+  to: Content
+  type: belongs_to
+  via: content_id
+- from: PageLinks
+  to: Link
+  type: has_one
+  via: self
+- from: PageLinks
+  to: Link
+  type: has_one
+  via: next
+- from: PageLinks
+  to: Link
+  type: has_one
+  via: prev
+- from: PageLinks
+  to: Link
+  type: has_one
+  via: first
+- from: PageLinks
+  to: Link
+  type: has_one
+  via: last
+- from: ListTemplatesResponse
+  to: PageLinks
+  type: has_one
+  via: _links
+- from: ListFragmentsResponse
+  to: PageLinks
+  type: has_one
+  via: _links
+- from: Archive-Detail
+  to: Transcription
+  type: has_one
+  via: transcription
+- from: Archive-Detail
+  to: Application
+  type: belongs_to
+  via: applicationId
+- from: Experience-Composer-Base
+  to: Application
+  type: belongs_to
+  via: applicationId
+- from: Broadcast-Detail
+  to: Application
+  type: belongs_to
+  via: applicationId
+- from: CreateCallRequestBase
+  to: EndpointPhoneTo
+  type: has_many
+  via: to
+- from: CreateCallRequestBase
+  to: EndpointSip
+  type: has_many
+  via: to
+- from: CreateCallRequestBase
+  to: EndpointWebsocket
+  type: has_many
+  via: to
+- from: CreateCallRequestBase
+  to: EndpointVBCExtension
+  type: has_many
+  via: to
+- from: CreateCallRequestBase
+  to: EndpointApp
+  type: has_many
+  via: to
+- from: CreateCallRequestBase
+  to: EndpointPhoneFrom
+  type: has_one
+  via: from
+- from: GetCallResponse
+  to: EndpointPhoneTo
+  type: has_one
+  via: to
+- from: GetCallResponse
+  to: EndpointSip
+  type: has_one
+  via: to
+- from: GetCallResponse
+  to: EndpointWebsocket
+  type: has_one
+  via: to
+- from: GetCallResponse
+  to: EndpointVBCExtension
+  type: has_one
+  via: to
+- from: GetCallResponse
+  to: EndpointApp
+  type: has_one
+  via: to
+- from: GetCallResponse
+  to: from
+  type: has_one
+  via: from

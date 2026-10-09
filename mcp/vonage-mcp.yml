@@ -1,145 +1,264 @@
-generated: '2026-10-03'
-method: derived
-generator: derive-mcp-candidate.py
+generated: '2026-10-08'
+method: probed
 source:
-- openapi/vonage-applications-api-openapi.yml
-- openapi/vonage-messages-api-openapi.yml
-- openapi/vonage-numbers-api-openapi.yml
-- openapi/vonage-sms-api-openapi.yml
-- openapi/vonage-verify-api-openapi.yml
-- openapi/vonage-voice-api-openapi.yml
-status: candidate
+- https://documentation-mcp.vonage.dev/mcp (initialize + tools/list, 2026-10-08, no credentials)
+- https://developer.vonage.com/en/mcp-server/overview
+- https://developer.vonage.com/en/mcp-server/how-to-guides/install-documentation-mcp-server
+- https://developer.vonage.com/en/mcp-server/how-to-guides/install-tooling-mcp-server
+- https://github.com/Vonage/vonage-mcp-server-documentation
+- https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings
+status: live
+name: Vonage MCP Servers
+server:
+  name: Vonage Documentation MCP Server
+  version: 0.1.0
+  protocolVersion: '2025-03-26'
+  capabilities:
+    tools:
+      listChanged: true
+  repository: https://github.com/Vonage/vonage-mcp-server-documentation
+  registry_name: io.github.Vonage/vonage-documentation-mcp
 deployment:
-  mode: none
-  auth: unknown
+  mode: both
+  endpoint: https://documentation-mcp.vonage.dev/mcp
+  transport: streamable-http
+  install: npx -y @vonage/vonage-mcp-server-api-bindings
+  package: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings
+  auth: none
   verified: probed
-note: 'No MCP server was found. The pre-flight posted tools/list to /mcp on api.nexmo.com, api.opentok.com, rest.nexmo.com, api.vonage.com; verdict
-  opaque (https://api.opentok.com/mcp answered 403: the edge authenticates before it routes, which proves nothing either way). Candidate tools
-  below are derived from the 25 operation(s) in the provider''s own OpenAPI (25 listed); they describe what a server WOULD expose, not one that
-  exists.'
+  note: 'Two distinct servers: the hosted Documentation MCP Server (remote, answered initialize and tools/list anonymously
+    on 2026-10-08 with 7 tools) and the Server API Bindings MCP Server (local stdio, npm @vonage/vonage-mcp-server-api-bindings
+    1.5.1 published 2026-05-27, needs VONAGE_API_KEY / VONAGE_API_SECRET / VONAGE_APPLICATION_ID / VONAGE_PRIVATE_KEY64
+    in env). auth: none describes the remote endpoint; the stdio server is api-key.'
+servers:
+- name: documentation
+  purpose: Lets AI assistants search and return information from the Vonage API Documentation.
+  mode: remote
+  endpoint: https://documentation-mcp.vonage.dev/mcp
+  transport: streamable-http
+  auth: none
+  verified: probed
+  tool_count: 7
+  tools_source: live tools/list 2026-10-08 saved verbatim in mcp/vonage-documentation-mcp-tools-list.json
+  well_known:
+    oauth-protected-resource: 404
+    oauth-authorization-server: 404
+    agent-card.json: 404
+- name: api-bindings
+  purpose: Also known as our Tooling MCP Server, it provides tools for managing Vonage applications, numbers, and
+    reports programmatically.
+  mode: local-stdio
+  install: npx -y @vonage/vonage-mcp-server-api-bindings
+  package: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings
+  version: 1.5.1
+  published: '2026-05-27'
+  auth: api-key
+  auth_env:
+  - VONAGE_APPLICATION_ID
+  - VONAGE_PRIVATE_KEY64
+  - VONAGE_API_KEY
+  - VONAGE_API_SECRET
+  - VONAGE_VIRTUAL_NUMBER
+  - VONAGE_WHATSAPP_NUMBER
+  - RCS_SENDER_ID
+  verified: searched
+  tool_count: 14
+  tools_source: npm README tool table (documented, not observed from a running server)
+docs: https://developer.vonage.com/en/mcp-server/overview
 tools:
-- name: list_applications
-  operationId: listApplications
-  method: GET
-  path: /v2/applications
-  description: List Applications
-- name: send_message
-  operationId: sendMessage
-  method: POST
-  path: /v1/messages
-  description: Send a Message
-- name: list_owned_numbers
-  operationId: listOwnedNumbers
-  method: GET
-  path: /account/numbers
-  description: List Owned Numbers
-- name: send_sms
-  operationId: sendSms
-  method: POST
-  path: /sms/json
-  description: Send an SMS Message
-- name: request_verification
-  operationId: requestVerification
-  method: POST
-  path: /verify/{format}
-  description: Request a Verification
-- name: list_calls
-  operationId: listCalls
-  method: GET
-  path: /v1/calls
-  description: List Calls
-- name: create_application
-  operationId: createApplication
-  method: POST
-  path: /v2/applications
-  description: Create an Application
-- name: update_message
-  operationId: updateMessage
-  method: PATCH
-  path: /v1/messages/{message_uuid}
-  description: Update a Message
-- name: search_available_numbers
-  operationId: searchAvailableNumbers
-  method: GET
-  path: /number/search
-  description: Search Available Numbers
-- name: check_verification
-  operationId: checkVerification
-  method: POST
-  path: /verify/check/{format}
-  description: Check a Verification Code
-- name: create_call
-  operationId: createCall
-  method: POST
-  path: /v1/calls
-  description: Create an Outbound Call
-- name: get_application
-  operationId: getApplication
-  method: GET
-  path: /v2/applications/{id}
-  description: Get an Application
-- name: buy_number
-  operationId: buyNumber
-  method: POST
-  path: /number/buy
-  description: Buy a Number
-- name: search_verification
-  operationId: searchVerification
-  method: GET
-  path: /verify/search/{format}
-  description: Search Verifications
-- name: get_call
-  operationId: getCall
-  method: GET
-  path: /v1/calls/{uuid}
-  description: Get Call Details
-- name: update_application
-  operationId: updateApplication
-  method: PUT
-  path: /v2/applications/{id}
-  description: Update an Application
-- name: cancel_number
-  operationId: cancelNumber
-  method: POST
-  path: /number/cancel
-  description: Cancel a Number
-- name: control_verification
-  operationId: controlVerification
-  method: POST
-  path: /verify/control/{format}
-  description: Control a Verification
-- name: update_call
-  operationId: updateCall
-  method: PUT
-  path: /v1/calls/{uuid}
-  description: Modify an In-Progress Call
-- name: delete_application
-  operationId: deleteApplication
-  method: DELETE
-  path: /v2/applications/{id}
-  description: Delete an Application
-- name: update_number
-  operationId: updateNumber
-  method: POST
-  path: /number/update
-  description: Update a Number
-- name: play_audio_stream
-  operationId: playAudioStream
-  method: PUT
-  path: /v1/calls/{uuid}/stream
-  description: Play Audio Into a Call
-- name: stop_audio_stream
-  operationId: stopAudioStream
-  method: DELETE
-  path: /v1/calls/{uuid}/stream
-  description: Stop Audio Stream in a Call
-- name: play_text_to_speech
-  operationId: playTextToSpeech
-  method: PUT
-  path: /v1/calls/{uuid}/talk
-  description: Play Text-to-Speech in a Call
-- name: stop_text_to_speech
-  operationId: stopTextToSpeech
-  method: DELETE
-  path: /v1/calls/{uuid}/talk
-  description: Stop Text-to-Speech in a Call
+- server: documentation
+  name: vonage_docs_search
+  description: Searches the official Vonage developer documentation for guides, tutorials, and API references. This
+    is the primary tool for general queries about Vonage's products, services, and APIs, and should be used when
+    the user asks for information, documentation, or how-to guides.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: The user's search query, which can be a keyword, phrase, or a question about Vonage's APIs
+          or documentation
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: documentation
+  name: vonage_code_generator
+  description: Generates a complete, runnable code snippet in a specified programming language for a given Vonage
+    API task. This is the preferred tool when the user explicitly asks for a 'code snippet,' 'example,' or 'code
+    in a specific language' like Node.js, Python, or cURL.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: A clear and concise description of the task for which the code snippet is needed (e.g., 'send
+          an SMS', 'make a voice call').
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: documentation
+  name: vonage_api_reference
+  description: Provides a direct link or detailed information from the Vonage API reference documentation for a
+    specific API endpoint. Use this when the user's query is highly technical and related to a specific endpoint,
+    like API parameters, request bodies, or response schemas.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: The name of the Vonage API (e.g., 'SMS API', 'Voice API', 'Messages API').
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: documentation
+  name: vonage_troubleshooter
+  description: Provides troubleshooting steps, common error code explanations, and debugging advice for Vonage API
+    issues. Use this when the user is reporting a problem, error, or something not working as expected.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: A description of the problem or error the user is experiencing, including any error messages,
+          codes, or unexpected behavior.
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: documentation
+  name: vonage_tutorial_finder
+  description: Finds and provides a link to a step-by-step tutorial or a blog post on the Vonage Developer blog.
+    This tool is for when the user asks for a 'tutorial' or a 'guide' on a specific topic.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: The topic of the tutorial or guide (e.g., 'building a voice proxy', 'two-factor authentication',
+          'receiving a delivery receipt').
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: documentation
+  name: vonage_sdk_info
+  description: Retrieves information about a specific Vonage SDK, including installation instructions, supported
+    features, and version numbers. This is for queries focused on the SDKs themselves, not the underlying APIs.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: The programming language of the SDK (e.g., 'Node.js', 'Python', 'PHP').
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: documentation
+  name: vonage_use_case_examples
+  description: Finds and describes real-world use cases or customer stories for a specific Vonage product. Use this
+    when the user asks for examples of how a product is used in a specific industry or for a particular purpose.
+  inputSchema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: The Vonage product (e.g., 'Video API', 'Voice API', 'Messages API').
+    required:
+    - query
+    additionalProperties: false
+    $schema: http://json-schema.org/draft-07/schema#
+  verified: probed
+- server: api-bindings
+  category: Account Management
+  name: balance
+  description: Get your Vonage account balance
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Account Management
+  name: list-applications
+  description: List all applications attached to your API key with their configurations and capabilities
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Account Management
+  name: create-application
+  description: Create a new Vonage application with a specified name
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Account Management
+  name: list-purchased-numbers
+  description: List telephone numbers associated with your account and their metadata
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Number Management
+  name: search-available-numbers
+  description: Search for available phone numbers to purchase from Vonage in a specific country
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Number Management
+  name: link-number-to-vonage-application
+  description: Link an owned number to a specific Vonage Application
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Reports
+  name: get-records-report
+  description: Retrieve activity records from the Vonage Reports API (date-based or ID-based queries)
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Messaging & Communication
+  name: SMS
+  description: Send SMS messages using Vonage
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Messaging & Communication
+  name: whatsapp-send-text
+  description: Send text messages via WhatsApp
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Messaging & Communication
+  name: whatsapp-send-text-with-sms-failover
+  description: Send a WhatsApp text message with automatic SMS failover
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Messaging & Communication
+  name: rcs-send-text
+  description: Send text messages via RCS
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Messaging & Communication
+  name: rcs-send-text-with-sms-failover
+  description: Send an RCS text message with automatic SMS failover
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Messaging & Communication
+  name: outbound-voice-message
+  description: Send outbound voice messages with Vonage
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)
+- server: api-bindings
+  category: Data Visualization
+  name: make-chart
+  description: Create charts based on data retrieved
+  verified: documented
+  source: https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings (README tool table)

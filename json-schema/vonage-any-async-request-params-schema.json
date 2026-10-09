@@ -1,0 +1,947 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-any-async-request-params-schema.json",
+  "title": "AnyAsyncRequestParams",
+  "description": "Discriminated Union Schema for All Asynchronous Request Parameters (Request Body)",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-reports-openapi.yml#/components/schemas/AnyAsyncRequestParams",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/SMS_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/SMS-TRAFFIC-CONTROL_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/VOICE-CALL_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/VOICE-FAILED_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/VOICE-TTS_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/ASR_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/IN-APP-VOICE_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/WEBSOCKET-CALL_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/AMD_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/MESSAGES_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/VERIFY-API_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/VERIFY-V2_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/NUMBER-INSIGHT_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/CONVERSATION-MESSAGE_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/CONVERSATION-EVENT_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/REPORTS-USAGE_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/NETWORK-API-EVENT_ASYNC"
+    },
+    {
+      "$ref": "#/$defs/VIDEO-API_ASYNC"
+    }
+  ],
+  "$defs": {
+    "AMD_ASYNC": {
+      "description": "Voice AMD (Advanced Machine Detection)",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/AmdFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "AMD"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ASR_ASYNC": {
+      "description": "Voice ASR",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/AsrFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "ASR"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "AmdFields": {
+      "type": "object",
+      "description": "Answering Machine Detection (AMD)",
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "description": "Unique call identifier"
+        }
+      }
+    },
+    "AsrFields": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "type": "string",
+          "description": "Call direction filter",
+          "enum": [
+            "inbound",
+            "outbound"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "Caller ID"
+        },
+        "to": {
+          "type": "string",
+          "description": "Called number"
+        },
+        "call_id": {
+          "type": "string",
+          "description": "Unique call identifier"
+        }
+      },
+      "description": "Automatic Speech Recognition (ASR)"
+    },
+    "AsyncBaseRequest": {
+      "description": "Base structure for asynchronous report request bodies",
+      "allOf": [
+        {
+          "$ref": "#/$defs/BaseRequestParams"
+        },
+        {
+          "$ref": "#/$defs/AsyncRequestFields"
+        }
+      ]
+    },
+    "AsyncRequestFields": {
+      "type": "object",
+      "properties": {
+        "include_subaccounts": {
+          "type": "boolean",
+          "description": "Include data from sub-accounts"
+        },
+        "callback_url": {
+          "type": "string",
+          "description": "Webhook URL for completion notifications",
+          "format": "uri"
+        }
+      },
+      "description": "Fields for asynchronous report requests"
+    },
+    "BaseRequestParams": {
+      "required": [
+        "account_id",
+        "product"
+      ],
+      "type": "object",
+      "properties": {
+        "product": {
+          "type": "string",
+          "description": "Product type for the report",
+          "enum": [
+            "SMS",
+            "SMS-TRAFFIC-CONTROL",
+            "VOICE-CALL",
+            "VOICE-FAILED",
+            "VOICE-TTS",
+            "IN-APP-VOICE",
+            "WEBSOCKET-CALL",
+            "ASR",
+            "AMD",
+            "VERIFY-API",
+            "NUMBER-INSIGHT",
+            "VERIFY-V2",
+            "CONVERSATION-EVENT",
+            "CONVERSATION-MESSAGE",
+            "MESSAGES",
+            "VIDEO-API",
+            "NETWORK-API-EVENT",
+            "REPORTS-USAGE"
+          ]
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account ID (API key) you wish to search for. This can differ from the API key in the authorization header because some accounts can request reports for other accounts, e.g. a primary account owner wants to create a report for one of its subaccounts."
+        },
+        "date_start": {
+          "type": "string",
+          "description": "Start date for the report (ISO 8601 format). Not mandatory for async requests - defaults to CURRENT_TIME-7D if not provided."
+        },
+        "date_end": {
+          "type": "string",
+          "description": "End date for the report (ISO 8601 format). Defaults to current time if not provided."
+        }
+      },
+      "description": "Base parameters for all report requests"
+    },
+    "CONVERSATION-EVENT_ASYNC": {
+      "description": "Conversation Event",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/ConversationEventFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "CONVERSATION-EVENT"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "CONVERSATION-MESSAGE_ASYNC": {
+      "description": "Conversation Message",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/ConversationMessageFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "CONVERSATION-MESSAGE"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ConversationEventFields": {
+      "type": "object",
+      "properties": {
+        "conversation_id": {
+          "type": "string",
+          "description": "Conversation ID"
+        },
+        "status": {
+          "type": "string",
+          "description": "Event status"
+        }
+      },
+      "description": "Conversation Event API"
+    },
+    "ConversationMessageFields": {
+      "type": "object",
+      "properties": {
+        "conversation_id": {
+          "type": "string",
+          "description": "Conversation ID"
+        }
+      },
+      "description": "Conversation Message API"
+    },
+    "IN-APP-VOICE_ASYNC": {
+      "description": "In-App Voice",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/InAppVoiceFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "IN-APP-VOICE"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "InAppVoiceFields": {
+      "type": "object",
+      "properties": {
+        "conversation_id": {
+          "type": "string",
+          "description": "Conversation ID"
+        },
+        "status": {
+          "type": "string",
+          "description": "Call termination status"
+        },
+        "leg_id": {
+          "type": "string",
+          "description": "Unique leg identifier for the call"
+        }
+      },
+      "description": "In-App Voice"
+    },
+    "MESSAGES_ASYNC": {
+      "description": "Messages API",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/MessagesFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "MESSAGES"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "MessagesFields": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "required": [
+            "direction"
+          ],
+          "type": "string",
+          "description": "Message direction filter",
+          "enum": [
+            "inbound",
+            "outbound"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "Message status filter",
+          "enum": [
+            "submitted",
+            "delivered",
+            "read",
+            "rejected",
+            "undeliverable"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "Sender"
+        },
+        "to": {
+          "type": "string",
+          "description": "Recipient"
+        },
+        "provider": {
+          "type": "string",
+          "description": "Messaging provider",
+          "enum": [
+            "whatsapp",
+            "sms",
+            "mms",
+            "messenger",
+            "viber_service_msg",
+            "instagram",
+            "rcs",
+            "email"
+          ]
+        },
+        "country": {
+          "type": "string",
+          "description": "Country code"
+        },
+        "include_message": {
+          "type": "boolean",
+          "description": "Include message content"
+        }
+      },
+      "description": "Messages API"
+    },
+    "NETWORK-API-EVENT_ASYNC": {
+      "description": "Network API Event",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/NetworkApiEventFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "NETWORK-API-EVENT"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "NIV1Fields": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "Phone number for Number Insight"
+        },
+        "network": {
+          "type": "string",
+          "description": "Mobile network code"
+        }
+      },
+      "description": "Number Insight API"
+    },
+    "NUMBER-INSIGHT_ASYNC": {
+      "description": "Number Insight v1",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/NIV1Fields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "NUMBER-INSIGHT"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "NetworkApiEventFields": {
+      "type": "object",
+      "properties": {
+        "product_name": {
+          "type": "string",
+          "description": "Product name for Network API event"
+        },
+        "request_type": {
+          "type": "string",
+          "description": "Type of Network API request"
+        },
+        "request_session_id": {
+          "type": "string",
+          "description": "Session ID"
+        },
+        "product_path": {
+          "type": "string",
+          "description": "API path"
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Correlation ID"
+        }
+      },
+      "description": "Network API Event"
+    },
+    "REPORTS-USAGE_ASYNC": {
+      "description": "Reports Usage",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/ReportsUsageFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "REPORTS-USAGE"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ReportsUsageFields": {
+      "type": "object",
+      "description": "Reports API usage statistics"
+    },
+    "SMS-TRAFFIC-CONTROL_ASYNC": {
+      "description": "SMS Traffic Control",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/SmsTrafficControlFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "SMS-TRAFFIC-CONTROL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "SMS_ASYNC": {
+      "description": "SMS",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/SmsFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "SMS"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "SmsFields": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "required": [
+            "direction"
+          ],
+          "type": "string",
+          "description": "Direction of the communication.",
+          "enum": [
+            "inbound",
+            "outbound"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "The final status of the message delivery filter",
+          "enum": [
+            "delivered",
+            "expired",
+            "accepted",
+            "deleted",
+            "unknown",
+            "submitted",
+            "failed",
+            "rejected",
+            "buffered"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "SMS sent from this phone number. The value specified by the Customer in `from` parameter in SMS request"
+        },
+        "to": {
+          "type": "string",
+          "description": "Recipient phone number"
+        },
+        "country": {
+          "type": "string",
+          "description": "The ISO two letter country code"
+        },
+        "network": {
+          "type": "string",
+          "description": "The network code of the destination phone number"
+        },
+        "client_ref": {
+          "type": "string",
+          "description": "The optional custom reference value"
+        },
+        "account_ref": {
+          "type": "string",
+          "description": "Account reference."
+        },
+        "include_message": {
+          "type": "boolean",
+          "description": "Determines whether the message body is included."
+        },
+        "show_concatenated": {
+          "type": "boolean",
+          "description": "A boolean flag that determines whether the `concatenated` field is included in the report"
+        }
+      },
+      "description": "SMS"
+    },
+    "SmsTrafficControlFields": {
+      "type": "object",
+      "description": "SMS Traffic Control"
+    },
+    "VERIFY-API_ASYNC": {
+      "description": "Verify v1",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/VerifyV1Fields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "VERIFY-API"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "VERIFY-V2_ASYNC": {
+      "description": "Verify v2",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/VerifyV2Fields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "VERIFY-V2"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "VIDEO-API_ASYNC": {
+      "description": "Video API",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/VideoApiFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "VIDEO-API"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "VOICE-CALL_ASYNC": {
+      "description": "Voice API",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/VoiceCallFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "VOICE-CALL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "VOICE-FAILED_ASYNC": {
+      "description": "Voice Failed",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/VoiceRejectedFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "VOICE-FAILED"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "VOICE-TTS_ASYNC": {
+      "description": "Voice TTS",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/VoiceTTSFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "VOICE-TTS"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "VerifyV1Fields": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "string",
+          "description": "Phone number being verified"
+        },
+        "network": {
+          "type": "string",
+          "description": "Mobile network code"
+        }
+      },
+      "description": "Number Verify API"
+    },
+    "VerifyV2Fields": {
+      "type": "object",
+      "properties": {
+        "channel": {
+          "type": "string",
+          "description": "Verification channel",
+          "enum": [
+            "v2",
+            "email",
+            "silent_auth"
+          ]
+        },
+        "parent_request_id": {
+          "type": "string",
+          "description": "Filter by parent request ID, which correlates `v2` verification requests with their associated `email` or `silent_auth` events."
+        },
+        "to": {
+          "type": "string",
+          "description": "Phone number being verified"
+        },
+        "locale": {
+          "type": "string",
+          "description": "Language/locale"
+        },
+        "network": {
+          "type": "string",
+          "description": "Mobile network code"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country code"
+        },
+        "status": {
+          "type": "string",
+          "description": "Verification status"
+        }
+      },
+      "description": "Verify v2 API"
+    },
+    "VideoApiFields": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string",
+          "description": "Unique video session identifier"
+        },
+        "meeting_id": {
+          "type": "string",
+          "description": "Unique meeting identifier"
+        }
+      },
+      "description": "Video API"
+    },
+    "VoiceCallFields": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "type": "string",
+          "description": "Call direction filter",
+          "enum": [
+            "inbound",
+            "outbound"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "Caller number/ID"
+        },
+        "to": {
+          "type": "string",
+          "description": "Called number"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country code"
+        },
+        "network": {
+          "type": "string",
+          "description": "Mobile network code"
+        },
+        "status": {
+          "type": "string",
+          "description": "Call status filter",
+          "enum": [
+            "ANSWERED",
+            "MACHINE",
+            "ERROR"
+          ]
+        },
+        "call_id": {
+          "type": "string",
+          "description": "Unique call identifier"
+        }
+      },
+      "description": "Voice API call"
+    },
+    "VoiceRejectedFields": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "type": "string",
+          "description": "Call direction filter",
+          "enum": [
+            "inbound",
+            "outbound"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "Caller number/ID"
+        },
+        "to": {
+          "type": "string",
+          "description": "Called number"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country code"
+        },
+        "call_id": {
+          "type": "string",
+          "description": "Unique call identifier"
+        }
+      },
+      "description": "Voice API rejected call"
+    },
+    "VoiceTTSFields": {
+      "type": "object",
+      "properties": {
+        "call_id": {
+          "$ref": "#/$defs/VoiceTtsCallId"
+        }
+      },
+      "description": "Voice Text-to-Speech (TTS)"
+    },
+    "VoiceTtsCallId": {
+      "type": "string",
+      "description": "The unique identifier of the call leg on which the TTS action was performed. Use this field to link a TTS event to the corresponding call leg record in the Voice Calls report (with `product` = `VOICE-CALL`). When `tts_level` is `leg`, `call_id` is the UUID of the exact call leg that received the audio playback. When `tts_level` is `conversation`, `call_id` is the UUID of the first call leg in the conversation that received the TTS. Note: `call_id` is present in all TTS records."
+    },
+    "WEBSOCKET-CALL_ASYNC": {
+      "description": "Voice WebSocket Call",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AsyncBaseRequest"
+        },
+        {
+          "$ref": "#/$defs/WebsocketFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "enum": [
+                "WEBSOCKET-CALL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "WebsocketFields": {
+      "type": "object",
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "description": "Unique WebSocket call identifier"
+        }
+      },
+      "description": "Voice WebSocket Call"
+    }
+  }
+}

@@ -1,43 +1,113 @@
-name: Vonage API Rate Limits
-specification: API Commons Rate Limits
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
-provider: Vonage
-providerId: vonage
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-reconciled: true
-tags:
-  - Rate Limiting
-  - Communications
-description: Vonage API rate limits per account.
+name: Vonage API rate limits
+generated: '2026-10-08'
+method: searched
+source: https://api.support.vonage.com/hc/en-us/articles/203993598-What-is-the-Throughput-Limit-for-Outbound-SMS
 sources:
-  - https://www.vonage.com/communications-apis/pricing/
-  - https://developer.vonage.com/en/getting-started/concepts/rate-limits
+- https://api.support.vonage.com/hc/en-us/articles/203993598-What-is-the-Throughput-Limit-for-Outbound-SMS
+- https://api.support.vonage.com/hc/en-us/articles/207100288-How-many-calls-can-I-create-per-second
+- https://api.support.vonage.com/hc/en-us/articles/204103233-What-is-the-maximum-amount-of-concurrent-Verify-requests-per-account
+- https://api.support.vonage.com/hc/en-us/articles/5667853760284-How-fast-can-I-send-Numbers-API-requests
+- https://api.support.vonage.com/hc/en-us/articles/6918048541596-How-fast-can-I-send-Redact-API-requests
+- https://api.support.vonage.com/hc/en-us/articles/4407771966868-How-many-Reports-API-requests-can-be-submitted-in-a-second
+- https://api.support.vonage.com/hc/en-us/articles/11679887237276-What-is-the-Messages-API-sandbox-rate-limit
+- https://api.support.vonage.com/hc/en-us/articles/360022456232-What-are-the-throughput-limits-on-MMS
+- https://developer.vonage.com/en/api-errors
+note: 'Vonage publishes no single rate-limit page (developer.vonage.com/en/getting-started/concepts/rate-limits
+  returns 404); the limits are spread across support-center articles, one per product, so each row carries its own
+  source: URL and limit_text is verbatim from THAT page. The top-level source is the SMS throughput article; rows
+  quoted from other articles will not be found on it by a single-page checker.'
 headers:
-  retryAfter: Retry-After
-responseCodes:
-  throttled: 429
+  X-RateLimit-Limit: declared on 429 responses in the Account, Messages and Reports OpenAPI documents
+  X-RateLimit-Remaining: same documents
+  X-RateLimit-Reset: same documents
+  Retry-After: same documents
+exhaustion:
+  status: 429
+  problem_type: throttled
+  problem_text: You have hit the rate limit for the API — Retry the request after waiting (differs per API)
+  source: https://developer.vonage.com/en/api-errors
 limits:
-  - name: Messages API (default)
-    scope: account
-    metric: messages_per_second
-    limit: 30
-    timeFrame: second
-  - name: SMS API
-    scope: account
-    metric: messages_per_second
-    limit: 30
-    timeFrame: second
-  - name: Voice API
-    scope: account
-    metric: concurrent_calls
-    limit: varies
-  - name: Verify API
-    scope: account
-    metric: verifications_per_second
-    limit: 30
-    timeFrame: second
+- name: SMS API default throughput
+  scope: per API key
+  window: 1 second
+  max: 30
+  limit_text: All API keys are set with 30 API requests per second throughput restriction by default.
+  endpoint: POST /sms/{format}
+  operationId: send-an-sms
+  source: https://api.support.vonage.com/hc/en-us/articles/203993598-What-is-the-Throughput-Limit-for-Outbound-SMS
+- name: Voice API calls per second
+  scope: per account, shared across all Voice products
+  window: 1 second
+  max: 3
+  limit_text: The maximum throughput is 3 calls per second (CPS).
+  endpoint: POST /v1/calls
+  operationId: createCall
+  source: https://api.support.vonage.com/hc/en-us/articles/207100288-How-many-calls-can-I-create-per-second
+- name: Verify API requests per second
+  scope: per account
+  window: 1 second
+  max: 30
+  limit_text: Throughput is set at account level and by default is 30 Verify API requests per second.
+  source: https://api.support.vonage.com/hc/en-us/articles/204103233-What-is-the-maximum-amount-of-concurrent-Verify-requests-per-account
+- name: Numbers API requests per second
+  scope: per account
+  window: 1 second
+  max: 3
+  limit_text: Vonage lets you send your API request to manage your Numbers at a rate of 3 API requests per second
+    (180 API requests per minute).
+  source: https://api.support.vonage.com/hc/en-us/articles/5667853760284-How-fast-can-I-send-Numbers-API-requests
+- name: Numbers API /account/numbers
+  scope: per account
+  window: 1 second
+  max: 1
+  limit_text: For the /account/numbers endpoint it is 1 per second.
+  endpoint: GET /account/numbers
+  operationId: getOwnedNumbers
+  source: https://api.support.vonage.com/hc/en-us/articles/5667853760284-How-fast-can-I-send-Numbers-API-requests
+- name: Redact API requests per second
+  scope: per account
+  window: 1 second
+  max: 170
+  limit_text: Vonage lets you send your API request to manage your Numbers at a rate of 170 API requests per second
+  endpoint: POST /v1/redact/transaction
+  operationId: redact-message
+  source: https://api.support.vonage.com/hc/en-us/articles/6918048541596-How-fast-can-I-send-Redact-API-requests
+- name: Reports API synchronous requests
+  scope: per account
+  window: 1 second
+  max: 10
+  limit_text: 'Synchronous Request : 10 requests per second.'
+  operationId: createSyncReportPublic
+  source: https://api.support.vonage.com/hc/en-us/articles/4407771966868-How-many-Reports-API-requests-can-be-submitted-in-a-second
+- name: Reports API asynchronous requests
+  scope: per account
+  window: 1 second
+  max: 5
+  limit_text: 'Asynchronous Requests : 5 requests per second.'
+  operationId: createAsyncReportPublic
+  source: https://api.support.vonage.com/hc/en-us/articles/4407771966868-How-many-Reports-API-requests-can-be-submitted-in-a-second
+- name: Messages API Sandbox messages per second
+  scope: per API key (sandbox)
+  window: 1 second
+  max: 1
+  limit_text: Our Messages API sandbox has a limit of 1 message per second and 100 messages per month for all channels.
+  source: https://api.support.vonage.com/hc/en-us/articles/11679887237276-What-is-the-Messages-API-sandbox-rate-limit
+- name: Messages API Sandbox messages per month
+  scope: per API key (sandbox)
+  window: 1 month
+  max: 100
+  limit_text: Our Messages API sandbox has a limit of 1 message per second and 100 messages per month for all channels.
+  source: https://api.support.vonage.com/hc/en-us/articles/11679887237276-What-is-the-Messages-API-sandbox-rate-limit
+- name: MMS US short code throughput
+  scope: per sender number
+  window: 1 second
+  max: 40
+  limit_text: US Short code 40 MMS per second
+  source: https://api.support.vonage.com/hc/en-us/articles/360022456232-What-are-the-throughput-limits-on-MMS
+- name: MMS US toll-free throughput
+  scope: per sender number
+  window: 1 second
+  max: 40
+  limit_text: Toll-Free Numbers 40 MMS per second
+  source: https://api.support.vonage.com/hc/en-us/articles/360022456232-What-are-the-throughput-limits-on-MMS
+limit_count: 12

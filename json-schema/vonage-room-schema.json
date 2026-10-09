@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-room-schema.json",
+  "title": "Room",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-meetings-openapi.yml#/components/schemas/Room",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/Room_Id"
+    },
+    "display_name": {
+      "$ref": "#/$defs/Room_Name"
+    },
+    "metadata": {
+      "$ref": "#/$defs/Room_Metadata"
+    },
+    "type": {
+      "$ref": "#/$defs/Room_Type"
+    },
+    "recording_options": {
+      "$ref": "#/$defs/RecordingOptions"
+    },
+    "meeting_code": {
+      "$ref": "#/$defs/Room_MeetingCode"
+    },
+    "is_available": {
+      "$ref": "#/$defs/Room_IsAvailable"
+    },
+    "theme_id": {
+      "$ref": "#/$defs/Theme_Id"
+    },
+    "created_at": {
+      "$ref": "#/$defs/Room_CreatedAt"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/Room_ExpiresAt"
+    },
+    "expire_after_use": {
+      "$ref": "#/$defs/Room_ExpiresAfterUse"
+    },
+    "join_approval_level": {
+      "$ref": "#/$defs/JoinApprovalLevel"
+    },
+    "initial_join_options": {
+      "$ref": "#/$defs/InitialJoinOptions"
+    },
+    "callback_urls": {
+      "$ref": "#/$defs/CallbackUrls"
+    },
+    "available_features": {
+      "$ref": "#/$defs/AvailableFeatures"
+    },
+    "ui_settings": {
+      "$ref": "#/$defs/UiSettings"
+    },
+    "_links": {
+      "type": "object",
+      "description": "Provides links to join the meeting room",
+      "properties": {
+        "guest_url": {
+          "$ref": "#/$defs/Room_GuestUrl"
+        },
+        "host_url": {
+          "$ref": "#/$defs/Room_HostUrl"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "AvailableFeatures": {
+      "type": "object",
+      "properties": {
+        "is_recording_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if recording feature is available in the UI."
+        },
+        "is_chat_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if chat feature is available in the UI."
+        },
+        "is_whiteboard_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if whiteboard feature is available in the UI."
+        },
+        "is_locale_switcher_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if the locale switcher is available in the UI."
+        },
+        "is_captions_available": {
+          "type": "boolean",
+          "default": false,
+          "description": "Determine if captions are available in the UI."
+        }
+      }
+    },
+    "CallbackUrls": {
+      "type": "object",
+      "description": "Provides callback URLs to listen to events",
+      "properties": {
+        "rooms_callback_url": {
+          "type": "string",
+          "description": "Callback url for rooms events, overrides application level rooms callback url.",
+          "pattern": "^https?:\\\\/\\\\/.*$"
+        },
+        "sessions_callback_url": {
+          "type": "string",
+          "description": "Callback url for sessions events, overrides application level sessions callback url.",
+          "pattern": "^https?:\\\\/\\\\/.*$"
+        },
+        "recordings_callback_url": {
+          "type": "string",
+          "description": "Callback url for recordings events, overrides application level recordings callback url.",
+          "pattern": "^https?:\\\\/\\\\/.*$"
+        }
+      }
+    },
+    "InitialJoinOptions": {
+      "type": "object",
+      "description": "Sets the default options for participants",
+      "properties": {
+        "microphone_state": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "default"
+          ],
+          "default": "default",
+          "description": "Set the default microphone option for users in the pre-join screen of this room."
+        }
+      }
+    },
+    "JoinApprovalLevel": {
+      "type": "string",
+      "enum": [
+        "none",
+        "after_owner_only",
+        "explicit_approval"
+      ],
+      "description": "The level of approval needed to join the meeting in the room. When set to \"after_owner_only\" the participants will join the meeting only after the host joined. When set to \"explicit_approval\" the participants will join the waiting room and the host will deny/approve them."
+    },
+    "RecordingOptions": {
+      "type": "object",
+      "description": "An object containing various meeting recording options",
+      "properties": {
+        "auto_record": {
+          "type": "boolean",
+          "description": "Automatically record all sessions in this room. Recording cannot be stopped when this is set to `true`.",
+          "default": false
+        },
+        "record_only_owner": {
+          "type": "boolean",
+          "description": "Record only the owner screen or any share screen of the video.",
+          "default": false
+        }
+      }
+    },
+    "Room_CreatedAt": {
+      "type": "string",
+      "format": "date",
+      "description": "The time for when the room was created, expressed in ISO 8601 format"
+    },
+    "Room_ExpiresAfterUse": {
+      "type": "boolean",
+      "description": "Close the room after a session ends. Only relevant for long_term rooms",
+      "default": false
+    },
+    "Room_ExpiresAt": {
+      "type": "string",
+      "format": "date",
+      "description": "The time for when the room will be expired, expressed in ISO 8601 format. The value must be greater than 10 minutes from now"
+    },
+    "Room_GuestUrl": {
+      "type": "object",
+      "description": "The link to join the meeting as participant, using the meeting code",
+      "properties": {
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "Room_HostUrl": {
+      "type": "object",
+      "description": "The link to join the meeting as host, using the meeting code",
+      "properties": {
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "Room_Id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The room UUID"
+    },
+    "Room_IsAvailable": {
+      "type": "boolean",
+      "description": "Once a room becomes unavailable, no new sessions can be created under it",
+      "default": true
+    },
+    "Room_MeetingCode": {
+      "type": "string",
+      "pattern": "^\\d+$",
+      "minLength": 9,
+      "description": "The meeting PIN number"
+    },
+    "Room_Metadata": {
+      "maxLength": 500,
+      "type": "string",
+      "description": "Free text that can be attached to a room. This will be passed in the form of a header in events related to this room."
+    },
+    "Room_Name": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The name of the meeting room"
+    },
+    "Room_Type": {
+      "type": "string",
+      "description": "The type of meeting which can be instant or long term. An instant is active for 10 minutes until the first participant joins the roo, and remains active for 10 minutes after the last participant leaves. A long term room expires after a specific date",
+      "default": "instant",
+      "enum": [
+        "instant",
+        "long_term"
+      ]
+    },
+    "Theme_Id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The theme UUID"
+    },
+    "UiSettings": {
+      "type": "object",
+      "description": "Provides options to customize the user interface",
+      "properties": {
+        "language": {
+          "type": "string",
+          "enum": [
+            "ar",
+            "ca",
+            "de",
+            "en",
+            "es",
+            "fr",
+            "he",
+            "it",
+            "pt-br",
+            "zh-tw",
+            "zh-cn"
+          ],
+          "description": "The desired language of the UI. The default is English.",
+          "default": "en"
+        }
+      }
+    }
+  }
+}

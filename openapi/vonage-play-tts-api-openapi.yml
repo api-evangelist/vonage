@@ -1,0 +1,304 @@
+openapi: 3.2.0
+info:
+  title: Vonage Play TTS API
+  version: 1.10.0
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Our Voice API Reference provides developers with quick answers to questions about the Vonage Voice API. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Voice API Reference | Vonage API Documentation
+  description: 'Operations tagged Play TTS across 2 of this provider''s published API definitions: vonage-voice-openapi.json, vonage-voice-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1/calls
+tags:
+- name: Play TTS
+  description: Start or stop playing Text to Speech in to an active call
+paths:
+  /{uuid}/talk:
+    parameters:
+    - in: path
+      name: uuid
+      schema:
+        type: string
+      required: true
+      description: UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+      - Play TTS
+      security:
+      - bearerAuth: []
+      summary: Play text to speech into a call
+      operationId: startTalk
+      requestBody:
+        description: Action to perform
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartTalkRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartTalkResponse'
+    delete:
+      tags:
+      - Play TTS
+      security:
+      - bearerAuth: []
+      summary: Stop text to speech in a call
+      operationId: stopTalk
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopTalkResponse'
+    servers:
+    - url: https://api.nexmo.com/v1/calls
+components:
+  schemas:
+    StopTalkResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Talk stopped
+        uuid:
+          $ref: '#/components/schemas/uuid'
+    uuid:
+      type: string
+      format: uuid
+      title: The UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+      description: The unique identifier for this call leg. The UUID is created when your call request is accepted by Vonage. You use the UUID in all requests for individual live calls
+    voice_name:
+      description: <strong>DEPRECATED</strong> The voice & language to use
+      type: string
+      deprecated: true
+      default: Kimberly
+      enum:
+      - Aditi
+      - Agnieszka
+      - Alva
+      - Amy
+      - Astrid
+      - Bianca
+      - Brian
+      - Carla
+      - Carmen
+      - Carmit
+      - Catarina
+      - Celine
+      - Cem
+      - Chantal
+      - Chipmunk
+      - Conchita
+      - Cristiano
+      - Damayanti
+      - Dora
+      - Emma
+      - Empar
+      - Enrique
+      - Eric
+      - Ewa
+      - Felipe
+      - Filiz
+      - Geraint
+      - Giorgio
+      - Gwyneth
+      - Hans
+      - Henrik
+      - Ines
+      - Ioana
+      - Iveta
+      - Ivy
+      - Jacek
+      - Jan
+      - Jennifer
+      - Joana
+      - Joanna
+      - Joey
+      - Jordi
+      - Justin
+      - Kanya
+      - Karl
+      - Kendra
+      - Kimberly
+      - Laila
+      - Laura
+      - Lea
+      - Lekha
+      - Liv
+      - Lotte
+      - Lucia
+      - Luciana
+      - Mads
+      - Maged
+      - Maja
+      - Mariska
+      - Marlene
+      - Mathieu
+      - Matthew
+      - Maxim
+      - Mei-Jia
+      - Melina
+      - Mia
+      - Miguel
+      - Miren
+      - Mizuki
+      - Montserrat
+      - Naja
+      - Nicole
+      - Nikos
+      - Nora
+      - Oskar
+      - Penelope
+      - Raveena
+      - Ricardo
+      - Ruben
+      - Russell
+      - Salli
+      - Satu
+      - Seoyeon
+      - Sin-Ji
+      - Sora
+      - Takumi
+      - Tarik
+      - Tatyana
+      - Tessa
+      - Tian-Tian
+      - Vicki
+      - Vitoria
+      - Yelda
+      - Zeina
+      - Zhiyu
+      - Zuzana
+    style:
+      description: The vocal style (vocal range, tessitura, and timbre) to use
+      type: integer
+      default: 0
+    StartTalkResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Talk started
+        uuid:
+          $ref: '#/components/schemas/uuid'
+    StartTalkRequest:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: The text to read
+          example: Hello. How are you today?
+        language:
+          $ref: '#/components/schemas/language'
+        style:
+          $ref: '#/components/schemas/style'
+        premium:
+          type: boolean
+          description: Set to `true` to use the premium version of the specified style if available, otherwise the standard version will be used. You can find more information about Premium Voices in the [Text-To-Speech guide](https://developer.vonage.com/en/voice/voice-api/guides/text-to-speech#premium-voices).
+          default: 'false'
+          example: true
+        voice_name:
+          $ref: '#/components/schemas/voice_name'
+        loop:
+          type: integer
+          description: The number of times to repeat the text the file, 0 for infinite
+          default: 1
+        level:
+          type: string
+          description: The volume level that the speech is played. This can be any value between `-1` to `1` in `0.1` increments, with `0` being the default.
+          example: '0.4'
+          default: '0'
+    language:
+      description: The language to use
+      type: string
+      default: en-US
+      enum:
+      - ar
+      - ca-ES
+      - cmn-CN
+      - cmn-TW
+      - cs-CZ
+      - cy-GB
+      - da-DK
+      - de-DE
+      - el-GR
+      - en-AU
+      - en-GB
+      - en-GB-WLS
+      - en-IN
+      - en-US
+      - en-ZA
+      - es-ES
+      - es-MX
+      - es-US
+      - eu-ES
+      - fi-FI
+      - fil-PH
+      - fr-CA
+      - fr-FR
+      - he-IL
+      - hi-IN
+      - hu-HU
+      - id-ID
+      - is-IS
+      - it-IT
+      - ja-JP
+      - ko-KR
+      - nb-NO
+      - nl-NL
+      - no-NO
+      - pl-PL
+      - pt-BR
+      - pt-PT
+      - ro-RO
+      - ru-RU
+      - sk-SK
+      - sv-SE
+      - th-TH
+      - tr-TR
+      - uk-UA
+      - vi-VN
+      - yue-CN
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-voice-openapi.json
+- vonage-voice-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

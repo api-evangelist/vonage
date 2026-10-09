@@ -1,0 +1,172 @@
+openapi: 3.2.0
+info:
+  title: Vonage Recordings API
+  version: 0.1.7
+  x-metaDescription: Find quick answers to questions about the Vonage Meetings API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Meetings API Reference | Vonage API Documentation
+  x-noIndex: true
+  description: 'Operations tagged Recordings across 2 of this provider''s published API definitions: vonage-meetings-openapi.json, vonage-meetings-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api-eu.vonage.com/v1/meetings
+tags:
+- name: Recordings
+paths:
+  /recordings/:recording_id:
+    get:
+      summary: Get a recording
+      operationId: getRecording
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recording'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+      - Recordings
+    delete:
+      summary: Delete a recording
+      operationId: deleteRecording
+      security:
+      - bearerAuth: []
+      description: The recording needs to have a 'uploaded' status to be deleted. Otherwise, you will receive a 500 response.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+      - Recordings
+    servers:
+    - url: https://api-eu.vonage.com/v1/meetings
+components:
+  schemas:
+    Recording_Status:
+      type: string
+      enum:
+      - started
+      - stopped
+      - paused
+      - uploaded
+      example: stopped
+      description: The recording current status
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Failed to fetch resource with id 50da57f5-0aaf-4ac5-804c-2114afc89197
+        name:
+          type: string
+          example: NotFoundError
+        status:
+          type: integer
+          example: 404
+    Recording_Url:
+      type: object
+      description: The recording url
+      properties:
+        href:
+          type: string
+          example: https://prod-meetings-recordings.s3.amazonaws.com/123/9f6fe8ae-3458-4a72-b532-8276d5533e97/archive.mp4
+    AuthenticationError:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Missing Auth
+        detail:
+          type: string
+          example: Auth header is required
+    Recording_StartedAt:
+      type: string
+      format: date-time
+      example: '2023-06-06T07:15:13.974Z'
+      description: The date the recording started
+    Recording:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Recording_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        started_at:
+          $ref: '#/components/schemas/Recording_StartedAt'
+        ended_at:
+          $ref: '#/components/schemas/Recording_EndedAt'
+        status:
+          $ref: '#/components/schemas/Recording_Status'
+        _links:
+          type: object
+          description: Provide links for the current recording
+          properties:
+            url:
+              $ref: '#/components/schemas/Recording_Url'
+    Recording_EndedAt:
+      type: string
+      format: date-time
+      example: '2023-06-06T08:15:13.974Z'
+      description: The date the recording stopped
+    SessionId:
+      type: string
+      example: 2_MX40NjMwODczMn5-MTU3NTgyODEwNzQ2MH5OZDJrVmdBRUNDbG5MUzNqNX20yQ1Z-fg
+      description: Corresponds to the underlying Video API session id
+    Recording_Id:
+      type: string
+      format: uuid
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+      description: The recording UUID
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-meetings-openapi.json
+- vonage-meetings-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

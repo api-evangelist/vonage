@@ -1,0 +1,585 @@
+openapi: 3.2.0
+info:
+  title: Vonage Rooms API
+  version: 0.1.7
+  x-metaDescription: Find quick answers to questions about the Vonage Meetings API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Meetings API Reference | Vonage API Documentation
+  x-noIndex: true
+  description: 'Operations tagged Rooms across 2 of this provider''s published API definitions: vonage-meetings-openapi.json, vonage-meetings-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api-eu.vonage.com/v1/meetings
+tags:
+- name: Rooms
+paths:
+  /rooms:
+    get:
+      summary: Get all rooms
+      operationId: getRooms
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/start_id_parameter'
+      - $ref: '#/components/parameters/end_id_parameter'
+      - $ref: '#/components/parameters/page_size_parameter'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  page_size:
+                    $ref: '#/components/schemas/PageSize'
+                  total_items:
+                    $ref: '#/components/schemas/TotalItems'
+                  _embedded:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Room'
+                  _links:
+                    $ref: '#/components/schemas/HAL'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+      tags:
+      - Rooms
+    post:
+      summary: Create a room
+      operationId: createRoom
+      description: An application is limited to a thousand rooms. Trying to create more rooms will result in a 403 response.
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoomRequest'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Maximum number of rooms for owner (1000) exceeded
+      tags:
+      - Rooms
+    servers:
+    - url: https://api-eu.vonage.com/v1/meetings
+  /rooms/:room_id:
+    get:
+      summary: Get room details
+      operationId: getRoom
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+      - Rooms
+    patch:
+      summary: Update an existing room
+      operationId: updateRoom
+      security:
+      - bearerAuth: []
+      description: If you try to update a room which expired or not available anymore, you will receive a 404 response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoomRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+      - Rooms
+    servers:
+    - url: https://api-eu.vonage.com/v1/meetings
+components:
+  parameters:
+    page_size_parameter:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 20
+      example: 50
+      required: false
+      description: The maximum number of rooms in the current page
+    start_id_parameter:
+      name: start_id
+      in: query
+      schema:
+        type: integer
+      example: 13
+      required: false
+      description: The room serial number to filter from - This number is not the room Id
+    end_id_parameter:
+      name: end_id
+      in: query
+      schema:
+        type: integer
+      example: 13
+      required: false
+      description: The room serial number to filter to (excluding end_id itself) - This number is not the room Id
+  schemas:
+    JoinApprovalLevel:
+      type: string
+      enum:
+      - none
+      - after_owner_only
+      - explicit_approval
+      description: The level of approval needed to join the meeting in the room. When set to "after_owner_only" the participants will join the meeting only after the host joined. When set to "explicit_approval" the participants will join the waiting room and the host will deny/approve them.
+    Room_Type:
+      type: string
+      description: The type of meeting which can be instant or long term. An instant is active for 10 minutes until the first participant joins the roo, and remains active for 10 minutes after the last participant leaves. A long term room expires after a specific date
+      default: instant
+      enum:
+      - instant
+      - long_term
+    Room_ExpiresAt:
+      type: string
+      format: date
+      example: '2023-06-06T06:55:07.134Z'
+      description: The time for when the room will be expired, expressed in ISO 8601 format. The value must be greater than 10 minutes from now
+    UpdateRoomRequest:
+      type: object
+      required:
+      - update_details
+      properties:
+        update_details:
+          type: object
+          description: Contains information to be updated on the room. It is mandatory to provide at least one value to update; you will receive a 400 response otherwise.
+          properties:
+            expires_at:
+              $ref: '#/components/schemas/Room_ExpiresAt'
+            expire_after_use:
+              $ref: '#/components/schemas/Room_ExpiresAfterUse'
+            theme_id:
+              $ref: '#/components/schemas/Theme_Id'
+            join_approval_level:
+              $ref: '#/components/schemas/JoinApprovalLevel'
+            initial_join_options:
+              $ref: '#/components/schemas/InitialJoinOptions'
+            callback_urls:
+              $ref: '#/components/schemas/CallbackUrls'
+            available_features:
+              $ref: '#/components/schemas/AvailableFeatures'
+    CreateLongTermRoomRequest:
+      title: Long-term Room
+      type: object
+      required:
+      - display_name
+      - type
+      - expires_at
+      properties:
+        display_name:
+          $ref: '#/components/schemas/Room_Name'
+        metadata:
+          $ref: '#/components/schemas/Room_Metadata'
+        type:
+          $ref: '#/components/schemas/Room_Type_LongTerm'
+        expires_at:
+          $ref: '#/components/schemas/Room_ExpiresAt'
+        recording_options:
+          $ref: '#/components/schemas/RecordingOptions'
+        expire_after_use:
+          $ref: '#/components/schemas/Room_ExpiresAfterUse'
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        join_approval_level:
+          $ref: '#/components/schemas/JoinApprovalLevel'
+        initial_join_options:
+          $ref: '#/components/schemas/InitialJoinOptions'
+        callback_urls:
+          $ref: '#/components/schemas/CallbackUrls'
+        available_features:
+          $ref: '#/components/schemas/AvailableFeatures'
+        ui_settings:
+          $ref: '#/components/schemas/UiSettings'
+    Theme_Id:
+      type: string
+      format: uuid
+      description: The theme UUID
+      example: ef2b46f3-8ebb-437e-a671-272e4990fbc8
+    Room_CreatedAt:
+      type: string
+      format: date
+      example: '2023-06-06T06:45:07.135Z'
+      description: The time for when the room was created, expressed in ISO 8601 format
+    HAL:
+      type: object
+      description: Represents HAL links for navigation purposes
+      properties:
+        first:
+          type: object
+          description: Provides a link to the first element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50
+        self:
+          type: object
+          description: Provides a link to the current element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50&start_id=2293905
+        next:
+          type: object
+          description: Provides a link to the next element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50&start_id=2293906
+        prev:
+          type: object
+          description: Provides a link to the previous element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50&start_id=2293904
+    CallbackUrls:
+      type: object
+      description: Provides callback URLs to listen to events
+      properties:
+        rooms_callback_url:
+          type: string
+          description: Callback url for rooms events, overrides application level rooms callback url.
+          pattern: ^https?:\\/\\/.*$
+          example: https://example.com/rooms
+        sessions_callback_url:
+          type: string
+          description: Callback url for sessions events, overrides application level sessions callback url.
+          pattern: ^https?:\\/\\/.*$
+          example: https://example.com/sessions
+        recordings_callback_url:
+          type: string
+          description: Callback url for recordings events, overrides application level recordings callback url.
+          pattern: ^https?:\\/\\/.*$
+          example: https://example.com/recordings
+    Room_GuestUrl:
+      type: object
+      description: The link to join the meeting as participant, using the meeting code
+      properties:
+        href:
+          type: string
+          example: https://meetings.vonage.com/280674154
+    BadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Explanation about why validation failed.
+        name:
+          type: string
+          example: InputValidationError
+        status:
+          type: integer
+          example: 400
+    AuthenticationError:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Missing Auth
+        detail:
+          type: string
+          example: Auth header is required
+    PageSize:
+      type: integer
+      example: 25
+      description: The number of results returned on this page
+    Room_IsAvailable:
+      type: boolean
+      description: Once a room becomes unavailable, no new sessions can be created under it
+      default: true
+    Room_Type_LongTerm:
+      type: string
+      enum:
+      - long_term
+      description: Represents a room that expires after a specific date. When every participant leaves the meeting, the meeting will end. The meeting will restart only after the host rejoins the room first.
+      example: long_term
+    Room_ExpiresAfterUse:
+      type: boolean
+      description: Close the room after a session ends. Only relevant for long_term rooms
+      default: false
+      example: true
+    CreateInstantRoomRequest:
+      type: object
+      title: Instant Room
+      required:
+      - display_name
+      properties:
+        display_name:
+          $ref: '#/components/schemas/Room_Name'
+        metadata:
+          $ref: '#/components/schemas/Room_Metadata'
+        type:
+          $ref: '#/components/schemas/Room_Type_Instant'
+        recording_options:
+          $ref: '#/components/schemas/RecordingOptions'
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        join_approval_level:
+          $ref: '#/components/schemas/JoinApprovalLevel'
+        initial_join_options:
+          $ref: '#/components/schemas/InitialJoinOptions'
+        callback_urls:
+          $ref: '#/components/schemas/CallbackUrls'
+        available_features:
+          $ref: '#/components/schemas/AvailableFeatures'
+        ui_settings:
+          $ref: '#/components/schemas/UiSettings'
+    CreateRoomRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateInstantRoomRequest'
+      - $ref: '#/components/schemas/CreateLongTermRoomRequest'
+    Room_Name:
+      type: string
+      maxLength: 200
+      description: The name of the meeting room
+      example: My custom room
+    Room_Type_Instant:
+      type: string
+      enum:
+      - instant
+      description: Represents a room that is active for 10 minutes until the first participant joins the room, and remains active for 10 minutes after the last participant leaves.
+      example: instant
+    UiSettings:
+      type: object
+      description: Provides options to customize the user interface
+      properties:
+        language:
+          type: string
+          enum:
+          - ar
+          - ca
+          - de
+          - en
+          - es
+          - fr
+          - he
+          - it
+          - pt-br
+          - zh-tw
+          - zh-cn
+          description: The desired language of the UI. The default is English.
+          default: en
+          example: es
+    AvailableFeatures:
+      type: object
+      properties:
+        is_recording_available:
+          type: boolean
+          default: true
+          description: Determine if recording feature is available in the UI.
+        is_chat_available:
+          type: boolean
+          default: true
+          description: Determine if chat feature is available in the UI.
+        is_whiteboard_available:
+          type: boolean
+          default: true
+          description: Determine if whiteboard feature is available in the UI.
+        is_locale_switcher_available:
+          type: boolean
+          default: true
+          description: Determine if the locale switcher is available in the UI.
+        is_captions_available:
+          type: boolean
+          default: false
+          description: Determine if captions are available in the UI.
+    Room:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Room_Id'
+        display_name:
+          $ref: '#/components/schemas/Room_Name'
+        metadata:
+          $ref: '#/components/schemas/Room_Metadata'
+        type:
+          $ref: '#/components/schemas/Room_Type'
+        recording_options:
+          $ref: '#/components/schemas/RecordingOptions'
+        meeting_code:
+          $ref: '#/components/schemas/Room_MeetingCode'
+        is_available:
+          $ref: '#/components/schemas/Room_IsAvailable'
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        created_at:
+          $ref: '#/components/schemas/Room_CreatedAt'
+        expires_at:
+          $ref: '#/components/schemas/Room_ExpiresAt'
+        expire_after_use:
+          $ref: '#/components/schemas/Room_ExpiresAfterUse'
+        join_approval_level:
+          $ref: '#/components/schemas/JoinApprovalLevel'
+        initial_join_options:
+          $ref: '#/components/schemas/InitialJoinOptions'
+        callback_urls:
+          $ref: '#/components/schemas/CallbackUrls'
+        available_features:
+          $ref: '#/components/schemas/AvailableFeatures'
+        ui_settings:
+          $ref: '#/components/schemas/UiSettings'
+        _links:
+          type: object
+          description: Provides links to join the meeting room
+          properties:
+            guest_url:
+              $ref: '#/components/schemas/Room_GuestUrl'
+            host_url:
+              $ref: '#/components/schemas/Room_HostUrl'
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Failed to fetch resource with id 50da57f5-0aaf-4ac5-804c-2114afc89197
+        name:
+          type: string
+          example: NotFoundError
+        status:
+          type: integer
+          example: 404
+    Room_Id:
+      type: string
+      format: uuid
+      description: The room UUID
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+    Room_Metadata:
+      maxLength: 500
+      type: string
+      description: Free text that can be attached to a room. This will be passed in the form of a header in events related to this room.
+      example: Welcome to my custom room
+    RecordingOptions:
+      type: object
+      description: An object containing various meeting recording options
+      properties:
+        auto_record:
+          type: boolean
+          description: Automatically record all sessions in this room. Recording cannot be stopped when this is set to `true`.
+          default: false
+        record_only_owner:
+          type: boolean
+          description: Record only the owner screen or any share screen of the video.
+          default: false
+    Room_HostUrl:
+      type: object
+      description: The link to join the meeting as host, using the meeting code
+      properties:
+        href:
+          type: string
+          example: https://meetings.vonage.com/?room_token=280674154&participant_token=eyJhbGciOiJIUzI1NiIsInR5cC
+    Room_MeetingCode:
+      type: string
+      pattern: ^\d+$
+      example: '280674154'
+      minLength: 9
+      description: The meeting PIN number
+    InitialJoinOptions:
+      type: object
+      description: Sets the default options for participants
+      properties:
+        microphone_state:
+          type: string
+          enum:
+          - 'on'
+          - 'off'
+          - default
+          default: default
+          description: Set the default microphone option for users in the pre-join screen of this room.
+          example: 'on'
+    TotalItems:
+      type: integer
+      example: 30
+      description: The overall number of results
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-meetings-openapi.json
+- vonage-meetings-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

@@ -1,0 +1,323 @@
+openapi: 3.2.0
+info:
+  title: Vonage Moderation API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged Moderation across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: Moderation
+  description: APIs relating to moderating participants
+paths:
+  /v2/project/{application_id}/session/{session_id}/connection/{connection_id}:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    - $ref: '#/components/parameters/connection_id'
+    delete:
+      tags:
+      - Moderation
+      summary: Force a connection to disconnect
+      description: Force a client to disconnect from a session
+      operationId: delete-v2-projects-application_id-session-session_id-connection-connection_id
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: One of the arguments — sessionId or connectionId — is invalid.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: You are not authorized to forceDisconnect, check your authentication credentials.
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: The client specified by the connectionId property is not connected to the session.
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/stream/{stream_id}/mute:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    - $ref: '#/components/parameters/stream_id'
+    post:
+      tags:
+      - Moderation
+      summary: Mute a specific stream
+      description: Force mute a specific publisher stream
+      operationId: post-v2-project-application_id-session-session_id-stream-stream_id-mute
+      responses:
+        '200':
+          $ref: '#/components/responses/Blank-200'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: Invalid request
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: Authentication error
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: Not found. The session or stream is not found
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/mute:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    post:
+      tags:
+      - Moderation
+      summary: Mute multiple participants in a session
+      description: You can use the Vonage Video REST API to force all streams (except for an optional list of streams) in a session to mute published audio. You can also use this method to disable the force mute state of a session (see below).
+      operationId: mute-multiple-participants
+      requestBody:
+        $ref: '#/components/requestBodies/Mute-Multiple-Streams'
+      responses:
+        '200':
+          $ref: '#/components/responses/Project-Details'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: Invalid request. This response may indicate that data in your request data is invalid JSON.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: Authentication error
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: Not found. The session or stream is not found
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  responses:
+    Project-Details:
+      description: Project Details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              applicationId:
+                $ref: '#/components/schemas/ApplicationID'
+              status:
+                type: string
+                description: Whether the project is active ("ACTIVE") or suspended ("SUSPENDED")
+                example: ACTIVE
+              name:
+                type: string
+                description: The name, if you specified one when creating the project; or an empty string if you did not specify a name
+                example: Joe Montana
+              environment:
+                type: string
+                description: This is set to "standard" or "enterprise", and it refers to the environment a project is running on. Enterprise package partners have access to the enterprise environment.
+                example: standard
+              createdAt:
+                type: integer
+                description: The time at which the project was created (a UNIX timestamp, in milliseconds)
+                example: 1414642898000
+    Blank-200:
+      description: OK
+  requestBodies:
+    Mute-Multiple-Streams:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              active:
+                type: boolean
+                description: Whether to mute streams in the session (true) and enable the mute state of the session, or to disable the mute state of the session (false). With the mute state enabled (true), all current and future streams published to the session (with the exception of streams in the excludedStreamIds array) are muted. When you call this method with the active property set to false, future streams published to the session are not muted (but any existing muted streams remain muted).
+                example: true
+              excludedStreamIds:
+                type: array
+                description: 'The stream IDs for streams that should not be muted. This is an optional property. If you omit this property, all streams in the session will be muted. This property only applies when the active property is set to true. When the active property is set to false, it is ignored.
+
+
+                  The elements in the excludedStreamIds array are stream IDs (strings) for the streams you wish to exclude from being muted.
+
+
+                  If you do not wish to include an array of excluded streams, do not include any body content.
+
+                  '
+                example:
+                - excludedStream1
+                - excludedStream2
+                items:
+                  type: string
+            required:
+            - active
+            - excludedStreamIds
+  parameters:
+    connection_id:
+      name: connection_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Specific publisher connection ID
+    stream_id:
+      name: stream_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Stream ID
+    session_id:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Video session ID
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+  schemas:
+    ApplicationID:
+      type: string
+      description: A Vonage Application ID
+      example: 93e36bb9-b72c-45b6-a9ea-5c37dbc49906
+    Video-Error:
+      description: Error thrown in the Vonage Video API
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP response code that is returned
+        message:
+          type: string
+          description: Error that was exhibited
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

@@ -1,0 +1,140 @@
+openapi: 3.2.0
+info:
+  title: Vonage Stream Audio API
+  version: 1.10.0
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Our Voice API Reference provides developers with quick answers to questions about the Vonage Voice API. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Voice API Reference | Vonage API Documentation
+  description: 'Operations tagged Stream Audio across 2 of this provider''s published API definitions: vonage-voice-openapi.json, vonage-voice-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1/calls
+tags:
+- name: Stream Audio
+  description: Start or stop streaming audio in to an active call
+paths:
+  /{uuid}/stream:
+    parameters:
+    - in: path
+      name: uuid
+      schema:
+        type: string
+      required: true
+      description: UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+      - Stream Audio
+      security:
+      - bearerAuth: []
+      summary: Play an audio file into a call
+      operationId: startStream
+      requestBody:
+        description: action to perform
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartStreamRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartStreamResponse'
+    delete:
+      tags:
+      - Stream Audio
+      security:
+      - bearerAuth: []
+      summary: Stop playing an audio file into a call
+      operationId: stopStream
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopStreamResponse'
+    servers:
+    - url: https://api.nexmo.com/v1/calls
+components:
+  schemas:
+    StopStreamResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Stream stopped
+        uuid:
+          $ref: '#/components/schemas/uuid'
+    uuid:
+      type: string
+      format: uuid
+      title: The UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+      description: The unique identifier for this call leg. The UUID is created when your call request is accepted by Vonage. You use the UUID in all requests for individual live calls
+    StartStreamResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Stream started
+        uuid:
+          $ref: '#/components/schemas/uuid'
+    StartStreamRequest:
+      type: object
+      required:
+      - stream_url
+      properties:
+        stream_url:
+          x-nexmo-developer-collection-description-shown: true
+          example:
+          - https://example.com/waiting.mp3
+          type: array
+          items:
+            type: string
+        loop:
+          type: integer
+          description: the number of times to play the file, 0 for infinite
+          default: 1
+        level:
+          type: string
+          description: Set the audio level of the stream in the range `-1 >= level <= 1` with a precision of 0.1. The default value is 0.
+          example: '0.4'
+          default: '0'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-voice-openapi.json
+- vonage-voice-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

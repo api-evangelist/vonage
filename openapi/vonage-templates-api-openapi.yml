@@ -1,0 +1,682 @@
+openapi: 3.2.0
+info:
+  title: Vonage Templates API
+  version: 1.0.1
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.vonage.com/
+  x-metaDescription: Find quick answers to questions about the Vonage Verify API (v2.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Verify v2.0 API Reference | Vonage API Documentation
+  description: 'Operations tagged Templates across 2 of this provider''s published API definitions: vonage-verify-v2-openapi.json, vonage-verify-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v2/verify
+tags:
+- name: Templates
+  description: Create and modify custom templates in Verify
+paths:
+  /templates:
+    get:
+      operationId: listTemplates
+      summary: List all templates
+      description: 'Note on using Custom Templates:
+
+
+        Writing Custom Templates is only possible if your account has been enabled to do so. You can, however, view your templates.
+
+        Please contact Support to enable this.
+
+
+        Custom Template functionality is currently in Beta'
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      tags:
+      - Templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTemplatesResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    post:
+      operationId: createTemplate
+      summary: Create a new template
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTemplateRequest'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              example:
+                template_id: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                name: my-template
+                is_default: true
+                _links:
+                  self:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                  fragments:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9/template_fragments
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    servers:
+    - url: https://api.nexmo.com/v2/verify
+  /templates/{template_id}:
+    get:
+      operationId: getTemplate
+      summary: Get a template
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              example:
+                template_id: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                name: my-template
+                is_default: true
+                _links:
+                  self:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                  fragments:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9/template_fragments
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    delete:
+      operationId: deleteTemplate
+      summary: Delete a template
+      description: Note that a template can only be deleted if there are no template fragments attached to it.
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    patch:
+      operationId: updateTemplate
+      summary: Update a template
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      requestBody:
+        $ref: '#/components/requestBodies/PatchTemplateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              example:
+                template_id: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                name: my-template
+                is_default: true
+                _links:
+                  self:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                  fragments:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9/template_fragments
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    servers:
+    - url: https://api.nexmo.com/v2/verify
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number
+      schema:
+        type: integer
+      example: 2
+    page_size:
+      name: page_size
+      in: query
+      description: Amount of templates per page
+      schema:
+        type: integer
+      example: 10
+    template_id:
+      name: template_id
+      required: true
+      in: path
+      description: The template UUID
+      schema:
+        type: string
+      example: 22f571c1-f41a-4db2-bba7-f23a069200c1
+  schemas:
+    ErrorNotFound:
+      type: object
+      description: Template Fragment was not found.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Not Found
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#template-fragment-not-found
+        detail:
+          type: string
+          description: Detailed error description
+          example: Template Fragment was not found.
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    is_default:
+      description: Whether the template is the default template if a new request does not specify a template to use.
+      type: boolean
+      example: true
+    ErrorConflict:
+      type: object
+      description: Concurrent verifications to the same number are not allowed.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Conflict
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#concurrent
+        detail:
+          type: string
+          description: Detailed error description
+          example: Concurrent verifications to the same number are not allowed.
+        instance:
+          type: string
+          description: The instance ID
+          example: 738f9313-418a-4259-9b0d-6670f06fa82d
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    Template:
+      type: object
+      properties:
+        template_id:
+          type: string
+          format: uuid
+          example: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+        name:
+          type: string
+          example: my-template
+        is_default:
+          type: boolean
+          example: true
+        _links:
+          type: object
+          properties:
+            self:
+              $ref: '#/components/schemas/Link'
+            fragments:
+              $ref: '#/components/schemas/Link'
+      required:
+      - template_id
+      - name
+      - is_default
+      - _links
+    ListTemplatesResponse:
+      type: object
+      properties:
+        page_size:
+          type: integer
+          description: How many items in page
+          example: 1
+        page:
+          type: integer
+          description: The current page number
+          example: 2
+        total_pages:
+          type: integer
+          example: 10
+          description: Count of pages
+        total_items:
+          type: integer
+          example: 25
+          description: Total amount of all templates
+        _embedded:
+          type: object
+          properties:
+            templates:
+              type: array
+              description: List of templates
+              items:
+                $ref: '#/components/schemas/Template'
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PageLinks'
+          example:
+            self:
+              href: https://api.nexmo.com/v2/verify/templates?page=2
+            next:
+              href: https://api.nexmo.com/v2/verify/templates?page=3
+            prev:
+              href: https://api.nexmo.com/v2/verify/templates?page=1
+            last:
+              href: https://api.nexmo.com/v2/verify/templates?page=5
+      required:
+      - page_size
+      - page
+      - total_pages
+      - total_items
+      - _embedded
+      - _links
+    ErrorInternalError:
+      type: object
+      description: There was an error processing your request in the Platform.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Internal error
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/api-errors#internal-error
+        detail:
+          type: string
+          description: Detailed error description
+          example: There was an error processing your request in the Platform.
+        instance:
+          type: string
+          description: The instance ID
+          example: fe7ca85d-bebc-4696-ba39-317edfd15b62
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+          description: Target URL
+      required:
+      - href
+    ErrorJwtExpired:
+      description: JWT expired
+      type: object
+      required:
+      - type
+      - title
+      - details
+      - instance
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: You did not provide correct credentials.
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#jwt-expired
+        detail:
+          type: string
+          description: Additional information about the error
+          example: The JWT provided has expired.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    ErrorPaymentRequired:
+      type: object
+      description: This request could not be performed due to your account balance being low.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Low balance
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/#low-balance
+        detail:
+          type: string
+          description: Additional information about the error
+          example: This request could not be performed due to your account balance being low.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorForbidden:
+      type: object
+      description: Templates management is not enabled for your account.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Forbidden
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/api-errors/verify-v2#forbidden
+        detail:
+          type: string
+          description: Detailed error description
+          example: Templates management is not enabled for your account
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    PageLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        first:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
+    ErrorUnauthorizedMissingCredentials:
+      type: object
+      description: Invalid Credentials
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Unauthorized
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/api-errors#unauthorized
+        detail:
+          type: string
+          description: Additional information about the error
+          example: You did not provide correct credentials
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: 9e4dad0a-530d-48a9-bf79-849c8eaaa286
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorInvalidParams:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Invalid params
+        type:
+          type: string
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#invalid-params
+        detail:
+          type: string
+          description: Detailed error description
+          example: The value of one or more parameters is invalid.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: 06032957-99ce-41ee-978b-9a390cd5a89b
+        invalid_parameters:
+          type: array
+          description: Detailed array of errors
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              reason:
+                type: string
+          example:
+          - name: brand
+            reason: Brand is required
+    ErrorRateLimited:
+      type: object
+      description: Please wait, then retry your request.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Rate Limit Hit
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#throttled
+        detail:
+          type: string
+          description: Detailed error description
+          example: Please wait, then retry your request
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+  requestBodies:
+    PatchTemplateRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                description: Reference name for template.
+                example: my-template
+              is_default:
+                $ref: '#/components/schemas/is_default'
+    CreateTemplateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                minLength: 1
+                maxLength: 64
+                pattern: ^[A-Za-z0-9_-]+$
+                description: Reference name for template.
+                example: my-template
+  responses:
+    ErrorResponse500:
+      description: Internal error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInternalError'
+    ErrorResponse409:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorConflict'
+    ErrorResponse403:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorForbidden'
+    ErrorResponse429:
+      description: Rate limited
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorRateLimited'
+    ErrorResponse402:
+      description: Payment Required
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorPaymentRequired'
+    ErrorResponse422:
+      description: Invalid Params
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidParams'
+    ErrorResponse401:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorUnauthorizedMissingCredentials'
+            - $ref: '#/components/schemas/ErrorJwtExpired'
+    ErrorResponse404:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorNotFound'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP auth can be used for synchronous calls, for asynchronous calls and call backs use JWT authentication
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-verify-v2-openapi.json
+- vonage-verify-v2-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

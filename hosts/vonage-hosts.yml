@@ -1,16 +1,17 @@
-generated: '2026-10-03'
+generated: '2026-10-08'
 method: derived
 source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
 generator: derive-hosts.py
 summary:
-  hosts: 23
-  own: 14
+  hosts: 25
+  own: 16
   other_domain: 5
   platform: 4
   roles:
   - api
   - community
   - docs
+  - identity
   - other
   - partner
   - portal
@@ -19,6 +20,15 @@ summary:
   - support
   - website
 hosts:
+- host: api-eu.vonage.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: vonage.com
+  role: other
+  relation: own
 - host: api.nexmo.com
   found_by:
   - apis[]
@@ -33,13 +43,11 @@ hosts:
   relation: other-domain
 - host: api.opentok.com
   found_by:
-  - apis[]
   - probed
   - contract-discovery
   - well-known
   types: []
-  serves:
-  - api
+  serves: []
   registrable_domain: opentok.com
   role: api
   relation: other-domain
@@ -114,6 +122,7 @@ hosts:
   - Documentation
   - Blog
   - LlmsText
+  - APIReference
   serves:
   - docs
   registrable_domain: vonage.com
@@ -153,7 +162,6 @@ hosts:
   - GitHubOrganization
   - SDKs
   - CLI
-  - MCPServer
   serves: []
   registrable_domain: github.com
   role: source
@@ -208,14 +216,25 @@ hosts:
   relation: own
 - host: ui.idp.vonage.com
   found_by:
+  - pointer
   - probed
   - site-links
   - docs-index
-  types: []
+  types:
+  - SignUp
   serves:
   - docs
   registrable_domain: vonage.com
-  role: other
+  role: identity
+  relation: own
+- host: video.api.vonage.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: vonage.com
+  role: api
   relation: own
 - host: vonage-community.slack.com
   found_by:
@@ -231,10 +250,15 @@ hosts:
   relation: platform
 - host: vonageapi.statuspage.io
   found_by:
+  - pointer
   - docs-index
-  types: []
+  - vendor-detect
+  types:
+  - StatusPage
   serves:
   - docs
+  - status-page
+  vendor: statuspage
   registrable_domain: statuspage.io
   role: status
   relation: other-domain
@@ -271,8 +295,8 @@ hosts:
   - Website
   - Portal
   - TermsOfService
-  - PrivacyPolicy
   - Pricing
+  - PrivacyPolicy
   serves:
   - docs
   - cdn

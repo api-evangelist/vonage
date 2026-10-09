@@ -1,4 +1,4 @@
-generated: '2026-10-03'
+generated: '2026-10-08'
 method: probed
 source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
 registry: all/0-working/vendors.yml
@@ -43,6 +43,15 @@ vendors:
   confidence: high
   kin_score:
   - community_present
+- vendor: statuspage
+  name: Atlassian Statuspage
+  area: status-page
+  host: vonageapi.statuspage.io
+  evidence: https://vonageapi.statuspage.io
+  signal: url:statuspage.io
+  confidence: high
+  kin_score:
+  - status_page
 - vendor: zendesk
   name: Zendesk
   area: support
@@ -56,14 +65,16 @@ reliance:
   areas_vendor_served:
   - cdn
   - community
+  - status-page
   - support
-  vendor_count: 4
+  vendor_count: 5
   areas_observed: 12
-  share_of_observable_areas: 0.25
+  share_of_observable_areas: 0.333
   note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
     cannot tell those apart
 checked:
 - 'docs-platform: custom'
+- vonageapi.statuspage.io (StatusPage)
 - www.vonage.com (Login)
 - developer.vonage.com (GettingStarted)
 - www.vonage.com (Website)
@@ -72,6 +83,10 @@ checked:
 - api.support.vonage.com (Support)
 - www.vonage.com (Portal)
 - vonage-community.slack.com (Community)
-- api.nexmo.com (baseURL)
-- api.opentok.com (baseURL)
+- developer.vonage.com (APIReference)
+- ui.idp.vonage.com (SignUp)
 - rest.nexmo.com (baseURL)
+- api.nexmo.com (baseURL)
+- video.api.vonage.com (baseURL)
+- api-eu.vonage.com (baseURL)
+- documentation-mcp.vonage.dev (mcp)

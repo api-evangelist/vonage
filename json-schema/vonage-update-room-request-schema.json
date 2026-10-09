@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-update-room-request-schema.json",
+  "title": "UpdateRoomRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-meetings-openapi.yml#/components/schemas/UpdateRoomRequest",
+  "type": "object",
+  "required": [
+    "update_details"
+  ],
+  "properties": {
+    "update_details": {
+      "type": "object",
+      "description": "Contains information to be updated on the room. It is mandatory to provide at least one value to update; you will receive a 400 response otherwise.",
+      "properties": {
+        "expires_at": {
+          "$ref": "#/$defs/Room_ExpiresAt"
+        },
+        "expire_after_use": {
+          "$ref": "#/$defs/Room_ExpiresAfterUse"
+        },
+        "theme_id": {
+          "$ref": "#/$defs/Theme_Id"
+        },
+        "join_approval_level": {
+          "$ref": "#/$defs/JoinApprovalLevel"
+        },
+        "initial_join_options": {
+          "$ref": "#/$defs/InitialJoinOptions"
+        },
+        "callback_urls": {
+          "$ref": "#/$defs/CallbackUrls"
+        },
+        "available_features": {
+          "$ref": "#/$defs/AvailableFeatures"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "AvailableFeatures": {
+      "type": "object",
+      "properties": {
+        "is_recording_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if recording feature is available in the UI."
+        },
+        "is_chat_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if chat feature is available in the UI."
+        },
+        "is_whiteboard_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if whiteboard feature is available in the UI."
+        },
+        "is_locale_switcher_available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determine if the locale switcher is available in the UI."
+        },
+        "is_captions_available": {
+          "type": "boolean",
+          "default": false,
+          "description": "Determine if captions are available in the UI."
+        }
+      }
+    },
+    "CallbackUrls": {
+      "type": "object",
+      "description": "Provides callback URLs to listen to events",
+      "properties": {
+        "rooms_callback_url": {
+          "type": "string",
+          "description": "Callback url for rooms events, overrides application level rooms callback url.",
+          "pattern": "^https?:\\\\/\\\\/.*$"
+        },
+        "sessions_callback_url": {
+          "type": "string",
+          "description": "Callback url for sessions events, overrides application level sessions callback url.",
+          "pattern": "^https?:\\\\/\\\\/.*$"
+        },
+        "recordings_callback_url": {
+          "type": "string",
+          "description": "Callback url for recordings events, overrides application level recordings callback url.",
+          "pattern": "^https?:\\\\/\\\\/.*$"
+        }
+      }
+    },
+    "InitialJoinOptions": {
+      "type": "object",
+      "description": "Sets the default options for participants",
+      "properties": {
+        "microphone_state": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "default"
+          ],
+          "default": "default",
+          "description": "Set the default microphone option for users in the pre-join screen of this room."
+        }
+      }
+    },
+    "JoinApprovalLevel": {
+      "type": "string",
+      "enum": [
+        "none",
+        "after_owner_only",
+        "explicit_approval"
+      ],
+      "description": "The level of approval needed to join the meeting in the room. When set to \"after_owner_only\" the participants will join the meeting only after the host joined. When set to \"explicit_approval\" the participants will join the waiting room and the host will deny/approve them."
+    },
+    "Room_ExpiresAfterUse": {
+      "type": "boolean",
+      "description": "Close the room after a session ends. Only relevant for long_term rooms",
+      "default": false
+    },
+    "Room_ExpiresAt": {
+      "type": "string",
+      "format": "date",
+      "description": "The time for when the room will be expired, expressed in ISO 8601 format. The value must be greater than 10 minutes from now"
+    },
+    "Theme_Id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The theme UUID"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-sms-schema.json",
+  "title": "SMS",
+  "description": "Message sent",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-sms-openapi.yml#/components/schemas/SMS",
+  "type": "object",
+  "properties": {
+    "message-count": {
+      "type": "string",
+      "description": "The amount of messages in the request"
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Message"
+      }
+    }
+  },
+  "$defs": {
+    "Message": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "string",
+          "description": "The number the message was sent to. Numbers are specified in E.164 format."
+        },
+        "message-id": {
+          "type": "string",
+          "description": "The ID of the message"
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the message. See [Troubleshooting Failed SMS](/messaging/sms/guides/troubleshooting-sms)."
+        },
+        "remaining-balance": {
+          "type": "string",
+          "description": "Your estimated remaining balance"
+        },
+        "message-price": {
+          "type": "string",
+          "description": "The estimated cost of the message"
+        },
+        "network": {
+          "type": "string",
+          "description": "The estimated ID of the network of the recipient"
+        },
+        "client-ref": {
+          "description": "If a `client-ref` was included when sending the SMS, this field will be included and hold the value that was sent.",
+          "type": "string"
+        },
+        "account-ref": {
+          "type": "string",
+          "description": "**Advanced**: An optional string used to identify separate accounts using the SMS endpoint for billing purposes. To use this feature, please email [support](mailto:${CUSTOMER_SUPPORT_EMAIL})"
+        }
+      }
+    }
+  }
+}

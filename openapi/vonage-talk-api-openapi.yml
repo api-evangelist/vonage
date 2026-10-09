@@ -1,0 +1,315 @@
+openapi: 3.2.0
+info:
+  title: Vonage Talk API
+  version: 5.5.1
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Find quick answers to questions about the Vonage Conversation API (v1.0) in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Conversation API (v1.0) Reference | Vonage API Documentation
+  description: 'Operations tagged talk across 2 of this provider''s published API definitions: vonage-conversation-openapi.json, vonage-conversation-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1
+security:
+- bearerAuth: []
+tags:
+- name: talk
+paths:
+  /conversations/{conversation_id}/talk:
+    parameters:
+    - $ref: '#/components/parameters/conversation_id'
+    put:
+      operationId: talk
+      tags:
+      - talk
+      summary: Play the given text into the conversation via TTS
+      responses:
+        '200':
+          $ref: '#/components/responses/conversationTalk'
+        '400':
+          $ref: '#/components/responses/General400ValidationFailName'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+      requestBody:
+        $ref: '#/components/requestBodies/conversationTalk'
+    delete:
+      tags:
+      - talk
+      summary: Stop text to speech in a call
+      operationId: stopTalk
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopTalkResponse'
+        '400':
+          $ref: '#/components/responses/General400ValidationFailName'
+        '401':
+          $ref: '#/components/responses/General401InvalidToken'
+        '404':
+          $ref: '#/components/responses/Conversation404'
+        '500':
+          $ref: '#/components/responses/General500InternalError'
+    servers:
+    - url: https://api.nexmo.com/v1
+components:
+  schemas:
+    StopTalkResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Talk stopped
+        uuid:
+          type: string
+          example: ef5400a8-6131-4aa7-9913-11d58ddaeab9
+    style:
+      description: The vocal style (vocal range, tessitura, and timbre) to use
+      type: integer
+      default: 0
+    conversation_error_not_found:
+      type: object
+      description: Conversation not found
+      properties:
+        title:
+          type: string
+          example: Not found.
+        type:
+          type: string
+          example: https://developer.nexmo.com/api/conversation#conversation:error:not-found
+        code:
+          type: string
+          example: conversation:error:not-found
+        detail:
+          type: string
+          example: Conversation does not exist, or you do not have access.
+        instance:
+          type: string
+          example: 00a5916655d650e920ccf0daf40ef4ee
+    language:
+      description: The language to use
+      type: string
+      default: en-US
+      enum:
+      - ar
+      - ca-ES
+      - cmn-CN
+      - cmn-TW
+      - cs-CZ
+      - cy-GB
+      - da-DK
+      - de-DE
+      - el-GR
+      - en-AU
+      - en-GB
+      - en-GB-WLS
+      - en-IN
+      - en-US
+      - en-ZA
+      - es-ES
+      - es-MX
+      - es-US
+      - eu-ES
+      - fi-FI
+      - fil-PH
+      - fr-CA
+      - fr-FR
+      - he-IL
+      - hi-IN
+      - hu-HU
+      - id-ID
+      - is-IS
+      - it-IT
+      - ja-JP
+      - ko-KR
+      - nb-NO
+      - nl-NL
+      - no-NO
+      - pl-PL
+      - pt-BR
+      - pt-PT
+      - ro-RO
+      - ru-RU
+      - sk-SK
+      - sv-SE
+      - th-TH
+      - tr-TR
+      - uk-UA
+      - vi-VN
+      - yue-CN
+  responses:
+    Conversation404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/conversation_error_not_found'
+    General500InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Internal Error.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:internal-error
+              code:
+                type: string
+                example: system:error:internal-error
+              detail:
+                type: string
+                example: Something went wrong.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+    General400ValidationFailName:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Bad request.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#http:error:validation-fail
+              code:
+                type: string
+                example: http:error:validation-fail
+              detail:
+                type: string
+                example: Input validation failure.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+              invalid_parameters:
+                type: array
+                description: List of invalid parameters
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: name
+                    reason:
+                      type: string
+                      example: '"name" must be a string'
+    conversationTalk:
+      description: Talk 200 Reponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Talk started
+              uuid:
+                type: string
+                example: ef5400a8-6131-4aa7-9913-11d58ddaeab9
+                description: The say_id for the TTS
+    General401InvalidToken:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Unauthorized.
+              type:
+                type: string
+                example: https://developer.nexmo.com/api/conversation#system:error:invalid-token
+              code:
+                type: string
+                example: system:error:invalid-token
+              detail:
+                type: string
+                example: You did not provide a valid token. Please provide a valid token.
+              instance:
+                type: string
+                example: 00a5916655d650e920ccf0daf40ef4ee
+  requestBodies:
+    conversationTalk:
+      description: Talk Request Payload Object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              text:
+                type: string
+                description: The text to read
+                example: Hello. How are you today?
+              language:
+                $ref: '#/components/schemas/language'
+              style:
+                $ref: '#/components/schemas/style'
+              premium:
+                type: boolean
+                description: Set to `true` to use the premium version of the specified style if available, otherwise the standard version will be used. You can find more information about Premium Voices in the [Text-To-Speech guide](https://developer.vonage.com/en/voice/voice-api/guides/text-to-speech#premium-voices).
+                default: 'false'
+                example: true
+              loop:
+                type: integer
+                description: The number of times to repeat the text the file, 0 for infinite
+                default: 1
+              level:
+                type: string
+                description: The volume level that the speech is played. This can be any value between `-1` to `1` in `0.1` increments, with `0` being the default.
+                example: '0.4'
+                default: '0'
+  parameters:
+    conversation_id:
+      name: conversation_id
+      in: path
+      required: true
+      description: Conversation ID
+      example: CON-f972836a-550f-45fa-956c-12a2ab5b7d22
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-conversation-openapi.json
+- vonage-conversation-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

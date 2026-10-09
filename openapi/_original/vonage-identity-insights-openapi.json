@@ -1,0 +1,1096 @@
+{
+   "openapi": "3.0.3",
+   "info": {
+      "title": "Identity Insights API",
+      "x-metaTitle": "Vonage Identity Insights API Reference | Vonage API Documentation",
+      "x-metaDescription": "Allows clients to request real-time information related to a phone number.",
+      "version": "1.0.0",
+      "description": "The <a href=\"https://developer.vonage.com/en/identity-insights/overview\">Identity Insights API</a> allows clients to request real-time information related to a phone number. Users can retrieve any combination of different datasets, known as insights (e.g., number formatting, SIM swap information), in a single API call.<br/><br/>\nEach insight is processed independently, and the response includes a structured result for each insight along with a status code. The status code can contain the following values&#58;<br/><br/>\n<ul>\n  <li><b>OK</b> The insight was processed successfully.</li>\n  <li><b>INVALID_NUMBER_FORMAT</b> The phone number format is not valid for assignment by carriers to users.</li>\n  <li><b>UNSUPPORTED_NETWORK_TYPE</b> The network type is not supported for this Insight.</li>\n  <li><b>NO_COVERAGE</b> The country or mobile network is not supported by available suppliers.</li>\n  <li><b>NOT_FOUND</b> The phone number could not be found for this Insight.</li>\n  <li><b>UNAUTHORIZED</b> The request could not be authorized for the combination of application, supplier, and phone number.</li>\n  <li><b>INVALID_PURPOSE</b> The purpose used is not valid or allowed for this Insight.</li>\n  <li><b>SUPPLIER_ERROR</b> The supplier returned an error while processing the request.</li>\n  <li><b>INTERNAL_ERROR</b> An internal error occurred while processing the request.</li>\n</ul>\n<p>Additionally, Subscriber Match Insight can return the following status codes:</p>\n<ul>\n  <li><b>SUBSCRIBER_MATCH.ID_DOCUMENT_REQUIRED</b> Operator requires idDocument to match any other attributes.</li>\n  <li><b>SUBSCRIBER_MATCH.ID_DOCUMENT_MISMATCH</b> Operator cannot match idDocument which is required to match any other attributes.</li>\n  <li><b>SUBSCRIBER_MATCH.INVALID_PARAM_COMBINATION</b> Indicated parameter combination is invalid.</li>\n</ul>",
+      "termsOfService": "https://www.vonage.com/legal/communications-apis/terms-of-use/",
+      "contact": {
+         "name": "Vonage Developer Relations",
+         "email": "devrel@vonage.com",
+         "url": "https://developer.vonage.com/"
+      },
+      "license": {
+         "name": "Apache 2.0",
+         "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+   },
+   "servers": [
+      {
+         "url": "https://api-{region}.vonage.com/identity-insights/v1",
+         "description": "Server URL",
+         "variables": {
+            "region": {
+               "description": "The region where the API request is sent.",
+               "default": "eu",
+               "enum": [
+                  "eu",
+                  "us"
+               ]
+            }
+         }
+      }
+   ],
+   "tags": [
+      {
+         "name": "Identity Insights",
+         "description": "Provides real-time intelligence about a phone number."
+      }
+   ],
+   "paths": {
+      "/requests": {
+         "post": {
+            "summary": "Retrieve identity insights from a phone number",
+            "tags": [
+               "Identity Insights"
+            ],
+            "description": "Provides multiple phone number insights (e.g., format validation, SIM swap status) in a single request.",
+            "operationId": "getInsights",
+            "requestBody": {
+               "required": true,
+               "description": "Create a Identity Insights request for a phone number.",
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/AggregatedInsightRequest"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "$ref": "#/components/responses/InsightsRequestResponse"
+               },
+               "400": {
+                  "$ref": "#/components/responses/ErrorResponse400"
+               },
+               "401": {
+                  "$ref": "#/components/responses/ErrorResponse401"
+               },
+               "405": {
+                  "$ref": "#/components/responses/ErrorResponse405"
+               },
+               "415": {
+                  "$ref": "#/components/responses/ErrorResponse415"
+               },
+               "422": {
+                  "$ref": "#/components/responses/ErrorResponse422"
+               },
+               "429": {
+                  "$ref": "#/components/responses/ErrorResponse429"
+               },
+               "500": {
+                  "$ref": "#/components/responses/ErrorResponse500"
+               },
+               "503": {
+                  "$ref": "#/components/responses/ErrorResponse503"
+               }
+            },
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ]
+         }
+      }
+   },
+   "components": {
+      "securitySchemes": {
+         "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+         }
+      },
+      "schemas": {
+         "AggregatedInsightRequest": {
+            "type": "object",
+            "required": [
+               "phone_number",
+               "insights"
+            ],
+            "properties": {
+               "phone_number": {
+                  "type": "string",
+                  "format": "e164",
+                  "description": "A single phone number you want insights on, starting with the country code. You may optionally include a leading +, but do not use  00 at the beginning. Ideally, the number should follow the [E.164](https://en.wikipedia.org/wiki/E.164) format. However, the API is designed to extract the phone number even if the input string contains alphanumeric characters, spaces, or symbols like brackets.",
+                  "example": "14040000000"
+               },
+               "purpose": {
+                  "type": "string",
+                  "description": "Specifies the reason for the request. This property is required only for Insights that use the Network Registry. For a Network Registry of type Production, the value must match one of the network profile purposes associated with your application. For a Network Registry of type Playground, the value must be \"FraudPreventionAndDetection\".",
+                  "example": "FraudPreventionAndDetection"
+               },
+               "insights": {
+                  "type": "object",
+                  "description": "A list of objects representing the insight(s) requested for the phone number. At least one insight must be requested.",
+                  "properties": {
+                     "format": {
+                        "$ref": "#/components/schemas/FormatInsightRequest"
+                     },
+                     "sim_swap": {
+                        "$ref": "#/components/schemas/SimSwapInsightRequest"
+                     },
+                     "original_carrier": {
+                        "$ref": "#/components/schemas/OriginalCarrierInsightRequest"
+                     },
+                     "current_carrier": {
+                        "$ref": "#/components/schemas/CurrentCarrierInsightRequest"
+                     },
+                     "location_verification": {
+                        "$ref": "#/components/schemas/LocationVerificationInsightRequest"
+                     },
+                     "subscriber_match": {
+                        "$ref": "#/components/schemas/SubscriberMatchInsightRequest"
+                     },
+                     "roaming": {
+                        "$ref": "#/components/schemas/RoamingInsightRequest"
+                     },
+                     "reachability": {
+                        "$ref": "#/components/schemas/ReachabilityInsightRequest"
+                     },
+                     "device_swap": {
+                        "$ref": "#/components/schemas/DeviceSwapInsightRequest"
+                     }
+                  }
+               }
+            }
+         },
+         "AggregatedInsightResponse": {
+            "type": "object",
+            "properties": {
+               "request_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "The unique identifier for your request. This is a alphanumeric string up to 40 characters.",
+                  "example": "aaaaaaaa-bbbb-cccc-dddd-0123456789ab"
+               },
+               "insights": {
+                  "type": "object",
+                  "description": "A map of objects representing the requested insight(s), where each key corresponds to the name of the insight and the value contains the result and status of that insight.",
+                  "properties": {
+                     "format": {
+                        "$ref": "#/components/schemas/FormatInsightResponse"
+                     },
+                     "sim_swap": {
+                        "$ref": "#/components/schemas/SimSwapInsightResponse"
+                     },
+                     "original_carrier": {
+                        "$ref": "#/components/schemas/OriginalCarrierInsightResponse"
+                     },
+                     "current_carrier": {
+                        "$ref": "#/components/schemas/CurrentCarrierInsightResponse"
+                     },
+                     "location_verification": {
+                        "$ref": "#/components/schemas/LocationVerificationInsightResponse"
+                     },
+                     "subscriber_match": {
+                        "$ref": "#/components/schemas/SubscriberMatchInsightResponse"
+                     },
+                     "roaming": {
+                        "$ref": "#/components/schemas/RoamingInsightResponse"
+                     },
+                     "reachability": {
+                        "$ref": "#/components/schemas/ReachabilityInsightResponse"
+                     },
+                     "device_swap": {
+                        "$ref": "#/components/schemas/DeviceSwapInsightResponse"
+                     }
+                  }
+               }
+            }
+         },
+         "FormatInsightRequest": {
+            "type": "object",
+            "description": "Request the `format` insight. This field must always be set to an empty object `{}`."
+         },
+         "OriginalCarrierInsightRequest": {
+            "type": "object",
+            "description": "Request the `original_carrier` insight. This field must always be set to an empty object `{}`."
+         },
+         "CurrentCarrierInsightRequest": {
+            "type": "object",
+            "description": "Request the `current_carrier` insight. This field must always be set to an empty object `{}`."
+         },
+         "SimSwapInsightRequest": {
+            "type": "object",
+            "description": "Request the `sim_swap` insight.",
+            "properties": {
+               "period": {
+                  "type": "integer",
+                  "example": 240,
+                  "description": "Specifies the time window (in hours) used to determine the `is_swapped` response field.",
+                  "format": "int32",
+                  "minimum": 1,
+                  "maximum": 2400,
+                  "default": 240
+               }
+            }
+         },
+         "LocationVerificationInsightRequest": {
+            "type": "object",
+            "description": "Request the `location_verification` insight.",
+            "x-custom-version-tag": "Developer Preview",
+            "properties": {
+               "location": {
+                  "type": "object",
+                  "properties": {
+                     "type": {
+                        "type": "string",
+                        "description": "Type of area.",
+                        "example": "CIRCLE",
+                        "enum": [
+                           "CIRCLE"
+                        ]
+                     },
+                     "radius": {
+                        "type": "integer",
+                        "description": "Expected accuracy for the verification in meters, from location (radius)",
+                        "example": 3000,
+                        "format": "int32",
+                        "minimum": 2000,
+                        "maximum": 200000
+                     },
+                     "center": {
+                        "type": "object",
+                        "description": "Geographic center point defined by latitude and longitude coordinates.",
+                        "properties": {
+                           "latitude": {
+                              "type": "number",
+                              "minimum": -90,
+                              "maximum": 90,
+                              "description": "Latitude in decimal degrees (WGS 84).",
+                              "example": 52.52
+                           },
+                           "longitude": {
+                              "type": "number",
+                              "minimum": -180,
+                              "maximum": 180,
+                              "description": "Longitude in decimal degrees (WGS 84).",
+                              "example": 13.405
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "SubscriberMatchInsightRequest": {
+            "type": "object",
+            "description": "Request the `subscriber_match` insight.",
+            "x-custom-version-tag": "Beta",
+            "minProperties": 1,
+            "properties": {
+               "id_document": {
+                  "type": "string",
+                  "description": "Id number associated to the official identity document in the country. It may contain alphanumeric characters.",
+                  "example": "66666666q"
+               },
+               "given_name": {
+                  "type": "string",
+                  "description": "First/given name or compound first/given name of the customer.",
+                  "example": "Federica"
+               },
+               "family_name": {
+                  "type": "string",
+                  "description": "Last name, family name, or surname of the customer.",
+                  "example": "Sanchez Arjona"
+               },
+               "street_name": {
+                  "type": "string",
+                  "description": "Name of the street of the customer's address. It should not include the type of the street.",
+                  "example": "Crawfords Corner Road"
+               },
+               "street_number": {
+                  "type": "string",
+                  "description": "The street number of the customer's address.  Number identifying a specific property on the 'streetName'.",
+                  "example": "4"
+               },
+               "postal_code": {
+                  "type": "string",
+                  "description": "Zip code or postal code",
+                  "example": "07733"
+               },
+               "locality": {
+                  "type": "string",
+                  "description": "Locality of the customer's address",
+                  "example": "Holmdel"
+               },
+               "region": {
+                  "type": "string",
+                  "description": "Region or prefecture of the customer's address",
+                  "example": "Monmouth County"
+               },
+               "country": {
+                  "type": "string",
+                  "description": "Country of the customer's address. Format ISO 3166-1 alpha-2",
+                  "example": "US"
+               },
+               "house_number_extension": {
+                  "type": "string",
+                  "description": "Specific identifier of the house needed depending on the property type. For example, number of apartment in an apartment building.",
+                  "example": "Suite 2416"
+               },
+               "birthdate": {
+                  "type": "string",
+                  "description": "The birthdate of the customer, in ISO 8601 calendar date format (YYYY-MM-DD).",
+                  "example": "1978-08-22"
+               }
+            }
+         },
+         "RoamingInsightRequest": {
+            "type": "object",
+            "description": "Request the `roaming` insight. This field must always be set to an empty object `{}`.",
+            "x-custom-version-tag": "Developer Preview"
+         },
+         "ReachabilityInsightRequest": {
+            "type": "object",
+            "description": "Request the `reachability` insight. This field must always be set to an empty object `{}`.",
+            "x-custom-version-tag": "Developer Preview"
+         },
+         "DeviceSwapInsightRequest": {
+            "type": "object",
+            "description": "Request the `device_swap` insight.",
+            "properties": {
+               "period": {
+                  "type": "integer",
+                  "example": 240,
+                  "description": "Specifies the time window (in hours) used to determine the `is_swapped` response field.",
+                  "format": "int32",
+                  "minimum": 1,
+                  "maximum": 2400,
+                  "default": 240
+               }
+            }
+         },
+         "RoamingInsightResponse": {
+            "type": "object",
+            "description": "Check roaming status and country for a given device on a mobile network.",
+            "properties": {
+               "latest_status_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Date and time in UTC [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) of the last time that the associated device roaming status was updated.",
+                  "example": "2024-02-20T10:41:38.657Z"
+               },
+               "is_roaming": {
+                  "type": "boolean",
+                  "description": "Roaming status. `true` if roaming.",
+                  "example": true
+               },
+               "country_codes": {
+                  "type": "array",
+                  "description": "An array of country codes in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format representing where the `phone_number` is roaming. The array usually contains one element, but in edge cases where the roaming network is associated with multiple countries, additional country codes are included.",
+                  "items": {
+                     "type": "string"
+                  },
+                  "example": [
+                     "DE"
+                  ]
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "ReachabilityInsightResponse": {
+            "type": "object",
+            "description": "Check the connectivity status for a given device, including if it is connected to the newtork for data, SMS, or both.",
+            "properties": {
+               "latest_status_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Date and time in UTC [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) of the last time that the associated device connectivity status was updated.",
+                  "example": "2024-02-20T10:41:38.657Z"
+               },
+               "is_reachable": {
+                  "type": "boolean",
+                  "description": "Indicates overall device reachability. `true` if the device is connected to the network.",
+                  "example": true
+               },
+               "connectivity": {
+                  "type": "array",
+                  "description": "Indicates if the device is connected to the network for `DATA` or `SMS` usage. Will only be returned if `is_reachable` is `true`. This enum is extensible; clients must handle unknown values.",
+                  "items": {
+                     "type": "string",
+                     "enum": [
+                        "DATA",
+                        "SMS"
+                     ]
+                  },
+                  "example": [
+                     "DATA"
+                  ]
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "FormatInsightResponse": {
+            "type": "object",
+            "description": "Validates the format of a phone number and provides information based on that format.",
+            "properties": {
+               "country_code": {
+                  "type": "string",
+                  "pattern": "[A-Z]{2}",
+                  "description": "Two character country code for `phone_number`. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.",
+                  "example": "US"
+               },
+               "country_name": {
+                  "type": "string",
+                  "description": "The full name of the country where the `phone_number` is registered.",
+                  "example": "United States"
+               },
+               "country_prefix": {
+                  "type": "string",
+                  "description": "The numeric prefix for the country where the `phone_number` is registered.",
+                  "example": "1"
+               },
+               "offline_location": {
+                  "type": "string",
+                  "description": "The location where the number was originally assigned, based on its prefix. This does not represent the real-time location of the device. The value indicates the country of origin or, when available, the specific geographical area associated with the number. Only landline and mobile numbers are eligible for offline location data.",
+                  "example": "Georgia"
+               },
+               "time_zones": {
+                  "type": "array",
+                  "description": "List of time zones corresponding to the `format.offline_location` field, or a single-element list with the default \"unknown\" time zone if no other time zone was found or if the number is invalid. Time zone values follow the [tz database](https://en.wikipedia.org/wiki/Tz_database) identifiers.",
+                  "items": {
+                     "type": "string"
+                  },
+                  "example": [
+                     "America/New_York"
+                  ]
+               },
+               "number_international": {
+                  "type": "string",
+                  "description": "The `phone_number` from your request, formatted in international [E.164](https://en.wikipedia.org/wiki/E.164) format.",
+                  "example": "+14040000000"
+               },
+               "number_national": {
+                  "type": "string",
+                  "description": "The `phone_number` from your request, formatted according to the local convention of the country it belongs to.",
+                  "example": "(404) 000-0000"
+               },
+               "is_format_valid": {
+                  "type": "boolean",
+                  "description": "Phone number format validation involves verifying the length and prefix details at various levels to ensure accuracy and compliance with global numbering standards. A valid format means the number can be legitimately assigned by carriers to users. However, it does not guarantee that the number is currently assigned to a carrier or that it is reachable.",
+                  "example": true
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "BaseStatus": {
+            "type": "object",
+            "description": "Indicates the status of the information returned for the specified phone number.",
+            "properties": {
+               "code": {
+                  "type": "string",
+                  "description": "Code indicating the status of the request. This enum is extensible; clients must handle unknown values.",
+                  "example": "OK"
+               },
+               "message": {
+                  "type": "string",
+                  "description": "More detailed status description.",
+                  "example": "Success"
+               }
+            }
+         },
+         "InsightStatus": {
+            "allOf": [
+               {
+                  "$ref": "#/components/schemas/BaseStatus"
+               },
+               {
+                  "type": "object",
+                  "properties": {
+                     "code": {
+                        "$ref": "#/components/schemas/InsightStatusCode"
+                     }
+                  },
+                  "example": {
+                     "code": "OK",
+                     "message": "Success"
+                  }
+               }
+            ]
+         },
+         "SubscriberMatchStatus": {
+            "allOf": [
+               {
+                  "$ref": "#/components/schemas/BaseStatus"
+               },
+               {
+                  "type": "object",
+                  "properties": {
+                     "code": {
+                        "$ref": "#/components/schemas/SubscriberMatchStatusCode"
+                     }
+                  },
+                  "example": {
+                     "code": "OK",
+                     "message": "Success"
+                  }
+               }
+            ]
+         },
+         "InsightStatusCode": {
+            "type": "string",
+            "format": "enum",
+            "description": "Code indicating the status of the request. This enum is extensible; clients must handle unknown values.",
+            "example": "OK",
+            "enum": [
+               "NO_COVERAGE",
+               "INVALID_PURPOSE",
+               "UNAUTHORIZED",
+               "INTERNAL_ERROR",
+               "SUPPLIER_ERROR",
+               "NOT_FOUND",
+               "UNSUPPORTED_NETWORK_TYPE",
+               "INVALID_NUMBER_FORMAT",
+               "OK"
+            ]
+         },
+         "SubscriberMatchStatusCode": {
+            "type": "string",
+            "format": "enum",
+            "description": "Code indicating the status of the request. This enum is extensible; clients must handle unknown values.",
+            "example": "OK",
+            "enum": [
+               "NO_COVERAGE",
+               "INVALID_PURPOSE",
+               "UNAUTHORIZED",
+               "INTERNAL_ERROR",
+               "SUPPLIER_ERROR",
+               "NOT_FOUND",
+               "UNSUPPORTED_NETWORK_TYPE",
+               "INVALID_NUMBER_FORMAT",
+               "OK",
+               "SUBSCRIBER_MATCH.ID_DOCUMENT_REQUIRED",
+               "SUBSCRIBER_MATCH.ID_DOCUMENT_MISMATCH",
+               "SUBSCRIBER_MATCH.INVALID_PARAM_COMBINATION"
+            ]
+         },
+         "SimSwapInsightResponse": {
+            "type": "object",
+            "description": "Information about any recent SIM pairing changes related to a mobile account. A recent SIM swap may indicate a potential risk of account takeover.",
+            "properties": {
+               "latest_sim_swap_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Date and time in UTC [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) of latest SIM swap performed.",
+                  "example": "2024-07-08T09:30:27.504Z"
+               },
+               "is_swapped": {
+                  "type": "boolean",
+                  "description": "Indicates whether the SIM card has been swapped during the `period`.",
+                  "example": true
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "DeviceSwapInsightResponse": {
+            "type": "object",
+            "description": "Information about any recent physical device change for a mobile phone number. A recent device swap may indicate a potential risk of account takeover.",
+            "properties": {
+               "latest_device_swap_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Date and time in UTC [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) of latest device swap performed.",
+                  "example": "2024-07-08T09:30:27.504Z"
+               },
+               "is_swapped": {
+                  "type": "boolean",
+                  "description": "Indicates whether the SIM card has swapped devices during the `period`.",
+                  "example": true
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "CurrentCarrierInsightResponse": {
+            "type": "object",
+            "description": "Information about the network the number is currently assigned. This is applicable to mobile numbers only.",
+            "properties": {
+               "name": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "The full name of the carrier that `phone_number` is associated with.",
+                  "example": "Orange Espana, S.A. Unipersonal"
+               },
+               "network_type": {
+                  "type": "string",
+                  "format": "enum",
+                  "enum": [
+                     "MOBILE"
+                  ],
+                  "example": "MOBILE",
+                  "description": "The type of network that `phone_number` is associated with. This enum is extensible; clients must handle unknown values."
+               },
+               "country_code": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "The country that `phone_number` is associated with. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.",
+                  "example": "ES"
+               },
+               "network_code": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "Mobile country codes (MCC) + Mobile network codes (MNC). [E.212 International mobile subscriber identity](https://en.wikipedia.org/wiki/International_mobile_subscriber_identity).",
+                  "example": "21403"
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "OriginalCarrierInsightResponse": {
+            "type": "object",
+            "description": "Information about the network the number was initially assigned. Information based on the numbering plan prefix.",
+            "properties": {
+               "name": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "The full name of the original carrier associated with that `phone_number`. This is applicable to mobile numbers only.",
+                  "example": "Orange Espana, S.A. Unipersonal"
+               },
+               "network_type": {
+                  "type": "string",
+                  "format": "enum",
+                  "enum": [
+                     "MOBILE",
+                     "LANDLINE",
+                     "TOLLFREE",
+                     "PREMIUM",
+                     "VIRTUAL"
+                  ],
+                  "description": "The type of network of the original carrier associated with that `phone_number`. This enum is extensible; clients must handle unknown values.",
+                  "example": "MOBILE"
+               },
+               "country_code": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "The country that `phone_number` is associated with. This is in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.",
+                  "example": "ES"
+               },
+               "network_code": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "Mobile country codes (MCC) + Mobile network codes (MNC). [E.212 International mobile subscriber identity](https://en.wikipedia.org/wiki/International_mobile_subscriber_identity).",
+                  "example": "21403"
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "LocationVerificationInsightResponse": {
+            "type": "object",
+            "description": "Verify whether the location of certain user device is within the area specified.",
+            "properties": {
+               "is_verified": {
+                  "description": "Result of a verification request:\n- `TRUE`: when the network locates the device within the requested area,\n- `FALSE`: when the requested area does not match the area where the network locates the device,\n- `UNKNOWN`: when the network cannot locate the device,\n- `PARTIAL`: when the requested area partially match the area where the network locates the device. A `match_rate` could be included in the response.\n",
+                  "type": "string",
+                  "format": "enum",
+                  "enum": [
+                     "TRUE",
+                     "FALSE",
+                     "UNKNOWN",
+                     "PARTIAL"
+                  ],
+                  "example": "PARTIAL"
+               },
+               "latest_location_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Date and time in UTC [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) of the last location.",
+                  "example": "2024-07-08T09:30:27.504Z"
+               },
+               "match_rate": {
+                  "description": "Estimation of the match rate between the area in the request (R), and area where the network locates the device (N), calculated as the percent value of the intersection of both areas divided by the network area, that is (R ∩ N) / N * 100. Included only if `is_verified` is PARTIAL.",
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99,
+                  "example": 85
+               },
+               "status": {
+                  "$ref": "#/components/schemas/InsightStatus"
+               }
+            }
+         },
+         "MatchResult": {
+            "type": "string",
+            "enum": [
+               "EXACT",
+               "HIGH",
+               "PARTIAL",
+               "LOW",
+               "NONE",
+               "DATA_UNAVAILABLE"
+            ]
+         },
+         "MatchAddressResult": {
+            "type": "string",
+            "enum": [
+               "EXACT",
+               "HIGH",
+               "PARTIAL",
+               "LOW",
+               "NONE",
+               "DATA_UNAVAILABLE",
+               "INCLUDED_WITH_ADDRESS_MATCH"
+            ]
+         },
+         "SubscriberMatchInsightResponse": {
+            "type": "object",
+            "description": "Compare the information associated with a particular mobile phone user with that on file (and verified) by the mobile phone user's Operator and trusted third-party data sources.",
+            "properties": {
+               "id_document_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchResult"
+                     },
+                     {
+                        "description": "Indicates whether Id number associated to the ID document of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "given_name_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchResult"
+                     },
+                     {
+                        "description": "Indicates whether First name/given name of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "family_name_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchResult"
+                     },
+                     {
+                        "description": "Indicates whether last name/ family name/ surname of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "address_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchResult"
+                     },
+                     {
+                        "description": "Indicates whether complete address of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "PARTIAL"
+               },
+               "street_name_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the street name of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "street_number_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the street number of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "postal_code_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the postal code / zip code of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "locality_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the locality of the customer's address matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "region_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the region or prefecture of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "country_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the country of the customer's address matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "house_number_extension_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchAddressResult"
+                     },
+                     {
+                        "description": "Indicates whether the house number extension of the customer's address with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "LOW"
+               },
+               "birthdate_match": {
+                  "allOf": [
+                     {
+                        "$ref": "#/components/schemas/MatchResult"
+                     },
+                     {
+                        "description": "Indicates whether the birthdate of the customer matches with the one on the Operator's system. This enum is extensible; clients must handle unknown values."
+                     }
+                  ],
+                  "example": "EXACT"
+               },
+               "status": {
+                  "$ref": "#/components/schemas/SubscriberMatchStatus"
+               }
+            }
+         },
+         "ErrorResponse": {
+            "description": "Error response",
+            "type": "object",
+            "properties": {
+               "title": {
+                  "type": "string",
+                  "description": "Error title."
+               },
+               "type": {
+                  "type": "string",
+                  "description": "Link to documented error type."
+               },
+               "instance": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "UUID reference for the instance."
+               },
+               "detail": {
+                  "type": "string",
+                  "description": "More detailed error descriptions."
+               }
+            },
+            "required": [
+               "title",
+               "detail"
+            ]
+         }
+      },
+      "responses": {
+         "InsightsRequestResponse": {
+            "description": "OK",
+            "content": {
+               "application/json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/AggregatedInsightResponse"
+                  }
+               }
+            }
+         },
+         "ErrorResponse400": {
+            "description": "Bad Request",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#invalid-json",
+                     "title": "Malformed JSON",
+                     "instance_id": "3208c715-d203-45dd-81b6-cab3692d3f83",
+                     "detail": "Malformed JSON payload"
+                  }
+               }
+            }
+         },
+         "ErrorResponse401": {
+            "description": "Unauthorized",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#unauthorized",
+                     "title": "Unauthorized",
+                     "instance_id": "9e4dad0a-530d-48a9-bf79-849c8eaaa286",
+                     "detail": "You did not provide correct credentials"
+                  }
+               }
+            }
+         },
+         "ErrorResponse405": {
+            "description": "Method Not Allowed",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#method-not-allowed",
+                     "title": "Method Not Allowed",
+                     "instance_id": "7435aa75-1604-4f88-92de-cb27afdc27a1",
+                     "detail": "Request method not supported."
+                  }
+               }
+            }
+         },
+         "ErrorResponse415": {
+            "description": "Invalid Content-Type header",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#content-type-header",
+                     "title": "Invalid Content-Type header",
+                     "instance_id": "7435aa75-1604-4f88-92de-cb27afdc27a1",
+                     "detail": "Invalid Content-Type header provided. Must be one of the following: application/json"
+                  }
+               }
+            }
+         },
+         "ErrorResponse422": {
+            "description": "Bad Request",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "description": "Error response",
+                     "type": "object",
+                     "properties": {
+                        "title": {
+                           "type": "string",
+                           "description": "Error title.",
+                           "example": "Bad Request"
+                        },
+                        "type": {
+                           "type": "string",
+                           "description": "Link to documented error type.",
+                           "example": "https://developer.vonage.com/api-errors#validation"
+                        },
+                        "instance": {
+                           "type": "string",
+                           "format": "uuid",
+                           "description": "UUID reference for the instance.",
+                           "example": "bdfa1452-0f4d-4d06-8e9f-e00cca4a68b3"
+                        },
+                        "detail": {
+                           "type": "string",
+                           "description": "More detailed error descriptions.",
+                           "example": "The request failed due to validation errors"
+                        },
+                        "invalid_parameters": {
+                           "type": "array",
+                           "description": "Detailed array of errors.",
+                           "items": {
+                              "type": "object",
+                              "properties": {
+                                 "name": {
+                                    "type": "string",
+                                    "example": "phone_number"
+                                 },
+                                 "reason": {
+                                    "type": "string",
+                                    "example": "must not be null"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "ErrorResponse429": {
+            "description": "Rate Limited",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#rate-limit",
+                     "title": "Rate Limited",
+                     "instance_id": "7435aa75-1604-4f88-92de-cb27afdc27a1",
+                     "detail": "You have exceeded your rate limit."
+                  }
+               }
+            }
+         },
+         "ErrorResponse500": {
+            "description": "Internal error",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#internal-error",
+                     "title": "Internal error",
+                     "instance_id": "fe7ca85d-bebc-4696-ba39-317edfd15b62",
+                     "detail": "An unexpected error has occurred"
+                  }
+               }
+            }
+         },
+         "ErrorResponse503": {
+            "description": "Service unavailable",
+            "content": {
+               "application/problem+json": {
+                  "schema": {
+                     "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "example": {
+                     "type": "https://developer.vonage.com/api-errors#service-unavailable",
+                     "title": "Service unavailable",
+                     "instance_id": "e080239f-b71d-4ce1-b394-432fe8f8bddc",
+                     "detail": "Failed to invoke upstream service"
+                  }
+               }
+            }
+         }
+      }
+   }
+}

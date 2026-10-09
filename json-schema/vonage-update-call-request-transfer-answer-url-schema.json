@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-update-call-request-transfer-answer-url-schema.json",
+  "title": "Transfer with Answer URL",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-voice-openapi.yml#/components/schemas/UpdateCallRequestTransferAnswerUrl",
+  "type": "object",
+  "required": [
+    "action",
+    "destination"
+  ],
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/RequestTransferActionParam"
+    },
+    "destination": {
+      "type": "object",
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Always `ncco`",
+          "x-nexmo-developer-collection-description-shown": true
+        },
+        "url": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The URL that Vonage makes a request to. Must return an NCCO.",
+          "x-nexmo-developer-collection-description-shown": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "RequestTransferActionParam": {
+      "description": "Transfer the call to a new NCCO",
+      "type": "string",
+      "enum": [
+        "transfer"
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-check-error-response-schema.json",
+  "title": "checkErrorResponse",
+  "description": "Error",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-openapi.yml#/components/schemas/checkErrorResponse",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "The `request_id` that you received in the response to the Verify request and used in the Verify check request."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "16",
+        "17"
+      ],
+      "description": "Code | Text | Description\n-- | -- | --\n0 | Success | The request was successfully accepted by Vonage.\n1 | Throttled | You are trying to send more than the maximum of 30 requests per second.\n2 | Your request is incomplete and missing the mandatory parameter `$parameter` | The stated parameter is missing.\n3 | Invalid value for parameter `$parameter` | Invalid value for parameter. If you see Facility not allowed in the error text, check that you are using the correct Base URL in your request.\n4 | Invalid credentials were provided | The supplied API key or secret in the request is either invalid or disabled.\n5 | Internal Error | An error occurred processing this request in the Cloud Communications Platform.\n6 | The Vonage platform was unable to process this message for the following reason: `$reason` | The request could not be routed.\n16 | The code inserted does not match the expected value |\n17 | The wrong code was provided too many times | You can run Verify check on a specific `request_id` up to three times unless a new verification code is generated. If you check a request more than three times, it is set to FAILED and you cannot check it again.\n"
+    },
+    "error_text": {
+      "type": "string",
+      "description": "If the `status` is non-zero, this explains the error encountered."
+    }
+  }
+}

@@ -1,0 +1,676 @@
+openapi: 3.2.0
+info:
+  title: Vonage Sessions API
+  x-refined-note:
+  - x-metaDescription differs across the merged source definitions and was not carried
+  - x-metaTitle differs across the merged source definitions and was not carried
+  - x-noIndex differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Sessions across 4 of this provider''s published API definitions: vonage-meetings-openapi.json, vonage-video-openapi.json, vonage-meetings-openapi.yml, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api-eu.vonage.com/v1/meetings
+- url: https://video.api.vonage.com
+  description: Vonage Video
+tags:
+- name: Sessions
+paths:
+  /sessions/:session_id/recordings:
+    get:
+      summary: Get recordings of a session
+      operationId: getSessionRecordings
+      security:
+      - bearerAuth: []
+      description: The session_id is provided in the callbacks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _embedded:
+                    type: object
+                    properties:
+                      recordings:
+                        type: array
+                        description: List of recordings for the given session
+                        items:
+                          $ref: '#/components/schemas/Recording'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+      - Sessions
+    servers:
+    - url: https://api-eu.vonage.com/v1/meetings
+  /session/create:
+    parameters: []
+    post:
+      tags:
+      - Sessions
+      summary: Create New Session
+      operationId: session-create
+      responses:
+        '200':
+          $ref: '#/components/responses/New-Session'
+      description: Generate a new Vonage Video session
+      requestBody:
+        $ref: '#/components/requestBodies/Create-Session'
+      security:
+      - Vonage-JWT: []
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/stream/{stream_id}:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    - $ref: '#/components/parameters/stream_id'
+    get:
+      tags:
+      - Sessions
+      summary: Get layout information about a stream
+      description: 'Use this method to get information on an Vonage Video stream
+
+
+        For example, you can call this method to get information about layout classes used by an Vonage Video stream. The layout classes define how the stream is displayed in the layout of a broadcast stream.'
+      operationId: get-v2-project-application_id-session-session_id-stream-stream_id
+      responses:
+        '200':
+          $ref: '#/components/responses/Stream-Layout'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: Invalid request. This response may indicate that data in your request data is invalid JSON. Or it may indicate that you do not pass in a session ID or you passed in an invalid stream ID.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: You passed in an invalid Vonage JWT token.
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: The session exists but has not had any streams added to it yet.
+        '408':
+          description: Invalid stream ID
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 408
+                    message:
+                      example: You passed in an invalid stream ID.
+      security:
+      - Vonage-JWT: []
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/stream:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    get:
+      tags:
+      - Sessions
+      operationId: get-stream-layouts
+      summary: Get information about all connected stream layouts
+      description: 'Use this method to get information on all Vonage Video streams in a session
+
+
+        For example, you can call this method to get information about layout classes used by an Vonage Video stream. The layout classes define how the stream is displayed in the layout of a broadcast stream.'
+      responses:
+        '200':
+          $ref: '#/components/responses/Multi-Stream-Layout'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: Invalid request. This response may indicate that data in your request data is invalid JSON. Or it may indicate that you do not pass in a session ID or you passed in an invalid stream ID.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: You passed in an invalid Vonage JWT token.
+        '404':
+          description: Missing resource
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: The session exists but has not had any streams added to it yet.
+        '408':
+          description: Invalid stream ID
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 408
+                    message:
+                      example: You passed in an invalid stream ID.
+      security:
+      - Vonage-JWT: []
+    put:
+      tags:
+      - Sessions
+      summary: Change the layout of a stream
+      description: Use this method to change layout classes for an Vonage Video stream. The layout classes define how the stream is displayed in the layout of a composed Vonage Video archive.
+      operationId: put-v2-project-application_id-session-session_id-stream
+      requestBody:
+        $ref: '#/components/requestBodies/Change-Stream-Layout'
+      responses:
+        '200':
+          $ref: '#/components/responses/Blank-200'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: Invalid request. This response may indicate that data in your request data is invalid JSON. It may also indicate that you passed in invalid layout options.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: Authentication error
+      security:
+      - Vonage-JWT: []
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/connection:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    get:
+      tags:
+      - Sessions
+      operationId: get-connections-list
+      summary: List all connections in a session
+      description: Use this method to list the connections from an Vonage Video session associated with an application.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    description: The total number of connections in the session.
+                    example: 3
+                  applicationId:
+                    type: string
+                    description: Your Vonage Application ID.
+                    example: e9f8c166-6c67-440d-994a-04fb6dfed007
+                  sessionId:
+                    type: string
+                    description: The session ID.
+                    example: b40ef09b-3811-4726-b508-e41a0f96c68f
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      description: An array of objects defining each connection retrieved. Connections are listed from the oldest to the newest in the return set.
+                      minProperties: 3
+                      maxProperties: 3
+                      properties:
+                        connectionId:
+                          type: string
+                          description: The connection ID.
+                        connectionState:
+                          type: string
+                          enum:
+                          - Connecting
+                          - Connected
+                          example: Connected
+                          description: The state of the connection.
+                        createdAt:
+                          type: string
+                          description: The timestamp for when the connection was created, expressed in milliseconds since the Unix epoch (January 1, 1970, 00:00:00 UTC).
+                          example: 1384221730000
+        '400':
+          description: Invalid request
+        '403':
+          description: Authentication error
+        '404':
+          description: Session not found
+        '500':
+          description: Video server error
+      security:
+      - Vonage-JWT: []
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/session/{session_id}/migrate:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/session_id'
+    post:
+      tags:
+      - Sessions
+      operationId: migrate-session
+      summary: Migrate a session to a new server
+      description: Use this method to migrate a Vonage Video session with all the eligible connections to a new server. Please read the Server Rotation and Session Migration Documentation.
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Descriptive message response.
+                    example: Session migration initiated
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Missing Session ID
+                properties:
+                  message:
+                    example: Invalid session id.
+                  description:
+                    example: Invalid session id.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - allOf:
+                  - type: object
+                    properties:
+                      code:
+                        example: 10002
+                      message:
+                        example: Unauthorized token
+                - allOf:
+                  - type: object
+                    properties:
+                      message:
+                        example: Id in the token does not match the id provided in the url
+                      description:
+                        example: Id in the token does not match the id provided in the url
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    example: Not found. No clients are actively connected to the OpenTok session.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - allOf:
+                  - type: object
+                    description: Migration in progress
+                    properties:
+                      code:
+                        example: 15214
+                      message:
+                        example: Migration is already in progress for the session.
+                      description:
+                        example: Migration is already in progress for the session.
+                - allOf:
+                  - type: object
+                    description: Migration too early
+                    properties:
+                      code:
+                        example: 15215
+                      message:
+                        example: Migration is not allowed shortly after session creation or a previous migration.
+                      description:
+                        example: Migration is not allowed shortly after session creation or a previous migration.
+        '500':
+          description: Internal server error
+      security:
+      - Vonage-JWT: []
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  schemas:
+    Recording_Status:
+      type: string
+      enum:
+      - started
+      - stopped
+      - paused
+      - uploaded
+      example: stopped
+      description: The recording current status
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Failed to fetch resource with id 50da57f5-0aaf-4ac5-804c-2114afc89197
+        name:
+          type: string
+          example: NotFoundError
+        status:
+          type: integer
+          example: 404
+    Recording_Url:
+      type: object
+      description: The recording url
+      properties:
+        href:
+          type: string
+          example: https://prod-meetings-recordings.s3.amazonaws.com/123/9f6fe8ae-3458-4a72-b532-8276d5533e97/archive.mp4
+    AuthenticationError:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Missing Auth
+        detail:
+          type: string
+          example: Auth header is required
+    Recording_StartedAt:
+      type: string
+      format: date-time
+      example: '2023-06-06T07:15:13.974Z'
+      description: The date the recording started
+    Recording:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Recording_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        started_at:
+          $ref: '#/components/schemas/Recording_StartedAt'
+        ended_at:
+          $ref: '#/components/schemas/Recording_EndedAt'
+        status:
+          $ref: '#/components/schemas/Recording_Status'
+        _links:
+          type: object
+          description: Provide links for the current recording
+          properties:
+            url:
+              $ref: '#/components/schemas/Recording_Url'
+    Recording_EndedAt:
+      type: string
+      format: date-time
+      example: '2023-06-06T08:15:13.974Z'
+      description: The date the recording stopped
+    SessionId:
+      type: string
+      example: 2_MX40NjMwODczMn5-MTU3NTgyODEwNzQ2MH5OZDJrVmdBRUNDbG5MUzNqNX20yQ1Z-fg
+      description: Corresponds to the underlying Video API session id
+    Recording_Id:
+      type: string
+      format: uuid
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+      description: The recording UUID
+    Stream-Layout:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Stream ID
+          example: 8b732909-0a06-46a2-8ea8-074e64d43422
+        videoType:
+          type: string
+          description: Set to "camera", "screen", or "custom". A "screen" video uses screen sharing on the publisher as the video source; a "custom" video is published by a web client using an HTML VideoTrack element as the video source.
+          example: camera
+        name:
+          type: string
+          description: The stream name (if one was set when the client published the stream).
+          example: ''
+        layoutClassList:
+          type: array
+          description: An array of the layout classes for the stream.
+          example:
+          - full
+          items:
+            type: string
+            example: full
+    Video-Error:
+      description: Error thrown in the Vonage Video API
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP response code that is returned
+        message:
+          type: string
+          description: Error that was exhibited
+  responses:
+    Multi-Stream-Layout:
+      description: Information about multiple streams layout config
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: Number of items in the response
+                example: 1
+              items:
+                type: array
+                description: Stream layouts for requested session IDs
+                items:
+                  $ref: '#/components/schemas/Stream-Layout'
+    Stream-Layout:
+      description: Information about a stream's layout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Stream-Layout'
+    New-Session:
+      description: Sample Response when creating a new session
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                session_id:
+                  type: string
+                application_id:
+                  type: string
+                create_dt:
+                  type: string
+                media_server_url:
+                  type: string
+    Blank-200:
+      description: OK
+  requestBodies:
+    Change-Stream-Layout:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                description: Array of stream IDs and their new class lists
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 8b732909-0a06-46a2-8ea8-074e64d43422
+                    layoutClassList:
+                      type: array
+                      description: Array of class names as strings
+                      example:
+                      - full
+                      items:
+                        type: string
+            required:
+            - items
+    Create-Session:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              archiveMode:
+                type: string
+                description: Set to always to have the session archived automatically. With the archiveModeset to manual (the default), you can archive the session by calling the REST /archive POST method. If you set the archiveMode to always, you must also set the p2p.preference parameter to disabled (the default).
+              location:
+                type: string
+                description: The IP address that the Vonage Video APi will use to situate the session in its global network. If no location hint is passed in (which is recommended), the session uses a media server based on the location of the first client connecting to the session. Pass a location hint in only if you know the general geographic region (and a representative IP address) and you think the first client connecting may not be in that region. Specify an IP address that is representative of the geographical location for the session.
+              p2p.preference:
+                type: string
+                description: Set to enabled if you prefer clients to attempt to send audio-video streams directly to other clients; set to disabled for sessions that use the Vonage Video Media Router. (Optional; the default setting is disabled -- the session uses the Vonage Video Media Router.)
+              e2ee:
+                type: boolean
+                description: Whether end-to-end encryption is enabled for the session (true) or not (false)
+          examples:
+            example-1:
+              value: archiveMode=always
+  parameters:
+    stream_id:
+      name: stream_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Stream ID
+    session_id:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Video session ID
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-meetings-openapi.json
+- vonage-video-openapi.json
+- vonage-meetings-openapi.yml
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

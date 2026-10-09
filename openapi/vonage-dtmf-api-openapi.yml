@@ -1,0 +1,151 @@
+openapi: 3.2.0
+info:
+  title: Vonage DTMF API
+  version: 1.10.0
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-metaDescription: Our Voice API Reference provides developers with quick answers to questions about the Vonage Voice API. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Voice API Reference | Vonage API Documentation
+  description: 'Operations tagged DTMF across 2 of this provider''s published API definitions: vonage-voice-openapi.json, vonage-voice-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/v1/calls
+tags:
+- name: DTMF
+  description: Send and subscribe to DTMF tones in an active call
+paths:
+  /{uuid}/dtmf:
+    parameters:
+    - in: path
+      name: uuid
+      schema:
+        type: string
+      required: true
+      description: UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+      - DTMF
+      security:
+      - bearerAuth: []
+      summary: Play DTMF tones into a call
+      operationId: startDTMF
+      requestBody:
+        description: action to perform
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DTMFRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DTMFResponse'
+    servers:
+    - url: https://api.nexmo.com/v1/calls
+  /{uuid}/input/dtmf:
+    parameters:
+    - in: path
+      name: uuid
+      schema:
+        type: string
+      required: true
+      description: UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+      - DTMF
+      security:
+      - bearerAuth: []
+      summary: Subscribe to real-time DTMF events
+      description: Register a listener to receive asynchronous DTMF inputs from a call. This is only applicable to Input NCCO events with the `mode` set to `asynchronous`. The payload delivered to this URL will be an Input webhook event with a single DTMF digit every time the callee enters DTMF into the call.
+      operationId: Subscribe-DTMF
+      requestBody:
+        description: action to perform
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_url:
+                  description: The URL (wrapped in an array) to send DTMF events to, as a POST request.
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                    example: https://example.com/ivr
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - DTMF
+      security:
+      - bearerAuth: []
+      summary: Stop receiving real-time DTMF events
+      description: Removes the registered DTMF listener.
+      operationId: Unsubscribe-DTMF
+      responses:
+        '200':
+          description: OK
+    servers:
+    - url: https://api.nexmo.com/v1/calls
+components:
+  schemas:
+    uuid:
+      type: string
+      format: uuid
+      title: The UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+      description: The unique identifier for this call leg. The UUID is created when your call request is accepted by Vonage. You use the UUID in all requests for individual live calls
+    DTMFResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: DTMF sent
+        uuid:
+          $ref: '#/components/schemas/uuid'
+    DTMFRequest:
+      type: object
+      properties:
+        digits:
+          type: string
+          example: '1713'
+          description: The digits to send
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-voice-openapi.json
+- vonage-voice-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

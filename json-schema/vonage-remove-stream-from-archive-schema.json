@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-remove-stream-from-archive-schema.json",
+  "title": "Remove-Stream-From-Archive",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-video-openapi.yml#/components/schemas/Remove-Stream-From-Archive",
+  "type": "object",
+  "properties": {
+    "removeStream": {
+      "type": "string",
+      "description": "Stream ID to remove from the archive"
+    }
+  },
+  "required": [
+    "removeStream"
+  ]
+}

@@ -1,0 +1,1469 @@
+# x-archived-from: vonage-meetings-openapi.yml
+# x-archived-on: 2026-10-08
+openapi: 3.0.2
+info:
+  title: Meetings API
+  x-metaTitle: Vonage Meetings API Reference | Vonage API Documentation
+  x-metaDescription: Find quick answers to questions about the Vonage Meetings API in this reference guide. Learn more in
+    Vonage's API documentation.
+  x-noIndex: true
+  version: 0.1.7
+  description: "<div style=\"background-color:#e8f4fb;border:#0476d5 solid;padding:2%;border-radius:5px;margin-top:2%\">\n\
+    \ <span style=\"font-size:20px\">Product deprecation notice</span><br>\n <p><b>\n Starting on August 31st 2024, users\
+    \ will no longer be able to create Meetings API applications. Existing applications will continue to work uninterrupted\
+    \ until June 30th, 2025.\n If you are looking to build with video, please <a href=\"https://api.support.vonage.com/hc/en-us/articles/14280908404636-Meetings-API-Migration-Options\"\
+    >consider</a> Vonage Video API or Vonage Video Express services, or contact your account managers or <a href=\"https://api.support.vonage.com/\"\
+    > support</a> for help.</b>\n </p>\n </div>\n"
+servers:
+- url: https://api-eu.vonage.com/v1/meetings
+paths:
+  /rooms:
+    get:
+      summary: Get all rooms
+      operationId: getRooms
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/start_id_parameter'
+      - $ref: '#/components/parameters/end_id_parameter'
+      - $ref: '#/components/parameters/page_size_parameter'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  page_size:
+                    $ref: '#/components/schemas/PageSize'
+                  total_items:
+                    $ref: '#/components/schemas/TotalItems'
+                  _embedded:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Room'
+                  _links:
+                    $ref: '#/components/schemas/HAL'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+    post:
+      summary: Create a room
+      operationId: createRoom
+      description: An application is limited to a thousand rooms. Trying to create more rooms will result in a 403 response.
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoomRequest'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Maximum number of rooms for owner (1000) exceeded
+  /rooms/:room_id:
+    get:
+      summary: Get room details
+      operationId: getRoom
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    patch:
+      summary: Update an existing room
+      operationId: updateRoom
+      security:
+      - bearerAuth: []
+      description: If you try to update a room which expired or not available anymore, you will receive a 404 response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoomRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /recordings/:recording_id:
+    get:
+      summary: Get a recording
+      operationId: getRecording
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recording'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    delete:
+      summary: Delete a recording
+      operationId: deleteRecording
+      security:
+      - bearerAuth: []
+      description: The recording needs to have a 'uploaded' status to be deleted. Otherwise, you will receive a 500 response.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /sessions/:session_id/recordings:
+    get:
+      summary: Get recordings of a session
+      operationId: getSessionRecordings
+      security:
+      - bearerAuth: []
+      description: The session_id is provided in the callbacks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _embedded:
+                    type: object
+                    properties:
+                      recordings:
+                        type: array
+                        description: List of recordings for the given session
+                        items:
+                          $ref: '#/components/schemas/Recording'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /dial-in-numbers:
+    get:
+      summary: Get numbers that can be used to dial into a meeting
+      operationId: getDialInNumbers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DialInNumber'
+  /themes:
+    get:
+      summary: Get application themes
+      operationId: getThemes
+      description: An application is limited to a thousand themes. Trying to create more themes will result in a 403 response.
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Theme'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Maximum number of themes for owner (1000) exceeded
+    post:
+      summary: Create a theme
+      operationId: createTheme
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateThemeDetails'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: exceeded maximum theme limit
+        '409':
+          description: short_company_url already exist or theme_name already exist in application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+  /themes/:theme_id:
+    get:
+      summary: Get theme by theme id
+      operationId: getThemeById
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    delete:
+      summary: Delete a theme
+      operationId: deleteTheme
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: force
+        in: query
+        description: force delete - delete theme even if theme is used by rooms or as application default theme
+        schema:
+          type: boolean
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Theme is used by rooms or application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    patch:
+      summary: Update theme by id
+      operationId: updateTheme
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                update_details:
+                  $ref: '#/components/schemas/UpdateThemeDetails'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+        '400':
+          description: Invalid main_color or Invalid short_company_url or update_details must have at least 1 key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          description: Theme not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '409':
+          description: short_company_url already exist or theme_name already exist in application
+  /themes/:theme_id/finalizeLogos:
+    put:
+      summary: Change given logo to be permanent
+      operationId: finalizeLogosForTheme
+      security:
+      - bearerAuth: []
+      description: Use the theme ID of the theme you wish to update, along with the key used in the previous step, to link
+        the logo with the theme that you wish to update. You can even make multiple upload calls, and then pass multiple keys
+        to the theme update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinalizeThemeLogosRequestBody'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Logos has invalid property or Keys not found in bucket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidLogoError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /themes/logos-upload-urls:
+    get:
+      summary: Get URLs that can be used to upload logos for a theme via a POST
+      operationId: getUploadUrlsForTheme
+      security:
+      - bearerAuth: []
+      description: Use a GET on this API to retrieve the credentials needed for upload. The response will contain objects
+        for each favicon, light logo, and colored logo. The Policy will be your JWT. Grab the values for the image type you
+        wish to upload.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of S3 pre-signed URLs
+                items:
+                  $ref: '#/components/schemas/UploadUrlForTheme'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+  /themes/:themeId/rooms:
+    get:
+      summary: Get rooms associated with the theme
+      operationId: getRoomsByThemeId
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/start_id_parameter'
+      - $ref: '#/components/parameters/end_id_parameter'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  page_size:
+                    $ref: '#/components/schemas/PageSize'
+                  total_items:
+                    $ref: '#/components/schemas/TotalItems'
+                  _embedded:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Room'
+                  _links:
+                    $ref: '#/components/schemas/HAL'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /applications:
+    patch:
+      summary: Update an existing application
+      operationId: updateApplication
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationDetails'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+x-webhooks:
+  meeting-events:
+    meetings-callbacks:
+      post:
+        summary: Callbacks
+        operationId: meetings-callback
+        requestBody:
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/RoomExpiredCallback'
+                - $ref: '#/components/schemas/SessionStartedCallback'
+                - $ref: '#/components/schemas/SessionEndedCallback'
+                - $ref: '#/components/schemas/RecordingStartedCallback'
+                - $ref: '#/components/schemas/RecordingEndedCallback'
+                - $ref: '#/components/schemas/RecordingUploadedCallback'
+                - $ref: '#/components/schemas/ParticipantJoinedCallback'
+                - $ref: '#/components/schemas/ParticipantLeftCallback'
+        responses:
+          '204':
+            description: Your server returns this code if it accepts the callback
+components:
+  parameters:
+    start_id_parameter:
+      name: start_id
+      in: query
+      schema:
+        type: integer
+      example: 13
+      required: false
+      description: The room serial number to filter from - This number is not the room Id
+    end_id_parameter:
+      name: end_id
+      in: query
+      schema:
+        type: integer
+      example: 13
+      required: false
+      description: The room serial number to filter to (excluding end_id itself) - This number is not the room Id
+    page_size_parameter:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 20
+      example: 50
+      required: false
+      description: The maximum number of rooms in the current page
+    room_id_parameter:
+      name: room_id
+      in: query
+      schema:
+        type: string
+        format: uuid
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+      required: true
+      description: The room UUID
+    recording_id_parameter:
+      name: recording_id
+      in: query
+      schema:
+        type: string
+        format: uuid
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+      required: true
+      description: The recording UUID
+    theme_id_parameter:
+      name: theme_id
+      in: query
+      schema:
+        type: string
+        format: uuid
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+      required: true
+      description: The theme UUID
+  schemas:
+    Room:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Room_Id'
+        display_name:
+          $ref: '#/components/schemas/Room_Name'
+        metadata:
+          $ref: '#/components/schemas/Room_Metadata'
+        type:
+          $ref: '#/components/schemas/Room_Type'
+        recording_options:
+          $ref: '#/components/schemas/RecordingOptions'
+        meeting_code:
+          $ref: '#/components/schemas/Room_MeetingCode'
+        is_available:
+          $ref: '#/components/schemas/Room_IsAvailable'
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        created_at:
+          $ref: '#/components/schemas/Room_CreatedAt'
+        expires_at:
+          $ref: '#/components/schemas/Room_ExpiresAt'
+        expire_after_use:
+          $ref: '#/components/schemas/Room_ExpiresAfterUse'
+        join_approval_level:
+          $ref: '#/components/schemas/JoinApprovalLevel'
+        initial_join_options:
+          $ref: '#/components/schemas/InitialJoinOptions'
+        callback_urls:
+          $ref: '#/components/schemas/CallbackUrls'
+        available_features:
+          $ref: '#/components/schemas/AvailableFeatures'
+        ui_settings:
+          $ref: '#/components/schemas/UiSettings'
+        _links:
+          type: object
+          description: Provides links to join the meeting room
+          properties:
+            guest_url:
+              $ref: '#/components/schemas/Room_GuestUrl'
+            host_url:
+              $ref: '#/components/schemas/Room_HostUrl'
+    CreateRoomRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateInstantRoomRequest'
+      - $ref: '#/components/schemas/CreateLongTermRoomRequest'
+    CreateInstantRoomRequest:
+      type: object
+      title: Instant Room
+      required:
+      - display_name
+      properties:
+        display_name:
+          $ref: '#/components/schemas/Room_Name'
+        metadata:
+          $ref: '#/components/schemas/Room_Metadata'
+        type:
+          $ref: '#/components/schemas/Room_Type_Instant'
+        recording_options:
+          $ref: '#/components/schemas/RecordingOptions'
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        join_approval_level:
+          $ref: '#/components/schemas/JoinApprovalLevel'
+        initial_join_options:
+          $ref: '#/components/schemas/InitialJoinOptions'
+        callback_urls:
+          $ref: '#/components/schemas/CallbackUrls'
+        available_features:
+          $ref: '#/components/schemas/AvailableFeatures'
+        ui_settings:
+          $ref: '#/components/schemas/UiSettings'
+    CreateLongTermRoomRequest:
+      title: Long-term Room
+      type: object
+      required:
+      - display_name
+      - type
+      - expires_at
+      properties:
+        display_name:
+          $ref: '#/components/schemas/Room_Name'
+        metadata:
+          $ref: '#/components/schemas/Room_Metadata'
+        type:
+          $ref: '#/components/schemas/Room_Type_LongTerm'
+        expires_at:
+          $ref: '#/components/schemas/Room_ExpiresAt'
+        recording_options:
+          $ref: '#/components/schemas/RecordingOptions'
+        expire_after_use:
+          $ref: '#/components/schemas/Room_ExpiresAfterUse'
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        join_approval_level:
+          $ref: '#/components/schemas/JoinApprovalLevel'
+        initial_join_options:
+          $ref: '#/components/schemas/InitialJoinOptions'
+        callback_urls:
+          $ref: '#/components/schemas/CallbackUrls'
+        available_features:
+          $ref: '#/components/schemas/AvailableFeatures'
+        ui_settings:
+          $ref: '#/components/schemas/UiSettings'
+    RecordingOptions:
+      type: object
+      description: An object containing various meeting recording options
+      properties:
+        auto_record:
+          type: boolean
+          description: Automatically record all sessions in this room. Recording cannot be stopped when this is set to `true`.
+          default: false
+        record_only_owner:
+          type: boolean
+          description: Record only the owner screen or any share screen of the video.
+          default: false
+    UiSettings:
+      type: object
+      description: Provides options to customize the user interface
+      properties:
+        language:
+          type: string
+          enum:
+          - ar
+          - ca
+          - de
+          - en
+          - es
+          - fr
+          - he
+          - it
+          - pt-br
+          - zh-tw
+          - zh-cn
+          description: The desired language of the UI. The default is English.
+          default: en
+          example: es
+    Recording:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Recording_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        started_at:
+          $ref: '#/components/schemas/Recording_StartedAt'
+        ended_at:
+          $ref: '#/components/schemas/Recording_EndedAt'
+        status:
+          $ref: '#/components/schemas/Recording_Status'
+        _links:
+          type: object
+          description: Provide links for the current recording
+          properties:
+            url:
+              $ref: '#/components/schemas/Recording_Url'
+    DialInNumber:
+      type: object
+      properties:
+        number:
+          type: string
+          example: 17323338801
+          description: The phone number
+        locale:
+          type: string
+          example: en-US
+          description: The language culture name
+        display_name:
+          type: string
+          example: United States
+          description: The name of the number
+    Theme:
+      type: object
+      properties:
+        theme_id:
+          $ref: '#/components/schemas/Theme_Id'
+        theme_name:
+          $ref: '#/components/schemas/Theme_Name'
+        domain:
+          $ref: '#/components/schemas/Theme_Domain'
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        application_id:
+          $ref: '#/components/schemas/ApplicationId'
+        main_color:
+          $ref: '#/components/schemas/Theme_MainColor'
+        short_company_url:
+          $ref: '#/components/schemas/Theme_ShortCompanyUrl'
+        brand_text:
+          $ref: '#/components/schemas/Theme_BrandText'
+        brand_image_colored:
+          type: string
+          description: Colored logo's key in storage system
+          example: branded-image-colored
+        brand_image_white:
+          type: string
+          description: White logo's key in storage system
+          example: branded-image-white
+        branded_favicon:
+          type: string
+          description: Favicon key in storage system
+          example: branded-favicon
+        brand_image_colored_url:
+          type: string
+          description: Colored logo's link
+          example: branded-image-colored-url
+        brand_image_white_url:
+          type: string
+          description: White logo's link
+          example: branded-image-white-url
+        branded_favicon_url:
+          type: string
+          description: Favicon link
+          example: branded-favicon-url
+    CreateThemeDetails:
+      type: object
+      required:
+      - main_color
+      - brand_text
+      properties:
+        theme_name:
+          $ref: '#/components/schemas/Theme_Name'
+        main_color:
+          $ref: '#/components/schemas/Theme_MainColor'
+        brand_text:
+          $ref: '#/components/schemas/Theme_BrandText'
+        short_company_url:
+          $ref: '#/components/schemas/Theme_ShortCompanyUrl'
+    UpdateThemeDetails:
+      type: object
+      properties:
+        theme_name:
+          $ref: '#/components/schemas/Theme_Name'
+        main_color:
+          $ref: '#/components/schemas/Theme_MainColor'
+        brand_text:
+          $ref: '#/components/schemas/Theme_BrandText'
+        short_company_url:
+          $ref: '#/components/schemas/Theme_ShortCompanyUrl'
+    FinalizeThemeLogosRequestBody:
+      type: object
+      properties:
+        keys:
+          type: array
+          description: List of temporary theme's logos to make permanent
+          example:
+          - logo-key1
+          - logo-key2
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key used for uploading a logo
+    UploadUrlForTheme:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Storage system URL
+          example: https://storage-url.com
+        fields:
+          type: object
+          description: Fields property has to be part of the POST request's body
+          properties:
+            Content-Type:
+              type: string
+              example: image/png
+            key:
+              type: string
+              example: auto-expiring-temp/logos/white/ca63a155-d5f0-4131-9903-c59907e53df0
+              description: Logo's key in storage system
+            logoType:
+              type: string
+              enum:
+              - white
+              - colored
+              - favicon
+              example: favicon
+            bucket:
+              type: string
+              description: Bucket name to upload to
+              example: roomservice-whitelabel-logos-prod
+            X-Amz-Algorithm:
+              type: string
+              example: AWS4-HMAC-SHA256
+            X-Amz-Credential:
+              type: string
+              example: ASSCSSQSAMKJISDGBW/20220410/us-east-1/s3/aws4_request
+            X-Amz-Date:
+              type: string
+              example: 20220410T200246Z
+            X-Amz-Security-Token:
+              type: string
+              example: IQoJb3JpZ2luX2VjEBIaCXVzLWVhc3QtMSJHMEUCIDMxvPG4
+            Policy:
+              type: string
+              example: eyJleHBpcmF0aW9uIjoiMjAyMy0wNi0wN1QxMjo0Njo0MFo
+            X-Amz-Signature:
+              type: string
+              example: fcb46c1adfa98836f0533aadebedc6fb1edbd90aa583f3264c0ae5bb63d83123
+    Application:
+      type: object
+      properties:
+        application_id:
+          $ref: '#/components/schemas/ApplicationId'
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        default_theme_id:
+          $ref: '#/components/schemas/Application_DefaultThemeId'
+    UpdateApplicationDetails:
+      type: object
+      required:
+      - update_details
+      properties:
+        update_details:
+          type: object
+          description: Contains information to be updated on the application. It is mandatory to provide at least one value
+            to update; you will receive a 400 response otherwise.
+          required:
+          - default_theme_id
+          properties:
+            default_theme_id:
+              $ref: '#/components/schemas/Application_DefaultThemeId'
+    JoinApprovalLevel:
+      type: string
+      enum:
+      - none
+      - after_owner_only
+      - explicit_approval
+      description: The level of approval needed to join the meeting in the room. When set to "after_owner_only" the participants
+        will join the meeting only after the host joined. When set to "explicit_approval" the participants will join the waiting
+        room and the host will deny/approve them.
+    CallbackUrls:
+      type: object
+      description: Provides callback URLs to listen to events
+      properties:
+        rooms_callback_url:
+          type: string
+          description: Callback url for rooms events, overrides application level rooms callback url.
+          pattern: ^https?:\\/\\/.*$
+          example: https://example.com/rooms
+        sessions_callback_url:
+          type: string
+          description: Callback url for sessions events, overrides application level sessions callback url.
+          pattern: ^https?:\\/\\/.*$
+          example: https://example.com/sessions
+        recordings_callback_url:
+          type: string
+          description: Callback url for recordings events, overrides application level recordings callback url.
+          pattern: ^https?:\\/\\/.*$
+          example: https://example.com/recordings
+    AvailableFeatures:
+      type: object
+      properties:
+        is_recording_available:
+          type: boolean
+          default: true
+          description: Determine if recording feature is available in the UI.
+        is_chat_available:
+          type: boolean
+          default: true
+          description: Determine if chat feature is available in the UI.
+        is_whiteboard_available:
+          type: boolean
+          default: true
+          description: Determine if whiteboard feature is available in the UI.
+        is_locale_switcher_available:
+          type: boolean
+          default: true
+          description: Determine if the locale switcher is available in the UI.
+        is_captions_available:
+          type: boolean
+          default: false
+          description: Determine if captions are available in the UI.
+    InitialJoinOptions:
+      type: object
+      description: Sets the default options for participants
+      properties:
+        microphone_state:
+          type: string
+          enum:
+          - 'on'
+          - 'off'
+          - default
+          default: default
+          description: Set the default microphone option for users in the pre-join screen of this room.
+          example: 'on'
+    HAL:
+      type: object
+      description: Represents HAL links for navigation purposes
+      properties:
+        first:
+          type: object
+          description: Provides a link to the first element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50
+        self:
+          type: object
+          description: Provides a link to the current element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50&start_id=2293905
+        next:
+          type: object
+          description: Provides a link to the next element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50&start_id=2293906
+        prev:
+          type: object
+          description: Provides a link to the previous element
+          properties:
+            href:
+              type: string
+              example: https://api-eu.vonage.com/v1/meetings/rooms?page_size=50&start_id=2293904
+    BadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Explanation about why validation failed.
+        name:
+          type: string
+          example: InputValidationError
+        status:
+          type: integer
+          example: 400
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Failed to fetch resource with id 50da57f5-0aaf-4ac5-804c-2114afc89197
+        name:
+          type: string
+          example: NotFoundError
+        status:
+          type: integer
+          example: 404
+    AuthenticationError:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Missing Auth
+        detail:
+          type: string
+          example: Auth header is required
+    ConflictError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: short_company_url already exists
+        name:
+          type: string
+          example: ConflictError
+        status:
+          type: integer
+          example: 409
+    InvalidLogoError:
+      properties:
+        status:
+          type: integer
+          enum:
+          - 400
+        name:
+          type: string
+          enum:
+          - BadRequestError
+        message:
+          type: string
+          enum:
+          - could not finalize logos
+        errors:
+          type: array
+          description: each error has logoKey, code and invalidProperty if it is invalid logo property error
+          items:
+            type: object
+            properties:
+              logoKey:
+                type: string
+              code:
+                type: string
+                enum:
+                - invalid_logo_properties
+                - key_not_found
+              invalidProperty:
+                type: string
+                enum:
+                - exceeds_size
+                - type
+                - dimensions
+                - transparent_bg
+    UpdateRoomRequest:
+      type: object
+      required:
+      - update_details
+      properties:
+        update_details:
+          type: object
+          description: Contains information to be updated on the room. It is mandatory to provide at least one value to update;
+            you will receive a 400 response otherwise.
+          properties:
+            expires_at:
+              $ref: '#/components/schemas/Room_ExpiresAt'
+            expire_after_use:
+              $ref: '#/components/schemas/Room_ExpiresAfterUse'
+            theme_id:
+              $ref: '#/components/schemas/Theme_Id'
+            join_approval_level:
+              $ref: '#/components/schemas/JoinApprovalLevel'
+            initial_join_options:
+              $ref: '#/components/schemas/InitialJoinOptions'
+            callback_urls:
+              $ref: '#/components/schemas/CallbackUrls'
+            available_features:
+              $ref: '#/components/schemas/AvailableFeatures'
+    Theme_ShortCompanyUrl:
+      type: string
+      maxLength: 128
+      pattern: ^(?=.*[a-zA-Z_~-])([a-zA-Z0-9_~-]+)$
+      example: short-url
+      description: The URL that will represent every meeting room with this theme. The value must be unique across Vonage
+    Theme_Name:
+      type: string
+      maxLength: 200
+      example: Theme1
+      description: The name of the theme (must be unique). If null, a UUID will automatically be generated
+    Theme_MainColor:
+      maxLength: 7
+      type: string
+      pattern: '#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
+      example: '#12f64e'
+      description: The main color that will be used for the meeting room.
+    Theme_BrandText:
+      type: string
+      example: Brand
+      maxLength: 200
+      description: The text that will appear on the meeting homepage, in the case that there is no brand image
+    Theme_Id:
+      type: string
+      format: uuid
+      description: The theme UUID
+      example: ef2b46f3-8ebb-437e-a671-272e4990fbc8
+    Room_Id:
+      type: string
+      format: uuid
+      description: The room UUID
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+    Room_Name:
+      type: string
+      maxLength: 200
+      description: The name of the meeting room
+      example: My custom room
+    Room_Metadata:
+      maxLength: 500
+      type: string
+      description: Free text that can be attached to a room. This will be passed in the form of a header in events related
+        to this room.
+      example: Welcome to my custom room
+    Room_Type:
+      type: string
+      description: The type of meeting which can be instant or long term. An instant is active for 10 minutes until the first
+        participant joins the roo, and remains active for 10 minutes after the last participant leaves. A long term room expires
+        after a specific date
+      default: instant
+      enum:
+      - instant
+      - long_term
+    Room_Type_Instant:
+      type: string
+      enum:
+      - instant
+      description: Represents a room that is active for 10 minutes until the first participant joins the room, and remains
+        active for 10 minutes after the last participant leaves.
+      example: instant
+    Room_Type_LongTerm:
+      type: string
+      enum:
+      - long_term
+      description: Represents a room that expires after a specific date. When every participant leaves the meeting, the meeting
+        will end. The meeting will restart only after the host rejoins the room first.
+      example: long_term
+    Room_MeetingCode:
+      type: string
+      pattern: ^\d+$
+      example: '280674154'
+      minLength: 9
+      description: The meeting PIN number
+    Room_CreatedAt:
+      type: string
+      format: date
+      example: '2023-06-06T06:45:07.135Z'
+      description: The time for when the room was created, expressed in ISO 8601 format
+    Room_ExpiresAt:
+      type: string
+      format: date
+      example: '2023-06-06T06:55:07.134Z'
+      description: The time for when the room will be expired, expressed in ISO 8601 format. The value must be greater than
+        10 minutes from now
+    Room_ExpiresAfterUse:
+      type: boolean
+      description: Close the room after a session ends. Only relevant for long_term rooms
+      default: false
+      example: true
+    Room_IsAvailable:
+      type: boolean
+      description: Once a room becomes unavailable, no new sessions can be created under it
+      default: true
+    Room_GuestUrl:
+      type: object
+      description: The link to join the meeting as participant, using the meeting code
+      properties:
+        href:
+          type: string
+          example: https://meetings.vonage.com/280674154
+    Room_HostUrl:
+      type: object
+      description: The link to join the meeting as host, using the meeting code
+      properties:
+        href:
+          type: string
+          example: https://meetings.vonage.com/?room_token=280674154&participant_token=eyJhbGciOiJIUzI1NiIsInR5cC
+    Recording_Id:
+      type: string
+      format: uuid
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+      description: The recording UUID
+    SessionId:
+      type: string
+      example: 2_MX40NjMwODczMn5-MTU3NTgyODEwNzQ2MH5OZDJrVmdBRUNDbG5MUzNqNX20yQ1Z-fg
+      description: Corresponds to the underlying Video API session id
+    Recording_StartedAt:
+      type: string
+      format: date-time
+      example: '2023-06-06T07:15:13.974Z'
+      description: The date the recording started
+    Recording_EndedAt:
+      type: string
+      format: date-time
+      example: '2023-06-06T08:15:13.974Z'
+      description: The date the recording stopped
+    Recording_Duration:
+      type: string
+      example: 60
+      description: The recording duration in seconds
+    Recording_Status:
+      type: string
+      enum:
+      - started
+      - stopped
+      - paused
+      - uploaded
+      example: stopped
+      description: The recording current status
+    Recording_Url:
+      type: object
+      description: The recording url
+      properties:
+        href:
+          type: string
+          example: https://prod-meetings-recordings.s3.amazonaws.com/123/9f6fe8ae-3458-4a72-b532-8276d5533e97/archive.mp4
+    AccountId:
+      type: string
+      example: 123ab4cd
+      description: The applications account id (ApiKey)
+    ApplicationId:
+      type: string
+      format: uuid
+      example: 921a6f5b-1f94-49f4-8107-26f0c75fc6e7
+      description: The application Id
+    Theme_Domain:
+      type: string
+      enum:
+      - VCP
+      - VBC
+      example: VCP
+      description: The domain of the theme
+    Application_DefaultThemeId:
+      type: string
+      format: uuid
+      description: The application default theme id
+    PageSize:
+      type: integer
+      example: 25
+      description: The number of results returned on this page
+    TotalItems:
+      type: integer
+      example: 30
+      description: The overall number of results
+    Duration:
+      type: number
+      description: Duration in seconds
+      example: 3600
+    Participant_Id:
+      type: string
+      format: uuid
+      description: The participant UUID
+      example: 9f6fe8ae-3458-4a72-b532-8276d5533e97
+    Participant_Name:
+      type: string
+      description: The participant name
+      example: John Doe
+    Participant_Type:
+      type: string
+      description: The participant type
+      example: Guest
+    Participant_IsHost:
+      description: Indicates if this participant is the session's host
+      type: boolean
+    RoomExpiredCallback:
+      type: object
+      description: Room expired
+      properties:
+        event:
+          type: string
+          enum:
+          - room:expired
+        room_id:
+          $ref: '#/components/schemas/Room_Id'
+        room_type:
+          $ref: '#/components/schemas/Room_Type'
+        expires_at:
+          $ref: '#/components/schemas/Room_ExpiresAt'
+        created_at:
+          $ref: '#/components/schemas/Room_CreatedAt'
+    SessionStartedCallback:
+      type: object
+      description: Session started
+      properties:
+        event:
+          type: string
+          enum:
+          - session:started
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        room_id:
+          $ref: '#/components/schemas/Room_Id'
+        started_at:
+          type: string
+          format: date-time
+          example: '2023-06-06T07:15:13.974Z'
+          description: The date the session started
+    SessionEndedCallback:
+      type: object
+      description: Session ended
+      properties:
+        event:
+          type: string
+          enum:
+          - session:ended
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        room_id:
+          $ref: '#/components/schemas/Room_Id'
+        started_at:
+          type: string
+          format: date-time
+          example: '2023-06-06T07:15:13.974Z'
+          description: The date the session started
+        ended_at:
+          type: string
+          format: date-time
+          example: '2023-06-06T08:15:13.974Z'
+          description: The date the session ended
+    RecordingStartedCallback:
+      type: object
+      description: Recording started
+      properties:
+        event:
+          type: string
+          enum:
+          - recording:started
+        recording_id:
+          $ref: '#/components/schemas/Recording_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+    RecordingEndedCallback:
+      type: object
+      description: Recording ended
+      properties:
+        event:
+          type: string
+          enum:
+          - recording:ended
+        recording_id:
+          $ref: '#/components/schemas/Recording_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        started_at:
+          $ref: '#/components/schemas/Recording_StartedAt'
+        ended_at:
+          $ref: '#/components/schemas/Recording_EndedAt'
+        duration:
+          $ref: '#/components/schemas/Recording_Duration'
+    RecordingUploadedCallback:
+      type: object
+      description: Recording uploaded
+      properties:
+        event:
+          type: string
+          enum:
+          - recording:uploaded
+        recording_id:
+          $ref: '#/components/schemas/Recording_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        room_id:
+          $ref: '#/components/schemas/Room_Id'
+        started_at:
+          $ref: '#/components/schemas/Recording_StartedAt'
+        ended_at:
+          $ref: '#/components/schemas/Recording_EndedAt'
+        duration:
+          $ref: '#/components/schemas/Recording_Duration'
+        url:
+          type: string
+          format: uri
+          example: https://prod-meetings-recordings.s3.amazonaws.com/123/9f6fe8ae-3458-4a72-b532-8276d5533e97/archive.mp4
+    ParticipantJoinedCallback:
+      type: object
+      description: Participant joined
+      properties:
+        event:
+          type: string
+          enum:
+          - session:participant:joined
+        participant_id:
+          $ref: '#/components/schemas/Participant_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        room_id:
+          $ref: '#/components/schemas/Room_Id'
+        name:
+          $ref: '#/components/schemas/Participant_Name'
+        type:
+          $ref: '#/components/schemas/Participant_Type'
+        is_host:
+          $ref: '#/components/schemas/Participant_IsHost'
+    ParticipantLeftCallback:
+      type: object
+      description: Participant left
+      properties:
+        event:
+          type: string
+          enum:
+          - session:participant:left
+        participant_id:
+          $ref: '#/components/schemas/Participant_Id'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        room_id:
+          $ref: '#/components/schemas/Room_Id'
+        name:
+          $ref: '#/components/schemas/Participant_Name'
+        type:
+          $ref: '#/components/schemas/Participant_Type'
+        is_host:
+          $ref: '#/components/schemas/Participant_IsHost'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+tags: []

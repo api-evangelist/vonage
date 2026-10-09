@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-list-fragments-response-schema.json",
+  "title": "ListFragmentsResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-v2-openapi.yml#/components/schemas/ListFragmentsResponse",
+  "type": "object",
+  "properties": {
+    "page_size": {
+      "type": "integer",
+      "description": "How many items in page"
+    },
+    "page": {
+      "type": "integer",
+      "description": "The current page number"
+    },
+    "total_pages": {
+      "type": "integer",
+      "description": "Count of pages"
+    },
+    "total_items": {
+      "type": "integer",
+      "description": "Total amount of all template fragments"
+    },
+    "_embedded": {
+      "type": "object",
+      "properties": {
+        "template_fragments": {
+          "type": "array",
+          "description": "List of Fragment Templates",
+          "items": {
+            "$ref": "#/$defs/TemplateFragment"
+          }
+        }
+      }
+    },
+    "_links": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/PageLinks"
+        }
+      ]
+    }
+  },
+  "required": [
+    "page_size",
+    "page",
+    "total_pages",
+    "total_items",
+    "_embedded",
+    "_links"
+  ],
+  "$defs": {
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "description": "Target URL"
+        }
+      },
+      "required": [
+        "href"
+      ]
+    },
+    "PageLinks": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "$ref": "#/$defs/Link"
+        },
+        "next": {
+          "$ref": "#/$defs/Link"
+        },
+        "prev": {
+          "$ref": "#/$defs/Link"
+        },
+        "first": {
+          "$ref": "#/$defs/Link"
+        },
+        "last": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "TemplateFragment": {
+      "type": "object",
+      "properties": {
+        "template_fragment_id": {
+          "type": "string",
+          "description": "ID for this template fragment"
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "sms",
+            "voice"
+          ]
+        },
+        "locale": {
+          "type": "string",
+          "description": "A Locale in  IETF BCP 47 format"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text content of the template"
+        },
+        "date_updated": {
+          "type": "string"
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "$ref": "#/$defs/Link"
+            },
+            "template": {
+              "$ref": "#/$defs/Link"
+            }
+          }
+        }
+      }
+    }
+  }
+}

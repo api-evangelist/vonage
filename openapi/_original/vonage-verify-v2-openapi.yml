@@ -1,0 +1,1915 @@
+# x-archived-from: vonage-verify-v2-openapi.yml
+# x-archived-on: 2026-10-08
+openapi: 3.0.2
+info:
+  title: Verify API
+  x-metaTitle: Vonage Verify v2.0 API Reference | Vonage API Documentation
+  x-metaDescription: Find quick answers to questions about the Vonage Verify API (v2.0) in this reference guide. Learn more
+    in Vonage's API documentation.
+  version: 1.0.1
+  description: 'Verify API provides a choice of routes for sending a code to a user. You can use this to confirm a user''s
+    contact information, as a second factor when authenticating users, or for step-up authentication.
+
+    '
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.vonage.com/
+servers:
+- url: https://api.nexmo.com/v2/verify
+tags:
+- name: Verify
+  description: Provides 2FA authentication for end-users.
+- name: Templates
+  description: Create and modify custom templates in Verify
+- name: Template Fragments
+  description: Create and modify custom template fragments in Verify
+paths:
+  /:
+    post:
+      operationId: newRequest
+      summary: Request a verification be sent to a user
+      tags:
+      - Verify
+      description: Start the verification process to a given channel(s).
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/VerificationRequest'
+      responses:
+        '202':
+          description: The request was started
+          content:
+            application/json:
+              schema:
+                required:
+                - request_id
+                type: object
+                properties:
+                  request_id:
+                    $ref: '#/components/schemas/RequestId'
+                  check_url:
+                    type: string
+                    description: The URL to complete the Silent Authentication verification process. It is returned only when
+                      Silent Auth is the initial verification channel in the workflow and the network supports it, unless
+                      `coverage_check` is set to `false`. See the [documentation](https://developer.vonage.com/en/verify/concepts/silent-authentication#availability)
+                      for supported network availability.
+                    example: https://api.nexmo.com/v2/verify/c11236f4-00bf-4b89-84ba-88b25df97315/silent-auth/redirect
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '412':
+          $ref: '#/components/responses/ErrorResponse412'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /{request_id}:
+    parameters:
+    - $ref: '#/components/parameters/request_id'
+    post:
+      operationId: checkCode
+      summary: Check a supplied code against a request to see if it is valid
+      description: "Allows a code to be checked against an existing Verification request.\n  <blockquote>\n    <strong>Note\
+        \ on using Silent Authentication:</strong><br><br>\n    If you are checking a code against a Silent Authentication\
+        \ workflow, you will only\n    have <strong>one attempt</strong> to submit the code, as this should be handled by\
+        \ a Client SDK.\n  </blockquote>"
+      tags:
+      - Verify
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CheckCodeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodeSubmitSuccess'
+        '400':
+          $ref: '#/components/responses/ErrorResponse400'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '410':
+          $ref: '#/components/responses/ErrorResponse410'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    delete:
+      operationId: cancelRequest
+      summary: Cancel a verification.
+      description: If a verification request is still active, it aborts the workflow. <br /><br /><b>Cancellation is only
+        possible 30 seconds after the start of the verification request and before the second event (either TTS or SMS) has
+        taken place.</b><br /><br />
+      tags:
+      - Verify
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No content
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /{request_id}/next_workflow:
+    post:
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/request_id'
+      operationId: nextWorkflow
+      summary: Next workflow
+      description: Move the request onto the next workflow, if available.
+      tags:
+      - Verify
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409NextWorkflow'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /{request_id}/silent-auth/redirect:
+    get:
+      parameters:
+      - $ref: '#/components/parameters/request_id'
+      operationId: silentAuthCheck
+      summary: Attempt Silent Authentication completion
+      description: "This is a URL that is returned from a new Silent Authentication request as `check_url` (or can also be\
+        \ obtained from the Silent Authentication webhook event, if your integration is asynchronous.) Performing a GET request\
+        \ on the URL provided will return a series of 30x redirects to follow. Following these 30xs will result in either\
+        \ success containing a `code` to submit or an error.\n<blockquote>\n  <strong>Note on Cellular Usage:</strong>\n \
+        \   <br><br>\n    This URL (i.e. the `check_url`) <b>must</b> be hit by a device using cellular data in order for\
+        \ Silent Authentication to work correctly.\n</blockquote>\nNote that errors will also be included as a fragment within\
+        \ the URL for the frontend to parse. These will take the following example format: <br><br> <code>https:\\\\example.com\\\
+        silent-auth\\your-callback-route#error_description=The silent auth verification cannot be completed.</code> <br><br>\
+        \ The possible error messages are as follows: <ul>\n  <li>The silent auth verification cannot be completed.</li>\n\
+        \  <li>Device MSISDN does not match.</li>\n  <li>Device number does not resolve to a supported Mobile Network Operator.</li>\n\
+        \  <li>IP Address does not resolve to a cellular device.</li>\n</ul>"
+      tags:
+      - Verify
+      responses:
+        '200':
+          description: Carrier Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilentAuthConfirmationSuccess'
+        '302':
+          description: Redirection(s) to complete carrier check. Can also be other 30x HTTP responses depending on the territory
+            and routing.
+          headers:
+            Location:
+              description: URL to redirect to
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '412':
+          $ref: '#/components/responses/ErrorResponse412'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /templates:
+    get:
+      operationId: listTemplates
+      summary: List all templates
+      description: "<blockquote>\n  <strong>Note on using Custom Templates:</strong><br><br>\n  Writing Custom Templates is\
+        \ only possible if your account has been enabled to do so. You can, however, view your templates.\n  Please contact\
+        \ Support to enable this.\n</blockquote>\n<blockquote>\n  Custom Template functionality is <strong>currently in Beta</strong>\n\
+        </blockquote>\n"
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      tags:
+      - Templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTemplatesResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    post:
+      operationId: createTemplate
+      summary: Create a new template
+      description: Create a new template
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTemplateRequest'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              example:
+                template_id: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                name: my-template
+                is_default: true
+                _links:
+                  self:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                  fragments:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9/template_fragments
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /templates/{template_id}:
+    get:
+      operationId: getTemplate
+      summary: Get a template
+      description: Get a template
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              example:
+                template_id: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                name: my-template
+                is_default: true
+                _links:
+                  self:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                  fragments:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9/template_fragments
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    delete:
+      operationId: deleteTemplate
+      summary: Delete a template
+      description: <b>Note that a template can only be deleted if there are no template fragments attached to it.</b>
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    patch:
+      operationId: updateTemplate
+      summary: Update a template
+      description: Update a template
+      tags:
+      - Templates
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      requestBody:
+        $ref: '#/components/requestBodies/PatchTemplateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              example:
+                template_id: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                name: my-template
+                is_default: true
+                _links:
+                  self:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+                  fragments:
+                    href: https://api.nexmo.com/v2/verify/templates/8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9/template_fragments
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /templates/{template_id}/template_fragments:
+    get:
+      summary: List template fragments
+      description: List template fragments
+      operationId: listTemplateFragments
+      tags:
+      - Template Fragments
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFragmentsResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    post:
+      tags:
+      - Template Fragments
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      operationId: addTemplateFragmentToTemplate
+      summary: Create a template fragment
+      description: Create a template fragment
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTemplateFragmentRequest'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateFragment'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '409':
+          $ref: '#/components/responses/ErrorResponse409'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+  /templates/{template_id}/template_fragments/{template_fragment_id}:
+    get:
+      operationId: getTemplateFragment
+      summary: Get a template fragment
+      description: Get a template fragment
+      tags:
+      - Template Fragments
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      - $ref: '#/components/parameters/template_fragment_id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateFragment'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    patch:
+      tags:
+      - Template Fragments
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      - $ref: '#/components/parameters/template_fragment_id'
+      requestBody:
+        $ref: '#/components/requestBodies/PatchTemplateFragmentRequest'
+      operationId: updateTemplateFragment
+      summary: Update a template fragment
+      description: Update a template fragment
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateFragment'
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '422':
+          $ref: '#/components/responses/ErrorResponse422'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+    delete:
+      tags:
+      - Template Fragments
+      parameters:
+      - $ref: '#/components/parameters/template_id'
+      - $ref: '#/components/parameters/template_fragment_id'
+      operationId: deleteTemplateFragment
+      summary: Delete a template fragment
+      description: Delete a template fragment
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/ErrorResponse401'
+        '402':
+          $ref: '#/components/responses/ErrorResponse402'
+        '403':
+          $ref: '#/components/responses/ErrorResponse403'
+        '404':
+          $ref: '#/components/responses/ErrorResponse404'
+        '429':
+          $ref: '#/components/responses/ErrorResponse429'
+        '500':
+          $ref: '#/components/responses/ErrorResponse500'
+x-webhooks:
+  request-status-update:
+    '{$request.body#/callback}':
+      post:
+        summary: Request status update
+        operationId: request-status-update
+        x-example-path: /webhooks/request-status-update
+        description: An inbound status update for a particular request.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResource'
+  events:
+    '{$request.body#/callback}':
+      post:
+        summary: Events Callback
+        operationId: event-callback
+        x-example-path: /webhooks/events-callback
+        description: An inbound events webhook.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResourceEventCallBackExample'
+  silent-auth-callback:
+    '{$request.body#/callback}':
+      post:
+        summary: Silent Auth Request Update
+        operationId: silent-auth-update
+        x-example-path: /webhooks/request-status-update
+        description: An inbound request update for an Asynchronous Silent Authentication workflow.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifySilentAuth'
+components:
+  requestBodies:
+    CheckCodeRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/CheckCodeByCode'
+            - $ref: '#/components/schemas/CheckCodeByToken'
+    VerificationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              locale:
+                $ref: '#/components/schemas/Language'
+              channel_timeout:
+                $ref: '#/components/schemas/ChannelTimeout'
+              client_ref:
+                $ref: '#/components/schemas/ClientRef'
+              code_length:
+                $ref: '#/components/schemas/CodeLength'
+              code:
+                $ref: '#/components/schemas/Code'
+              brand:
+                $ref: '#/components/schemas/Brand'
+              template_id:
+                $ref: '#/components/schemas/TemplateId'
+              fraud_check:
+                $ref: '#/components/schemas/FraudCheck'
+              workflow:
+                type: array
+                minItems: 1
+                maxItems: 3
+                description: Defines the sequence of actions (max 3) that Vonage uses to reach the end-user you want to verify
+                  with a PIN code. See [documentation](https://developer.vonage.com/en/verify/concepts/workflow)
+                items:
+                  oneOf:
+                  - $ref: '#/components/schemas/SilentAuthChannel'
+                  - $ref: '#/components/schemas/RCSChannel'
+                  - $ref: '#/components/schemas/SMSChannel'
+                  - $ref: '#/components/schemas/WhatsAppChannel'
+                  - $ref: '#/components/schemas/VoiceChannel'
+                  - $ref: '#/components/schemas/MailChannel'
+                example:
+                - channel: silent_auth
+                  to: '44770090000'
+                  redirect_url: https://acme-app.com/sa/redirect
+                - channel: sms
+                  to: '44770090000'
+                - channel: voice
+                  to: '44770090000'
+    CreateTemplateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                minLength: 1
+                maxLength: 64
+                pattern: ^[A-Za-z0-9_-]+$
+                description: Reference name for template.
+                example: my-template
+    CreateTemplateFragmentRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - channel
+            - locale
+            - text
+            properties:
+              channel:
+                $ref: '#/components/schemas/channel'
+              locale:
+                $ref: '#/components/schemas/locale'
+              text:
+                $ref: '#/components/schemas/text'
+    PatchTemplateRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                description: Reference name for template.
+                example: my-template
+              is_default:
+                $ref: '#/components/schemas/is_default'
+    PatchTemplateFragmentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - text
+            properties:
+              text:
+                $ref: '#/components/schemas/text'
+  parameters:
+    request_id:
+      name: request_id
+      in: path
+      required: true
+      description: ID of the verify request
+      schema:
+        type: string
+    template_id:
+      name: template_id
+      required: true
+      in: path
+      description: The template UUID
+      schema:
+        type: string
+      example: 22f571c1-f41a-4db2-bba7-f23a069200c1
+    template_fragment_id:
+      name: template_fragment_id
+      required: true
+      in: path
+      description: The template fragment UUID
+      schema:
+        type: string
+      example: 22f571c1-f41a-4db2-bba7-f23a069200c1
+    page_size:
+      name: page_size
+      in: query
+      description: Amount of templates per page
+      schema:
+        type: integer
+      example: 10
+    page:
+      name: page
+      in: query
+      description: The page number
+      schema:
+        type: integer
+      example: 2
+  schemas:
+    SilentAuthChannel:
+      title: Silent Auth
+      x-tab-id: WorkflowSilentAuth
+      type: object
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - silent_auth
+          example: silent_auth
+        to:
+          $ref: '#/components/schemas/ToSilentAuth'
+        redirect_url:
+          $ref: '#/components/schemas/Redirect'
+        coverage_check:
+          $ref: '#/components/schemas/CoverageCheck'
+        mode:
+          $ref: '#/components/schemas/Mode'
+    SMSChannel:
+      title: SMS
+      type: object
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - sms
+          example: sms
+        to:
+          $ref: '#/components/schemas/To'
+        from:
+          $ref: '#/components/schemas/FromSms'
+        entity_id:
+          type: string
+          description: Optional PEID required for SMS delivery using Indian Carriers
+          minLength: 1
+          maxLength: 20
+          example: '1101407360000017170'
+        content_id:
+          type: string
+          description: Optional value corresponding to a templateID for SMS delivery using Indian Carriers
+          minLength: 1
+          maxLength: 20
+          example: '1107158078772563946'
+        app_hash:
+          type: string
+          description: Optional Android Application Hash Key for automatic code detection on a user's device.
+          minLength: 11
+          maxLength: 11
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    MailChannel:
+      title: EMail
+      x-tab-id: WorkflowEmail
+      description: Request an email code be sent to the user.
+      type: object
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - email
+          example: email
+        to:
+          $ref: '#/components/schemas/ToEmail'
+        from:
+          $ref: '#/components/schemas/FromEmail'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    RCSChannel:
+      title: RCS
+      x-tab-id: WorkflowRCS
+      type: object
+      description: Request a code be sent to a user
+      required:
+      - channel
+      - to
+      - from
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - rcs
+          example: rcs
+        to:
+          $ref: '#/components/schemas/To'
+        from:
+          $ref: '#/components/schemas/FromRcs'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    VoiceChannel:
+      title: Voice
+      x-tab-id: WorkflowVoice
+      type: object
+      description: Request a code be sent to a user
+      required:
+      - channel
+      - to
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - voice
+          example: voice
+        to:
+          $ref: '#/components/schemas/To'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    WhatsAppChannel:
+      title: WhatsApp
+      x-tab-id: WorkflowWhatsApp
+      type: object
+      description: Request a code be sent to a user
+      required:
+      - channel
+      - to
+      - from
+      properties:
+        channel:
+          type: string
+          description: The channel
+          enum:
+          - whatsapp
+          example: whatsapp
+        to:
+          $ref: '#/components/schemas/To'
+        from:
+          $ref: '#/components/schemas/FromWhatsApp'
+        mode:
+          $ref: '#/components/schemas/WhatsAppMode'
+        reuse_code:
+          $ref: '#/components/schemas/ReuseCode'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+          description: Target URL
+      required:
+      - href
+    PageLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        first:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
+    Template:
+      type: object
+      properties:
+        template_id:
+          type: string
+          format: uuid
+          example: 8f35a1a7-eb2f-4552-8fdf-fffdaee41bc9
+        name:
+          type: string
+          example: my-template
+        is_default:
+          type: boolean
+          example: true
+        _links:
+          type: object
+          properties:
+            self:
+              $ref: '#/components/schemas/Link'
+            fragments:
+              $ref: '#/components/schemas/Link'
+      required:
+      - template_id
+      - name
+      - is_default
+      - _links
+    ListTemplatesResponse:
+      type: object
+      properties:
+        page_size:
+          type: integer
+          description: How many items in page
+          example: 1
+        page:
+          type: integer
+          description: The current page number
+          example: 2
+        total_pages:
+          type: integer
+          example: 10
+          description: Count of pages
+        total_items:
+          type: integer
+          example: 25
+          description: Total amount of all templates
+        _embedded:
+          type: object
+          properties:
+            templates:
+              type: array
+              description: List of templates
+              items:
+                $ref: '#/components/schemas/Template'
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PageLinks'
+          example:
+            self:
+              href: https://api.nexmo.com/v2/verify/templates?page=2
+            next:
+              href: https://api.nexmo.com/v2/verify/templates?page=3
+            prev:
+              href: https://api.nexmo.com/v2/verify/templates?page=1
+            last:
+              href: https://api.nexmo.com/v2/verify/templates?page=5
+      required:
+      - page_size
+      - page
+      - total_pages
+      - total_items
+      - _embedded
+      - _links
+    ListFragmentsResponse:
+      type: object
+      properties:
+        page_size:
+          type: integer
+          description: How many items in page
+          example: 1
+        page:
+          type: integer
+          description: The current page number
+          example: 2
+        total_pages:
+          type: integer
+          example: 10
+          description: Count of pages
+        total_items:
+          type: integer
+          example: 25
+          description: Total amount of all template fragments
+        _embedded:
+          type: object
+          properties:
+            template_fragments:
+              type: array
+              description: List of Fragment Templates
+              items:
+                $ref: '#/components/schemas/TemplateFragment'
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/PageLinks'
+          example:
+            self:
+              href: https://api.nexmo.com/v2/verify/templates?page=2
+            next:
+              href: https://api.nexmo.com/v2/verify/templates?page=3
+            prev:
+              href: https://api.nexmo.com/v2/verify/templates?page=1
+            last:
+              href: https://api.nexmo.com/v2/verify/templates?page=5
+      required:
+      - page_size
+      - page
+      - total_pages
+      - total_items
+      - _embedded
+      - _links
+    TemplateFragment:
+      type: object
+      properties:
+        template_fragment_id:
+          type: string
+          example: c70f446e-997a-4313-a081-60a02a31dc19
+          description: ID for this template fragment
+        channel:
+          type: string
+          enum:
+          - sms
+          - voice
+          example: sms
+        locale:
+          type: string
+          example: en-us
+          description: A Locale in  IETF BCP 47 format
+        text:
+          type: string
+          description: Text content of the template
+          example: 'Text content of the template. May contain 4 reserved variables: `${code}`, `${brand}`, `${time-limit}`
+            and `${time-limit-unit}`'
+        date_updated:
+          type: string
+          example: '2023-08-30T15:20:15.17865735Z'
+        date_created:
+          type: string
+          format: date-time
+          example: '2021-08-30T20:12:15.17865735Z'
+        _links:
+          type: object
+          properties:
+            self:
+              $ref: '#/components/schemas/Link'
+            template:
+              $ref: '#/components/schemas/Link'
+    ChannelTimeout:
+      type: integer
+      description: Specifies the wait time in seconds between attempts to deliver the verification code. On the Verify Success
+        pricing model, the minimum `channel_timeout` is fixed at `60` seconds and cannot be changed; and if you are using
+        Silent Authentication, the `channel_timeout` is always fixed at `60` seconds, irrespective of the pricing model.
+      minimum: 15
+      maximum: 900
+      default: 180
+      example: 180
+    Language:
+      type: string
+      description: 'Languages that are available to use. See the full list of supported languages in the [Verify Languages
+        Guide](https://developer.vonage.com/en/verify/guides/verify-v2-languages). It has no effect if the `channel` is `silent_auth`.
+
+        '
+      example: es-es
+      default: en-us
+    To:
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: '447700900000'
+      description: The phone number to contact, in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a leading
+        + or 00 when entering a phone number, start with the country code, for example, 447700900000.
+    CoverageCheck:
+      type: boolean
+      description: Controls network coverage lookup. If `true`, a synchronous error is returned when the network is unsupported.
+        If `false` a `check_url` is always returned and errors are reported via callbacks.
+      default: true
+      example: false
+    FraudCheck:
+      type: boolean
+      description: Enables fraud checking for the verification request. When set to `true`, the request is checked against
+        fraud detection rules and may be blocked if identified as fraudulent. This feature requires an account capability
+        — contact [support](https://api.support.vonage.com) to enable it on your account.
+      default: false
+      example: true
+    Redirect:
+      type: string
+      description: Optional final redirect added at the end of the `check_url` request/response lifecycle. See the documentation
+        for integrations. Will contain the `request_id` and `code` as a url fragment after the URL.
+      example: https://acme-app.com/sa/redirect
+    Mode:
+      type: string
+      example: advanced
+      default: standard
+      enum:
+      - standard
+      - advanced
+      description: An optional parameter to specify whether to use Silent Authentication Advanced.
+    Code:
+      type: string
+      minLength: 4
+      maxLength: 10
+      pattern: ^[a-zA-Z0-9]+$
+      example: e4dR1Qz
+      description: An optional alphanumeric custom code to use if you don't want Vonage to generate the code. Only the Verify
+        Conversion pricing model allows using this parameter, and it has no effect if the `channel` is `silent_auth`. If you
+        provide a custom code, you must complete the verification flow by calling the `/check` endpoint with that PIN. For
+        additional details, refer to [the documentation](https://developer.vonage.com/en/verify/guides/v2-anti-fraud?source=verify).
+    TemplateId:
+      type: string
+      example: 4ed3027d-8762-44a0-aa3f-c393717413a4
+      description: A custom template ID to use. This parameter works only when `channel` is `sms` or `rcs`.
+    ToSilentAuth:
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: '447700900000'
+      description: The phone number to use for authentication, in the [E.164](https://en.wikipedia.org/wiki/E.164) format.
+        Don't use a leading + or 00 when entering a phone number, start with the country code, for example, 447700900000.
+    FromRcs:
+      type: string
+      minLength: 1
+      maxLength: 15
+      example: agentname
+      description: An sender identifier in alphanumeric format.
+    FromWhatsApp:
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: '447700400080'
+      description: A WABA connected sender number, in the [E.164](https://en.wikipedia.org/wiki/E.164) format. Don't use a
+        leading + or 00 when entering a phone number, start with the country code, for example, 447700900000.
+    FromSms:
+      type: string
+      minLength: 1
+      maxLength: 15
+      example: '447700400080'
+      description: An optional sender identifier in either numeric or alphanumeric format. The maximum length is 11  characters
+        for alphanumeric and 15 for numeric. When numeric, it must be in the [E.164](https://en.wikipedia.org/wiki/E.164)
+        format. Don't use a leading + or 00 when entering a phone number - start with the country code, for example `447700900000`.  If
+        no `from` identifier is given, the request will default to the `brand`.
+    ToEmail:
+      type: string
+      format: email
+      example: alice@company.com
+      description: The email address to send the verification request to.
+    FromEmail:
+      type: string
+      format: email
+      example: bob@company.com
+      description: The email address to send the verification request from.
+    CodeLength:
+      type: integer
+      description: Length of the code to send to the user. It applies to all channels defined in the workflow.
+      default: 4
+      example: 4
+      enum:
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+    ReuseCode:
+      type: boolean
+      description: Use the same PIN code across multiple channels within a workflow
+      default: false
+      example: true
+    ClientRef:
+      type: string
+      description: If the `client_ref` is set when the request is sent, it will be included in the callbacks
+      minLength: 1
+      maxLength: 40
+      pattern: ^[a-zA-Z0-9]*$
+      example: myPersonalRef
+    Brand:
+      type: string
+      minLength: 1
+      maxLength: 18
+      description: 'The brand that is sending the verification request. Please note that for security reasons, the following
+        regex is used to escape this value: `^[^\/{}:$]*$`. A value that fails this check will result in a `422`.'
+      example: ACME
+    RequestId:
+      type: string
+      description: The ID of the request
+      example: c11236f4-00bf-4b89-84ba-88b25df97315
+    TriggeredAt:
+      type: string
+      format: date-time
+      description: The date and time the verification request was triggered, in ISO 8601 format.
+      example: '2020-01-01T14:00:00.000Z'
+    Type:
+      type: string
+      description: Type of response
+      example: event
+    WhatsAppMode:
+      type: string
+      description: Defines the WhatsApp verification experience. Use `zero_tap` for automatic verification on Android apps.
+        Defaults to `otp_code`.
+      enum:
+      - zero_tap
+      - otp_code
+      default: otp_code
+      example: zero_tap
+    VerifyResource:
+      required:
+      - request_id
+      - submitted_at
+      - status
+      - type
+      - channel_timeout
+      - workflow
+      properties:
+        request_id:
+          $ref: '#/components/schemas/RequestId'
+        submitted_at:
+          type: string
+          format: date-time
+          description: The date and time the verification request was submitted, in ISO 8601 format.
+          example: '2020-01-01T14:00:00.000Z'
+        status:
+          type: string
+          description: Current status of this request
+          example: completed
+          enum:
+          - completed
+          - failed
+          - expired
+        type:
+          type: string
+          description: Type of response
+          example: summary
+        channel_timeout:
+          type: integer
+          description: The number of seconds before the current step in the verification request times out.
+          example: 300
+        workflow:
+          type: array
+          items:
+            type: object
+            properties:
+              channel:
+                type: string
+                description: The channel
+                enum:
+                - sms
+                - whatsapp
+                - voice
+                - silent_auth
+              initiated_at:
+                type: string
+                format: date-time
+                description: The date and time the current step in the verification request was initiated, in ISO 8601 format.
+              status:
+                type: string
+                description: Current status of this request
+                example: completed
+                enum:
+                - unused
+                - completed
+                - failed
+                - expired
+                - user_rejected
+          example:
+          - channel: silent_auth
+            initiated_at: '2020-01-01T14:00:00.000Z'
+            status: expired
+          - channel: sms
+            initiated_at: '2020-01-01T14:02:00.000Z'
+            status: completed
+          - channel: voice
+            initiated_at: '2020-01-01T15:05:00.000Z'
+            status: unused
+        client_ref:
+          type: string
+          description: Contains the client reference given in the original Verify request.
+          example: my-personal-ref
+    VerifySilentAuth:
+      required:
+      - request_id
+      - triggered_at
+      - type
+      - channel
+      - status
+      properties:
+        request_id:
+          $ref: '#/components/schemas/RequestId'
+        triggered_at:
+          $ref: '#/components/schemas/TriggeredAt'
+        type:
+          $ref: '#/components/schemas/Type'
+        channel:
+          type: string
+          enum:
+          - silent_auth
+        status:
+          type: string
+          description: Current status of this request
+          example: action_pending
+          enum:
+          - completed
+          - failed
+          - user_rejected
+          - expired
+          - action_pending
+        action:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Description of workflow event
+              enum:
+              - check
+            check_url:
+              type: string
+              description: URL for Silent Auth Verify workflow completion
+              example: https://api.nexmo.com/v2/verify/{request_id}/silent-auth/redirect
+          example:
+            type: check
+            check_url: https://api.nexmo.com/v2/verify/{request_id}/silent-auth/redirect
+    VerifyResourceEventCallBackExample:
+      required:
+      - request_id
+      - triggered_at
+      - type
+      - channel
+      - status
+      - finalized_at
+      - channel_timeout
+      properties:
+        request_id:
+          $ref: '#/components/schemas/RequestId'
+        triggered_at:
+          $ref: '#/components/schemas/TriggeredAt'
+        type:
+          $ref: '#/components/schemas/Type'
+        channel:
+          type: string
+          description: The channel
+          example: sms
+        status:
+          type: string
+          description: Current status of this request
+          example: completed
+          enum:
+          - completed
+          - failed
+          - user_rejected
+          - rejected
+        finalized_at:
+          type: string
+          format: date-time
+          description: The date and time the verification request was completed. This response parameter is in ISO 8601 format.
+          example: '2020-01-01T14:00:00.000Z'
+        client_ref:
+          type: string
+          description: Contains the client reference given in the original Verify request.
+          example: my-personal-ref
+    CheckCodeByCode:
+      title: Check
+      x-tab-id: CheckCode
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          $ref: '#/components/schemas/code'
+    CheckCodeByToken:
+      title: Silent Auth Advanced Check
+      x-tab-id: SilentAuthAdvancedCheck
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          $ref: '#/components/schemas/token'
+    token:
+      type: string
+      description: The token for Silent Auth Advanced verification. This is mutually exclusive with the `code` parameter.
+      example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature
+    code:
+      type: string
+      description: The code provided by the user. The PIN code can be retried a maximum of three times.
+      example: '1234'
+      minLength: 4
+      maxLength: 10
+    channel:
+      description: The channel name
+      type: string
+      enum:
+      - sms
+      - voice
+      example: sms
+    text:
+      description: 'The template text. There are 4 reserved variables available to use: `${code}`, `${brand}`, `${time-limit}`
+        and `${time-limit-unit}`'
+      type: string
+      example: 'The authentication code for your ${brand} is: ${code}'
+    locale:
+      description: The locale code, in lowercase
+      type: string
+      example: en-us
+    is_default:
+      description: Whether the template is the default template if a new request does not specify a template to use.
+      type: boolean
+      example: true
+    CodeSubmitSuccess:
+      type: object
+      properties:
+        request_id:
+          type: string
+          example: 90596ac8-e1f1-46a9-a80f-ebd55e2296ae
+        status:
+          type: string
+          example: completed
+    SilentAuthConfirmationSuccess:
+      type: object
+      properties:
+        request_id:
+          type: string
+          example: c11236f4-00bf-4b89-84ba-88b25df9731
+        code:
+          type: string
+          example: si9sfG
+    ErrorSilentAuth:
+      type: object
+      description: Silent authentication failed
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Silent authentication failed
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#precondition-failed
+        detail:
+          type: string
+          description: Detailed error description
+          example: The silent auth verification cannot be initiated
+        instance:
+          type: string
+          description: The instance ID
+          example: 7c8e4d92-6a3f-49a0-98da-0b3bafc93218
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorNetworkNotSupported:
+      type: object
+      description: Network not supported
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Network not supported
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#precondition-failed
+        detail:
+          type: string
+          description: Detailed error description
+          example: Device number does not resolve to a supported Mobile Network Operator.
+        instance:
+          type: string
+          description: The instance ID
+          example: 7435aa75-1604-4f88-92de-cb27afdc27a1
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorUnauthorizedMissingCredentials:
+      type: object
+      description: Invalid Credentials
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Unauthorized
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/api-errors#unauthorized
+        detail:
+          type: string
+          description: Additional information about the error
+          example: You did not provide correct credentials
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: 9e4dad0a-530d-48a9-bf79-849c8eaaa286
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorJwtExpired:
+      description: JWT expired
+      type: object
+      required:
+      - type
+      - title
+      - details
+      - instance
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: You did not provide correct credentials.
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#jwt-expired
+        detail:
+          type: string
+          description: Additional information about the error
+          example: The JWT provided has expired.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    ErrorPaymentRequired:
+      type: object
+      description: This request could not be performed due to your account balance being low.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Low balance
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/#low-balance
+        detail:
+          type: string
+          description: Additional information about the error
+          example: This request could not be performed due to your account balance being low.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorInvalidCode:
+      type: object
+      description: The code you provided does not match the expected value.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Invalid Code
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#invalid-code
+        detail:
+          type: string
+          description: Detailed error description
+          example: The code you provided does not match the expected value.
+        instance:
+          type: string
+          description: The instance ID
+          example: 3208c715-d203-45dd-81b6-cab3692d3f83
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorForbidden:
+      type: object
+      description: Templates management is not enabled for your account.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Forbidden
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/api-errors/verify-v2#forbidden
+        detail:
+          type: string
+          description: Detailed error description
+          example: Templates management is not enabled for your account
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorNotFound:
+      type: object
+      description: Template Fragment was not found.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Not Found
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#template-fragment-not-found
+        detail:
+          type: string
+          description: Detailed error description
+          example: Template Fragment was not found.
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorConflict:
+      type: object
+      description: Concurrent verifications to the same number are not allowed.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Conflict
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#concurrent
+        detail:
+          type: string
+          description: Detailed error description
+          example: Concurrent verifications to the same number are not allowed.
+        instance:
+          type: string
+          description: The instance ID
+          example: 738f9313-418a-4259-9b0d-6670f06fa82d
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorConflictTriggerNext:
+      type: object
+      description: The trigger-next operation cannot be performed at this time due to a replication delay. Please try again
+        later.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Conflict
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors/verify-v2#conflict
+        detail:
+          type: string
+          description: Detailed error description
+          example: The operation cannot be performed at this time. Please try again later.
+        instance:
+          type: string
+          description: The instance ID
+          example: my-trace-id-trigger-next-replication-delay
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorRateLimited:
+      type: object
+      description: Please wait, then retry your request.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Rate Limit Hit
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#throttled
+        detail:
+          type: string
+          description: Detailed error description
+          example: Please wait, then retry your request
+        instance:
+          type: string
+          description: The instance ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorInternalError:
+      type: object
+      description: There was an error processing your request in the Platform.
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Internal error
+        type:
+          type: string
+          format: uri
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/api-errors#internal-error
+        detail:
+          type: string
+          description: Detailed error description
+          example: There was an error processing your request in the Platform.
+        instance:
+          type: string
+          description: The instance ID
+          example: fe7ca85d-bebc-4696-ba39-317edfd15b62
+      required:
+      - title
+      - type
+      - detail
+      - instance
+    ErrorInvalidParams:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error description
+          example: Invalid params
+        type:
+          type: string
+          description: URL link to the error code reference
+          example: https://developer.vonage.com/en/api-errors#invalid-params
+        detail:
+          type: string
+          description: Detailed error description
+          example: The value of one or more parameters is invalid.
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: 06032957-99ce-41ee-978b-9a390cd5a89b
+        invalid_parameters:
+          type: array
+          description: Detailed array of errors
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              reason:
+                type: string
+          example:
+          - name: brand
+            reason: Brand is required
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP auth can be used for synchronous calls, for asynchronous calls and call backs use JWT authentication
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    ErrorResponse400:
+      description: Invalid Code
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidCode'
+    ErrorResponse401:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorUnauthorizedMissingCredentials'
+            - $ref: '#/components/schemas/ErrorJwtExpired'
+    ErrorResponse402:
+      description: Payment Required
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorPaymentRequired'
+    ErrorResponse403:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorForbidden'
+    ErrorResponse404:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorNotFound'
+    ErrorResponse409:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorConflict'
+    ErrorResponse409NextWorkflow:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorConflict'
+            - $ref: '#/components/schemas/ErrorConflictTriggerNext'
+    ErrorResponse410:
+      description: Invalid Code
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidCode'
+    ErrorResponse412:
+      description: Precondition Failed
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/ErrorSilentAuth'
+            - $ref: '#/components/schemas/ErrorNetworkNotSupported'
+    ErrorResponse422:
+      description: Invalid Params
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInvalidParams'
+    ErrorResponse429:
+      description: Rate limited
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorRateLimited'
+    ErrorResponse500:
+      description: Internal error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorInternalError'
+x-errors:
+  fragment-exists:
+    description: A template fragment for this channel and locale already exists
+    resolution: Change either the locale or channel to a combination not being used
+  template-fragment-not-found:
+    description: Template Fragment not found
+    resolution: Check the ID of the template fragment you are trying to access
+  template-not-found:
+    description: Template not found
+    resolution: Check the ID of the template you are trying to access
+  template-exists:
+    description: A template with this name already exists
+    resolution: Choose a different template name in the request
+  not-empty-template:
+    description: The template is not empty and cannot be deleted. Please delete its fragments first
+    resolution: Delete the individual template fragments, then try again
+  forbidden:
+    description: Templates management is not enabled for your account
+    resolution: Contact Vonage support to enable custom template management
+  expired:
+    description: An incorrect code has been provided too many times. Workflow terminated.
+    resolution: Request a new Verification
+  no-code:
+    description: The current Verify workflow step does not support a code.
+    resolution: Change to a valid workflow to handle your request
+  max-templates:
+    description: An account can only have a maximum of 10 custom templates
+    resolution: Delete a template before retrying
+  concurrent:
+    description: Concurrent verifications to the same number are not allowed.
+    resolution: In flight verification needs to expire, fail or be completed
+  invalid-code:
+    description: The code you provided does not match the expected value.
+    resolution: Retry with the correct value or fail the request
+  no-events:
+    description: The code you provided does not match the expected value.
+    resolution: Retry with the correct value or fail the request
+  request-not-found:
+    description: The request ID provided could not be found.
+    resolution: Retry with a valid request ID
+  msisdn-error:
+    description: The device MSISDN does not match.
+    resolution: Silent Auth will not work with this device, try a different one.
+  precondition-failed:
+    description: Conditions for the Silent Auth request to complete have not been met.
+    resolution: Silent Auth will not work with this device, try a different one.
+  network-error:
+    description: The Silent Auth request could not be completed due to formatting or the carrier is not supported.
+    resolution: Check https://developer.vonage.com/en/verify/guides/silent-auth-territories?source=verify to see if the carrier(s)
+      used are supported.

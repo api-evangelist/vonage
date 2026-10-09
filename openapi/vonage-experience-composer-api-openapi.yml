@@ -1,0 +1,508 @@
+openapi: 3.2.0
+info:
+  title: Vonage Experience Composer API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged Experience Composer across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: Experience Composer
+  description: APIs relating to Experience Composer
+paths:
+  /v2/project/{application_id}/render:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    post:
+      tags:
+      - Experience Composer
+      summary: Start an Experience Composer Session
+      description: Use this method to create an Experience Composer for an OpenTok session.
+      operationId: start-experience-composer-session
+      requestBody:
+        $ref: '#/components/requestBodies/Start-Experience-Composer'
+      responses:
+        '202':
+          $ref: '#/components/responses/Experience-Composer-Start'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid application URL structure.
+                    properties:
+                      code:
+                        example: 50001
+                      message:
+                        example: Invalid application URL structure.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Application URL is unreachable.
+                    properties:
+                      code:
+                        example: 50002
+                      message:
+                        example: Application URL is unreachable.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid maxDuration provided.
+                    properties:
+                      code:
+                        example: 50005
+                      message:
+                        example: Invalid maxDuration provided.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid resolution provided.
+                    properties:
+                      code:
+                        example: 50006
+                      message:
+                        example: Invalid resolution provided.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid stream name provided.
+                    properties:
+                      code:
+                        example: 50007
+                      message:
+                        example: Invalid stream name provided.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid sessionId provided.
+                    properties:
+                      code:
+                        example: 50008
+                      message:
+                        example: Invalid sessionId provided.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid token format or signature.
+                    properties:
+                      code:
+                        example: 10001
+                      message:
+                        example: Invalid token format or signature.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Unauthorized token.
+                    properties:
+                      code:
+                        example: 10002
+                      message:
+                        example: Unauthorized token.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Invalid partner auth format.
+                    properties:
+                      code:
+                        example: 10003
+                      message:
+                        example: Invalid partner auth format.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Unauthorized partner auth.
+                    properties:
+                      code:
+                        example: 10004
+                      message:
+                        example: Unauthorized partner auth.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: The token does not match the session ID.
+                    properties:
+                      code:
+                        example: 10007
+                      message:
+                        example: The token does not match the session ID.
+                - allOf:
+                  - $ref: '#/components/schemas/Video-Error'
+                  - type: object
+                    description: Expired token.
+                    properties:
+                      code:
+                        example: 10012
+                      message:
+                        example: Expired token.
+        '429':
+          description: Too many requests. Please reach out to Customer Support for additional assistance.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 50004
+                    message:
+                      example: Experienced Composer API Usage Exceeded
+    get:
+      tags:
+      - Experience Composer
+      parameters:
+      - schema:
+          type: integer
+        in: query
+        name: offset
+        description: Set an offset query parameters to specify the index offset of the first experience composer. 0 is offset of the most recently started archive (excluding deleted archive). 1 is the offset of the experience composer that started prior to the most recent composer. The default value is 0.
+      - schema:
+          type: integer
+        in: query
+        name: count
+        description: Set a count query parameter to limit the number of experience composers to be returned. The default number of archives returned is 50 (or fewer, if there are fewer than 50 archives). The default is 50 and the maximum is 1000
+      summary: List all experience composers in an application
+      description: List all experience composer in an application
+      operationId: get-experience-composers-in-application
+      responses:
+        '200':
+          $ref: '#/components/responses/Multi-Experience-Composer-Response'
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: Authentication error
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/render/{experience_composer_id}:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/experience_composer_id'
+    get:
+      tags:
+      - Experience Composer
+      summary: Get an Experience Composer Session
+      description: Use this method to get details on an Experience Composer.
+      operationId: get-experience-composer-session
+      responses:
+        '200':
+          $ref: '#/components/responses/Experience-Composer'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: You do not pass in a session ID or you pass in an invalid experience composer ID.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: Authentication error
+        '404':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: No Experience Composer matching the specified ID was found.
+    delete:
+      tags:
+      - Experience Composer
+      summary: Stop an Experience Composer
+      description: Use this method to stop an Experience Composer of an OpenTok session.
+      operationId: stop-experience-composer
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 400
+                    message:
+                      example: Invalid request.
+        '403':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 403
+                    message:
+                      example: You passed in an invalid JWT token.
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Video-Error'
+                - type: object
+                  properties:
+                    code:
+                      example: 404
+                    message:
+                      example: The Experience Composer (with the specified ID) was not found or it has already stopped.
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  schemas:
+    Start-Experience-Composer:
+      type: object
+      properties:
+        sessionId:
+          $ref: '#/components/schemas/Session-ID'
+        token:
+          $ref: '#/components/schemas/Token'
+        url:
+          $ref: '#/components/schemas/Experience-Composer-URL'
+        maxDuration:
+          type: number
+          description: The maximum time allowed for the Experience Composer, in seconds. After this time, it is stopped automatically, if it is still running. The maximum value is 36000 (10 hours), the minimum value is 60 (1 minute), and the default value is 7200 (2 hours). When the Experience Composer ends, its stream is unpublished and an event is posted to the callback URL, if configured in the Application Config.
+          example: 1800
+          default: 7200
+          minimum: 60
+          maximum: 36000
+        resolution:
+          $ref: '#/components/schemas/Resolution'
+        properties:
+          type: object
+          description: The initial configuration of Publisher properties for the composed output stream.
+          properties:
+            name:
+              $ref: '#/components/schemas/Experience-Composer-Name'
+          required:
+          - name
+    Experience-Composer-Name:
+      type: string
+      example: 'Composed stream for Live event #1'
+      description: The name of the composed output stream which is published to the session.
+      minLength: 1
+      maxLength: 200
+    Experience-Composer:
+      allOf:
+      - $ref: '#/components/schemas/Experience-Composer-Base'
+      - type: object
+        properties:
+          reason:
+            type: string
+            example: Could not load URL
+            description: The reason field is only available when the status is either "stopped" or "failed". If the status is stopped, the reason field will contain either "Max Duration Exceeded" or "Stop Requested." If the status is failed, the reason will contain a more specific error message.
+    Session-ID:
+      type: string
+      description: The session ID of the Vonage Video session you are working with
+      example: flR1ZSBPY3QgMjkgMTI6MTM6MjMgUERUIDIwMTN
+    Resolution:
+      type: string
+      enum:
+      - 640x480
+      - 480x640
+      - 1280x720
+      - 720x1280
+      - 1080x1920
+      - 1920x1080
+      description: The resolution of the archive, either "640x480" (SD landscape, the default), "1280x720" (HD landscape), "1920x1080" (FHD landscape), "480x640" (SD portrait), "720x1280" (HD portrait), or "1080x1920" (FHD portrait). You may want to use a portrait aspect ratio for archives that include video streams from mobile devices (which often use the portrait aspect ratio). This property only applies to composed archives. If you set this property and set the outputMode property to "individual", the call to the REST method results in an error.
+    Experience-Composer-URL:
+      type: string
+      description: A publicly reachable URL controlled by the customer and capable of generating the content to be rendered without user intervention.
+      example: https://example.com/
+      minLength: 15
+      maxLength: 2048
+    Token:
+      type: string
+      description: A valid OpenTok JWT token with a Publisher role and (optionally) connection data to be associated with the output stream.
+      example: 830c9c9d-d09e-4513-9cc8-29c90a760248
+    Experience-Composer-Base:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID for the Experience Composer.
+          example: 1248e7070b81464c9789f46ad10e7764
+        sessionId:
+          $ref: '#/components/schemas/Session-ID'
+        applicationId:
+          $ref: '#/components/schemas/ApplicationID'
+        createdAt:
+          type: number
+          description: The time the Experience Composer started, expressed in milliseconds since the Unix epoch (January 1, 1970, 00:00:00 UTC).
+          example: 1437676551000
+        callbackUrl:
+          type: string
+          description: The callback URL for Experience Composer events (if one was set).
+          example: https://example.com/video/events
+        updatedAt:
+          type: number
+          description: This is the UNIX timestamp when the Experience Composer status was last updated. For this start method, this timestamp matches the createdAt timestamp.
+          example: 1437676551000
+        name:
+          $ref: '#/components/schemas/Experience-Composer-Name'
+        url:
+          $ref: '#/components/schemas/Experience-Composer-URL'
+        resolution:
+          $ref: '#/components/schemas/Resolution'
+        status:
+          type: string
+          example: starting
+          enum:
+          - starting
+          - started
+          - stopped
+          - failed
+        streamId:
+          type: string
+          description: The ID of the composed stream being published.
+          example: e32445b743678c98230f238
+    ApplicationID:
+      type: string
+      description: A Vonage Application ID
+      example: 93e36bb9-b72c-45b6-a9ea-5c37dbc49906
+    Video-Error:
+      description: Error thrown in the Vonage Video API
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP response code that is returned
+        message:
+          type: string
+          description: Error that was exhibited
+  parameters:
+    experience_composer_id:
+      name: experience_composer_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the Experience Composer instance
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+  responses:
+    Experience-Composer:
+      description: Experience Composer information after starting
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Experience-Composer'
+    Multi-Experience-Composer-Response:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: The total number of experience composers for the Application ID key.
+                example: 1
+              items:
+                type: array
+                description: An array of objects defining each experience composer retrieved. Experience Composers are listed from the newest to the oldest in the return set.
+                items:
+                  $ref: '#/components/schemas/Experience-Composer'
+    Experience-Composer-Start:
+      description: Experience Composer information after starting
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Experience-Composer-Base'
+  requestBodies:
+    Start-Experience-Composer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Start-Experience-Composer'
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

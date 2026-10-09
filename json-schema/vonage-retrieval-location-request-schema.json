@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-retrieval-location-request-schema.json",
+  "title": "RetrievalLocationRequest",
+  "description": "Request to retrieve the location of a phone number of an end-user device capable of connecting to a mobile network.",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-location-retrieval-openapi.yml#/components/schemas/RetrievalLocationRequest",
+  "type": "object",
+  "required": [
+    "phone_number"
+  ],
+  "properties": {
+    "phone_number": {
+      "description": "A public identifier addressing a telephone subscription. In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.",
+      "type": "string",
+      "pattern": "^\\+[1-9][0-9]{4,14}$"
+    },
+    "location_age_seconds": {
+      "description": "Maximum age of the location information which is accepted for the location retrieval (in seconds). Absence of location_max_seconds means \"any age\" and location_max_seconds=0 means a fresh calculation.",
+      "type": "integer"
+    }
+  }
+}

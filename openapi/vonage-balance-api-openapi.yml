@@ -1,0 +1,295 @@
+openapi: 3.2.0
+info:
+  title: Vonage Balance API
+  version: 1.0.4
+  contact:
+    name: Vonage Developer Relations
+    email: devrel@vonage.com
+    url: https://developer.vonage.com/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.vonage.com/legal/communications-apis/terms-of-use/
+  x-metaDescription: Find quick answers to questions about the Vonage Account API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Account API Reference | Vonage API Documentation
+  description: 'Operations tagged Balance across 2 of this provider''s published API definitions: vonage-account-openapi.json, vonage-account-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://rest.nexmo.com
+  description: Rest Server
+security:
+- basicAuth: []
+tags:
+- name: Balance
+  description: This section shows how you can query the current balance of your account, and if you have auto-reload enabled how to trigger a top-up to your account without waiting for the next balance check.
+paths:
+  /account/get-balance:
+    get:
+      operationId: getAccountBalance
+      summary: Get Account Balance
+      description: Retrieve the current balance of your Vonage API account
+      tags:
+      - Balance
+      responses:
+        '200':
+          $ref: '#/components/responses/CurrentBalanceResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    servers:
+    - url: https://rest.nexmo.com
+      description: Rest Server
+  /account/top-up:
+    post:
+      operationId: topUpAccountBalance
+      summary: Top Up Account Balance
+      description: 'You can top up your account using this API when you have enabled auto-reload in the dashboard. The amount added by the top-up operation will be the same amount as was added in the payment when auto-reload was enabled.
+
+        Your account balance is checked every 5-10 minutes and if it falls below the threshold and auto-reload is enabled, then it will be topped up automatically. Use this endpoint if you need to top up at times when your credit may be exhausted more quickly than the auto-reload may occur.'
+      tags:
+      - Balance
+      requestBody:
+        $ref: '#/components/requestBodies/AccountTopUpRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/TopOffResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    servers:
+    - url: https://rest.nexmo.com
+      description: Rest Server
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Base error response following RFC 7807
+      required:
+      - type
+      - title
+      - instance
+      properties:
+        type:
+          type: string
+          description: Link to error / remediation options
+          example: https://developer.vonage.com/api-errors
+        title:
+          type: string
+          description: Generic error message
+          example: An error occurred
+        detail:
+          type: string
+          description: Additional information about the error
+          example: More details about what went wrong
+        instance:
+          type: string
+          description: Internal Trace ID
+          example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    AccountBalance:
+      type: object
+      xml:
+        name: accountBalance
+      properties:
+        value:
+          type: number
+          description: The balance of the account, in EUR
+          example: 10.28
+        autoReload:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+          description: Whether the account has auto-reloading enabled
+  headers:
+    X-RateLimit-Reset:
+      description: Unix timestamp when limit resets
+      schema:
+        type: integer
+        example: 1769182705723
+    X-Request-Id:
+      description: A unique identifier for the request, used for tracking and debugging
+      schema:
+        type: string
+        format: uuid
+        example: f94b4e56-604e-07e5-e5ad-5a7228618f81
+    Retry-After:
+      description: Seconds until next request allowed
+      schema:
+        type: integer
+        example: 15
+    X-RateLimit-Remaining:
+      description: Remaining requests
+      schema:
+        type: integer
+        example: 5
+    X-RateLimit-Limit:
+      description: Request limit per hour
+      schema:
+        type: integer
+        example: 30
+  responses:
+    '500':
+      description: Internal error
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    '401':
+      description: Authentication failure
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - description: Missing or Invalid Credentials
+              type: object
+              required:
+              - type
+              - title
+              - instance
+              properties:
+                type:
+                  type: string
+                  description: Link to error / remediation options
+                  example: https://developer.vonage.com/api-errors/#unathorized
+                title:
+                  type: string
+                  description: Generic error message
+                  example: You did not provide correct credentials.
+                detail:
+                  type: string
+                  description: Additional information about the error
+                  example: Check that you're using the correct credentials, and that your account has this feature enabled
+                instance:
+                  type: string
+                  description: Internal Trace ID
+                  example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+            - description: Invalid Application Type
+              type: object
+              required:
+              - type
+              - title
+              - instance
+              properties:
+                type:
+                  type: string
+                  description: Link to error / remediation options
+                  example: https://developer.vonage.com/api-errors/#unprovisioned
+                title:
+                  type: string
+                  description: Generic error message
+                  example: The crendentials provided do not have access to the requested product
+                detail:
+                  type: string
+                  description: Additional information about the error
+                  example: Check your API key is correct and has been whitelisted
+                instance:
+                  type: string
+                  description: Internal Trace ID
+                  example: bf0ca0bf927b3b52e3cb03217e1a1ddf
+    '429':
+      description: Too Many Requests
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Reset:
+          $ref: '#/components/headers/X-RateLimit-Reset'
+        Retry-After:
+          $ref: '#/components/headers/Retry-After'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    CurrentBalanceResponse:
+      description: The current balance of your account
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountBalance'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/AccountBalance'
+    TopOffResponse:
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/X-Request-Id'
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error-code:
+                example: '200'
+              error-code-label:
+                example: success
+        application/xml:
+          schema:
+            type: object
+            xml:
+              name: response
+            properties:
+              error-code:
+                example: '200'
+              error-code-label:
+                example: success
+  requestBodies:
+    AccountTopUpRequest:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required:
+            - trx
+            properties:
+              trx:
+                type: string
+                description: The transaction reference of the transaction when balance was added and auto-reload was enabled on your account.
+                example: 8ef2447e69604f642ae59363aa5f781b
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-refined-from:
+- vonage-account-openapi.json
+- vonage-account-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

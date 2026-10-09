@@ -1,0 +1,124 @@
+openapi: 3.2.0
+info:
+  title: Vonage WhatsApp API
+  version: 0.1.6
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: https://developer.nexmo.com/
+  x-label: Developer Preview
+  x-metaDescription: Find quick answers to questions about the Vonage Account API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Account API Reference | Vonage API Documentation
+  description: 'Operations tagged WhatsApp across 2 of this provider''s published API definitions: vonage-external-accounts-openapi.json, vonage-external-accounts-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.nexmo.com/beta/chatapp-accounts
+tags:
+- name: Whats App
+paths:
+  /whatsapp/{external_id}:
+    get:
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      summary: Retrieve a Whatsapp account
+      operationId: GetWAAccount
+      tags:
+      - Whats App
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+        description: External id of the account you want to retrieve. In this case it will be the WhatsApp number.
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WAAccountResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        '404':
+          description: Not Found.
+    servers:
+    - url: https://api.nexmo.com/beta/chatapp-accounts
+components:
+  schemas:
+    WAAccountResponse:
+      type: object
+      required:
+      - external_id
+      - api_key
+      - provider
+      properties:
+        name:
+          type: string
+          example: optionalName
+          description: The account name
+        applications:
+          type: array
+          items:
+            type: string
+          example:
+          - optionalApplicationId
+          description: The array of associated application ids
+        external_id:
+          type: string
+          example: '12345678'
+          description: The external identifier for this account
+        api_key:
+          type: string
+          example: abcd1234
+          description: The external api key for this account
+        provider:
+          type: string
+          example: whatsapp
+          description: The provider (will be `whatsapp`).
+    401Response:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Unauthorised
+        detail:
+          type: string
+          example: Request header 'Authorization' missing / Invalid Token
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
+x-refined-from:
+- vonage-external-accounts-openapi.json
+- vonage-external-accounts-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

@@ -1,0 +1,787 @@
+generated: '2026-10-08'
+method: searched
+source:
+- https://developer.vonage.com/en/api-errors
+- https://developer.vonage.com/en/api/sms
+- https://developer.vonage.com/en/api/messages
+- https://developer.vonage.com/en/api/verify.v2
+- https://developer.vonage.com/en/api/application.v2
+- https://developer.vonage.com/en/api/account
+- https://developer.vonage.com/en/api/conversation
+- https://developer.vonage.com/en/api/reports
+- https://developer.vonage.com/en/api/redact
+- https://developer.vonage.com/en/api/subaccounts
+format: RFC 7807 application/problem+json (generic errors); legacy per-product numeric status codes (SMS, Messages,
+  Conversation)
+envelope:
+  content_type: application/problem+json
+  fields:
+  - type
+  - title
+  - detail
+  - instance
+  example:
+    type: https://example.com/Error#out-of-credit
+    title: You do not have enough credit
+    detail: Your current balance is 30, but that costs 50.
+    instance: <trace_id>
+  statement: When a Vonage API returns an error, for instance, if your account has no credit, the API will return
+    an error in RFC 7807 format.
+generic:
+- code: low-balance
+  description: This request could not be performed due to your account balance being low.
+  resolution: Top up your account in the Vonage Dashboard
+- code: unauthorized
+  description: You did not provide correct credentials.
+  resolution: Check your authentication credentials are correct, you can find these credentials in the Vonage Dashboard
+- code: forbidden
+  description: Your account does not have permission to perform this action
+  resolution: Check that you're using the correct credentials, and that your account has this feature enabled
+- code: not-found
+  description: The requested resource does not exist, or you do not have access to it
+  resolution: Check both the URI that you're requesting and your authentication credentials
+- code: unprovisioned
+  description: The credentials provided do not have access to the requested product
+  resolution: Check your API key is correct and has been whitelisted
+- code: account-suspended
+  description: This account has been suspended
+  resolution: Contact support for more information
+- code: jwt-expired
+  description: The JWT provided has expired
+  resolution: Generate a new JWT with an exp in the future
+- code: jwt-revoked
+  description: The JWT provided has been revoked
+  resolution: Generate a new JWT using your private key
+- code: invalid-api-key
+  description: The API key provided does not exist in our system, or you do not have access
+  resolution: Modify your request to provide a valid API key
+- code: invalid-params
+  description: The value of one or more parameters is invalid
+  resolution: Resend a valid request body
+- code: invalid-signature
+  description: The signature provided did not validate.
+  resolution: Check your signature secret is correct and you're following the correct signing process
+- code: invalid-ip
+  description: The source IP address of the request is not in our allow list
+  resolution: Make a request from an allowed IP address, or add your current IP to the list of authorized addresses
+- code: multiple-auth-methods
+  description: Multiple authentication methods were detected in your request
+  resolution: Provide exactly one authentication method
+- code: invalid-id
+  description: The ID provided does not exist in our system
+  resolution: Modify your request to provide a valid ID
+- code: invalid-json
+  description: The request body did not contain valid JSON
+  resolution: Send a JSON request body, including a Content-Type header of application/json
+- code: throttled
+  description: You have hit the rate limit for the API
+  resolution: Retry the request after waiting (differs per API)
+- code: wrong-verb
+  description: This endpoint does not support the HTTP verb that you requested
+  resolution: Read the API documentation to see which verbs your desired endpoint supports
+- code: accept-header
+  description: Invalid Accept header provided
+  resolution: Most Vonage APIs only send back application/json. Check the API documentation for the API that you're
+    working with for a complete list of supported data types
+- code: content-type-header
+  description: Invalid Content-Type header provided
+  resolution: Most Vonage APIs only accept application/json. Check the API documentation for the API that you're
+    working with for a complete list of supported data types
+- code: unavailable-legal
+  description: Unavailable For Legal Reasons
+  resolution: 'Vonage APIs are unavailable in the following areas due to international sanctions: Sudan, Syria,
+    Crimea, North Korea, Iran, Cuba'
+- code: application-suspended
+  description: This application has been suspended
+  resolution: Re-enable the application or create a new application to use
+products:
+  sms:
+    title: SMS API
+    reference: https://developer.vonage.com/en/api/sms
+    source: https://developer.vonage.com/api/v1/developer/api/docs/sms?vendorId=vonage (the errors[] table the API
+      reference page renders)
+    count: 20
+    codes:
+    - code: '1'
+      description: Throttled. You are sending SMS faster than the account limit.
+      resolution: Refer to What is the Throughput Limit for Outbound SMS? for more information.
+    - code: '2'
+      description: Missing Parameters. Your request is missing one of the required parameters from , to , api_key
+        , api_secret or text .
+      resolution: Check your parameters and try again.
+    - code: '3'
+      description: Invalid Parameters. The value of one or more parameters is invalid.
+      resolution: Check your parameters and try again.
+    - code: '4'
+      description: Invalid Credentials. Your API key and/or secret are incorrect, invalid or disabled.
+      resolution: Visit the Dashboard and check your credentials.
+    - code: '5'
+      description: Internal Error. An error has occurred in the platform whilst processing this message.
+      resolution: If the error persists, contact support .
+    - code: '6'
+      description: Invalid Message. The platform was unable to process this message, for example, an un-recognized
+        number prefix.
+      resolution: N/A
+    - code: '7'
+      description: Number Barred. The number you are trying to send messages to is blacklisted and may not receive
+        them.
+      resolution: N/A
+    - code: '8'
+      description: Partner Account Barred. Your Vonage account has been suspended.
+      resolution: Contact support .
+    - code: '9'
+      description: Partner Quota Violation. You do not have sufficient credit to send the message.
+      resolution: Top-up and retry.
+    - code: '10'
+      description: Too Many Existing Binds. The number of simultaneous connections to the platform exceeds your
+        account allocation.
+      resolution: Back-off and retry.
+    - code: '11'
+      description: Account Not Enabled For HTTP. This account is not provisioned for the SMS API.
+      resolution: This error usually indicates that you should use SMPP instead.
+    - code: '12'
+      description: Message Too Long. The message length exceeds the maximum allowed.
+      resolution: Send shorter messages.
+    - code: '14'
+      description: Invalid Signature. The signature supplied could not be verified.
+      resolution: Check the documentation for signing messages or use one of the SDKs to handle the signing.
+    - code: '15'
+      description: Invalid Sender Address. You are using a non-authorized sender ID in the from field.
+      resolution: This is most commonly seen in North America, where a Vonage long virtual number or short code
+        is required.
+    - code: '17'
+      description: Message Blocked by Provider. The messaging provider has chosen to block this message. This may
+        be due to content or restrictions imposed by the provider.
+      resolution: N/A
+    - code: '22'
+      description: Invalid Network Code. The network code supplied was either not recognized, or does not match
+        the country of the destination address.
+      resolution: Check the network code or remove it from your request.
+    - code: '23'
+      description: Invalid Callback Url. The callback URL supplied was either too long or contained illegal characters.
+      resolution: Supply a valid URL for the callback.
+    - code: '29'
+      description: Non-Whitelisted Destination. Your Vonage account is still in demo mode. While in demo mode you
+        must add target numbers to your whitelisted destination list.
+      resolution: Top-up your account to remove this limitation.
+    - code: '32'
+      description: Signature And API Secret Disallowed. A signed request may not also present an api_secret .
+      resolution: Remove the API secret from your request, or don't sign the message.
+    - code: '33'
+      description: Number De-activated. The number you are trying to send messages to is de-activated and may not
+        receive them.
+      resolution: N/A
+  messages:
+    title: Messages API
+    reference: https://developer.vonage.com/en/api/messages
+    source: https://developer.vonage.com/api/v1/developer/api/docs/messages?vendorId=vonage (the errors[] table
+      the API reference page renders)
+    count: 72
+    codes:
+    - code: '1000'
+      description: Throttled - You have exceeded the submission capacity allowed on this account. Please wait and
+        retry
+    - code: '1010'
+      description: Missing params - Your request is incomplete and missing some mandatory parameters.
+    - code: '1020'
+      description: Invalid params - The value of one or more parameters is invalid.
+    - code: '1021'
+      description: Invalid tag - The tag value is invalid.
+    - code: '1022'
+      description: Invalid template - Invalid template or template parameters
+    - code: '1030'
+      description: Internal error - There was an error processing your request in the Platform.
+    - code: '1040'
+      description: Invalid message - The Platform was unable to process your request. For example, due to an unrecognised
+        prefix for the phone number.
+    - code: '1050'
+      description: Number barred - The number you are trying to submit to is blacklisted and may not receive messages.
+    - code: '1060'
+      description: Partner account barred - The api_key you supplied is for an account that has been barred from
+        submitting messages.
+    - code: '1070'
+      description: Provider quota exceeded - your allocated quota may have been exceeded.
+    - code: '1080'
+      description: Account not enabled for REST - This account is not provisioned for REST submission, you should
+        use SMPP on the SMS API.
+    - code: '1090'
+      description: Message too long - The length of udh and body was greater than 140 octets for a binary type SMS
+        request.
+    - code: '1100'
+      description: Communication Failed - Message was not submitted because there was a communication failure.
+    - code: '1120'
+      description: Illegal Sender Address - rejected - Due to local regulations, the SenderID you set in from in
+        the request was not accepted. Please check the Global messaging section.
+    - code: '1130'
+      description: Invalid TTL - The value of ttl in your request was invalid.
+    - code: '1140'
+      description: Facility not allowed - Your request makes use of a facility that is not enabled on your account.
+    - code: '1150'
+      description: Invalid Message class - The value of message- class in your request was out of range. See https://en.wikipedia.org/wiki/Data_Coding_Scheme.
+    - code: '1160'
+      description: Non White-listed Destination - The phone number you set in to is not in your pre-approved destination
+        list. To send messages to this phone number, add it using Dashboard.
+    - code: '1170'
+      description: Invalid recipient - The to parameter is missing or contains an invalid address or identifier.
+    - code: '1180'
+      description: Destination temporarily unavailable - The destination cannot currently receive messages. Retry
+        later.
+    - code: '1190'
+      description: Absent Subscriber Permanent - to is no longer active, You should remove this phone number from
+        your database.
+    - code: '1200'
+      description: Portability Error - There is an issue after the user has changed carrier for to. If the user
+        wants to receive messages from you, they need to contact their carrier directly.
+    - code: '1210'
+      description: Anti-Spam Rejection - Carriers often apply restrictions that block messages following different
+        criteria. For example on SenderID or message content.
+    - code: '1220'
+      description: Handset Busy - The handset associated with to was not available when this message was sent. If
+        status is rejected, this is a temporary failure; retry later for a positive result. If status is submitted,
+        this message has is in the retry scheme and will be resent until it expires in 24-48 hours.
+    - code: '1230'
+      description: Temporary network failure - The message could not be delivered due to a network issue. Retry
+        later.
+    - code: '1240'
+      description: Illegal Number - You tried to send a message to a blacklisted phone number. That is, the user
+        has already sent a STOP opt-out message and no longer wishes to receive messages from you.
+    - code: '1241'
+      description: Too many send requests - Too many send requests to phone numbers.
+    - code: '1242'
+      description: Number pool does not exists - check that the number pool has been configured for your account
+    - code: '1250'
+      description: Unroutable - The chosen route to send your message is not available. This is because the phone
+        number is either currently on an unsupported network or on a pre-paid or reseller account that could not
+        receive a message.
+    - code: '1251'
+      description: Unable to route traffic to a destination - This may be due to the routing rules applied for your
+        destination network.
+    - code: '1260'
+      description: Destination unreachable - The message could not be delivered to the phone number. If using Viber
+        Business Messages your account might not be enabled for this country.
+    - code: '1270'
+      description: Subscriber Age Restriction - The carrier blocked this message because the content is not suitable
+        for to based on age restrictions.
+    - code: '1280'
+      description: Number Blocked by Carrier - The carrier blocked this message. This could be due to several reasons.
+        For example, to's plan does not include SMS or the account is suspended.
+    - code: '1282'
+      description: Message rejected by provider - The provider blocked the message may be due to policy or content
+        restrictions.
+    - code: '1290'
+      description: Pre-Paid - Insufficient funds - to's pre-paid account does not have enough credit to receive
+        the message.
+    - code: '1300'
+      description: Not part of the provider network - The number or ID is not a user in the provider network.
+    - code: '1310'
+      description: Not suitable device - The user's device can't receive the message.
+    - code: '1320'
+      description: Message already sent - The message was already sent.
+    - code: '1330'
+      description: Delivery failed - The provider returned an unknown permanent failure. Verify the destination
+        and retry if appropriate.
+    - code: '1331'
+      description: Provider error - The provider is not responding or unable to process the request. Please try
+        sending your message in a few minutes time.
+    - code: '1340'
+      description: Outside of the allowed window - This message is sent outside of allowed response window.
+    - code: '1350'
+      description: Phone matching fee not paid - Requires phone matching access fee to be paid by the Facebook Page.
+    - code: '1360'
+      description: TTL was activated, or message expired before delivered.
+    - code: '1370'
+      description: Expired access Token - Please reauthenticate your Facebook Page with Vonage.
+    - code: '1380'
+      description: Invalid resource - Please check that the URL your provided to your resource is accessible and
+        valid.
+    - code: '1381'
+      description: Resource size is too large - Please try sending a smaller media file.
+    - code: '1382'
+      description: Unsupported resource type - The attached resource type is not supported or invalid.
+    - code: '1400'
+      description: Unsupported channel - The channel specified in the request is not supported.
+    - code: '1410'
+      description: Invalid channel parameters - The value of one or more parameters is invalid.
+    - code: '1420'
+      description: Invalid sender - The from parameter is invalid for the given channel.
+    - code: '1430'
+      description: Invalid recipient - The to parameter is invalid for the given channel.
+    - code: '1431'
+      description: Multiple recipients error - Multiple recipients not supported.
+    - code: '1440'
+      description: Invalid message type - The message type specified in the request is not supported for the given
+        channel.
+    - code: '1450'
+      description: Invalid client reference - The client reference can be a string of up to 100 characters.
+    - code: '1451'
+      description: Invalid context - the reference to the original message could not be found because it is invalid
+        or no longer available.
+    - code: '1460'
+      description: Daily message limit exceeded - Check compliance with regulations such as 10DLC.
+    - code: '1461'
+      description: Auto-limiting of messages by Provider - This message was not delivered by Provider to avoid excessive
+        messages to the end user. For details please see this knowledgebase article .
+    - code: '1470'
+      description: Fraud Defender Traffic Rule - Rejected due to Fraud Defender traffic rules block.
+    - code: '1472'
+      description: Fraud Defender SMS Burst Protection - Traffic limit has been reached
+    - code: '1473'
+      description: AIT Protection - The message has been rejected by Fraud Defender AIT Protection
+    - code: '1474'
+      description: Fraud Defender Traffic Rule - Rejected due to Fraud Defender country block.
+    - code: '1475'
+      description: Fraud Defender Traffic Rule - Rejected due to Fraud Defender network block.
+    - code: '1476'
+      description: Do Not Originate (DNO) - Originating number is on a DNO list.
+    - code: '1480'
+      description: Entity Filter - The message failed due to entity_id being incorrect or not provided. More information
+        on country specific regulations .
+    - code: '1481'
+      description: Header Filter - The message failed because the header ID ( from phone number) was incorrect or
+        missing. More information on country specific regulations .
+    - code: '1482'
+      description: Content Filter - The message failed due to content_id being incorrect or not provided. More information
+        on country specific regulations .
+    - code: '1483'
+      description: Consent Filter - The message failed due to consent not being authorized. More information on
+        country specific regulations .
+    - code: '1484'
+      description: Authentication or compliance failure - The message failed authentication or regulatory checks.
+        Verify sender configuration or contact support .
+    - code: '1490'
+      description: SMS segment timeout - Not all segment delivery receipts were received within the allowed time.
+        The overall delivery status of this message is unknown. Partial delivery is possible.
+    - code: '2001'
+      description: Fraud protection triggered - The message was blocked by fraud or abuse protection rules at the
+        provider side.
+    - code: '2002'
+      description: Email size exceeded - The message or payload exceeds the allowed size limit. Reduce the payload
+        and retry.
+    - code: '2003'
+      description: Destination unavailable - Recipient email address is in the suppression list, which may be due
+        to an earlier email being hard bounced or marked as spam by the user.
+  verify.v2:
+    title: Verify API
+    reference: https://developer.vonage.com/en/api/verify.v2
+    source: https://developer.vonage.com/api/v1/developer/api/docs/verify.v2?vendorId=vonage (the errors[] table
+      the API reference page renders)
+    count: 16
+    codes:
+    - code: fragment-exists
+      description: A template fragment for this channel and locale already exists
+      resolution: Change either the locale or channel to a combination not being used
+    - code: template-fragment-not-found
+      description: Template Fragment not found
+      resolution: Check the ID of the template fragment you are trying to access
+    - code: template-not-found
+      description: Template not found
+      resolution: Check the ID of the template you are trying to access
+    - code: template-exists
+      description: A template with this name already exists
+      resolution: Choose a different template name in the request
+    - code: not-empty-template
+      description: The template is not empty and cannot be deleted. Please delete its fragments first
+      resolution: Delete the individual template fragments, then try again
+    - code: forbidden
+      description: Templates management is not enabled for your account
+      resolution: Contact Vonage support to enable custom template management
+    - code: expired
+      description: An incorrect code has been provided too many times. Workflow terminated.
+      resolution: Request a new Verification
+    - code: no-code
+      description: The current Verify workflow step does not support a code.
+      resolution: Change to a valid workflow to handle your request
+    - code: max-templates
+      description: An account can only have a maximum of 10 custom templates
+      resolution: Delete a template before retrying
+    - code: concurrent
+      description: Concurrent verifications to the same number are not allowed.
+      resolution: In flight verification needs to expire, fail or be completed
+    - code: invalid-code
+      description: The code you provided does not match the expected value.
+      resolution: Retry with the correct value or fail the request
+    - code: no-events
+      description: The code you provided does not match the expected value.
+      resolution: Retry with the correct value or fail the request
+    - code: request-not-found
+      description: The request ID provided could not be found.
+      resolution: Retry with a valid request ID
+    - code: msisdn-error
+      description: The device MSISDN does not match.
+      resolution: Silent Auth will not work with this device, try a different one.
+    - code: precondition-failed
+      description: Conditions for the Silent Auth request to complete have not been met.
+      resolution: Silent Auth will not work with this device, try a different one.
+    - code: network-error
+      description: The Silent Auth request could not be completed due to formatting or the carrier is not supported.
+      resolution: Check https://developer.vonage.com/en/verify/guides/silent-auth-territories?source=verify to see
+        if the carrier(s) used are supported.
+  application.v2:
+    title: Application API
+    reference: https://developer.vonage.com/en/api/application.v2
+    source: https://developer.vonage.com/api/v1/developer/api/docs/application.v2?vendorId=vonage (the errors[]
+      table the API reference page renders)
+    count: 3
+    codes:
+    - code: payload-validation
+      description: Invalid request. See invalid_parameters field for details
+      resolution: Review the documentation and send a valid POST request.
+    - code: list-validation
+      description: Invalid request. See invalid_parameters field for details
+      resolution: Review the documentation and send a valid GET request.
+    - code: rate-limit
+      description: The request was rate limited
+      resolution: The Redact API supports 170 requests per second. Reduce the frequency of your requests.
+  account:
+    title: Account API
+    reference: https://developer.vonage.com/en/api/account
+    source: https://developer.vonage.com/api/v1/developer/api/docs/account?vendorId=vonage (the errors[] table the
+      API reference page renders)
+    count: 2
+    codes:
+    - code: validation
+      description: The provided payload is invalid
+      resolution: Modify your request to provide a valid payload. Minimum 8 characters Maximum 25 characters Minimum
+        1 lower case character Minimum 1 upper case character Minimum 1 digit
+    - code: delete-last-secret
+      description: You can not delete your only API secret
+      resolution: Add another API secret before deleting this one
+  conversation:
+    title: Conversation API
+    reference: https://developer.vonage.com/en/api/conversation
+    source: https://developer.vonage.com/api/v1/developer/api/docs/conversation?vendorId=vonage (the errors[] table
+      the API reference page renders)
+    count: 118
+    codes:
+    - code: device:error:invalid
+      description: The request failed due to incorrect device parameters.
+    - code: device:error:not-found
+      description: The request failed due to unknown device.
+    - code: device:error:max-device-limit
+      description: The request failed due to registered devices exceeding max devices limit per user
+    - code: session:error:internal
+      description: An internal error occurred with the session. Please try again shortly.
+    - code: session:error:invalid-event
+    - code: session:error:not-found
+      description: Session does not exist, or you do not have access.
+    - code: session:error:bad-request-ttl
+      description: The request cannot be processed due to malformed ttl.
+    - code: session:error:max-open-sessions
+      description: The maximum amount of open sessions has been established. Please delete them by logging out and
+        try again.
+    - code: knocking:error:not-found
+      description: Knocker does not exist, or you do not have access.
+    - code: knocking:error:invalid
+      description: The current knocker could not be processed. This can be due to an invalid state or an invalid
+        channel type.
+    - code: knocking:error:invalid-channel
+      description: The request failed due to either malformed or missing channel. Please provide a valid channel
+        and try again.
+    - code: knocking:error:missing-from-name
+      description: The request failed due to missing 'from' user. Please provide a valid user and try again.
+    - code: knocking:error:legs-not-match
+      description: The leg id in knocker doesn't match the leg to join. Please provide a valid leg id.
+    - code: application:error:internal
+      description: An internal error occurred with the application. Please try again shortly.
+    - code: application:error:invalid-event
+      description: Application event does not exist, or you do not have access.
+    - code: application:error:not-found
+      description: Application does not exist, or you do not have access.
+    - code: application:error:permission-denied
+      description: Permission denied
+    - code: conversation:error:bad-request
+      description: The request failed due to validation errors. Please provide a valid request and try again.
+    - code: conversation:error:invalid-action
+      description: The request failed because the current action is not valid. Please provide a valid action and
+        try again.
+    - code: conversation:error:not-allowed
+      description: The request failed because the current state of the conversation is INACTIVE. Only GET and DELETE
+        actions are allowed.
+    - code: conversation:error:duplicate-name
+      description: The request failed because the conversation name already exists. Please provide a unique conversation
+        name and try again.
+    - code: conversation:error:internal
+      description: An internal error occurred with the conversation. Please try again shortly.
+    - code: conversation:error:internal-media
+      description: An internal error occurred with the conversation media. Please try again shortly.
+    - code: conversation:error:invalid-channel
+      description: The request failed due to either malformed or missing channel. Please provide a valid channel
+        and try again.
+    - code: conversation:error:invalid-member
+      description: The request failed due to an invalid member. Please provide a valid member and try again.
+    - code: conversation:error:invalid-member-state
+      description: The conversation membership has already ended
+    - code: conversation:error:member-already-joined
+      description: The request failed due to the user already having a member joined with that channel content.
+        Please provide a valid user and try again.
+    - code: conversation:error:member-already-invited
+      description: The request failed due to the user already having a member invited with that channel content.
+        Please provide a valid user and try again.
+    - code: conversation:error:member-not-found
+      description: Member does not exist, or you do not have access.
+    - code: conversation:error:invalid-event
+      description: The request failed due to an invalid conversation event. Please provide a valid event and try
+        again.
+    - code: conversation:error:not-found
+      description: Conversation does not exist, or you do not have access.
+    - code: conversation:error:permission-denied
+      description: expired JWT, invalid application.
+    - code: conversation:error:maximum-number-of-members
+      description: The request failed due to the maximum number of joined/invited members in the conversation. Please
+        reduce the number of members and try again.
+    - code: conversation:error:member:permission-denied
+      description: You did not provide a correct token. Please provide a valid token.
+    - code: conversation:error:member:channel-not-found
+      description: The request failed due to a non-existent requested channel. Please provide a valid channel id/number
+        and try again.
+    - code: user:error:invalid-event
+      description: The request failed due to an invalid user event. Please provide a valid event and try again.
+    - code: user:error:duplicate-name
+      description: The request failed because the user name already exists. Please provide a unique user name and
+        try again.
+    - code: user:error:internal
+      description: An internal error occurred with the user. Please try again shortly.
+    - code: user:error:invalid-state-lookup
+      description: The request failed due to an invalid member state filter value. Please provide a valid state
+        name and try again.
+    - code: user:error:not-found
+      description: User does not exist, or you do not have access.
+    - code: user:error:invalid-user
+      description: The request failed due to an invalid user name. Please provide a valid user name and try again.
+    - code: user:error:invalid-user-token
+      description: Token does not contain a user name.
+    - code: user:error:invalid-user-name
+      description: Username must not be 'me' and it must not start with 'USR-'.
+    - code: user:error:invalid-application
+      description: Application does not exist, or you do not have access.
+    - code: user:notification:error:not-found
+      description: Notification does not exist, or you do not have access.
+    - code: user:device:error:not-found
+      description: The request failed due to non-existent user devices. Please register a device and try again.
+    - code: event:error:internal
+      description: An internal error occurred with the event. Please try again shortly.
+    - code: event:error:bad-request
+      description: The request failed due to an invalid event. Please provide a valid event and try again.
+    - code: event:error:unknown-event
+      description: The request failed due to an unknown event. Please provide a known event and try again.
+    - code: event:error:not-found
+      description: Event does not exist, or you do not have access.
+    - code: event:error:not-joined
+      description: The request failed due to the member not being in a 'JOINED' state. Please update the member
+        state and try again.
+    - code: event:error:permission-denied
+      description: You do not have access to the event.
+    - code: event:error:invalid-filter-group
+      description: The request failed due to an invalid filtering.
+    - code: event:error:delete-not-allowed
+      description: The request failed because the event is not allowed to be deleted. Only message and custom events
+        are allowed.
+    - code: text:error:unknown-event
+      description: The request failed due to an unknown text event. Please provide a known text event and try again.
+    - code: text:error:permission-denied
+      description: You do not have access to the text event.
+    - code: text:error:invalid-member
+      description: The request failed due to an invalid member. Please provide a valid member and try again.
+    - code: text:error:not-joined
+      description: The request failed due to the member not being in a 'JOINED' state. Please update the member
+        state and try again.
+    - code: image:error:unknown-event
+      description: The request failed due to an unknown image event. Please provide a known image event and try
+        again.
+    - code: image:error:permission-denied
+      description: You do not have access to the image.
+    - code: image:error:invalid-member
+      description: The request failed due to an invalid member. Please provide a valid member and try again.
+    - code: image:error:not-joined
+      description: The request failed due to the member not being in a 'JOINED' state. Please update the member
+        state and try again.
+    - code: rtc:error:invalid-event
+      description: The request failed due to an invalid RTC event. Please provide a valid RTC event and try again.
+    - code: rtc:error:invalid-member
+      description: The request failed due to an invalid member. Please provide a valid member and try again.
+    - code: rtc:error:ice:failed
+      description: The request failed due to an invalid ICE candidate. Please provide a valid ICE candidate and
+        try again.
+    - code: rtc:error:missing-id
+      description: The request failed due to an invalid RTC id. Please provide a valid RTC id and try again.
+    - code: rtc:error:permission-denied
+      description: You do not have access to the RTC object.
+    - code: rtc:error:unprocessable
+      description: The request failed because the RTC content could not be processed. Please provide valid RTC content
+        and try again.
+    - code: rtc:error:internal
+      description: An internal error occurred with the RTC object. Please try again shortly.
+    - code: rtc:error:not-joined
+      description: The request failed due to the member not being in a 'JOINED' state. Please update the member
+        state and try again.
+    - code: leg:error:db
+      description: A database error occurred with the conversation leg. Please try again shortly.
+    - code: leg:error:invalid-action
+      description: The request failed due to an invalid leg action. Please provide a valid leg action and try again.
+    - code: leg:error:internal
+      description: An internal error occurred with the conversation leg. Please try again shortly.
+    - code: leg:error:not-found
+      description: Conversation leg does not exist, or you do not have access.
+    - code: leg:error:not-answered
+      description: The request failed due to the leg not being in an 'answered' state. Please update the leg state
+        and try again.
+    - code: leg:error:invalid-event
+      description: The request failed due to an invalid leg event. Please provide a valid leg event and try again.
+    - code: leg:error:invalid-application
+      description: Application does not exist, or you do not have access.
+    - code: leg:error:conversation-not-found
+      description: Request failed due to leg not being linked to an active conversation
+    - code: leg:error:complete
+      description: The request failed due to the leg being in a completed state and as a result no further action
+        can be taken.
+    - code: audio:error:not-found
+      description: Audio request does not exist, or you do not have access.
+    - code: audio:error:invalid-event
+      description: The request failed due to an invalid audio event. Please provide a valid audio event and try
+        again.
+    - code: system:error:permission
+      description: You did not provide a correct token. Please provide a valid token.
+    - code: system:error:missing-token
+      description: You did not provide a token. Please provide a valid token.
+    - code: system:error:invalid-token
+      description: You did not provide a valid token. Please provide a valid token.
+    - code: system:error:expired-token
+      description: You provided an expired token. Please provide a valid token.
+    - code: system:error:internal
+      description: An internal error occurred. Please try again shortly.
+    - code: system:error:invalid-event
+      description: The request failed due to an invalid event. Please provide a valid event and try again.
+    - code: http:error:not-found
+      description: Endpoint does not exist, or you do not have access.
+    - code: http:error:method-not-allowed
+      description: Request method not supported.
+    - code: http:error:version-not-allowed
+      description: The request failed due to an invalid endpoint version. Please provide a valid endpoint version
+        and try again.
+    - code: http:error:unsupported-media-type
+      description: Invalid media type provided.
+    - code: http:error:internal
+      description: An internal error occurred. Please try again shortly.
+    - code: media:error:not-found
+      description: Media does not exist, or you do not have access.
+    - code: media:error:too-many-request
+      description: You have exceeded your media request limit. You can try again shortly.
+    - code: media:error:internal
+      description: An internal error occurred with the media object. Please try again shortly.
+    - code: media:error:leg-already-answered
+      description: The request failed because the leg was already answered
+    - code: media:error:bad-request
+      description: The request failed due to an invalid media request. Please provide a valid media request and
+        try again.
+    - code: paginator-builder:error:invalid-cursor
+      description: The request failed due to an invalid cursor
+    - code: asr:error:max-duration
+      description: The request failed due to invalid range for the max_duration param. Please specify a range between
+        1 and 40.
+    - code: asr:error:start-timeout
+      description: The request failed due to invalid range for the start_timeout param. Please specify a range between
+        1 and 10.
+    - code: custom-data:error:max-data-limit
+      description: The request failed due to custom data exceeding max data limit
+    - code: custom-data:error:max-data-sum-limit-exceeded
+      description: The request failed due to the sum of custom data exceeded max data limit
+    - code: ephemeral:error:max-data-limit
+      description: The request failed due to ephemeral data exceeding max data limit
+    - code: http:error:validation-fail
+      description: Input validation failure.
+    - code: http:error:invalid-content-type
+      description: Invalid Content-Type.
+    - code: message:error:invalid-event
+      description: The request failed due to an invalid message event. Please provide a valid event and try again.
+    - code: message:error:user-undefined
+      description: The request failed due to an undefined user. Please provide a user and try again.
+    - code: message:error:conversation-name-undefined
+      description: The request failed due to an undefined conversation_name. Please provide a conversation_name
+        and try again.
+    - code: message:error:permission-denied
+      description: You do not have access to the message.
+    - code: message:error:invalid-member
+      description: The request failed due to an invalid member. Please provide a valid member and try again.
+    - code: message:error:not-joined
+      description: The request failed due to the member not being in a 'JOINED' state. Please update the member
+        state and try again.
+    - code: message:error:permission
+      description: Request header 'Authorization' missing / Invalid Token.
+    - code: message:error:not-found
+      description: External id does not exist, or you do not have access.
+    - code: message:error:channel-unknown
+      description: The request failed due to an unknown channel type. Please provide a known channel and try again.
+    - code: message:error:message-type-unknown
+      description: The request failed due to an unknown message type. Please provide a known message and try again.
+    - code: nexmo-service:permission-denied
+      description: You did not provide a correct token. Please provide a valid token.
+    - code: nexmo-service:error:invalid-event
+      description: The request failed due to an invalid nexmo-service event. Please provide a valid event and try
+        again.
+    - code: nexmo-service:error:datacenter-not-found
+      description: Datacenter id does not exist, or you do not have access.
+  reports:
+    title: Reports API
+    reference: https://developer.vonage.com/en/api/reports
+    source: https://developer.vonage.com/api/v1/developer/api/docs/reports?vendorId=vonage (the errors[] table the
+      API reference page renders)
+    count: 3
+    codes:
+    - code: invalid-request-parameters
+      description: The provided payload is invalid
+      resolution: Modify your request to provide a valid payload
+    - code: invalid-abort-operation
+      description: The job is already in a terminated state such as SUCCESS , TRUNCATED , FAILED or ABORTED .
+      resolution: None
+    - code: rate-limit
+      description: The request was rate limited.
+      resolution: The Reports API supports 5 requests per second when used Asynchronously, and 10 requests per second
+        Synchronously. Slow down your request rate.
+  redact:
+    title: Redact API
+    reference: https://developer.vonage.com/en/api/redact
+    source: https://developer.vonage.com/api/v1/developer/api/docs/redact?vendorId=vonage (the errors[] table the
+      API reference page renders)
+    count: 3
+    codes:
+    - code: invalid-product
+      description: The provided product is invalid
+      resolution: Modify your request to provide a valid product
+    - code: premature-redaction
+      description: There is a 1 hour time period before data can be redacted to allow for all data to propagate
+        through the Vonage system
+      resolution: Wait until the data becomes valid for redaction
+    - code: rate-limit
+      description: The request was rate limited
+      resolution: The Redact API supports 170 requests per second. Slow down your request rate
+  subaccounts:
+    title: Subaccounts API
+    reference: https://developer.vonage.com/en/api/subaccounts
+    source: https://developer.vonage.com/api/v1/developer/api/docs/subaccounts?vendorId=vonage (the errors[] table
+      the API reference page renders)
+    count: 7
+    codes:
+    - code: validation
+      description: The request failed due to validation errors
+      resolution: See the detail (and, if present, the invalid_parameters ) fields for the exact reason this request
+        was rejected and review the documentation.
+    - code: invalid-transfers
+      description: Invalid transfer
+      resolution: See the detail field for the reason this transfer is invalid.
+    - code: provisioning
+      description: Maximum number of sub-accounts reached
+      resolution: If you need more subaccounts, contact Vonage Support .
+    - code: internal-error
+      description: An error has occurred in the platform while processing this request
+      resolution: If the error persists, contact Vonage Support .
+    - code: invalid-number-transfer
+      description: Failed to perform transfer number from source account to destination account
+      resolution: See the detail field for the reason this transfer is invalid.
+    - code: missing-number-transfer
+      description: Could not transfer number from source account to destination account - ShortCode not found
+      resolution: See the detail field for the reason this transfer is invalid.
+    - code: transfer-conflict
+      description: Could not transfer number from source account to destination account - ShortCode is already owned
+        by requesting account
+      resolution: See the detail field for the reason this transfer is invalid.
+code_count: 265

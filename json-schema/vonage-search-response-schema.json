@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-search-response-schema.json",
+  "title": "searchResponse",
+  "description": "Success",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-verify-openapi.yml#/components/schemas/searchResponse",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "The `request_id` that you received in the response to the Verify request and used in the Verify search request."
+    },
+    "account_id": {
+      "type": "string",
+      "description": "The Vonage account ID the request was for."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "IN PROGRESS",
+        "SUCCESS",
+        "FAILED",
+        "EXPIRED",
+        "CANCELLED"
+      ],
+      "description": "Code | Description\n-- | --\nIN PROGRESS | The search is still in progress.\nSUCCESS | Your user entered a correct verification code.\nFAILED | Your user entered an incorrect code more than three times.\nEXPIRED | Your user did not enter a code before the `pin_expiry` time elapsed.\nCANCELLED | The verification process was cancelled by a Verify control request.\n"
+    },
+    "number": {
+      "type": "string",
+      "description": "The phone number this verification request was used for."
+    },
+    "price": {
+      "type": "string",
+      "description": "The cost incurred for this verification request."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code."
+    },
+    "sender_id": {
+      "type": "string",
+      "description": "The `sender_id` you provided in the Verify request.",
+      "default": "verify"
+    },
+    "date_submitted": {
+      "type": "string",
+      "description": "The date and time the verification request was submitted, in the following format YYYY-MM-DD HH:MM:SS."
+    },
+    "date_finalized": {
+      "type": "string",
+      "description": "The date and time the verification request was completed. This response parameter is in the following format YYYY-MM-DD HH:MM:SS."
+    },
+    "first_event_date": {
+      "type": "string",
+      "description": "The time the first verification attempt was made, in the following format YYYY-MM-DD HH:MM:SS."
+    },
+    "last_event_date": {
+      "type": "string",
+      "description": "The time the last verification attempt was made, in the following format YYYY-MM-DD HH:MM:SS."
+    },
+    "checks": {
+      "type": "array",
+      "description": "The list of checks made for this verification and their outcomes.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date_received": {
+            "type": "string",
+            "description": "The date and time this check was received (in the format YYYY-MM-DD HH:MM:SS)"
+          },
+          "code": {
+            "type": "string",
+            "description": "The code supplied with this check request"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "VALID",
+              "INVALID"
+            ]
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "The IP address, if available (this field is no longer used).",
+            "deprecated": true
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "The events that have taken place to verify this number, and their unique identifiers.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "tts",
+              "sms"
+            ]
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "estimated_price_messages_sent": {
+      "$ref": "#/$defs/estimated_price_messages_sent"
+    }
+  },
+  "$defs": {
+    "estimated_price_messages_sent": {
+      "type": "string",
+      "description": "This field may not be present, depending on your pricing model. The\nvalue indicates the cost (in EUR) of the calls made and messages sent\nfor the verification process. This value may be updated during and\nshortly after the request completes because user input events can\noverlap with message/call events. When this field is present, the total\ncost of the verification is the sum of this field and the `price` field.\n"
+    }
+  }
+}

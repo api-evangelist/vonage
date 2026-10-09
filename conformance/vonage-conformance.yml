@@ -1,22 +1,34 @@
-generated: '2026-10-03'
+generated: '2026-10-08'
 method: derived
 generator: derive-conformance.py
-source: openapi/ (6 document(s), 18 mutating operations)
+source: openapi/ (22 document(s), 103 mutating operations)
 standards:
-- id: openapi-3.2
+- id: openapi-3.0
   conforms: true
-  evidence: the document declares 3.2.0
+  evidence: the document declares 3.0.0
+- id: openapi-3.0
+  conforms: true
+  evidence: the document declares 3.0.1
+- id: openapi-3.0
+  conforms: true
+  evidence: the document declares 3.0.2
+- id: openapi-3.0
+  conforms: true
+  evidence: the document declares 3.0.3
 - id: oauth2
   conforms: false
-  evidence: 'securitySchemes: basicAuth (http), bearerAuth (http)'
+  evidence: 'securitySchemes: Vonage-JWT (http), basicAuth (http), bearerAuth (http)'
 - id: rfc9457
-  conforms: false
-  evidence: no response declares application/problem+json
+  conforms: true
+  evidence: application/problem+json on 159 response(s), e.g. GET /account/get-balance 401
 - id: idempotency
   conforms: false
   evidence: no idempotency key parameter on mutating operations
 - id: pagination
   conforms: true
-  evidence: list operations take page, page_size
+  evidence: list operations take cursor, offset, page, page_index, page_number, page_size
+- id: ratelimit-headers
+  conforms: true
+  evidence: responses declare Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
 note: 'Derived from the provider''s own OpenAPI only: what the contract declares. Claims the contract cannot carry (PCI DSS, SOC 2, FAPI, ISO
   20022) come from the documentation reader and are merged below when found.'

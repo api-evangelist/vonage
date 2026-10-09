@@ -1,235 +1,139 @@
 openapi: 3.2.0
 info:
-  title: Vonage Communications Applications API
-  description: Vonage provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to build communication features into applications including voice calls, SMS, video conferencing, two-factor authentication, and number management.
-  version: 1.0.0
-  contact:
-    name: Vonage Developer Support
-    url: https://api.support.vonage.com/hc/en-us
-  termsOfService: https://www.vonage.com/legal/
+  title: Vonage Applications API
+  version: 0.1.7
+  x-metaDescription: Find quick answers to questions about the Vonage Meetings API in this reference guide. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Meetings API Reference | Vonage API Documentation
+  x-noIndex: true
+  description: 'Operations tagged Applications across 2 of this provider''s published API definitions: vonage-meetings-openapi.json, vonage-meetings-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://api.nexmo.com
-  description: Vonage API Main Server
-- url: https://rest.nexmo.com
-  description: Vonage REST API Server
-security:
-- basicAuth: []
-- bearerAuth: []
+- url: https://api-eu.vonage.com/v1/meetings
 tags:
 - name: Applications
-  description: Configure Vonage application settings and webhooks
 paths:
-  /v2/applications:
-    get:
-      operationId: listApplications
-      summary: List Applications
-      description: Retrieve all Vonage applications associated with your account.
-      tags:
-      - Applications
-      security:
-      - basicAuth: []
-      parameters:
-      - name: page_size
-        in: query
-        schema:
-          type: integer
-          default: 10
-        description: Number of applications per page.
-      - name: page
-        in: query
-        schema:
-          type: integer
-          default: 1
-        description: Page number.
-      responses:
-        '200':
-          description: Applications retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationList'
-    post:
-      operationId: createApplication
-      summary: Create an Application
-      description: Create a new Vonage application.
-      tags:
-      - Applications
-      security:
-      - basicAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ApplicationRequest'
-      responses:
-        '201':
-          description: Application created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Application'
-  /v2/applications/{id}:
-    get:
-      operationId: getApplication
-      summary: Get an Application
-      description: Retrieve details of a specific Vonage application.
-      tags:
-      - Applications
-      security:
-      - basicAuth: []
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: The application ID.
-      responses:
-        '200':
-          description: Application details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Application'
-    put:
+  /applications:
+    patch:
+      summary: Update an existing application
       operationId: updateApplication
-      summary: Update an Application
-      description: Update an existing Vonage application.
-      tags:
-      - Applications
       security:
-      - basicAuth: []
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApplicationRequest'
+              $ref: '#/components/schemas/UpdateApplicationDetails'
       responses:
         '200':
-          description: Application updated
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Application'
-    delete:
-      operationId: deleteApplication
-      summary: Delete an Application
-      description: Delete a Vonage application.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
       tags:
       - Applications
-      security:
-      - basicAuth: []
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: Application deleted
+    servers:
+    - url: https://api-eu.vonage.com/v1/meetings
 components:
   schemas:
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Failed to fetch resource with id 50da57f5-0aaf-4ac5-804c-2114afc89197
+        name:
+          type: string
+          example: NotFoundError
+        status:
+          type: integer
+          example: 404
     Application:
       type: object
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        capabilities:
-          type: object
-          properties:
-            voice:
-              type: object
-            messages:
-              type: object
-            rtc:
-              type: object
-            vbc:
-              type: object
-        keys:
-          type: object
-          properties:
-            public_key:
-              type: string
-            private_key:
-              type: string
-    ApplicationList:
+        application_id:
+          $ref: '#/components/schemas/ApplicationId'
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        default_theme_id:
+          $ref: '#/components/schemas/Application_DefaultThemeId'
+    BadRequestError:
       type: object
       properties:
-        page_size:
+        message:
+          type: string
+          example: Explanation about why validation failed.
+        name:
+          type: string
+          example: InputValidationError
+        status:
           type: integer
-        page:
-          type: integer
-        total_items:
-          type: integer
-        total_pages:
-          type: integer
-        _embedded:
-          type: object
-          properties:
-            applications:
-              type: array
-              items:
-                $ref: '#/components/schemas/Application'
-    ApplicationRequest:
+          example: 400
+    Application_DefaultThemeId:
+      type: string
+      format: uuid
+      description: The application default theme id
+    ApplicationId:
+      type: string
+      format: uuid
+      example: 921a6f5b-1f94-49f4-8107-26f0c75fc6e7
+      description: The application Id
+    UpdateApplicationDetails:
       type: object
       required:
-      - name
+      - update_details
       properties:
-        name:
-          type: string
-          description: Application name.
-        capabilities:
+        update_details:
           type: object
-          description: Vonage capabilities for this application.
+          description: Contains information to be updated on the application. It is mandatory to provide at least one value to update; you will receive a 400 response otherwise.
+          required:
+          - default_theme_id
           properties:
-            voice:
-              type: object
-              properties:
-                webhooks:
-                  type: object
-                  properties:
-                    answer_url:
-                      type: object
-                      properties:
-                        address:
-                          type: string
-                        http_method:
-                          type: string
-                    event_url:
-                      type: object
-                      properties:
-                        address:
-                          type: string
-                        http_method:
-                          type: string
-            messages:
-              type: object
-              properties:
-                webhooks:
-                  type: object
-                  properties:
-                    inbound_url:
-                      type: object
-                    status_url:
-                      type: object
+            default_theme_id:
+              $ref: '#/components/schemas/Application_DefaultThemeId'
+    AccountId:
+      type: string
+      example: 123ab4cd
+      description: The applications account id (ApiKey)
   securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
-      description: Base64-encoded API key and secret joined by a colon.
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token for application-level authentication.
+x-refined-from:
+- vonage-meetings-openapi.json
+- vonage-meetings-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

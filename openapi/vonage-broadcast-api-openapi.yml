@@ -1,0 +1,658 @@
+openapi: 3.2.0
+info:
+  title: Vonage Broadcast API
+  version: 0.3.2
+  contact:
+    name: Vonage DevRel
+    url: https://developer.vonage.com
+    email: devlre@vonage.com
+  x-metaDescription: Get started with the Vonage Video API, a powerful tool for automating video communications. Learn more in Vonage's API documentation.
+  x-metaTitle: Vonage Video API for Developers | Vonage API Documentation
+  description: 'Operations tagged Broadcast across 2 of this provider''s published API definitions: vonage-video-openapi.json, vonage-video-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://video.api.vonage.com
+  description: Vonage Video
+security:
+- Vonage-JWT: []
+tags:
+- name: Broadcast
+  description: APIs relating to live streaming and broadcasting
+paths:
+  /v2/project/{application_id}/broadcast:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    get:
+      tags:
+      - Broadcast
+      summary: List Live Streaming Broadcasts
+      operationId: get-broadcast-list
+      responses:
+        '200':
+          $ref: '#/components/responses/Broadcast-List'
+        '403':
+          description: 'Forbidden
+
+            Authentication error'
+      parameters:
+      - schema:
+          type: integer
+        in: query
+        name: offset
+        description: ' The start offset in the list of existing broadcasts'
+      - schema:
+          type: integer
+        in: query
+        name: count
+        description: The number of broadcasts to retrieve starting at offset. Default of 50, max of 1000
+      - schema:
+          type: string
+        in: query
+        name: sessionId
+        description: Retrieve only broadcasts for a given session ID
+    post:
+      tags:
+      - Broadcast
+      summary: Start a Live Streaming Broadcast
+      operationId: start-broadcast
+      responses:
+        '200':
+          $ref: '#/components/responses/Broadcast-Details'
+        '400':
+          description: 'Bad Request
+
+            This response may indicate that data in your request data is invalid JSON. It may also indicate that you passed in invalid layout options. Or you have exceeded the limit of five simultaneous RTMP streams for an Vonage Video session. Or you specified and invalid resolution.'
+        '403':
+          description: 'Forbidden
+
+            Authentication error.'
+        '409':
+          description: 'Conflict
+
+            The broadcast has already started for the session. Or if you attempt to start a simultaneous broadcast for a session without setting a unique multiBroadcastTag value.'
+      description: 'Use this method to start a live streaming broadcast for an Vonage Video session. This broadcasts the session to an HLS (HTTP live streaming) or to RTMP streams.
+
+
+        To successfully start broadcasting a session, at least one client must be connected to the session.
+
+
+        The live streaming broadcast can target one HLS endpoint and up to five RTMP servers simultaneously for a session. You can only start live streaming for sessions that use the Vonage Video Media Router (with the media mode set to routed); you cannot use live streaming with sessions that have the media mode set to relayed. (See The Vonage Video Media Router and media modes.)
+
+
+        For more information about Vonage Video live streaming, see the Broadcast developer guide.'
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: Content-Type
+        description: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  sessionId: <session-id>
+                  layout:
+                    type: custom
+                    stylesheet: the layout stylesheet (only used with type == custom)
+                    screenshareType: optional layout type to use when there is a screen-sharing stream
+                  maxDuration: 5400
+                  outputs:
+                    hls:
+                      dvr: false
+                      lowLatency: false
+                    rtmp:
+                    - id: foo
+                      serverUrl: rtmps://myfooserver/myfooapp
+                      streamName: myfoostream
+                    - id: bar
+                      serverUrl: rtmp://mybarserver/mybarapp
+                      streamName: mybarstream
+                  resolution: 640x480
+                  streamMode: auto
+              properties:
+                sessionId:
+                  type: string
+                  example: 2_MX40NTMyODc3Mn5-fg
+                  description: Set this to the session ID of the Vonage Video session you want to broadcast.
+                layout:
+                  type: object
+                  description: 'Specify this to assign the initial layout type for the broadcast.
+
+
+                    If you do not specify an initial layout type, the broadcast stream uses the Best Fit layout type. For more information, see Configuring Video Layout for the Vonage Video live streaming feature.'
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - bestFit
+                      - custom
+                      - horizontalPresentation
+                      - pip
+                      - verticalPresentation
+                      example: custom
+                    stylesheet:
+                      type: string
+                      example: the layout stylesheet (only used with type == custom)
+                      description: 'If you specify a "custom" layout type, set the stylesheet property of the layout object to the stylesheet. (For other layout types, do not set a stylesheet property.) '
+                    screenshareType:
+                      type: string
+                      enum:
+                      - bestFit
+                      - custom
+                      - horizontalPresentation
+                      - pip
+                      - verticalPresentation
+                      example: horizontalPresentation
+                      description: 'Set the screenshareType property to the layout type to use when there is a screen-sharing stream in the session. (This property is optional.) Note if you set the screenshareType property, you must set the type property to "bestFit" and leave the stylesheet property unset. '
+                  required:
+                  - type
+                maxDuration:
+                  type: integer
+                  example: 5400
+                  description: The maximum duration for the broadcast, in seconds. The broadcast will automatically stop when the maximum duration is reached. You can set the maximum duration to a value from 60 (60 seconds) to 36000 (10 hours). The default maximum duration is 4 hours (14,400 seconds)
+                outputs:
+                  type: object
+                  anyOf:
+                  - required:
+                    - hls
+                  - required:
+                    - rtmp
+                  - required:
+                    - hls
+                    - rtmp
+                  description: 'This object defines the types of broadcast streams you want to start (both HLS and RTMP). You can include HLS, RTMP, or both as broadcast streams. If you include RTMP streaming, you can specify up to five target RTMP streams (or just one).
+
+
+                    Vonage streams the session to each RTMP URL you specify. Note that Vonage Video live streaming supports RTMP and RTMPS.'
+                  properties:
+                    hls:
+                      type: object
+                      properties:
+                        dvr:
+                          type: boolean
+                          description: Whether to enable DVR functionality — rewinding, pausing, and resuming — in players that support it (true), or not (false, the default). With DVR enabled, the HLS URL will include a ?DVR query string appended to the end.
+                        lowLatency:
+                          type: boolean
+                          description: Whether to enable low-latency mode for the HLSstream. Some HLS players do not support low-latency mode. This feature is incompatible with DVR mode HLS broadcasts.
+                    rtmp:
+                      type: array
+                      items:
+                        type: object
+                        minProperties: 1
+                        maxProperties: 5
+                        properties:
+                          id:
+                            type: string
+                            example: foo
+                            description: a unique ID for the stream
+                          serverUrl:
+                            type: string
+                            example: rtmps://myfooserver/myfooapp
+                            description: the RTMP server URL
+                          streamName:
+                            type: string
+                            example: myfoostream
+                            description: the stream name, such as the YouTube Live stream name or the Facebook stream key
+                        required:
+                        - serverUrl
+                        - streamName
+                resolution:
+                  type: string
+                  enum:
+                  - 640x480
+                  - 1280x720
+                  - 1920x1080
+                  - 480x640
+                  - 720x1280
+                  - 1080x1920
+                  example: 1920x1080
+                streamMode:
+                  type: string
+                  enum:
+                  - auto
+                  - manual
+                  example: manual
+                  default: auto
+                multiBroadcastTag:
+                  type: string
+                  example: foo
+                  description: Set this to support multiple broadcasts for the same session simultaneously. Set this to a unique string for each simultaneous broadcast of an ongoing session. See Simultaneous broadcasts.
+                maxBitrate:
+                  $ref: '#/components/schemas/Max-Bitrate'
+              required:
+              - sessionId
+              - outputs
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/broadcast/{broadcast_id}:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/broadcast_id'
+    get:
+      tags:
+      - Broadcast
+      summary: Get Information about Broadcast
+      operationId: get-broadcast-details
+      responses:
+        '200':
+          $ref: '#/components/responses/Broadcast-Details'
+        '403':
+          description: 'Forbidden
+
+            Authentication error'
+      parameters: []
+      description: Use this method to get details on a broadcast that is in-progress.
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/broadcast/{broadcast_id}/stop:
+    parameters:
+    - $ref: '#/components/parameters/application_id'
+    - $ref: '#/components/parameters/broadcast_id'
+    post:
+      tags:
+      - Broadcast
+      summary: Stop Broadcast
+      operationId: stop-broadcast
+      responses:
+        '200':
+          $ref: '#/components/responses/Broadcast-Details'
+        '400':
+          description: 'Bad Request
+
+            Invalid request. This response may indicate that data in your request data is invalid JSON.'
+        '403':
+          description: 'Forbidden
+
+            Authentication error.'
+        '404':
+          description: 'Not Found
+
+            The broadcast (with the specified ID) was not found or it has already stopped.'
+      description: 'Use this method to stop a live broadcast of an Vonage Video session.
+
+
+        Note that a broadcast stops automatically 60 seconds after the last client disconnects from the session. Also, there is a default maximum duration of 4 hours (14,400 seconds) for each HLS and RTMP stream (the live stream broadcast automatically stops when this duration is reached). You can change the maximum duration for the broadcast by setting the `maxDuration` property when you start the broadcast REST method.'
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/broadcast/{broadcast_id}/layout:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+    - schema:
+        type: string
+      name: broadcast_id
+      in: path
+      required: true
+    put:
+      tags:
+      - Broadcast
+      summary: Dynamically change layout of a broadcast
+      operationId: change-broadcast-layout
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Bad Request
+
+            Invalid request. This response may indicate that data in your request data is invalid JSON.'
+        '403':
+          description: 'Forbidden
+
+            Authentication error.'
+        '404':
+          description: 'Not Found
+
+            The broadcast (with the specified ID) was not found or it has already stopped.'
+      description: 'You can dynamically change the layout type of a live streaming broadcast.
+
+
+        For more information about Vonage Video live streaming broadcasts, see the Broadcast developer guide.'
+      requestBody:
+        $ref: '#/components/requestBodies/Layout'
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+  /v2/project/{application_id}/broadcast/{broadcast_id}/streams:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+    - schema:
+        type: string
+      name: broadcast_id
+      in: path
+      required: true
+    patch:
+      tags:
+      - Broadcast
+      summary: Selecting streams to be included in a live streaming broadcast
+      operationId: select-streams-for-broadcast
+      description: 'Use this method to change the streams included in a live streaming broadcast that was started with the streamMode set to "manual" (see Starting a live streaming broadcast).
+
+
+        The broadcast composer includes added streams based on stream prioritization rules.'
+      requestBody:
+        $ref: '#/components/requestBodies/Select-Streams'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: 'Bad Request
+
+            This response may indicate that data provided in your request is an invalid JSON, or the request couldn''t be fulfilled because the broadcast was started with streamMode set to "auto", which does not support stream manipulation.'
+        '403':
+          description: Forbidden
+        '404':
+          description: 'Not Found
+
+            Broadcast or stream not found.'
+    servers:
+    - url: https://video.api.vonage.com
+      description: Vonage Video
+components:
+  requestBodies:
+    Select-Streams:
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/Add-Stream'
+            - $ref: '#/components/schemas/Remove-Stream'
+      description: ''
+    Layout:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Layout'
+  schemas:
+    Stream-Mode:
+      type: string
+      enum:
+      - auto
+      - manual
+      description: Whether streams included in the archive are selected automatically ("auto", the default) or manually ("manual"). When streams are selected automatically ("auto"), all streams in the session can be included in the archive. When streams are selected manually ("manual"), you specify streams to be included based on calls to this REST method. You can specify whether a stream's audio, video, or both are included in the archive. In composed archives, in both automatic and manual modes, the archive composer includes streams based on stream prioritization rules.
+      example: manual
+    Max-Bitrate:
+      type: number
+      example: 200000
+      minimum: 100000
+      maximum: 6000000
+      description: The maximum video bitrate for the archive, in bits per second. This option is only valid for composed archives. Set the maximum video bitrate to control the size of the composed archive. This maximum bitrate applies to the video bitrate only. If the output archive has audio, those bits will be excluded from the limit.
+    Resolution:
+      type: string
+      enum:
+      - 640x480
+      - 480x640
+      - 1280x720
+      - 720x1280
+      - 1080x1920
+      - 1920x1080
+      description: The resolution of the archive, either "640x480" (SD landscape, the default), "1280x720" (HD landscape), "1920x1080" (FHD landscape), "480x640" (SD portrait), "720x1280" (HD portrait), or "1080x1920" (FHD portrait). You may want to use a portrait aspect ratio for archives that include video streams from mobile devices (which often use the portrait aspect ratio). This property only applies to composed archives. If you set this property and set the outputMode property to "individual", the call to the REST method results in an error.
+    Remove-Stream:
+      title: Remove-Stream
+      x-stoplight:
+        id: uvyo3v0wjqwlj
+      type: object
+      properties:
+        removeStream:
+          type: string
+          example: 12312312-3811-4726-b508-e41a0f96c68f
+          description: ID of stream to remove
+    Layout:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'Specify this to assign the initial layout type for the archive. This applies only to composed archives. This object has three properties: type, stylesheet, and screenshareType, which are each strings. Valid values for the layout property are "bestFit" (best fit), "custom" (custom), "horizontalPresentation" (horizontal presentation), "pip" (picture-in-picture), and "verticalPresentation" (vertical presentation). If you specify a "custom" layout type, set the stylesheet property of the layout object to the stylesheet. (For other layout types, do not set a stylesheet property.) Set the screenshareType property to the layout type to use when there is a screen-sharing stream in the session. (This property is optional.) Note if you set the screenshareType property, you must set the type property to "bestFit" and leave the stylesheet property unset. If you do not specify an initial layout type, the archive uses the best fit layout type.'
+          enum:
+          - bestFit
+          - custom
+          - horizontalPresentation
+          - pip
+          - verticalPresentation
+          example: bestFit
+        stylesheet:
+          type: string
+          description: Used for the `custom` layout to define the visual layout
+          example: 'stream.instructor {position: absolute; width: 100%;  height:50%;}'
+        screenshareType:
+          type: string
+          enum:
+          - bestFit
+          - custom
+          - horizontalPresentation
+          - pip
+          - verticalPresentation
+          description: Set the screenshareType property to the layout type to use when there is a screen-sharing stream in the session. (This property is optional.) Note if you set the screenshareType property, you must set the type property to "bestFit" and leave the stylesheet property unset.
+          example: pip
+    ApplicationID:
+      type: string
+      description: A Vonage Application ID
+      example: 93e36bb9-b72c-45b6-a9ea-5c37dbc49906
+    Add-Stream:
+      title: Add-Stream
+      x-stoplight:
+        id: za2ghdcvwhwl0
+      type: object
+      properties:
+        addStream:
+          type: string
+          description: The stream ID to add
+          example: 12312312-3811-4726-b508-e41a0f96c68f
+        hasAudio:
+          type: boolean
+          default: true
+          description: Whether to include the stream's audio
+        hasVideo:
+          type: boolean
+          default: true
+          description: Whether to include the stream's video
+    Broadcast-Detail:
+      title: Broadcast-Detail
+      x-stoplight:
+        id: i35hgmkxy7mq4
+      type: object
+      x-examples:
+        Example 1:
+          id: 1748b7070a81464c9759c46ad10d3734
+          sessionId: 2_MX4xMDBfjE0Mzc2NzY1NDgwMTJ-TjMzfn4
+          multiBroadcastTag: broadcast_tag_provided
+          applicationId: 93e36bb9-b72c-45b6-a9ea-5c37dbc49906
+          createdAt: 1437676551000
+          updatedAt: 1437676551000
+          maxDuration: 5400
+          maxBitrate: 2000000
+          broadcastUrls:
+            hls: hlsurl
+            rtmp:
+              foo:
+                serverUrl: rtmp://myfooserver/myfooapp
+                streamName: myfoostreamname
+              bar:
+                serverUrl: rtmp://mybarserver/mybarapp
+                streamName: mybarstreamname
+          settings:
+            hls:
+              lowLatency: false
+          resolution: 640x480
+          hasAudio: true
+          hasVideo: true
+          streamMode: manual
+      properties:
+        id:
+          type: string
+          example: 1748b7070a81464c9759c46ad10d3734
+          description: The unique ID for the broadcast
+        sessionId:
+          type: string
+          example: 2_MX4xMDBfjE0Mzc2NzY1NDgwMTJ-TjMzfn4
+          description: The Vonage Video session ID
+        multiBroadcastTag:
+          type: string
+          example: broadcast_tag_provided
+          description: The unique tag for simultaneous broadcasts (if one was set).
+        applicationId:
+          $ref: '#/components/schemas/ApplicationID'
+        createdAt:
+          type: integer
+          example: 1437676551000
+          description: The time the broadcast started, expressed in milliseconds since the Unix epoch (January 1, 1970, 00:00:00 UTC)
+        updatedAt:
+          type: integer
+          example: 1437676551000
+          description: For this start method, this timestamp matches the createdAt timestamp.
+        maxDuration:
+          type: integer
+          example: 5400
+          description: The maximum duration for the broadcast (if one was set), in seconds.
+        maxBitrate:
+          type: integer
+          example: 2000000
+          description: The maximum bitrate for the stream.
+        broadcastUrls:
+          type: object
+          description: An object containing details about the HLS and RTMP broadcasts.
+          properties:
+            hls:
+              type: string
+              example: hlsurl
+              description: If you specified an HLS endpoint, the object includes an hls property, which is set to the URL for the HLS broadcast. Note this HLS broadcast URL points to an index file, an .M3U8-formatted playlist that contains a list of URLs to .ts media segment files (MPEG-2 transport stream files). While the URLs of both the playlist index file and media segment files are provided as soon as the HTTP response is returned, these URLs should not be accessed until 15 – 20 seconds later, after the initiation of the HLS broadcast, due to the delay between the HLS broadcast and the live streams in the Vonage Video session. See https://developer.apple.com/library/ios/technotes/tn2288/_index.html for more information about the playlist index file and media segment files for HLS.
+            rtmp:
+              type: array
+              description: 'If you specified RTMP stream endpoints, the object includes an rtmp property. This is an array of objects that include information on each of the RTMP streams. Each of these objects has the following properties: id (the ID you assigned to the RTMP stream), serverUrl (the server URL), streamName (the stream name), and status property (which is set to "connecting"). You can call the Vonage Video REST method to check for status updates for the broadcast.'
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: 'The ID you assigned to the RTMP stream
+
+                      '
+                  status:
+                    type: string
+                    description: 'The current status of the RTMP stream
+
+                      '
+                  serverUrl:
+                    type: string
+                    description: The Server URL
+                  streamName:
+                    type: string
+                    description: The stream name
+        settings:
+          type: object
+          properties:
+            hls:
+              type: object
+              properties:
+                lowLatency:
+                  type: boolean
+                  description: 'Whether to enable low-latency mode for the HLSstream. Some HLS players do not support low-latency mode. This feature is incompatible with DVR mode HLS broadcasts. '
+                dvr:
+                  type: boolean
+                  description: 'Whether to enable DVR functionality — rewinding, pausing, and resuming — in players that support it (true), or not (false, the default). With DVR enabled, the HLS URL will include a ?DVR query string appended to the end. '
+        resolution:
+          $ref: '#/components/schemas/Resolution'
+        hasAudio:
+          type: boolean
+          description: Whether the broadcast has audio
+        hasVideo:
+          type: boolean
+          description: Whether the broadcast has video
+        streamMode:
+          $ref: '#/components/schemas/Stream-Mode'
+        status:
+          type: string
+          description: Current status of the broadcast
+        streams:
+          type: array
+          description: ' An array of objects corresponding to streams currently being broadcast. This is only set for a broadcast with the status set to "started" and the streamMode set to "manual"'
+          items:
+            type: object
+            properties:
+              streamId:
+                type: string
+                description: The stream ID of the stream included in the broadcast.
+              hasAudio:
+                type: string
+                description: Whether the stream's audio is included in the broadcast.
+              hasVideo:
+                type: string
+                description: Whether the stream's video is included in the broadcast.
+  parameters:
+    broadcast_id:
+      name: broadcast_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the broadcast
+    application_id:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vonage Application UUID
+  responses:
+    Broadcast-Details:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Broadcast-Detail'
+    Broadcast-List:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Broadcast-Detail'
+  securitySchemes:
+    Vonage-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- vonage-video-openapi.json
+- vonage-video-openapi.yml
+x-errors:
+  validation:
+    description: The provided payload is invalid
+    resolution: 'Modify your request to provide a valid payload.
+
+      * Minimum 8 characters
+
+      * Maximum 25 characters
+
+      * Minimum 1 lower case character
+
+      * Minimum 1 upper case character
+
+      * Minimum 1 digit
+
+      '
+    link:
+      text: View API reference
+      url: /api/account#createAPISecret
+  delete-last-secret:
+    description: You can not delete your only API secret
+    resolution: Add another API secret before deleting this one

@@ -1,123 +1,429 @@
+generated: '2026-10-08'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/vonage-account-openapi.yml
+- openapi/vonage-application-v2-openapi.yml
+- openapi/vonage-audit-openapi.yml
+- openapi/vonage-conversation-openapi.yml
+- openapi/vonage-dispatch-openapi.yml
 vocabulary:
-  name: Vonage Communications API Vocabulary
-  description: >-
-    Key terms, concepts, and taxonomy for the Vonage cloud communications
-    platform covering messaging, voice, video, and verification APIs.
-  version: '1.0'
-  created: '2026-05-03'
-  modified: '2026-05-03'
-  tags:
-    - Communication
-    - Messaging
-    - Voice
-    - Verification
-
-  domains:
-    - name: Messaging
-      description: Outbound and inbound messaging concepts
-      terms:
-        - term: SMS
-          definition: Short Message Service. Text messages up to 160 characters sent over cellular networks.
-          related: [MMS, RCS, Messages API]
-        - term: MMS
-          definition: Multimedia Messaging Service. Supports images, audio, and video in messages.
-          related: [SMS, Messages API]
-        - term: RCS
-          definition: Rich Communication Services. Next-generation SMS with rich media, read receipts, and interactive features.
-          related: [SMS, Messages API]
-        - term: Messages API
-          definition: Vonage unified multi-channel messaging API supporting SMS, WhatsApp, Messenger, Viber, MMS, and RCS.
-          related: [SMS API, Channel]
-        - term: Channel
-          definition: The messaging medium used (sms, whatsapp, messenger, viber_service, mms, rcs).
-        - term: Message Type
-          definition: The content type of a message (text, image, audio, video, file, template, custom).
-        - term: Delivery Receipt
-          definition: Webhook notification indicating whether a message was delivered successfully.
-        - term: Inbound Message
-          definition: A message received on a Vonage virtual number, delivered via webhook.
-        - term: Client Reference
-          definition: Optional identifier (max 100 chars) for tracking messages in your system.
-        - term: MSISDN
-          definition: Mobile Station International Subscriber Directory Number. E.164 format phone number.
-
-    - name: Voice
-      description: Voice call and telephony concepts
-      terms:
-        - term: NCCO
-          definition: Vonage Call Control Object. JSON instruction set controlling call behavior (talk, record, connect, stream, etc.).
-          related: [Voice API, Call]
-        - term: Call UUID
-          definition: Unique identifier for a Vonage call leg.
-          related: [Conversation UUID]
-        - term: Conversation UUID
-          definition: Unique identifier for a Vonage conversation grouping multiple call legs.
-          related: [Call UUID]
-        - term: Call Status
-          definition: Current state of a call (started, ringing, answered, completed, failed, etc.).
-        - term: TTS
-          definition: Text-to-Speech. Converting written text to synthesized voice audio in calls.
-        - term: DTMF
-          definition: Dual-Tone Multi-Frequency. Touch-tone signals used for interactive voice response (IVR).
-        - term: SIP
-          definition: Session Initiation Protocol. Standard protocol for VoIP calls.
-        - term: WebSocket
-          definition: Bidirectional connection enabling real-time audio streaming in voice calls.
-        - term: Leg
-          definition: One segment of a call from a single endpoint perspective.
-        - term: Webhook
-          definition: HTTP callback URL receiving real-time call events and recordings.
-
-    - name: Verification
-      description: Phone verification and 2FA concepts
-      terms:
-        - term: Verify Request
-          definition: A Vonage Verify API request to confirm ownership of a phone number.
-          related: [Verify Code, Request ID]
-        - term: Request ID
-          definition: Unique identifier for a Verify request, used to check and control it.
-        - term: Verify Code
-          definition: The PIN sent to a user for verification (4 or 6 digits).
-        - term: Workflow
-          definition: The sequence of channels (SMS, TTS, WhatsApp) used to deliver a verification code.
-        - term: PSD2
-          definition: Payment Services Directive 2. EU regulation requiring strong customer authentication for payments.
-        - term: Two-Factor Authentication
-          definition: Security process requiring a second verification factor (e.g., SMS PIN) in addition to a password.
-
-    - name: Number Management
-      description: Virtual phone number concepts
-      terms:
-        - term: Virtual Number
-          definition: A cloud-based phone number that can receive calls and SMS without physical hardware.
-          related: [LVN, DID]
-        - term: LVN
-          definition: Long Virtual Number. A full-length phone number provisioned for SMS or voice.
-        - term: DID
-          definition: Direct Inward Dialing. A telephone number routing calls directly to a specific endpoint.
-        - term: Toll-Free Number
-          definition: A phone number where the recipient pays call charges, not the caller.
-        - term: Capabilities
-          definition: Features enabled on a number (SMS, VOICE, MMS).
-        - term: Country Code
-          definition: Two-character ISO 3166-1 alpha-2 country identifier.
-
-    - name: Platform
-      description: Vonage platform and account concepts
-      terms:
-        - term: Application
-          definition: A Vonage configuration grouping API credentials, webhooks, and capabilities.
-        - term: API Key
-          definition: Public identifier for a Vonage account, used with API secret for authentication.
-        - term: API Secret
-          definition: Private credential paired with API key for Basic authentication.
-        - term: JWT
-          definition: JSON Web Token. Signed token used for application-level Bearer authentication on Voice and Messages APIs.
-        - term: Private Key
-          definition: RSA private key used to sign JWTs for Vonage application authentication.
-        - term: Subaccount
-          definition: A child account under a primary Vonage account for segregating usage and billing.
-        - term: Conversation
-          definition: A multi-channel communication thread grouping messages and calls.
-        - term: Nexmo
-          definition: Former name of Vonage's API platform; API hostnames still use nexmo.com domains.
+  name: Vonage Domain Vocabulary
+  description: 'Terms declared by Vonage''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-08'
+  terms:
+  - term: Balance
+    definition: This section shows how you can query the current balance of your account, and if you have auto-reload enabled how to trigger a
+      top-up to your account without waiting for the next balance check.
+    tags:
+    - Resource Group
+    source: openapi/vonage-account-openapi.yml
+  - term: Configuration
+    definition: Manage the settings on your account
+    tags:
+    - Resource Group
+    source: openapi/vonage-account-openapi.yml
+  - term: Secret Management
+    definition: 'Many of the Vonage APIs are accessed using an API key and secret. It is recommended that you change or "rotate" your secrets
+      from time to time for security purposes. This section provides the API interface for achieving this. Note: to work on secrets for your secondary
+      accounts, you may authenticate with your primary credentials and supply the secondary API keys as URL parameters to these API endp'
+    tags:
+    - Resource Group
+    source: openapi/vonage-account-openapi.yml
+  - term: Application
+    definition: A Vonage API application contains the security and configuration information you need to connect to Vonage endpoints and use the
+      Vonage APIs.
+    tags:
+    - Resource Group
+    source: openapi/vonage-application-v2-openapi.yml
+  - term: User
+    definition: The concept of a user exists in Vonage APIs, you can associate one with a user in your own application if you choose. A user can
+      have multiple memberships to conversations and can communicate with other users through various different mediums.
+    tags:
+    - Resource Group
+    source: openapi/vonage-application-v2-openapi.yml
+  - term: Conversation
+    definition: A conversation is a shared core component that Vonage APIs rely on. Conversations happen over multiple mediums and and can have
+      associated [Users](/api/application.v2#User) through Memberships.
+    tags:
+    - Resource Group
+    source: openapi/vonage-conversation-openapi.yml
+  - term: Member
+    definition: Memberships connect users with conversations. Each membership has one conversation and one user however a user can have many memberships
+      to conversations just as conversations can have many members.
+    tags:
+    - Resource Group
+    source: openapi/vonage-conversation-openapi.yml
+  - term: Event
+    definition: 'Events are actions that occur within a conversation. Examples of this includes: Text events from members, or Invite events from
+      users'
+    tags:
+    - Resource Group
+    source: openapi/vonage-conversation-openapi.yml
+  - term: Talk
+    definition: The Conversation API allows Text To Speech (TTS) to be played directly into a conversation, much in the same way as the Voice
+      API allows this for a specific Call Leg.
+    tags:
+    - Resource Group
+    source: openapi/vonage-conversation-openapi.yml
+  - term: Stream
+    definition: The Conversation API allows Audio to be streamed directly into a conversation, much in the same way as the Voice API allows this
+      for a specific Call Leg.
+    tags:
+    - Resource Group
+    source: openapi/vonage-conversation-openapi.yml
+  - term: Record
+    definition: The Conversation API allows conversations to be recorded, with options to control the format, retention period, and transcription
+      of the recording.
+    tags:
+    - Resource Group
+    source: openapi/vonage-conversation-openapi.yml
+  - term: Account
+    definition: An external-account used as the `from` field in the Messages API and Dispatch API
+    tags:
+    - Resource Group
+    source: openapi/vonage-external-accounts-openapi.yml
+  - term: Facebook Messenger
+    definition: Managing your [Facebook Messenger](https://developer.nexmo.com/messages/concepts/facebook) account
+    tags:
+    - Resource Group
+    source: openapi/vonage-external-accounts-openapi.yml
+  - term: Viber Service Message
+    definition: Managing your [Viber Service Message](https://developer.nexmo.com/messages/concepts/viber) account
+    tags:
+    - Resource Group
+    source: openapi/vonage-external-accounts-openapi.yml
+  - term: Whatsapp
+    definition: Managing your [Whatsapp](https://developer.nexmo.com/messages/concepts/whatsapp) account
+    tags:
+    - Resource Group
+    source: openapi/vonage-external-accounts-openapi.yml
+  - term: Identity Insights
+    definition: Provides real-time intelligence about a phone number.
+    tags:
+    - Resource Group
+    source: openapi/vonage-identity-insights-openapi.yml
+  - term: Location retrieval
+    definition: Retrieve the location of a device
+    tags:
+    - Resource Group
+    source: openapi/vonage-location-retrieval-openapi.yml
+  - term: Messages
+    definition: Send message Operation
+    tags:
+    - Resource Group
+    source: openapi/vonage-messages-openapi.yml
+  - term: Subaccount Management
+    definition: This section shows how you can create, retrieve and modify subaccounts of a primary account.
+    tags:
+    - Resource Group
+    source: openapi/vonage-subaccounts-openapi.yml
+  - term: Transfers
+    definition: This section shows how you execute credit, balance and number transfers, as well as viewing past transactions.
+    tags:
+    - Resource Group
+    source: openapi/vonage-subaccounts-openapi.yml
+  - term: Verify Requests
+    definition: Verify Requests
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-openapi.yml
+  - term: Verify Check
+    definition: Verify Check
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-openapi.yml
+  - term: Verify Search
+    definition: Verify Search
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-openapi.yml
+  - term: Verify Control
+    definition: Verify Control
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-openapi.yml
+  - term: Fraud Management
+    definition: Fraud Management
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-openapi.yml
+  - term: Verify
+    definition: Provides 2FA authentication for end-users.
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-v2-openapi.yml
+  - term: Templates
+    definition: Create and modify custom templates in Verify
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-v2-openapi.yml
+  - term: Template Fragments
+    definition: Create and modify custom template fragments in Verify
+    tags:
+    - Resource Group
+    source: openapi/vonage-verify-v2-openapi.yml
+  - term: Archives
+    definition: APIs relating to working with archives
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Moderation
+    definition: APIs relating to moderating participants
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Sessions
+    definition: APIs relating to creating and working with Sessions
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Signaling
+    definition: APIs relating to sending and recieving Signals
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: SIP
+    definition: APIs relating to working with SIP calls in a video session
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Broadcast
+    definition: APIs relating to live streaming and broadcasting
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Live Captions
+    definition: APIs relating to live captioning
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Audio Connector
+    definition: APIs relating to audio connector
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Experience Composer
+    definition: APIs relating to Experience Composer
+    tags:
+    - Resource Group
+    source: openapi/vonage-video-openapi.yml
+  - term: Calls
+    definition: Fetch, Create and Modify voice calls
+    tags:
+    - Resource Group
+    source: openapi/vonage-voice-openapi.yml
+  - term: Stream Audio
+    definition: Start or stop streaming audio in to an active call
+    tags:
+    - Resource Group
+    source: openapi/vonage-voice-openapi.yml
+  - term: Play TTS
+    definition: Start or stop playing Text to Speech in to an active call
+    tags:
+    - Resource Group
+    source: openapi/vonage-voice-openapi.yml
+  - term: DTMF
+    definition: Send and subscribe to DTMF tones in an active call
+    tags:
+    - Resource Group
+    source: openapi/vonage-voice-openapi.yml
+  - term: AccountBalance
+    definition: 'Object declared by the contract with fields: value, autoReload.'
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/AccountBalance
+  - term: AccountSettings
+    definition: 'Object declared by the contract with fields: mo-callback-url, dr-callback-url, max-outbound-request, max-inbound-request, max-calls-per-second.'
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/AccountSettings
+  - term: SecretInfo
+    definition: 'Object declared by the contract with fields: _links, id, created_at.'
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/SecretInfo
+  - term: ErrorResponse
+    definition: Base error response following RFC 7807
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/ErrorResponse
+  - term: HalLink
+    definition: A single HAL link object
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/HalLink
+  - term: SelfLink
+    definition: Link to the current resource (always required in HAL)
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/SelfLink
+  - term: _links
+    definition: HAL Links object
+    tags:
+    - Object
+    source: openapi/vonage-account-openapi.yml#/components/schemas/_links
+  - term: VoiceRegion
+    definition: 'Selecting a region means all inbound, programmable SIP and SIP connect calls will be sent to the selected region unless the call
+      is sent to a regional endpoint, if the call is using a regional endpoint this will override the application setting. Use the following parameter
+      values: * **na-east** - North America - East (api-us-3.vonage.com) * **na-west** - North America - West (api-us-4.vonage.com) '
+    tags:
+    - Enumeration
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/VoiceRegion
+  - term: ApplicationResponseCollection
+    definition: 'Object declared by the contract with fields: page_size, page, total_items, total_pages, _embedded.'
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/ApplicationResponseCollection
+  - term: ApplicationResponse
+    definition: 'Object declared by the contract with fields: id, name, capabilities, privacy.'
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/ApplicationResponse
+  - term: VideoResponse
+    definition: Video related configuration
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/VideoResponse
+  - term: page_size
+    definition: The amount of records returned in this response
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/page_size
+  - term: user_lite
+    definition: 'Object declared by the contract with fields: id, name, display_name, _links.'
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_lite
+  - term: user_id
+    definition: User ID
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_id
+  - term: user_name
+    definition: Unique name for a user
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_name
+  - term: user_display_name
+    definition: A string to be displayed as user name. It does not need to be unique
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_display_name
+  - term: user_links
+    definition: 'Object declared by the contract with fields: self.'
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_links
+  - term: user_image_url
+    definition: An image URL that you associate with the user
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_image_url
+  - term: user_properties
+    definition: User properties
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_properties
+  - term: user_channels
+    definition: 'Object declared by the contract with fields: pstn, sip, vbc, websocket, sms, mms, whatsapp, viber, messenger.'
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user_channels
+  - term: user
+    definition: 'Object declared by the contract with fields: id, name, display_name, image_url, properties, channels, _links.'
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/user
+  - term: active_webhook
+    definition: Whether the webhook is active
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/active_webhook
+  - term: instance
+    definition: Instance ID
+    tags:
+    - Object
+    source: openapi/vonage-application-v2-openapi.yml#/components/schemas/instance
+  - term: EventTypes
+    definition: The type of the audit event.
+    tags:
+    - Enumeration
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/EventTypes
+  - term: AuditResp
+    definition: 'Object declared by the contract with fields: _embedded, _links, page.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/AuditResp
+  - term: AuditEvent
+    definition: 'Object declared by the contract with fields: id, event_type, event_type_description, created_at, user_email, user_id, account_id,
+      source, source_ip, source_description, source_country, context. (1 more)'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/AuditEvent
+  - term: AuditEventTypesResp
+    definition: 'Object declared by the contract with fields: eventTypes.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/AuditEventTypesResp
+  - term: AuditEventType
+    definition: 'Object declared by the contract with fields: type, description.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/AuditEventType
+  - term: EventLink
+    definition: A link to this audit event object if you were to retrieve it individually.
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/EventLink
+  - term: PaginationLinks
+    definition: Container containing self, next and last page links.
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/PaginationLinks
+  - term: PaginationData
+    definition: Page containing results.
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/PaginationData
+  - term: CallbackUrl
+    definition: 'Object declared by the contract with fields: method, url.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/CallbackUrl
+  - term: ContextAppCreate
+    definition: App Creation
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ContextAppCreate
+  - term: ContextNumberLinking
+    definition: Number Linking
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ContextNumberLinking
+  - term: ContextNumberUpdate
+    definition: Number Update
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ContextNumberUpdate
+  - term: ErrorBadRequest
+    definition: 'Object declared by the contract with fields: status, error, message.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ErrorBadRequest
+  - term: ErrorUnauthorized
+    definition: 'Object declared by the contract with fields: status, error, message.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ErrorUnauthorized
+  - term: ErrorForbidden
+    definition: 'Object declared by the contract with fields: status, error, message.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ErrorForbidden
+  - term: ErrorNotFound
+    definition: 'Object declared by the contract with fields: status, error, message.'
+    tags:
+    - Object
+    source: openapi/vonage-audit-openapi.yml#/components/schemas/ErrorNotFound

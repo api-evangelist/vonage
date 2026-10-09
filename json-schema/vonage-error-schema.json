@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-error-schema.json",
+  "title": "Error",
+  "description": "Error",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-sms-openapi.yml#/components/schemas/Error",
+  "type": "object",
+  "properties": {
+    "message-count": {
+      "type": "string",
+      "description": "The amount of messages in the request"
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ErrorMessage"
+      }
+    }
+  },
+  "$defs": {
+    "ErrorMessage": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "The error status of the message"
+        },
+        "error-text": {
+          "type": "string",
+          "description": "The description of the error"
+        }
+      }
+    }
+  }
+}

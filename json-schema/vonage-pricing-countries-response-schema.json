@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/vonage/main/json-schema/vonage-pricing-countries-response-schema.json",
+  "title": "PricingCountriesResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/vonage-pricing-openapi.yml#/components/schemas/PricingCountriesResponse",
+  "properties": {
+    "count": {
+      "type": "string",
+      "description": "The number of countries retrieved."
+    },
+    "countries": {
+      "type": "array",
+      "description": "A list of countries.",
+      "items": {
+        "$ref": "#/$defs/CountryObject"
+      }
+    }
+  },
+  "$defs": {
+    "CountryObject": {
+      "type": "object",
+      "properties": {
+        "countryName": {
+          "type": "string",
+          "description": "Readable country name."
+        },
+        "countryDisplayName": {
+          "type": "string",
+          "description": "Readable country name."
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency that your account is being billed in (by default `Euros—EUR`)."
+        },
+        "defaultPrice": {
+          "type": "string",
+          "description": "The default price."
+        },
+        "dialingPrefix": {
+          "type": "string",
+          "description": "The dialling prefix."
+        },
+        "networks": {
+          "type": "array",
+          "description": "An array of network objects",
+          "items": {
+            "$ref": "#/$defs/NetworkObject"
+          }
+        }
+      }
+    },
+    "NetworkObject": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of network: mobile or landline."
+        },
+        "price": {
+          "type": "string",
+          "description": "The cost to send a message or make a call to this network"
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency used for prices for this network."
+        },
+        "mcc": {
+          "type": "string",
+          "description": "The [Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code) of the operator."
+        },
+        "mnc": {
+          "type": "string",
+          "description": "The Mobile Network Code of the operator."
+        },
+        "networkCode": {
+          "type": "string",
+          "description": "The Mobile Country Code and Mobile Network Code combined to give a unique reference for the operator."
+        },
+        "networkName": {
+          "type": "string",
+          "description": "The company/organisational name of the operator."
+        }
+      }
+    }
+  }
+}
