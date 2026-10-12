@@ -20,7 +20,7 @@
     matched_domain: vonage.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: vonage-instagram
   label: Instagram
@@ -39,7 +39,7 @@
     matched_domain: instagram.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: vonage-messenger
   label: Messenger
@@ -58,7 +58,7 @@
     matched_domain: facebook.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: vonage-rcs
   label: RCS
@@ -77,7 +77,7 @@
     matched_domain: google.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: vonage-whatsapp
   label: WhatsApp
@@ -96,7 +96,7 @@
     matched_domain: whatsapp.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: vonage-camara
   label: CAMARA
