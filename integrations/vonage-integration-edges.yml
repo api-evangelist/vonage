@@ -1,0 +1,105 @@
+edges:
+- partner_name: novu
+  partner: novu
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: nexmo
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: vonage.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: Instagram
+  partner: instagram
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/vonage/blob/main/openapi/vonage-reports-api-openapi.yml
+  contract_reference:
+    repo: vonage
+    spec_file: vonage-reports-api-openapi.yml
+    value: instagram
+    property: paths.get.parameters
+    matched_domain: instagram.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: Messenger
+  partner: facebook
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/vonage/blob/main/openapi/vonage-account-api-openapi.yml
+  contract_reference:
+    repo: vonage
+    spec_file: vonage-account-api-openapi.yml
+    value: messenger
+    property: paths.get.parameters
+    matched_domain: facebook.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: RCS
+  partner: google
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/vonage/blob/main/openapi/vonage-account-api-openapi.yml
+  contract_reference:
+    repo: vonage
+    spec_file: vonage-account-api-openapi.yml
+    value: rcs
+    property: paths.get.parameters
+    matched_domain: google.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: WhatsApp
+  partner: whatsapp
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/vonage/blob/main/openapi/vonage-account-api-openapi.yml
+  contract_reference:
+    repo: vonage
+    spec_file: vonage-account-api-openapi.yml
+    value: whatsapp
+    property: paths.get.parameters
+    matched_domain: whatsapp.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: CAMARA
+  partner: camara-project
+  type: contract
+  channel: network-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://raw.githubusercontent.com/camaraproject/camara-landscape/main/landscape.yml
+  contract_reference:
+    register: CAMARA landscape (Linux Foundation CAMARA project)
+    spec_file: null
+    role: participating-organization
+    tier: participating-organization
+    landscape_roles:
+    - Hyperscalers, CPaaS Providers, Aggregators
+    registered_name: Vonage
+    matched_domain: vonage.com
+    api_families: null
+    api_families_basis: null
+    detected_by: sweep-telco-network-apis.py
+    detected: '2026-10-12'
+generated: '2026-10-12'
+method: searched
+checked:
+- https://raw.githubusercontent.com/camaraproject/camara-landscape/main/landscape.yml
