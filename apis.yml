@@ -632,6 +632,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Application
+  tags_raw:
   - application
   properties:
   - type: OpenAPI
@@ -836,6 +838,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -1450,6 +1454,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Balances
+  tags_raw:
   - Balance
   properties:
   - type: OpenAPI
@@ -2470,6 +2476,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Conversations
+  tags_raw:
   - conversation
   properties:
   - type: OpenAPI
@@ -3286,6 +3294,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Event
+  tags_raw:
   - event
   properties:
   - type: OpenAPI
@@ -3490,6 +3500,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -4103,6 +4115,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Fraud Prevention
+  tags_raw:
   - Fraud Management
   properties:
   - type: OpenAPI
@@ -5531,6 +5545,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Member
+  tags_raw:
   - member
   properties:
   - type: OpenAPI
@@ -5735,6 +5751,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -6755,6 +6773,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Record
+  tags_raw:
   - record
   properties:
   - type: OpenAPI
@@ -6959,6 +6979,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Recording
+  tags_raw:
   - Recordings
   properties:
   - type: OpenAPI
@@ -8393,6 +8415,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - SMS
+  tags_raw:
   - Sms
   properties:
   - type: OpenAPI
@@ -8597,6 +8621,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Standards
+  tags_raw:
   - Standard
   properties:
   - type: OpenAPI
@@ -8801,6 +8827,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Stream
+  tags_raw:
   - stream
   properties:
   - type: OpenAPI
@@ -9210,6 +9238,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Sub-Account Management
+  tags_raw:
   - Subaccount Management
   properties:
   - type: OpenAPI
@@ -9414,6 +9444,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - Talk
+  tags_raw:
   - talk
   properties:
   - type: OpenAPI
@@ -10639,6 +10671,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - User
+  tags_raw:
   - user
   properties:
   - type: OpenAPI
@@ -12068,6 +12102,8 @@ apis:
   humanURL: https://developer.vonage.com/en/api/sms
   baseURL: https://rest.nexmo.com
   tags:
+  - WhatsApp
+  tags_raw:
   - Whats App
   properties:
   - type: OpenAPI
