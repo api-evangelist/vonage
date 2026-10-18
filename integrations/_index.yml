@@ -165,7 +165,7 @@
     - connectors/applications/vonage-contact-center
     vendor_link: https://www.vonage.com/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: vonage-google-workspace-own
   label: Google Workspace (own)
