@@ -194,13 +194,137 @@ edges:
   detected: '2026-10-18'
   detected_by: mirror-platform-listings.py
   category: Slack app
+- partner_name: Maven Central
+  partner: maven-central
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Java/JVM)
+  evidence: https://central.sonatype.com/artifact/com.vonage/client-sdk
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Maven Central (public registry JSON)
+    spec_file: null
+    language: Java/JVM
+    packages:
+    - name: com.vonage:client-sdk
+      version: 2.8.0
+      released: '2026-10-14'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.vonage/client-sdk
+      repo_leg: domain:vonage.com
+      publisher_leg: groupId:vonage.com
+      matched_by: domain+name-among-holders
+    - name: com.vonage:server-sdk
+      version: 9.15.1
+      released: '2026-10-14'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.vonage/server-sdk
+      repo_leg: domain:vonage.com
+      publisher_leg: groupId:vonage.com
+      matched_by: domain+name-among-holders
+    - name: com.vonage:server-sdk-kotlin
+      version: 2.1.1
+      released: '2025-05-08'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.vonage/server-sdk-kotlin
+      repo_leg: domain:vonage.com
+      publisher_leg: groupId:vonage.com
+      matched_by: domain+name-among-holders
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@vonage/client-sdk
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@vonage/client-sdk'
+      version: 2.8.0
+      released: '2026-10-14'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@vonage/client-sdk
+      repo_leg: domain:vonage.com
+      publisher_leg: email:vonage.com
+      matched_by: domain+name-among-holders
+    - name: '@vonage/server-sdk'
+      version: 3.30.1
+      released: '2026-09-09'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@vonage/server-sdk
+      repo_leg: domain:vonage.com
+      publisher_leg: email:vonage.com
+      matched_by: domain+name-among-holders
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: PyPI
+  partner: pypi
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Python)
+  evidence: https://pypi.org/project/vonage/
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: PyPI (public registry JSON)
+    spec_file: null
+    language: Python
+    packages:
+    - name: vonage
+      version: 4.9.0
+      released: '2026-09-16'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/vonage/
+      repo_leg: shared-github-org:vonage
+      publisher_leg: email:vonage.com
+      matched_by: domain+name-among-holders
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
 generated: '2026-10-12'
 method: searched
 checked:
 - google-workspace/integrations/google-workspace-integration-edges.yml
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
+- https://proxy.golang.org
+- https://pypi.org/pypi
 - https://raw.githubusercontent.com/camaraproject/camara-landscape/main/landscape.yml
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 - microsoft-teams/integrations/microsoft-teams-integration-edges.yml
 - slack/integrations/slack-integration-edges.yml
 source:
