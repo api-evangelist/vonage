@@ -431,6 +431,182 @@ edges:
     detected: '2026-10-21'
   detected_by: sweep-browser-extension-stores.py
   first_seen: '2026-10-21'
+- partner_name: APIs.guru OpenAPI Directory
+  partner: apis-guru
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: third-party
+  evidence: https://apis.guru/
+  category: API definition directory listing (OpenAPI)
+  contract_reference:
+    register: APIs.guru OpenAPI Directory
+    spec_file: null
+    standard: APIs.guru OpenAPI Directory
+    role: listed-in-directory
+    directory_provider: nexmo.com
+    matched_domain: nexmo.com
+    matched_by: domain+local-verified
+    apis_listed: 25
+    version_count: 25
+    first_added: '2020-11-02'
+    last_updated: '2023-03-24'
+    origin_publisher_hosted: false
+    origin_hosts:
+    - raw.githubusercontent.com
+    categories: []
+    own_openapi_files: 59
+    listings:
+    - key: nexmo.com:account
+      title: Account API
+      preferred: 1.0.4
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/account/1.0.4/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/account.yml
+      openapi_version: 3.0.2
+    - key: nexmo.com:application
+      title: Nexmo Application API
+      preferred: 1.0.2
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/application/1.0.2/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/application.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:application.v2
+      title: Application API
+      preferred: 2.1.4
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/application.v2/2.1.4/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/application.v2.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:audit
+      title: Audit API
+      preferred: 1.0.4
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/audit/1.0.4/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/audit.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:conversation
+      title: Conversation API
+      preferred: 2.0.1
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/conversation/2.0.1/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/conversation.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:conversation.v2
+      title: Conversation API
+      preferred: 1.0.1
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/conversation.v2/1.0.1/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/conversation.v2.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:conversion
+      title: Nexmo Conversion API
+      preferred: 1.0.1
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/conversion/1.0.1/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/conversion.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:dispatch
+      title: Dispatch API
+      preferred: 0.3.4
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/dispatch/0.3.4/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/dispatch.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:external-accounts
+      title: External Accounts API
+      preferred: 0.1.5
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/external-accounts/0.1.5/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/external-accounts.yml
+      openapi_version: 3.0.1
+    - key: nexmo.com:media
+      title: Media API
+      preferred: 1.0.2
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/media/1.0.2/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/media.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:messages-olympus
+      title: Messages API
+      preferred: 1.4.0
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/messages-olympus/1.4.0/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/messages-olympus.yml
+      openapi_version: 3.0.1
+    - key: nexmo.com:number-insight
+      title: Number Insight API
+      preferred: 1.2.1
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/number-insight/1.2.1/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/number-insight.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:numbers
+      title: Numbers API
+      preferred: 1.0.20
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/numbers/1.0.20/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/numbers.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:pricing
+      title: Pricing API
+      preferred: 0.0.3
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/pricing/0.0.3/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/pricing.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:redact
+      title: Redact API
+      preferred: 1.0.6
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/redact/1.0.6/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/redact.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:reports
+      title: Reports API
+      preferred: 2.2.2
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/reports/2.2.2/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/reports.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:sms
+      title: SMS API
+      preferred: 1.2.0
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/sms/1.2.0/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/sms.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:subaccounts
+      title: Subaccounts API
+      preferred: 1.0.8
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/subaccounts/1.0.8/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/subaccounts.yml
+      openapi_version: 3.0.0
+    - key: nexmo.com:verify
+      title: Verify API
+      preferred: 1.2.4
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/verify/1.2.4/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/verify.yml
+      openapi_version: 3.0.3
+    - key: nexmo.com:voice
+      title: Voice API
+      preferred: 1.3.10
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/nexmo.com/voice/1.3.10/openapi.json
+      origin_url: https://raw.githubusercontent.com/nexmo/api-specification/master/definitions/voice.yml
+      openapi_version: 3.0.0
+    signal_note: 'participation only: a community directory listing (APIs.guru collects definitions; the provider
+      did not file them). Signals: version_count, apis_listed, origin_publisher_hosted.'
+    detected_by: sweep-openapi-directory-apis-guru.py
+    detected: '2026-10-22'
+    verified_note: Nexmo is Vonage's API platform (renamed Vonage API in 2019); all/vonage
+    also_directory_providers:
+    - vonage.com
+  detected_by: sweep-openapi-directory-apis-guru.py
+  first_seen: '2026-10-22'
 generated: '2026-10-12'
 method: searched
 checked:
@@ -458,6 +634,8 @@ checked:
 - https://addons.mozilla.org/api/v5/addons/addon/<slug>/
 - https://addons.mozilla.org/api/v5/addons/search/?type=extension&app=firefox
 - https://chromewebstore.google.com/sitemap
+- https://api.apis.guru/v2/list.json
+- https://api.apis.guru/v2/providers.json
 source:
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
