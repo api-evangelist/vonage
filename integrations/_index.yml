@@ -612,3 +612,43 @@
     - vonage.com
   status: not-a-workflow
   arazzo: null
+- slug: vonage-packagist
+  label: Packagist
+  partner: packagist
+  partner_name: Packagist
+  category: official SDK (PHP)
+  type: register
+  channel: package-registry
+  evidence: https://packagist.org/packages/vonage/client
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: Packagist (public registry JSON)
+    spec_file: null
+    language: PHP
+    packages:
+    - name: vonage/client
+      version: 4.3.0
+      released: '2026-01-06'
+      released_field: time
+      lapsed: false
+      page: https://packagist.org/packages/vonage/client
+      repo_leg: shared-github-org:vonage
+      publisher_leg: email:vonage.com
+      matched_by: domain+name-among-holders
+    - name: vonage/client-core
+      version: 4.15.0
+      released: '2026-10-19'
+      released_field: time
+      lapsed: false
+      page: https://packagist.org/packages/vonage/client-core
+      repo_leg: domain:vonage.com
+      publisher_leg: email:vonage.com
+      matched_by: domain+name-among-holders
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-php-dart-elixir-package-registries.py
+    detected: '2026-10-22'
+  status: not-a-workflow
+  arazzo: null
