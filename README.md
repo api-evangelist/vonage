@@ -1,4 +1,4 @@
-# Vonage (vonage)
+# Vonage
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,257 +66,289 @@
 
 Vonage (part of Ericsson) provides cloud communications APIs for voice, SMS, messaging, video, and verification. The Vonage API platform enables businesses to embed communication capabilities into applications including voice calls, SMS, multi-channel messaging (WhatsApp, Messenger, Viber, RCS), video conferencing, and two-factor authentication. SDKs are available for Node.js, Python, Java, PHP, Ruby, .NET, Go, and Kotlin.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/apis.yml)
+**Areas:** Communications · Messaging · Telecommunications · Video Conferencing · Voice · SMS · Verification · Real-Time
+
+## Vonage on APIs.io
+
+Everything profiled for Vonage is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/vonage/](https://apis.io/providers/vonage/)** — or go straight to one of the APIs or properties below.
+
+### APIs (59)
+
+- [Vonage Account API](https://apis.io/apis/vonage/vonage-account-api/) — An external-account used as the `from` field in the Messages API and Dispatch API
+- [Vonage Advanced API](https://apis.io/apis/vonage/vonage-advanced-api/) — The Advanced API from Vonage — 2 operation(s) for advanced.
+- [Vonage Application API](https://apis.io/apis/vonage/vonage-application-api/) — The application API from Vonage — 4 operation(s) for application.
+- [Vonage Applications API](https://apis.io/apis/vonage/vonage-applications-api/) — The Applications API from Vonage — 1 operation(s) for applications.
+- [Vonage Archives API](https://apis.io/apis/vonage/vonage-archives-api/) — APIs relating to working with archives
+- [Vonage Audio Connector API](https://apis.io/apis/vonage/vonage-audio-connector-api/) — APIs relating to audio connector
+- [Vonage Balance API](https://apis.io/apis/vonage/vonage-balance-api/) — This section shows how you can query the current balance of your account, and if you have auto-reload enabled how to trigger a top-up to your account…
+- [Vonage Basic API](https://apis.io/apis/vonage/vonage-basic-api/) — The Basic API from Vonage — 1 operation(s) for basic.
+- [Vonage Broadcast API](https://apis.io/apis/vonage/vonage-broadcast-api/) — APIs relating to live streaming and broadcasting
+- [Vonage Calls API](https://apis.io/apis/vonage/vonage-calls-api/) — Fetch, Create and Modify voice calls
+- [Vonage Configuration API](https://apis.io/apis/vonage/vonage-configuration-api/) — Manage the settings on your account
+- [Vonage Conversation API](https://apis.io/apis/vonage/vonage-conversation-api/) — The conversation API from Vonage — 2 operation(s) for conversation.
+- [Vonage Dial In Numbers API](https://apis.io/apis/vonage/vonage-dial-in-numbers-api/) — The Dial In Numbers API from Vonage — 1 operation(s) for dial in numbers.
+- [Vonage Dispatch API](https://apis.io/apis/vonage/vonage-dispatch-api-api/) — The Dispatch API API from Vonage — 1 operation(s) for dispatch api.
+- [Vonage DTMF API](https://apis.io/apis/vonage/vonage-dtmf-api/) — Send and subscribe to DTMF tones in an active call
+- [Vonage Event API](https://apis.io/apis/vonage/vonage-event-api/) — The event API from Vonage — 2 operation(s) for event.
+- [Vonage Events API](https://apis.io/apis/vonage/vonage-events-api/) — The Events API from Vonage — 2 operation(s) for events.
+- [Vonage Experience Composer API](https://apis.io/apis/vonage/vonage-experience-composer-api/) — APIs relating to Experience Composer
+- [Vonage Facebook Messenger API](https://apis.io/apis/vonage/vonage-facebook-messenger-api/) — Managing your [Facebook Messenger](https://developer.nexmo.com/messages/concepts/facebook) account
+- [Vonage Fraud Management API](https://apis.io/apis/vonage/vonage-fraud-management-api/) — Fraud Management
+- [Vonage ID API](https://apis.io/apis/vonage/vonage-id-api/) — The Id API from Vonage — 2 operation(s) for id.
+- [Vonage Identity Insights API](https://apis.io/apis/vonage/vonage-identity-insights-api/) — Provides real-time intelligence about a phone number.
+- [Vonage Live Captions API](https://apis.io/apis/vonage/vonage-live-captions-api/) — APIs relating to live captioning
+- [Vonage Location retrieval API](https://apis.io/apis/vonage/vonage-location-retrieval-api/) — Retrieve the location of a device
+- [Vonage Media API](https://apis.io/apis/vonage/vonage-media-api-api/) — The Media API API from Vonage — 1 operation(s) for media api.
+- [Vonage Media API](https://apis.io/apis/vonage/vonage-media-api/) — The Media API from Vonage — 1 operation(s) for media.
+- [Vonage Member API](https://apis.io/apis/vonage/vonage-member-api/) — The member API from Vonage — 3 operation(s) for member.
+- [Vonage Messages API](https://apis.io/apis/vonage/vonage-messages-api/) — Send message Operation
+- [Vonage Moderation API](https://apis.io/apis/vonage/vonage-moderation-api/) — APIs relating to moderating participants
+- [Vonage Number API](https://apis.io/apis/vonage/vonage-number-api/) — The Number API from Vonage — 4 operation(s) for number.
+- [Vonage Play TTS API](https://apis.io/apis/vonage/vonage-play-tts-api/) — Start or stop playing Text to Speech in to an active call
+- [Vonage Pricing API](https://apis.io/apis/vonage/vonage-pricing-api/) — The Pricing API from Vonage — 3 operation(s) for pricing.
+- [Vonage Record API](https://apis.io/apis/vonage/vonage-record-api/) — The record API from Vonage — 1 operation(s) for record.
+- [Vonage Recordings API](https://apis.io/apis/vonage/vonage-recordings-api/) — The Recordings API from Vonage — 1 operation(s) for recordings.
+- [Vonage Reports API](https://apis.io/apis/vonage/vonage-reports-api/) — The Reports API from Vonage — 3 operation(s) for reports.
+- [Vonage Rooms API](https://apis.io/apis/vonage/vonage-rooms-api/) — The Rooms API from Vonage — 2 operation(s) for rooms.
+- [Vonage Secret Management API](https://apis.io/apis/vonage/vonage-secret-management-api/) — Many of the Vonage APIs are accessed using an API key and secret. It is recommended that you change or "rotate" your secrets from time to time for security…
+- [Vonage Sessions API](https://apis.io/apis/vonage/vonage-sessions-api/) — The Sessions API from Vonage — 6 operation(s) for sessions.
+- [Vonage Signaling API](https://apis.io/apis/vonage/vonage-signaling-api/) — APIs relating to sending and recieving Signals
+- [Vonage SIP API](https://apis.io/apis/vonage/vonage-sip-api/) — APIs relating to working with SIP calls in a video session
+- [Vonage Sms API](https://apis.io/apis/vonage/vonage-sms-api/) — The Sms API from Vonage — 1 operation(s) for sms.
+- [Vonage Standard API](https://apis.io/apis/vonage/vonage-standard-api/) — The Standard API from Vonage — 1 operation(s) for standard.
+- [Vonage Stream API](https://apis.io/apis/vonage/vonage-stream-api/) — The stream API from Vonage — 1 operation(s) for stream.
+- [Vonage Stream Audio API](https://apis.io/apis/vonage/vonage-stream-audio-api/) — Start or stop streaming audio in to an active call
+- [Vonage Subaccount Management API](https://apis.io/apis/vonage/vonage-subaccount-management-api/) — This section shows how you can create, retrieve and modify subaccounts of a primary account.
+- [Vonage Talk API](https://apis.io/apis/vonage/vonage-talk-api/) — The talk API from Vonage — 1 operation(s) for talk.
+- [Vonage Template Fragments API](https://apis.io/apis/vonage/vonage-template-fragments-api/) — Create and modify custom template fragments in Verify
+- [Vonage Templates API](https://apis.io/apis/vonage/vonage-templates-api/) — Create and modify custom templates in Verify
+- [Vonage Themes API](https://apis.io/apis/vonage/vonage-themes-api/) — The Themes API from Vonage — 5 operation(s) for themes.
+- [Vonage Transaction API](https://apis.io/apis/vonage/vonage-transaction-api/) — The Transaction API from Vonage — 1 operation(s) for transaction.
+- [Vonage Transfers API](https://apis.io/apis/vonage/vonage-transfers-api/) — This section shows how you execute credit, balance and number transfers, as well as viewing past transactions.
+- [Vonage User API](https://apis.io/apis/vonage/vonage-user-api/) — The user API from Vonage — 3 operation(s) for user.
+- [Vonage Verify API](https://apis.io/apis/vonage/vonage-verify-api/) — Provides 2FA authentication for end-users.
+- [Vonage Verify Check API](https://apis.io/apis/vonage/vonage-verify-check-api/) — Verify Check
+- [Vonage Verify Control API](https://apis.io/apis/vonage/vonage-verify-control-api/) — Verify Control
+- [Vonage Verify Requests API](https://apis.io/apis/vonage/vonage-verify-requests-api/) — Verify Requests
+- [Vonage Verify Search API](https://apis.io/apis/vonage/vonage-verify-search-api/) — Verify Search
+- [Vonage Viber Service Message API](https://apis.io/apis/vonage/vonage-viber-service-message-api/) — Managing your [Viber Service Message](https://developer.nexmo.com/messages/concepts/viber) account
+- [Vonage Whats App API](https://apis.io/apis/vonage/vonage-whats-app-api/) — The Whats App API from Vonage — 1 operation(s) for whats app.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (2)
+
+Event-driven and webhook contracts.
+
+- [Vonage Voice WebSocket API](https://apis.io/asyncapis/vonage/vonage-asyncapi/)
+- [Vonage Webhooks](https://apis.io/asyncapis/vonage/vonage-webhooks/)
+
+#### Event channels (1)
+
+Individual events and webhooks the provider emits.
+
+- [/](https://apis.io/channels/vonage/untitled/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Vonage Documentation MCP Server](https://apis.io/servers/vonage/vonage-documentation-mcp-server/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Vonage Agentic Access](https://apis.io/agentic-access/vonage/vonage-agentic-access/)
+
+#### JSON Schema (74)
+
+The data models the API reads and writes.
+
+- [AccountResponse](https://apis.io/schemas/vonage/vonage-account-response/)
+- [Add-Stream-To-Archive](https://apis.io/schemas/vonage/vonage-add-stream-to-archive/)
+- [AggregatedInsightRequest](https://apis.io/schemas/vonage/vonage-aggregated-insight-request/)
+- [AnyAsyncRequestParams](https://apis.io/schemas/vonage/vonage-any-async-request-params/)
+- [ApplicationResponse](https://apis.io/schemas/vonage/vonage-application-response/)
+- [ApplicationResponseCollection](https://apis.io/schemas/vonage/vonage-application-response-collection/)
+- [AuditEvent](https://apis.io/schemas/vonage/vonage-audit-event/)
+- [AuditResp](https://apis.io/schemas/vonage/vonage-audit-resp/)
+- [available-numbers](https://apis.io/schemas/vonage/vonage-available-numbers/)
+- [channel](https://apis.io/schemas/vonage/vonage-channel/)
+- [checkErrorResponse](https://apis.io/schemas/vonage/vonage-check-error-response/)
+- [Circle](https://apis.io/schemas/vonage/vonage-circle/)
+- [CodeSubmitSuccess](https://apis.io/schemas/vonage/vonage-code-submit-success/)
+- [controlErrorResponse](https://apis.io/schemas/vonage/vonage-control-error-response/)
+- [conversation](https://apis.io/schemas/vonage/vonage-conversation/)
+- [conversation_user](https://apis.io/schemas/vonage/vonage-conversation-user/)
+- [CreateCallRequestAnswerUrl](https://apis.io/schemas/vonage/vonage-create-call-request-answer-url/)
+- [createWorkflow](https://apis.io/schemas/vonage/vonage-create-workflow/)
+- [Error](https://apis.io/schemas/vonage/vonage-error/)
+- [ErrorXml](https://apis.io/schemas/vonage/vonage-error-xml/)
+- [GetCallResponse](https://apis.io/schemas/vonage/vonage-get-call-response/)
+- [GetCallsResponse](https://apis.io/schemas/vonage/vonage-get-calls-response/)
+- [HAL](https://apis.io/schemas/vonage/vonage-hal/)
+- [inbound-numbers](https://apis.io/schemas/vonage/vonage-inbound-numbers/)
+- [Layout](https://apis.io/schemas/vonage/vonage-layout/)
+- …and 49 more published on APIs.io
 
-## Scope
+#### JSON Structure (2)
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Data models expressed in JSON Structure.
 
-## Tags
+- [Vonage Message Structure](https://apis.io/json-structure/vonage/vonage-message-structure/)
+- [Vonage Structure](https://apis.io/json-structure/vonage/vonage-structure/)
 
-- Communication
-- Messaging
-- Telecommunications
-- Video Conferencing
-- Voice
-- SMS
-- Verification
+#### JSON-LD (1)
 
-## Timestamps
+Linked-data contexts for the provider's vocabulary.
 
-- **Created:** 2025-02-08
-- **Modified:** 2026-05-29
+- [Vonage Context](https://apis.io/jsonld/vonage/vonage-context/)
 
-## APIs
+#### Vocabulary (1)
 
-### Vonage SMS API
+The provider's domain terms, defined.
 
-Send and receive SMS messages globally using Vonage's SMS API. Supports text, binary, and unicode message types with delivery receipts and inbound message webhooks.
+- [Vonage Communications API Vocabulary](https://apis.io/vocabularies/vonage/vonage-vocabulary/)
 
-- **Human URL:** [https://developer.vonage.com/en/api/sms](https://developer.vonage.com/en/api/sms)
-- **Base URL:** `https://rest.nexmo.com`
+#### Examples (4)
 
-#### Tags
+Example requests and responses.
 
-- Communication
-- Messaging
-- SMS
-- Telecommunications
+- [Vonage Createcall Example](https://apis.io/examples/vonage/vonage-createCall-example/)
+- [Vonage Requestverification Example](https://apis.io/examples/vonage/vonage-requestVerification-example/)
+- [Vonage Sendmessage Example](https://apis.io/examples/vonage/vonage-sendMessage-example/)
+- [Vonage Sendsms Example](https://apis.io/examples/vonage/vonage-sendSms-example/)
 
-#### Properties
+#### Collections (13)
 
-- [Documentation](https://developer.vonage.com/en/api/sms)
-- [Base U R L](https://rest.nexmo.com)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Postman and Open Collection request collections.
 
-### Vonage Voice API
+- [Vonage Communications API](https://apis.io/collections/vonage/open-vonage/)
+- [Vonage Communications Applications API](https://apis.io/collections/vonage/open-vonage-applications-api/)
+- [Vonage Communications Applications Messages API](https://apis.io/collections/vonage/open-vonage-messages-api/)
+- [Vonage Communications Applications Numbers API](https://apis.io/collections/vonage/open-vonage-numbers-api/)
+- [Vonage Communications Applications SMS API](https://apis.io/collections/vonage/open-vonage-sms-api/)
+- [Vonage Communications Applications Verify API](https://apis.io/collections/vonage/open-vonage-verify-api/)
+- [Vonage Communications Applications Voice API](https://apis.io/collections/vonage/open-vonage-voice-api/)
+- [Vonage Communications Applications API](https://apis.io/collections/vonage/postman-vonage-applications-api/)
+- [Vonage Communications Applications Messages API](https://apis.io/collections/vonage/postman-vonage-messages-api/)
+- [Vonage Communications Applications Numbers API](https://apis.io/collections/vonage/postman-vonage-numbers-api/)
+- [Vonage Communications Applications SMS API](https://apis.io/collections/vonage/postman-vonage-sms-api/)
+- [Vonage Communications Applications Verify API](https://apis.io/collections/vonage/postman-vonage-verify-api/)
+- [Vonage Communications Applications Voice API](https://apis.io/collections/vonage/postman-vonage-voice-api/)
 
-Create and control outbound and inbound voice calls using Vonage's Voice API. Supports PSTN, SIP, WebSocket, and VBC endpoints with NCCO (Vonage Call Control Object) for call flow management.
+#### Overlays (1)
 
-- **Human URL:** [https://developer.vonage.com/en/api/voice](https://developer.vonage.com/en/api/voice)
-- **Base URL:** `https://api.nexmo.com/v1`
+OpenAPI overlays, including conversational phrasing for each operation.
 
-#### Tags
+- [Vonage Sms Overlay](https://apis.io/overlays/vonage/vonage-sms-overlay/)
 
-- Communication
-- Telecommunications
-- Voice
-- VoIP
+#### Governance rules (3)
 
-#### Properties
+Spectral rulesets for the provider's contracts.
 
-- [Documentation](https://developer.vonage.com/en/api/voice)
-- [Base U R L](https://api.nexmo.com/v1)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [AsyncAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/asyncapi/vonage-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Vonage — asyncapi rules](https://apis.io/rules/vonage/vonage-asyncapi-spectral-rules/)
+- [Vonage — jsonschema rules](https://apis.io/rules/vonage/vonage-jsonschema-spectral-rules/)
+- [Vonage API Rules](https://apis.io/rules/vonage/vonage-rules/)
 
-### Vonage Messages API
+#### Security (3)
 
-Multi-channel messaging API supporting SMS, WhatsApp, Facebook Messenger, Viber, MMS, and RCS. Send and receive messages across multiple channels with a unified API interface.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://developer.vonage.com/en/api/messages-olympus](https://developer.vonage.com/en/api/messages-olympus)
-- **Base URL:** `https://api.nexmo.com/v1/messages`
+- [Vonage Authentication](https://apis.io/security/vonage/vonage-authentication/)
+- [Vonage Domain Security](https://apis.io/security/vonage/vonage-domain-security/)
+- [Vonage Vulnerability Disclosure](https://apis.io/security/vonage/vonage-vulnerability-disclosure/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Communication
-- Messaging
-- Omnichannel
-- WhatsApp
-- RCS
+Published plans, tiers and prices.
 
-#### Properties
+- [Vonage Plans Pricing](https://apis.io/plans/vonage/vonage-plans-pricing/)
 
-- [Documentation](https://developer.vonage.com/en/api/messages-olympus)
-- [Base U R L](https://api.nexmo.com/v1/messages)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Vonage Verify API
+Published request limits.
 
-Two-factor authentication and phone verification API. Confirm user phone numbers via SMS, TTS, or WhatsApp verification codes to prevent fraud and authenticate users.
+- [Vonage Rate Limits](https://apis.io/rate-limits/vonage/vonage-rate-limits/)
 
-- **Human URL:** [https://developer.vonage.com/en/api/verify](https://developer.vonage.com/en/api/verify)
-- **Base URL:** `https://api.nexmo.com`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Authentication
-- Communication
-- Security
-- Two-Factor Authentication
-- Verification
+- [Vonage Finops](https://apis.io/finops/vonage/vonage-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://developer.vonage.com/en/api/verify)
-- [Base U R L](https://api.nexmo.com)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Vonage Numbers API
-
-Provision and manage virtual phone numbers globally. Search available numbers, purchase numbers for your account, and configure number behavior including inbound SMS and voice call routing.
-
-- **Human URL:** [https://developer.vonage.com/en/api/numbers](https://developer.vonage.com/en/api/numbers)
-- **Base URL:** `https://rest.nexmo.com`
-
-#### Tags
-
-- Communication
-- Number Management
-- Telecommunications
-- Virtual Numbers
-
-#### Properties
-
-- [Documentation](https://developer.vonage.com/en/api/numbers)
-- [Base U R L](https://rest.nexmo.com)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Vonage Application API
-
-Configure Vonage application settings, webhook URLs, and authentication keys. Create and manage applications that group Vonage API capabilities including voice, messages, RTC, meetings, and video features.
-
-- **Human URL:** [https://developer.vonage.com/en/api/application.v2](https://developer.vonage.com/en/api/application.v2)
-- **Base URL:** `https://api.nexmo.com/v2/applications`
-
-#### Tags
-
-- API Management
-- Communication
-- Configuration
-- Developer Tools
-
-#### Properties
-
-- [Documentation](https://developer.vonage.com/en/api/application.v2)
-- [Base U R L](https://api.nexmo.com/v2/applications)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/vonage/refs/heads/main/openapi/vonage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Vonage Conversations API
-
-Build multi-channel conversation experiences with threading across SMS, voice, and messaging channels. Manage members, events, and legs within conversation contexts.
-
-- **Human URL:** [https://developer.vonage.com/en/api/conversation](https://developer.vonage.com/en/api/conversation)
-- **Base URL:** `https://api.nexmo.com/v1`
-
-#### Tags
-
-- Communication
-- Conversations
-- Messaging
-- Real-Time
-
-#### Properties
-
-- [Documentation](https://developer.vonage.com/en/api/conversation)
-- [Base U R L](https://api.nexmo.com/v1)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Vonage Reports API
-
-Generate historical reports and lookup messages sent through your Vonage account. Access delivery receipts, call records, and usage data.
-
-- **Human URL:** [https://developer.vonage.com/en/reports/overview](https://developer.vonage.com/en/reports/overview)
-- **Base URL:** `https://api.nexmo.com/v2/reports`
-
-#### Tags
-
-- Analytics
-- Communication
-- Reporting
-
-#### Properties
-
-- [Documentation](https://developer.vonage.com/en/reports/overview)
-- [Base U R L](https://api.nexmo.com/v2/reports)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Vonage Video API
-
-Embed live, interactive video into web, mobile, and desktop applications using WebRTC. Supports sessions, tokens, broadcasting, recording, and SIP interconnect.
-
-- **Human URL:** [https://developer.vonage.com/en/video/overview](https://developer.vonage.com/en/video/overview)
-- **Base URL:** `https://api.opentok.com`
-
-#### Tags
-
-- Communication
-- Telecommunications
-- Video
-- WebRTC
-
-#### Properties
-
-- [Documentation](https://developer.vonage.com/en/video/overview)
-- [Portal](https://tokbox.com/developer/)
-- [Base U R L](https://api.opentok.com)
-- [Postman Collection](collections/vonage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/vonage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [LinkedIn](https://www.linkedin.com/company/vonage)
-- [Portal](https://developer.vonage.com/)
+- [Website](https://www.vonage.com/)
 - [Documentation](https://developer.vonage.com/en/documentation)
+- [Getting started](https://developer.vonage.com/en/getting-started/overview)
+- [API reference](https://developer.vonage.com/en/api)
+- [Pricing](https://www.vonage.com/communications-apis/pricing)
+- [Sign up](https://ui.idp.vonage.com/sign-up/dashboard)
 - [Support](https://api.support.vonage.com/hc/en-us)
-- [GitHub Organization](https://github.com/Vonage)
-- [Portal](https://www.vonage.com/developer-center/)
 - [Blog](https://developer.vonage.com/en/blog)
-- [Community](https://vonage-community.slack.com/)
-- [SDK](https://github.com/Vonage/vonage-node-sdk)
-- [SDK](https://github.com/Vonage/vonage-python-sdk)
-- [SDK](https://github.com/Vonage/vonage-java-sdk)
-- [SDK](https://github.com/Vonage/vonage-php-sdk-core)
-- [SDK](https://github.com/Vonage/vonage-ruby-sdk)
-- [SDK](https://github.com/Vonage/vonage-dotnet-sdk)
-- [SDK](https://github.com/Vonage/vonage-go-sdk)
-- [SDK](https://github.com/Vonage/vonage-kotlin-sdk)
-- [C L I](https://github.com/Vonage/vonage-cli)
-- [Terms of Service](https://www.vonage.com/legal/)
-- [Privacy Policy](https://www.vonage.com/legal/unified-communications/privacy-policy/)
-- [Pricing](https://www.vonage.com/communications-apis/#pricing)
-- [Features](undefined)
-- [Integrations](https://developer.vonage.com/en/integrations)
-- [M C P Server](https://github.com/Vonage/vonage-mcp-server-documentation)
-- [L L Ms Txt](https://developer.vonage.com/llms.txt)
+- [Security](https://www.vonage.com/security/)
+- [Terms of service](https://www.vonage.com/legal/communications-apis/terms-of-use/)
+- [Privacy policy](https://www.vonage.com/legal/privacy-policy)
+- [GitHub](https://github.com/Vonage)
+- [Status](https://vonageapi.statuspage.io)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 71.3** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 81.7 |
+| Contract quality | 72.9 |
+| Contract governance | 22.0 |
+| Operational transparency | 100.0 |
+| Developer ergonomics | 91.1 |
+| Access clarity | 44.7 |
+
+**Agent readiness 40.8** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | verified |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 20.8** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/vonage/](https://apis.io/providers/vonage/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Vonage: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/vonage/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
