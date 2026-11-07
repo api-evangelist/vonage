@@ -101,6 +101,9 @@ artifacts:
   heartbeat/2026-11-02.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-06.yml:
+    method: unknown
+    evidence: no authorship recorded
   hosts/vonage-hosts.yml:
     method: derived
     evidence: declared in the artifact
@@ -787,6 +790,9 @@ artifacts:
   packages/vonage-packages.yml:
     method: unknown
     evidence: no authorship recorded
+  patterns/vonage-patterns.yml:
+    method: derived
+    evidence: declared in the artifact
   plans/vonage-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
