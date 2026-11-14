@@ -17,6 +17,12 @@ artifacts:
   capabilities/vonage-capability-edges.yml:
     method: unknown
     evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/vonage-changelog.yml:
     method: searched
     evidence: declared in the artifact
@@ -104,6 +110,9 @@ artifacts:
   heartbeat/2026-11-06.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-13.yml:
+    method: unknown
+    evidence: no authorship recorded
   hosts/vonage-hosts.yml:
     method: derived
     evidence: declared in the artifact
@@ -132,6 +141,9 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   json-schema/vonage-application-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-application-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/vonage-audit-event-schema.json:
@@ -170,6 +182,15 @@ artifacts:
   json-schema/vonage-create-workflow-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/vonage-dial-in-number-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-dtmfrequest-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-dtmfresponse-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   json-schema/vonage-error-schema.json:
     method: unknown
     evidence: no authorship recorded
@@ -204,6 +225,15 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   json-schema/vonage-member-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-messenger-account-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-network-unblock-response-ok-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-network-unblock-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/vonage-new-message-schema.json:
@@ -287,6 +317,9 @@ artifacts:
   json-schema/vonage-start-talk-request-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/vonage-stop-talk-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   json-schema/vonage-subaccount-response-schema.json:
     method: unknown
     evidence: no authorship recorded
@@ -309,6 +342,9 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   json-schema/vonage-transfer-number-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-update-application-details-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/vonage-update-call-request-transfer-answer-url-schema.json:
@@ -338,6 +374,12 @@ artifacts:
   json-schema/vonage-voice-region-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/vonage-vsmaccount-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/vonage-waaccount-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   json-structure/vonage-message-structure.json:
     method: unknown
     evidence: no authorship recorded
@@ -347,7 +389,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -411,6 +453,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-02T082323.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/vonage-lifecycle.yml:
