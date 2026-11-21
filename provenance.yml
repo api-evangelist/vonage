@@ -113,6 +113,9 @@ artifacts:
   heartbeat/2026-11-13.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-20.yml:
+    method: unknown
+    evidence: no authorship recorded
   hosts/vonage-hosts.yml:
     method: derived
     evidence: declared in the artifact
@@ -389,7 +392,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-06T143934.yml:
+  kin/checks-2026-11-13T214628.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -456,6 +459,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-13T214628.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/vonage-lifecycle.yml:
@@ -829,9 +835,186 @@ artifacts:
   openapi/vonage-whats-app-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  overlays/vonage-account-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-advanced-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-application-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-applications-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-archives-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-audio-connector-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-balance-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-basic-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-broadcast-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-calls-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-conversation-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-dial-in-numbers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-dispatch-api-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-dtmf-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-event-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-events-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-experience-composer-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-facebook-messenger-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-fraud-management-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-id-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-identity-insights-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-live-captions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-location-retrieval-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-media-api-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-media-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-member-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-messages-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-moderation-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-number-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-play-tts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-pricing-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-record-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-recordings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-reports-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-rooms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-secret-management-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-sessions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-signaling-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-sip-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-sms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/vonage-sms-overlay.yml:
     method: unknown
     evidence: no authorship recorded
+  overlays/vonage-standard-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-stream-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-stream-audio-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-subaccount-management-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-talk-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-template-fragments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-themes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-transaction-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-transfers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-user-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-verify-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-verify-check-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-verify-control-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-verify-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-verify-search-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-viber-service-message-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/vonage-whats-app-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   packages/vonage-packages.yml:
     method: unknown
     evidence: no authorship recorded
@@ -896,9 +1079,6 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/vonage-voice-outbound-call-with-audio.md:
-    method: generated
-    evidence: declared in the artifact
-  sla/vonage-sla.yml:
     method: generated
     evidence: declared in the artifact
   vendors/vonage-vendors.yml:
